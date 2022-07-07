@@ -9,9 +9,9 @@
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview",
-    "format": "prettier --write \"src/**/*.{js,jsx}\"",
-    "lint": "eslint \"src/**/*.{js,jsx}\" --quiet",
-    "postinstall": "husky install"
+    "lint": "eslint \"src/**/*.{js,jsx}\" --quiet --fix",
+    "format": "prettier --write \"src/**/*.{js,jsx,json,html,css}\"",
+    "prepare": "husky install"
   },
   "dependencies": {
     "react": "^18.0.0",
@@ -30,6 +30,11 @@
     "eslint-plugin-react": "^7.30.1",
     "eslint-plugin-react-hooks": "4.6.0",
     "prettier": "2.7.1",
-    "husky": "^8.0.0"
+    "husky": "^8.0.0",
+    "lint-staged": "^13.0.3"
+  },
+  "lint-staged": {
+    "*.{js,jsx}": "npm run lint",
+    "*.{js,jsx,json,html,css}": "npm run format"
   }
 }

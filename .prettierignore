@@ -1,0 +1,7 @@
+# Files which we don't need to format
+dist
+node_modules
+package-lock.json
+yarn.lock
+.github
+.history
