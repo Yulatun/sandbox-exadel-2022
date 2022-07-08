@@ -1,0 +1,29 @@
+{
+  "recommendations": [
+    "formulahendry.auto-close-tag", // improve workflow for .html tags
+    "formulahendry.auto-rename-tag", // improve workflow for .html tags
+    "teabyii.ayu", // nice themes for VSCode (optional)
+    "aaron-bond.better-comments", // tool for highlighting comments in different colors
+    "streetsidesoftware.code-spell-checker", // warn you if you misspell something
+    "adpyke.codesnap", // tool for making code screenshots right from VSCode
+    "naumovs.color-highlight", // highlight web colors in the editor
+    "EditorConfig.EditorConfig", // .editorconfig support for VSCode
+    "mikestead.dotenv", // .env syntax support
+    "usernamehw.errorlens", // improve highlighting of errors, warnings and other language diagnostics
+    "dsznajder.es7-react-js-snippets", // React snippets
+    "dbaeumer.vscode-eslint", // ESlint plugin
+    "tombonnike.vscode-status-bar-format-toggle", // allows you to toggle formatting settings ON and OFF with a simple click
+    "mhutchie.git-graph", // view a Git Graph of your repository, and perform Git actions from the graph
+    "GitHub.vscode-pull-request-github", // helper tool for make and manage PR right in VSCode
+    "eamodio.gitlens", // helps to visualize code authorship and much more
+    "vincaslt.highlight-matching-tag", // highlight matching tags
+    "kisstkondoros.vscode-gutter-preview", // image preview
+    "oderwat.indent-rainbow", // makes indentation easier to read
+    "christian-kohler.npm-intellisense", // autocomplete npm modules in import statements
+    "christian-kohler.path-intellisense", // autocomplete filenames in path declarations
+    "csstools.postcss", // syntax highlighting for modern and experimental CSS
+    "esbenp.prettier-vscode", // Prettier plugin
+    "SimonSiefke.svg-preview", // preview .svg files
+    "albert.TabOut" // tab out of quotes, brackets, etc
+  ]
+}
