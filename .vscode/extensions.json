@@ -4,7 +4,6 @@
     "formulahendry.auto-rename-tag", // improve workflow for .html tags
     "streetsidesoftware.code-spell-checker", // warn you if you misspell something
     "EditorConfig.EditorConfig", // .editorconfig support for VSCode
-    "mikestead.dotenv", // .env syntax support
     "usernamehw.errorlens", // improve highlighting of errors, warnings and other language diagnostics
     "dsznajder.es7-react-js-snippets", // React snippets
     "dbaeumer.vscode-eslint", // ESlint plugin
