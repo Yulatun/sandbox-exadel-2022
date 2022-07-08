@@ -1,7 +1,7 @@
 {
   "recommendations": [
     "formulahendry.auto-close-tag", // improve workflow for .html tags
-    "formulahendry.auto-rename-tag", // improve workflow for .html tags    "aaron-bond.better-comments", // tool for highlighting comments in different colors
+    "formulahendry.auto-rename-tag", // improve workflow for .html tags
     "streetsidesoftware.code-spell-checker", // warn you if you misspell something
     "EditorConfig.EditorConfig", // .editorconfig support for VSCode
     "mikestead.dotenv", // .env syntax support
