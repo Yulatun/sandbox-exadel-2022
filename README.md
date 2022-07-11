@@ -35,3 +35,7 @@ git commit -m "feat: new feature"
 ```
 
 For more examples and further information, please visit [commitlint documentation page](https://github.com/conventional-changelog/commitlint#what-is-commitlint).
+
+---
+
+Copy the contents of .env.dist file to .env file on your local machine
