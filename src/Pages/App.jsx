@@ -7,9 +7,9 @@ export const App = () => {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path='/' element={<Landing />} />
-        <Route path='/categories' element={<Categories />} />
-        <Route path='*' element={<Fallback />} />
+        <Route path="/" element={<Landing />} />
+        <Route path="/categories" element={<Categories />} />
+        <Route path="*" element={<Fallback />} />
       </Routes>
     </BrowserRouter>
   );
