@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { App } from './pages';
-import ErrorBoundary from './Components/ErrorBoundary/ErrorBoundary';
+import { ErrorBoundary } from './Components';
 import './index.css';
 import { ChakraProvider } from '@chakra-ui/react';
 

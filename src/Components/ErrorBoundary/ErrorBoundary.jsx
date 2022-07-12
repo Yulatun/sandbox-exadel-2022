@@ -1,20 +1,13 @@
 import React from 'react';
 import { Text, Center } from '@chakra-ui/react';
 
-class ErrorBoundary extends React.Component {
+export class ErrorBoundary extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { hasError: false };
-  }
-
-  static getDerivedStateFromError() {
-    // Update state so the next render will show the fallback UI.
-    return { hasError: true };
+    this.state = { error: null, errorInfo: null };
   }
 
   componentDidCatch(error, errorInfo) {
-    // You can also log the error to an error reporting service
-    // logErrorToMyService(error, errorInfo);
     this.setState({
       error: error,
       errorInfo: errorInfo
@@ -22,12 +15,12 @@ class ErrorBoundary extends React.Component {
   }
 
   render() {
-    if (this.state.hasError) {
-      // You can render any custom fallback UI
+    if (this.state.errorInfo) {
       return (
         <Center h="100%">
-          <Text fontSize="1xl">
-            Ooops, something went wrong. We are sorry. Please, try again later.
+          <Text as="kbd" mt="4" align="center">
+            <Text fontSize="5xl">Ooops,something went wrong.</Text>
+            <Text fontSize="3xl">We are sorry. Please, try again later.</Text>
           </Text>
         </Center>
       );
@@ -35,5 +28,3 @@ class ErrorBoundary extends React.Component {
     return this.props.children;
   }
 }
-
-export default ErrorBoundary;
