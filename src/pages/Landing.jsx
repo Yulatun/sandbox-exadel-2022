@@ -1,6 +1,8 @@
 import { Link } from 'react-router-dom';
 import { Box, Flex } from '@chakra-ui/react';
 
+import { Footer } from '@/components';
+
 export const Landing = () => {
   return (
     <>
@@ -14,6 +16,7 @@ export const Landing = () => {
           </nav>
         </Flex>
       </Box>
+      <Footer />
     </>
   );
 };

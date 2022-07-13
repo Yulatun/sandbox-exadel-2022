@@ -6,14 +6,14 @@ import './i18n';
 
 import { ErrorBoundary } from './components';
 import { App } from './pages';
-
-import './index.css';
 import { ColorModeToggle } from './theme';
 import theme from './theme';
 
+import './index.css';
+
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
-     <ChakraProvider theme={theme}>
+    <ChakraProvider theme={theme}>
       <ErrorBoundary>
         <ColorModeToggle initialColorMode={theme.config.initialColorMode} />
         <App />

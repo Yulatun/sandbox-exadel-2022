@@ -2,6 +2,8 @@ import { Link } from 'react-router-dom';
 import { Box, Flex } from '@chakra-ui/react';
 import i18next from 'i18next';
 
+import { Footer } from '@/components';
+
 export const Categories = () => {
   return (
     <>
@@ -15,6 +17,7 @@ export const Categories = () => {
           </nav>
         </Flex>
       </Box>
+      <Footer />
     </>
   );
 };

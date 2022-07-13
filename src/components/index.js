@@ -1,3 +1,4 @@
 import { ErrorBoundary } from './ErrorBoundary';
+import { Footer } from './Footer';
 
-export { ErrorBoundary };
+export { ErrorBoundary, Footer };
