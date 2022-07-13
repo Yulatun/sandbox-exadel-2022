@@ -1,8 +1,6 @@
-import { FaRegCopyright } from 'react-icons/fa';
+import { InfoOutlineIcon } from '@chakra-ui/icons';
 import { Center, Flex, Text } from '@chakra-ui/react';
 import i18next from 'i18next';
-
-import { FooterNav } from './FooterNav';
 
 export const Footer = () => {
   return (
@@ -12,11 +10,11 @@ export const Footer = () => {
           <Text fontSize="3xl">Space for something interesting</Text>
         </Center>
         <Flex flex="1 0 20%" justify="space-evenly" align="center">
-          <FooterNav />
+          <Text fontSize="5xl">Footer</Text>
         </Flex>
         <Flex flex="1 0 40%" direction="column" justify="center" align="center">
           <Center>
-            <FaRegCopyright />
+            <InfoOutlineIcon />
             <Text m={(0, 1)}>{i18next.t('copyright')}</Text>
           </Center>
           <Text>{i18next.t('rights.reserved')}</Text>
