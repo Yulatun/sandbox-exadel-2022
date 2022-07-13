@@ -1,4 +1,9 @@
 {
   "category.welcomeMessage": "Welcome to the categories!",
-  "category.home": "Home"
+  "category.home": "Home",
+  "header.navigation.home": "Home",
+  "header.navigation.about": "About",
+  "header.navigation.categories": "Categories",
+  "header.userName": "{{props.userName}}",
+  "header.userEmail": "{{props.userEmail}}"
 }

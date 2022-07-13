@@ -1,9 +1,11 @@
 import { Link } from 'react-router-dom';
 import { Flex, Box } from '@chakra-ui/react';
+import Header from '../components';
 
 export const Landing = () => {
   return (
     <>
+      <Header />
       <Box bg="bisque" w="100%" p={4} color="blueviolet">
         <Flex direction="column" justify="center" align="center">
           <main>
