@@ -11,8 +11,9 @@ import './index.css';
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
-    <ChakraProvider>
+     <ChakraProvider theme={theme}>
       <ErrorBoundary>
+        <ColorModeToggle initialColorMode={theme.config.initialColorMode} />
         <App />
       </ErrorBoundary>
     </ChakraProvider>
