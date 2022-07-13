@@ -10,9 +10,11 @@
   "rules": {
     "react/prop-types": 0,
     "react/react-in-jsx-scope": 0,
-    "import/no-unresolved": 0
+    "import/no-unresolved": 0,
+    "simple-import-sort/imports": "error",
+    "simple-import-sort/exports": "error"
   },
-  "plugins": ["react", "import", "jsx-a11y"],
+  "plugins": ["react", "import", "jsx-a11y", "simple-import-sort"],
   "parserOptions": {
     "ecmaVersion": 2022,
     "sourceType": "module",
@@ -34,5 +36,25 @@
         "extensions": [".js", ".jsx"]
       }
     }
-  }
+  },
+  "overrides": [
+    {
+      "files": ["*.js", "*.jsx", "*.ts", "*.tsx"],
+      "rules": {
+        "simple-import-sort/imports": [
+          "error",
+          {
+            "groups": [
+              ["^react", "^@?\\w"],
+              ["^(@|components)(/.*|$)"],
+              ["^\\u0000"],
+              ["^\\.\\.(?!/?$)", "^\\.\\./?$"],
+              ["^\\./(?=.*/)(?!/?$)", "^\\.(?!/?$)", "^\\./?$"],
+              ["^.+\\.?(css)$"]
+            ]
+          }
+        ]
+      }
+    }
+  ]
 }
