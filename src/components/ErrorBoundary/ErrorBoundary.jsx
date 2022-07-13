@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, Center } from '@chakra-ui/react';
+import { Center, Text } from '@chakra-ui/react';
 
 export class ErrorBoundary extends React.Component {
   constructor(props) {

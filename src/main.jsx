@@ -1,10 +1,13 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import { App } from './pages';
-import { ErrorBoundary } from './components';
-import './index.css';
 import { ChakraProvider } from '@chakra-ui/react';
+
 import './i18n';
+
+import { ErrorBoundary } from './components';
+import { App } from './pages';
+
+import './index.css';
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>

@@ -1,7 +1,8 @@
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import { Landing } from './Landing';
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
+
 import { Categories } from './Categories';
 import { Fallback } from './Fallback';
+import { Landing } from './Landing';
 
 export const App = () => {
   return (
