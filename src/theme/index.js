@@ -1,4 +1,4 @@
 import theme from './theme';
 
-export * from './colorModeToggle';
+export * from './ColorModeToggle';
 export default theme;
