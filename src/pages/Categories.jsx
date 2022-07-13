@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
 import { Flex, Box } from '@chakra-ui/react';
+import i18next from 'i18next';
 
 export const Categories = () => {
   return (
@@ -7,10 +8,10 @@ export const Categories = () => {
       <Box bg="orange.300" w="100%" p={4} color="cornsilk">
         <Flex direction="column" justify="center" align="center">
           <main>
-            <h2>Welcome to the categories!</h2>
+            <h2>{i18next.t('category.welcomeMessage')}</h2>
           </main>
           <nav>
-            <Link to="/">Home</Link>
+            <Link to="/">{i18next.t('category.home')}</Link>
           </nav>
         </Flex>
       </Box>

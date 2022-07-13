@@ -1,3 +1,4 @@
 {
-  "app.welcomeMessageReact": "Hello Vite + React!"
+  "category.welcomeMessage": "Welcome to the categories!",
+  "category.home": "Home"
 }
