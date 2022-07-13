@@ -1,4 +1,18 @@
 {
+  "about.welcomeMessage": "Welcome to the about page!",
   "category.welcomeMessage": "Welcome to the categories!",
-  "category.home": "Home"
+  "category.home": "Home",
+  "landing.welcomeMessage": "Welcome to the landing page!",
+  "login.welcomeMessage": "Welcome to the login page!",
+  "fallback.message": "Page does not exist",
+  "header.btn.theme.light": "Light theme button",
+  "header.btn.theme.dark": "Dark theme button",
+  "header.btn.login": "LogIn button",
+  "header.btn.settings": "Settings button",
+  "header.btn.notifications": "Notifications button",
+  "header.navigation.home": "Home",
+  "header.navigation.about": "About",
+  "header.navigation.categories": "Categories",
+  "header.userName": "{{props.userName}}",
+  "header.userEmail": "{{props.userEmail}}"
 }

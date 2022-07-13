@@ -1,13 +1,13 @@
 import { Box, Flex } from '@chakra-ui/react';
 import i18next from 'i18next';
 
-const Categories = () => {
+const Login = () => {
   return (
     <>
-      <Box bg="orange.300" w="100%" p={4} color="cornsilk">
+      <Box bg="bisque" w="100%" p={4} color="blueviolet">
         <Flex direction="column" justify="center" align="center">
           <main>
-            <h2>{i18next.t('category.welcomeMessage')}</h2>
+            <h2>{i18next.t('login.welcomeMessage')}</h2>
           </main>
         </Flex>
       </Box>
@@ -15,4 +15,4 @@ const Categories = () => {
   );
 };
 
-export default Categories;
+export default Login;

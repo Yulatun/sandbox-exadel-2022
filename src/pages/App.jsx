@@ -1,17 +1,13 @@
-import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import { BrowserRouter } from 'react-router-dom';
 
-import { Categories } from './Categories';
-import { Fallback } from './Fallback';
-import { Landing } from './Landing';
+import Header from '../components';
+import AppRouter from '../components/AppRouter/AppRouter';
 
 export const App = () => {
   return (
     <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<Landing />} />
-        <Route path="/categories" element={<Categories />} />
-        <Route path="*" element={<Fallback />} />
-      </Routes>
+      <Header />
+      <AppRouter />
     </BrowserRouter>
   );
 };
