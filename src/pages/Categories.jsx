@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { Flex, Box } from '@chakra-ui/react';
+import { Box, Flex } from '@chakra-ui/react';
 import i18next from 'i18next';
 
 export const Categories = () => {
