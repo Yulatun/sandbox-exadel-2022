@@ -1,4 +1,2 @@
-import LogoWalletIcon from './LogoWalletIcon';
-import UserIcon from './UserIcon';
-
-export { LogoWalletIcon, UserIcon };
+export { LogoWalletIcon } from './LogoWalletIcon';
+export { UserIcon } from './UserIcon';

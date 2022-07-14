@@ -1,11 +1,7 @@
 import React from 'react';
 import { Icon } from '@chakra-ui/react';
 
-export default function UserIcon({
-  color = 'white',
-  width = '30',
-  height = '30'
-}) {
+export function UserIcon({ color = 'white', width = '30', height = '30' }) {
   return (
     <Icon w={width} h={height} color={color}>
       <path
