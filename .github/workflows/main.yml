@@ -8,7 +8,7 @@ on:
       - '*'         # matches every branch that doesn't contain a '/'
       - '*/*'       # matches every branch containing a single '/'
       - '**'        # matches every branch
-      - '!master'   # excludes master
+      - '!main'     # excludes main
  
  # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
