@@ -1,5 +1,3 @@
-import { ErrorBoundary } from './ErrorBoundary';
-import { Footer } from './Footer';
-import Header from './Header';
-
-export { ErrorBoundary, Footer, Header };
+export { ErrorBoundary } from './ErrorBoundary';
+export { Footer } from './Footer';
+export { Header } from './Header';
