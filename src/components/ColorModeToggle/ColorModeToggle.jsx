@@ -17,14 +17,14 @@ const ColorModeToggle = () => {
       variant="outline"
       aria-label={
         colorMode === 'light'
-          ? i18next.t('header.btn.theme.light')
-          : i18next.t('header.btn.theme.dark')
+          ? i18next.t('header.btn.theme.dark')
+          : i18next.t('header.btn.theme.light')
       }
       icon={
         colorMode === 'light' ? (
-          <SunIcon w="30px" h="30px" />
-        ) : (
           <MoonIcon w="25px" h="25px" />
+        ) : (
+          <SunIcon w="30px" h="30px" />
         )
       }
       onClick={toggleColorMode}
