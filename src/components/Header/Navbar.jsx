@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { Breadcrumb, BreadcrumbItem, BreadcrumbLink } from '@chakra-ui/react';
 import i18next from 'i18next';
 
-const Navbar = () => {
+export const Navbar = () => {
   return (
     <Breadcrumb spacing="30px" separator="" fontSize="xl">
       <BreadcrumbItem>
@@ -24,5 +24,3 @@ const Navbar = () => {
     </Breadcrumb>
   );
 };
-
-export default Navbar;

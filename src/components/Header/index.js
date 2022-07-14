@@ -1,3 +1,1 @@
-import Header from './Header.jsx';
-
-export default Header;
+export { Header } from './Header';

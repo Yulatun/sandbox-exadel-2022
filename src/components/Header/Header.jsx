@@ -14,9 +14,9 @@ import theme from '@/theme';
 
 import ColorModeToggle from '../ColorModeToggle';
 
-import Navbar from './Navbar';
+import { Navbar } from './Navbar';
 
-const Header = () => {
+export const Header = () => {
   const [isAuth, setIsAuth] = useState(false);
 
   const headerBgThemeColor = useColorModeValue('purple.200', 'purple.700');
@@ -91,5 +91,3 @@ const Header = () => {
     </Flex>
   );
 };
-
-export default Header;
