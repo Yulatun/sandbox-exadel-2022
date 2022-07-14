@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { BellIcon, SettingsIcon } from '@chakra-ui/icons';
 import {
   Flex,
   Heading,
@@ -8,14 +9,10 @@ import {
 } from '@chakra-ui/react';
 import i18next from 'i18next';
 
-import {
-  LogoWalletIcon,
-  NotificationsIcon,
-  SettingsIcon,
-  UserIcon
-} from '../../assets';
-import { ColorModeToggle } from '../../theme';
-import theme from '../../theme';
+import { LogoWalletIcon, UserIcon } from '@/assets';
+import theme from '@/theme';
+
+import ColorModeToggle from '../ColorModeToggle';
 
 import Navbar from './Navbar';
 
@@ -64,7 +61,7 @@ const Header = () => {
                 variant="ghost"
                 aria-label={i18next.t('header.btn.settings')}
                 onClick={() => setIsAuth(false)}
-                icon={<SettingsIcon color={iconsThemeColor} />}
+                icon={<SettingsIcon w="30px" h="30px" />}
               />
               <IconButton
                 w="50px"
@@ -73,7 +70,7 @@ const Header = () => {
                 colorScheme="gray"
                 variant="ghost"
                 aria-label={i18next.t('header.btn.notifications')}
-                icon={<NotificationsIcon color={iconsThemeColor} />}
+                icon={<BellIcon w="30px" h="30px" />}
               />
             </Flex>
           ) : (

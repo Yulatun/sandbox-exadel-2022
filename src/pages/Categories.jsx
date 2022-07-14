@@ -1,7 +1,7 @@
 import { Box, Flex } from '@chakra-ui/react';
 import i18next from 'i18next';
 
-const Categories = () => {
+export const Categories = () => {
   return (
     <>
       <Box bg="orange.300" w="100%" p={4} color="cornsilk">
@@ -14,5 +14,3 @@ const Categories = () => {
     </>
   );
 };
-
-export default Categories;

@@ -1,7 +1,7 @@
 import { Box, Flex } from '@chakra-ui/react';
 import i18next from 'i18next';
 
-const About = () => {
+export const About = () => {
   return (
     <>
       <Box bg="teal" w="100%" p={4} color="white">
@@ -14,5 +14,3 @@ const About = () => {
     </>
   );
 };
-
-export default About;

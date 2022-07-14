@@ -1,7 +1,7 @@
 import { Box, Flex } from '@chakra-ui/react';
 import i18next from 'i18next';
 
-const Landing = () => {
+export const Landing = () => {
   return (
     <>
       <Box bg="bisque" w="100%" p={4} color="blueviolet">
@@ -14,5 +14,3 @@ const Landing = () => {
     </>
   );
 };
-
-export default Landing;
