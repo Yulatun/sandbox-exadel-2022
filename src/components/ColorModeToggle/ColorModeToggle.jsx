@@ -13,7 +13,7 @@ const ColorModeToggle = () => {
       border="2px"
       borderRadius="50%"
       colorScheme="gray"
-      bgColor="rgba(237, 242, 247, .2)"
+      bgColor="whiteAlpha.300"
       variant="outline"
       aria-label={
         colorMode === 'light'

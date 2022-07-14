@@ -19,8 +19,8 @@ import Navbar from './Navbar';
 const Header = () => {
   const [isAuth, setIsAuth] = useState(false);
 
-  const headerBgThemeColor = useColorModeValue('#D6BCFA', '#553C9A');
-  const iconsThemeColor = useColorModeValue('#322659', '#fff');
+  const headerBgThemeColor = useColorModeValue('purple.200', 'purple.700');
+  const iconsThemeColor = useColorModeValue('purple.900', 'white');
 
   return (
     <Flex
@@ -28,7 +28,7 @@ const Header = () => {
       justify="center"
       minH="100px"
       bg={headerBgThemeColor}
-      boxShadow="2px 0 3px #322659"
+      boxShadow="base"
     >
       <Flex
         align="center"
