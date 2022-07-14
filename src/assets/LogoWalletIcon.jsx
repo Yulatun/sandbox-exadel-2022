@@ -1,7 +1,7 @@
 import React from 'react';
 import { Icon } from '@chakra-ui/react';
 
-export default function LogoWalletIcon({
+export function LogoWalletIcon({
   color = 'white',
   width = '30',
   height = '30'
