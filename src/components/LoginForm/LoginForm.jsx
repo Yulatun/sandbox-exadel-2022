@@ -1,0 +1,99 @@
+import React from 'react';
+import { useForm } from 'react-hook-form';
+import { ViewIcon, ViewOffIcon } from '@chakra-ui/icons';
+import {
+  Button,
+  FormControl,
+  FormHelperText,
+  FormLabel,
+  Input,
+  InputGroup,
+  InputRightElement,
+  Stack
+} from '@chakra-ui/react';
+export const LoginForm = () => {
+  const [show, setShow] = React.useState(false);
+  const handleClick = () => setShow(!show);
+
+
+  const {
+    register,
+    handleSubmit,
+    watch,
+    reset,
+    formState: { errors }
+  } = useForm({
+    reValidateMode: 'onSubmit',
+    mode: 'onTouched'
+  });
+
+  const email = watch('email');
+  const password = watch('password');
+  console.log(watch());
+  const isValid = email && password;
+
+  const onSubmit = (data) => {
+    console.log(data);
+    reset();
+  };
+
+  const onError = (error) => {
+    console.log(error);
+  };
+
+  return (
+    <Stack
+      width="500px"
+      p="4"
+      boxShadow="xl"
+      borderRadius="4px"
+      background="white"
+    >
+      <form onSubmit={handleSubmit(onSubmit, onError)}>
+        <FormControl>
+          <FormLabel htmlFor="email">Email</FormLabel>
+          <Input
+            id="email"
+            type="email"
+            {...register('email', { required: true })}
+          />
+          {errors && errors.email && (
+            <FormHelperText color="red">
+              {errors.email.message && errors.email.message}
+            </FormHelperText>
+          )}
+        </FormControl>
+        <FormControl>
+          <FormLabel htmlFor="password">Password</FormLabel>
+          <InputGroup size="md">
+            <Input
+              id="password"
+              type={show ? 'text' : 'password'}
+              {...register('password', { required: true })}
+            />
+            <InputRightElement width="4.5rem">
+              <Button h="1.75rem" size="sm" onClick={handleClick}>
+                {show ? <ViewIcon w={5} h={5} /> : <ViewOffIcon w={5} h={5} />}
+              </Button>
+            </InputRightElement>
+          </InputGroup>
+          {errors && errors.password && (
+            <FormHelperText color="red">
+              {errors.password.message && errors.password.message}
+            </FormHelperText>
+          )}
+        </FormControl>
+       
+        <Button
+          type="submit"
+          disabled={!isValid}
+          mt="10px"
+          colorScheme="purple"
+        >
+          Log in
+        </Button>
+        
+      </form>
+    </Stack>
+  );
+};
