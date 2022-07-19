@@ -12,7 +12,13 @@ import {
 } from '@chakra-ui/react';
 import i18next from 'i18next';
 
-export const CustomModal = ({ isOpen, onClose, onSubmit, title, text }) => {
+export const DeleteComfirmationModal = ({
+  isOpen,
+  onClose,
+  onSubmit,
+  title,
+  text
+}) => {
   return (
     <Modal
       closeOnOverlayClick={false}
@@ -32,10 +38,10 @@ export const CustomModal = ({ isOpen, onClose, onSubmit, title, text }) => {
 
         <ModalFooter>
           <Button colorScheme="red" onClick={onSubmit}>
-            {i18next.t('Yes')}
+            {i18next.t('modal.button.yes')}
           </Button>
           <Button onClick={onClose} invert>
-            {i18next.t('No')}
+            {i18next.t('modal.button.no')}
           </Button>
         </ModalFooter>
       </ModalContent>
@@ -43,4 +49,4 @@ export const CustomModal = ({ isOpen, onClose, onSubmit, title, text }) => {
   );
 };
 
-export default CustomModal;
+export default DeleteComfirmationModal;

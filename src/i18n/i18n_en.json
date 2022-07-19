@@ -16,5 +16,9 @@
   "header.userMenu.settings": "Settings",
   "header.userMenu.help": "Help",
   "header.userMenu.delete": "Delete account",
-  "header.userMenu.logout": "Log out"
+  "header.userMenu.logout": "Log out",
+  "modal.button.yes": "Yes",
+  "modal.button.no": "No",
+  "modal.button.title": "Account deletion'",
+  "modal.button.text": "Are you sure you want to delete your account? All your data will be lost, you can download your report from the Statistics page before confirming"
 }
