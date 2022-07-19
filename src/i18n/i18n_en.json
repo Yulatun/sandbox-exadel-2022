@@ -12,8 +12,6 @@
   "header.navigation.home": "Home",
   "header.navigation.about": "About",
   "header.navigation.categories": "Categories",
-  "header.userName": "{{props.userName}}",
-  "header.userEmail": "{{props.userEmail}}",
   "header.userMenu": "User menu",
   "header.userMenu.settings": "Settings",
   "header.userMenu.help": "Help",
