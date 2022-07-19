@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { BellIcon, SettingsIcon } from '@chakra-ui/icons';
 import {
-  //Button,
+  Button,
   Flex,
   Heading,
   IconButton,
@@ -13,8 +13,8 @@ import i18next from 'i18next';
 import { LogoWalletIcon, UserIcon } from '@/assets';
 import theme from '@/theme';
 
-import { CustomModal } from '../../components/Modal/CustomModal';
 import ColorModeToggle from '../ColorModeToggle';
+import { CustomModal } from '../CustomModal,/CustomModal';
 
 import { Navbar } from './Navbar';
 
@@ -47,6 +47,7 @@ export const Header = () => {
           <ColorModeToggle initialColorMode={theme.config.initialColorMode} />
         </Flex>
         <Navbar />
+        <Button onClick={() => setDeleteModalOpen(true)}>Delete account</Button>
         <Flex>
           {isAuth ? (
             <Flex align="center">
@@ -103,4 +104,3 @@ export const Header = () => {
     </Flex>
   );
 };
-//<Button onClick={() => setDeleteModalOpen(true)}>Delete account</Button>
