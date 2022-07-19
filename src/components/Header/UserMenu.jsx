@@ -4,12 +4,20 @@ import {
   QuestionOutlineIcon,
   SettingsIcon
 } from '@chakra-ui/icons';
-import { Menu, MenuButton, MenuItem, MenuList } from '@chakra-ui/react';
+import {
+  Menu,
+  MenuButton,
+  MenuItem,
+  MenuList,
+  useColorModeValue
+} from '@chakra-ui/react';
 import i18next from 'i18next';
 
 import { LogOutIcon } from '@/assets';
 
 export const UserMenu = () => {
+  const iconsThemeColor = useColorModeValue('black', 'white');
+
   return (
     <Menu>
       <MenuButton
@@ -33,7 +41,9 @@ export const UserMenu = () => {
         <MenuItem icon={<DeleteIcon w={5} h={5} />}>
           {i18next.t('header.userMenu.delete')}
         </MenuItem>
-        <MenuItem icon={<LogOutIcon width={5} height={5} />}>
+        <MenuItem
+          icon={<LogOutIcon width={5} height={5} color={iconsThemeColor} />}
+        >
           {i18next.t('header.userMenu.logout')}
         </MenuItem>
       </MenuList>
