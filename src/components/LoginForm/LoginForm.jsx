@@ -1,6 +1,7 @@
 /* eslint-disable no-unused-vars */
-import React from 'react';
+import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
+import { useNavigate } from 'react-router-dom';
 import { ViewIcon, ViewOffIcon } from '@chakra-ui/icons';
 import {
   Button,
@@ -15,10 +16,9 @@ import {
 import i18next from 'i18next';
 
 export const LoginForm = () => {
-  const [show, setShow] = React.useState(false);
-
-  
+  const [show, setShow] = useState(false);
   const handleClick = () => setShow(!show);
+  let navigate = useNavigate();
 
   const {
     register,
@@ -36,12 +36,8 @@ export const LoginForm = () => {
   const isEmpty = !email || !password;
 
   const onSubmit = (data) => {
-   
     reset();
-  };
-
-  const onError = (error) => {
-    console.log(error);
+    navigate('/', { replace: true });
   };
 
   return (
@@ -52,7 +48,7 @@ export const LoginForm = () => {
       borderRadius="4px"
       background="white"
     >
-      <form onSubmit={handleSubmit(onSubmit, onError)}>
+      <form onSubmit={handleSubmit(onSubmit)}>
         <FormControl>
           <FormLabel htmlFor="email">{i18next.t('Email')}</FormLabel>
           <Input
