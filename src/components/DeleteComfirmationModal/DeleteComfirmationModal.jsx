@@ -8,6 +8,7 @@ import {
   ModalFooter,
   ModalHeader,
   ModalOverlay,
+  Stack,
   Text
 } from '@chakra-ui/react';
 import i18next from 'i18next';
@@ -37,12 +38,14 @@ export const DeleteComfirmationModal = ({
         </ModalBody>
 
         <ModalFooter>
-          <Button colorScheme="red" onClick={onSubmit}>
-            {i18next.t('modal.button.yes')}
-          </Button>
-          <Button onClick={onClose} invert>
-            {i18next.t('modal.button.no')}
-          </Button>
+          <Stack direction="row" spacing={5}>
+            <Button colorScheme="red" onClick={onSubmit}>
+              {i18next.t('modal.button.yes')}
+            </Button>
+            <Button onClick={onClose} invert>
+              {i18next.t('modal.button.no')}
+            </Button>
+          </Stack>
         </ModalFooter>
       </ModalContent>
     </Modal>
