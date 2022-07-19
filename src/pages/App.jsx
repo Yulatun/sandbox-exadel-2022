@@ -1,7 +1,6 @@
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 
-import { Header } from '@/components';
-import { Footer } from '@/components';
+import { Footer, Header } from '@/components';
 
 import { About } from './About';
 import { Categories } from './Categories';
