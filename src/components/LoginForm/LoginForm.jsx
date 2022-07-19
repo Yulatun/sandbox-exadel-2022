@@ -16,6 +16,8 @@ import i18next from 'i18next';
 
 export const LoginForm = () => {
   const [show, setShow] = React.useState(false);
+
+  
   const handleClick = () => setShow(!show);
 
   const {
@@ -34,7 +36,7 @@ export const LoginForm = () => {
   const isEmpty = !email || !password;
 
   const onSubmit = (data) => {
-    console.log(data);
+   
     reset();
   };
 
