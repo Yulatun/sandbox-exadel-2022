@@ -1,6 +1,7 @@
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 
 import { Header } from '@/components';
+import { Footer } from '@/components';
 
 import { About } from './About';
 import { Categories } from './Categories';
@@ -19,6 +20,7 @@ export const App = () => {
         <Route path="/categories" element={<Categories />} />
         <Route path="*" element={<Fallback />} />
       </Routes>
+      <Footer />
     </BrowserRouter>
   );
 };

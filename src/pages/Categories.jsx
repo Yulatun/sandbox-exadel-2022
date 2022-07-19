@@ -1,8 +1,6 @@
 import { Box, Flex } from '@chakra-ui/react';
 import i18next from 'i18next';
 
-import { Footer } from '@/components';
-
 export const Categories = () => {
   return (
     <>
@@ -13,7 +11,6 @@ export const Categories = () => {
           </main>
         </Flex>
       </Box>
-      <Footer />
     </>
   );
 };
