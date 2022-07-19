@@ -1,15 +1,9 @@
 import React from 'react';
 import { Icon } from '@chakra-ui/react';
 
-export function LogOutIcon({
-  color = 'black',
-  width = '24',
-  w,
-  height = '24',
-  h
-}) {
+export function LogOutIcon({ color = 'black', width = '24', height = '24' }) {
   return (
-    <Icon w={w || width} h={h || height} color={color}>
+    <Icon w={width} h={height} color={color}>
       <path
         viewBox="0 0 24 24"
         fill="none"

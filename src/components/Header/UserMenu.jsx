@@ -9,7 +9,7 @@ import i18next from 'i18next';
 
 import { LogOutIcon } from '@/assets';
 
-export const UserMenu = ({ setIsAuth }) => {
+export const UserMenu = () => {
   return (
     <Menu>
       <MenuButton
@@ -33,12 +33,7 @@ export const UserMenu = ({ setIsAuth }) => {
         <MenuItem icon={<DeleteIcon w={5} h={5} />}>
           {i18next.t('header.userMenu.delete')}
         </MenuItem>
-        <MenuItem
-          icon={<LogOutIcon w={5} h={5} />}
-          onClick={() => {
-            setIsAuth(false);
-          }}
-        >
+        <MenuItem icon={<LogOutIcon width={5} height={5} />}>
           {i18next.t('header.userMenu.logout')}
         </MenuItem>
       </MenuList>
