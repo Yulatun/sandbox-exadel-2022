@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import React from 'react';
 import { useForm } from 'react-hook-form';
 import { ViewIcon, ViewOffIcon } from '@chakra-ui/icons';
@@ -11,10 +12,10 @@ import {
   InputRightElement,
   Stack
 } from '@chakra-ui/react';
+import i18next from 'i18next';
 export const LoginForm = () => {
   const [show, setShow] = React.useState(false);
   const handleClick = () => setShow(!show);
-
 
   const {
     register,
@@ -29,17 +30,13 @@ export const LoginForm = () => {
 
   const email = watch('email');
   const password = watch('password');
-  console.log(watch());
-  const isValid = email && password;
+  const isEmpty = !email || !password;
 
   const onSubmit = (data) => {
-    console.log(data);
     reset();
   };
 
-  const onError = (error) => {
-    console.log(error);
-  };
+  const onError = (error) => {};
 
   return (
     <Stack
@@ -83,16 +80,10 @@ export const LoginForm = () => {
             </FormHelperText>
           )}
         </FormControl>
-       
-        <Button
-          type="submit"
-          disabled={!isValid}
-          mt="10px"
-          colorScheme="purple"
-        >
-          Log in
+
+        <Button type="submit" disabled={isEmpty} mt="10px" colorScheme="purple">
+          {i18next.t('Log in')}
         </Button>
-        
       </form>
     </Stack>
   );

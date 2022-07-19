@@ -3,7 +3,6 @@ import i18next from 'i18next';
 
 import { LoginForm } from '@/components';
 
-
 export const Login = () => {
   return (
     <>
@@ -11,7 +10,7 @@ export const Login = () => {
         <Flex direction="column" justify="center" align="center">
           <main>
             <h2>{i18next.t('login.welcomeMessage')}</h2>
-    <LoginForm/>
+            <LoginForm />
           </main>
         </Flex>
       </Box>
