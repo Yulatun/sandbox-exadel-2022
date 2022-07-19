@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { BellIcon, SettingsIcon } from '@chakra-ui/icons';
+import { BellIcon } from '@chakra-ui/icons';
 import {
   Flex,
   Heading,
@@ -15,6 +15,7 @@ import theme from '@/theme';
 import ColorModeToggle from '../ColorModeToggle';
 
 import { Navbar } from './Navbar';
+import { UserMenu } from './UserMenu';
 
 export const Header = () => {
   const [isAuth, setIsAuth] = useState(false);
@@ -48,21 +49,6 @@ export const Header = () => {
         <Flex>
           {isAuth ? (
             <Flex align="center">
-              <Flex direction="column" align="flex-end" mr="10px" p="5px 15px">
-                <Text>{'props.userName'}</Text>
-                <Text>{'props.userEmail'}</Text>
-              </Flex>
-              <IconButton
-                mr="10px"
-                w="50px"
-                h="50px"
-                borderRadius="50%"
-                colorScheme="gray"
-                variant="ghost"
-                aria-label={i18next.t('header.btn.settings')}
-                onClick={() => setIsAuth(false)}
-                icon={<SettingsIcon w="30px" h="30px" />}
-              />
               <IconButton
                 w="50px"
                 h="50px"
@@ -72,6 +58,11 @@ export const Header = () => {
                 aria-label={i18next.t('header.btn.notifications')}
                 icon={<BellIcon w="30px" h="30px" />}
               />
+              <Flex direction="column" align="flex-end" mr="10px" p="5px 15px">
+                <Text>{'props.userName'}</Text>
+                <Text>{'props.userEmail'}</Text>
+              </Flex>
+              <UserMenu setIsAuth={setIsAuth} />
             </Flex>
           ) : (
             <IconButton
