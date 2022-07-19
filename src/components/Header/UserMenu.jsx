@@ -50,8 +50,8 @@ export const UserMenu = () => {
         isOpen={isOpen}
         onSubmit={onClose}
         onClose={onClose}
-        title={i18next.t('modal.button.title')}
-        text={i18next.t('modal.button.text')}
+        title={i18next.t('modal.title')}
+        text={i18next.t('modal.text')}
       />
     </Menu>
   );
