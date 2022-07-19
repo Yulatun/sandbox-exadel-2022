@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { BellIcon, SettingsIcon } from '@chakra-ui/icons';
 import {
+  //Button,
   Flex,
   Heading,
   IconButton,
@@ -12,13 +13,14 @@ import i18next from 'i18next';
 import { LogoWalletIcon, UserIcon } from '@/assets';
 import theme from '@/theme';
 
+import { CustomModal } from '../../components/Modal/CustomModal';
 import ColorModeToggle from '../ColorModeToggle';
 
 import { Navbar } from './Navbar';
 
 export const Header = () => {
   const [isAuth, setIsAuth] = useState(false);
-
+  const [isDeleteModalOpen, setDeleteModalOpen] = useState(false);
   const headerBgThemeColor = useColorModeValue('purple.200', 'purple.700');
   const iconsThemeColor = useColorModeValue('purple.900', 'white');
 
@@ -88,6 +90,17 @@ export const Header = () => {
           )}
         </Flex>
       </Flex>
+
+      <CustomModal
+        isOpen={isDeleteModalOpen}
+        onSubmit={() => setDeleteModalOpen(false)}
+        onClose={() => setDeleteModalOpen(false)}
+        title={i18next.t('Account deletion')}
+        text={i18next.t(
+          'Are you sure you want to delete your account? All your data will be lost, you can download your report from the Statistics page before confirming'
+        )}
+      />
     </Flex>
   );
 };
+//<Button onClick={() => setDeleteModalOpen(true)}>Delete account</Button>
