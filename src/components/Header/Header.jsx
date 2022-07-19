@@ -19,8 +19,9 @@ import { Navbar } from './Navbar';
 export const Header = () => {
   const [isAuth, setIsAuth] = useState(false);
 
-  const headerBgThemeColor = useColorModeValue('purple.200', 'purple.700');
-  const iconsThemeColor = useColorModeValue('purple.900', 'white');
+  const headerBgThemeColor = useColorModeValue('orange.100', 'teal.900');
+  const iconsThemeColor = useColorModeValue('teal.900', 'orange.300');
+  const headertextcolor = useColorModeValue('teal.900', 'orange.300');
 
   return (
     <Flex
@@ -39,7 +40,7 @@ export const Header = () => {
       >
         <Flex align="center" justify="flex-start">
           <LogoWalletIcon width="45" height="45" color={iconsThemeColor} />
-          <Heading as="h1" mr="25px" ml="5px" size="lg">
+          <Heading as="h1" mr="25px" ml="5px" size="lg" color={headertextcolor}>
             BudgetTracker
           </Heading>
           <ColorModeToggle initialColorMode={theme.config.initialColorMode} />
@@ -62,6 +63,7 @@ export const Header = () => {
                 aria-label={i18next.t('header.btn.settings')}
                 onClick={() => setIsAuth(false)}
                 icon={<SettingsIcon w="30px" h="30px" />}
+                color={headertextcolor}
               />
               <IconButton
                 w="50px"
@@ -71,6 +73,7 @@ export const Header = () => {
                 variant="ghost"
                 aria-label={i18next.t('header.btn.notifications')}
                 icon={<BellIcon w="30px" h="30px" />}
+                color={headertextcolor}
               />
             </Flex>
           ) : (

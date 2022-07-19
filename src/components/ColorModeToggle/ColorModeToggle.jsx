@@ -1,10 +1,11 @@
 import { MoonIcon, SunIcon } from '@chakra-ui/icons';
-import { IconButton, useColorMode } from '@chakra-ui/react';
+import { IconButton, useColorMode, useColorModeValue } from '@chakra-ui/react';
 import i18next from 'i18next';
 
 const ColorModeToggle = () => {
   const { colorMode, toggleColorMode } = useColorMode();
 
+  const iconsThemeColor = useColorModeValue('teal.900', 'orange.300');
   return (
     <IconButton
       mr="20px"
@@ -12,8 +13,8 @@ const ColorModeToggle = () => {
       h="50px"
       border="2px"
       borderRadius="50%"
-      colorScheme="gray"
-      bgColor="whiteAlpha.300"
+      colorScheme={iconsThemeColor}
+      // bgColor="whiteAlpha.300"
       variant="outline"
       aria-label={
         colorMode === 'light'
@@ -28,6 +29,7 @@ const ColorModeToggle = () => {
         )
       }
       onClick={toggleColorMode}
+      color={iconsThemeColor}
     />
   );
 };
