@@ -13,6 +13,7 @@ import {
   Stack
 } from '@chakra-ui/react';
 import i18next from 'i18next';
+
 export const LoginForm = () => {
   const [show, setShow] = React.useState(false);
   const handleClick = () => setShow(!show);
@@ -33,10 +34,13 @@ export const LoginForm = () => {
   const isEmpty = !email || !password;
 
   const onSubmit = (data) => {
+    console.log(data);
     reset();
   };
 
-  const onError = (error) => {};
+  const onError = (error) => {
+    console.log(error);
+  };
 
   return (
     <Stack
@@ -48,7 +52,7 @@ export const LoginForm = () => {
     >
       <form onSubmit={handleSubmit(onSubmit, onError)}>
         <FormControl>
-          <FormLabel htmlFor="email">Email</FormLabel>
+          <FormLabel htmlFor="email">{i18next.t('Email')}</FormLabel>
           <Input
             id="email"
             type="email"
@@ -61,7 +65,7 @@ export const LoginForm = () => {
           )}
         </FormControl>
         <FormControl>
-          <FormLabel htmlFor="password">Password</FormLabel>
+          <FormLabel htmlFor="password">{i18next.t('Password')}</FormLabel>
           <InputGroup size="md">
             <Input
               id="password"
