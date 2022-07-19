@@ -3,22 +3,21 @@ import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 import { ViewIcon, ViewOffIcon } from '@chakra-ui/icons';
-import { LogoWalletIcon, UserIcon } from '@/assets';
 import {
   Button,
+  Circle,
   FormControl,
   FormHelperText,
   FormLabel,
+  Heading,
   Input,
   InputGroup,
   InputRightElement,
   Stack,
-  Flex,
-  Heading,
-  useColorModeValue,
-  Circle
-} from '@chakra-ui/react';
+  useColorModeValue} from '@chakra-ui/react';
 import i18next from 'i18next';
+
+import { LogoWalletIcon, UserIcon } from '@/assets';
 
 export const LoginForm = () => {
   const [show, setShow] = useState(false);
