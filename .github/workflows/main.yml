@@ -5,10 +5,7 @@ on:
   # Triggers the workflow on push or pull request events
   pull_request:
     branches:    
-      - '*'         # matches every branch that doesn't contain a '/'
-      - '*/*'       # matches every branch containing a single '/'
-      - '**'        # matches every branch
-      - '!main'     # excludes main
+      - 'main'      # matches branch 'main'
  
  # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
