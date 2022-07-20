@@ -15,7 +15,7 @@ import i18next from 'i18next';
 
 import { LogOutIcon } from '@/assets';
 
-import { DeleteComfirmationModal } from '../DeleteComfirmationModal/DeleteComfirmationModal';
+import { DeleteComfirmationModal } from '../DeleteComfirmationModal';
 
 export const UserMenu = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -50,8 +50,8 @@ export const UserMenu = () => {
         isOpen={isOpen}
         onSubmit={onClose}
         onClose={onClose}
-        title={i18next.t('modal.title')}
-        text={i18next.t('modal.text')}
+        title={i18next.t('modal.delete_account.title')}
+        text={i18next.t('modal.delete_account.text')}
       />
     </Menu>
   );
