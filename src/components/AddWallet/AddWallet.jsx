@@ -17,93 +17,97 @@ import {
   Switch,
   useDisclosure
 } from '@chakra-ui/react';
+import i18next from 'i18next';
 
 export const AddWallet = () => {
+  const { isOpen, onClose, onOpen } = useDisclosure();
+
   const {
     register,
     handleSubmit,
-    formState: { errors, isValid }
+    formState: { errors }
   } = useForm();
 
-  const onSubmit = function (data) {
-    console.log(data);
+  const onSubmit = () => {
+    onClose();
   };
-
-  const { isOpen, onClose, onOpen } = useDisclosure();
 
   return (
     <>
-      <Button onClick={onOpen}>Add new wallet</Button>
+      <Button onClick={onOpen}>{i18next.t('addWallet.title')}</Button>
 
-      {/* After coding is done - set isOpen={isOpen} in modal */}
       <Modal closeOnOverlayClick={false} isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
         <ModalContent>
-          <ModalHeader>Add new wallet</ModalHeader>
+          <ModalHeader>{i18next.t('addWallet.title')}</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
-            <form onSubmit={handleSubmit(onSubmit)}>
-              <FormControl isInvalid={errors.name} isRequired py="3">
-                <FormLabel htmlFor="name">Name</FormLabel>
-                <Input
-                  {...register('name', { required: 'This field is required' })}
-                  type="text"
-                  placeholder="My new wallet"
-                />
-                <FormErrorMessage>
-                  {errors.name && errors.name.message}
-                </FormErrorMessage>
-              </FormControl>
+            <FormControl isInvalid={errors.name} isRequired py="3">
+              <FormLabel htmlFor="name">
+                {i18next.t('addWallet.name')}
+              </FormLabel>
+              <Input
+                {...register('name')}
+                type="text"
+                placeholder={i18next.t('addWallet.name.placeholder')}
+              />
+              <FormErrorMessage>
+                {errors.name && errors.name.message}
+              </FormErrorMessage>
+            </FormControl>
 
-              <FormControl py="3">
-                <FormLabel htmlFor="amount">Amount</FormLabel>
-                <Input
-                  {...register('amount', { valueAsNumber: true })}
-                  type="number"
-                />
-              </FormControl>
+            <FormControl py="3">
+              <FormLabel htmlFor="amount">
+                {i18next.t('addWallet.amount')}
+              </FormLabel>
+              <Input
+                {...register('amount')}
+                type="number"
+                placeholder={i18next.t('addWallet.amount.placeholder')}
+              />
+            </FormControl>
 
-              <FormControl isInvalid={errors.currency} isRequired py="3">
-                <FormLabel htmlFor="currency">Currency</FormLabel>
-                <Select
-                  {...register('currency', {
-                    required: 'This field is required'
-                  })}
-                  placeholder="Select option"
-                >
-                  <option value="EUR">EUR</option>
-                  <option value="USD">USD</option>
-                  <option value="PLN">PLN</option>
-                </Select>
-                <FormErrorMessage>
-                  {errors.currency && errors.currency.message}
-                </FormErrorMessage>
-              </FormControl>
+            <FormControl isInvalid={errors.currency} isRequired py="3">
+              <FormLabel htmlFor="currency">
+                {i18next.t('addWallet.currency')}
+              </FormLabel>
+              <Select
+                {...register('currency')}
+                placeholder={i18next.t('addWallet.currency.placeholder')}
+              >
+                {/* we will change these fields in the future, so no need to make i18next placeholders here */}
+                <option value="EUR">EUR</option>
+                <option value="USD">USD</option>
+                <option value="PLN">PLN</option>
+              </Select>
+              <FormErrorMessage>
+                {errors.currency && errors.currency.message}
+              </FormErrorMessage>
+            </FormControl>
 
-              <FormControl py="3">
-                <FormLabel htmlFor="setDefault">Set as default</FormLabel>
-                <Switch {...register('setDefault')} size="lg" />
-                <FormHelperText>
-                  If you choose this wallet as default, settings of another
-                  default wallet will be changed and a new wallet will be
-                  default.
-                </FormHelperText>
-              </FormControl>
+            <FormControl py="3">
+              <FormLabel htmlFor="setDefault">
+                {i18next.t('addWallet.setDefault')}
+              </FormLabel>
+              <Switch {...register('setDefault')} size="lg" />
+              <FormHelperText>
+                {i18next.t('addWallet.setDefault.helperText')}
+              </FormHelperText>
+            </FormControl>
 
-              <ModalFooter>
-                <Button
-                  onClick={!isValid ? handleSubmit(onSubmit) : onClose}
-                  colorScheme="blue"
-                  mr={3}
-                  type="submit"
-                >
-                  Save
-                </Button>
-                <Button mr={-3} onClick={onClose}>
-                  Cancel
-                </Button>
-              </ModalFooter>
-            </form>
+            <ModalFooter>
+              <Button
+                onClick={handleSubmit(onSubmit)}
+                colorScheme="blue"
+                mr={3}
+                type="submit"
+              >
+                {i18next.t('button.submit')}
+              </Button>
+              <Button mr={-3} onClick={onClose}>
+                {i18next.t('button.cancel')}
+              </Button>
+            </ModalFooter>
           </ModalBody>
         </ModalContent>
       </Modal>
