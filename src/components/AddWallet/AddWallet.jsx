@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useForm } from 'react-hook-form';
 import {
   Button,
   FormControl,
@@ -19,79 +19,92 @@ import {
 } from '@chakra-ui/react';
 
 export const AddWallet = () => {
-  const [input, setInput] = useState('');
-  const handleInputChange = (e) => {
-    setInput(e.target.value);
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isValid }
+  } = useForm();
+
+  const onSubmit = function (data) {
+    console.log(data);
   };
-  const isError = input === '';
+
   const { isOpen, onClose, onOpen } = useDisclosure();
 
   return (
     <>
       <Button onClick={onOpen}>Add new wallet</Button>
 
+      {/* After coding is done - set isOpen={isOpen} in modal */}
       <Modal closeOnOverlayClick={false} isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
         <ModalContent>
           <ModalHeader>Add new wallet</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
-            <form
-              id="new-form"
-              onSubmit={(e) => {
-                e.preventDefault();
-              }}
-            >
-              <FormControl isRequired isInvalid={isError} py="3">
-                <FormLabel>Name</FormLabel>
-                <Input type="text" value={input} onChange={handleInputChange} />
-                {!isError ? (
-                  <FormHelperText>Enter the name of you wallet.</FormHelperText>
-                ) : (
-                  <FormErrorMessage>Name is required.</FormErrorMessage>
-                )}
+            <form onSubmit={handleSubmit(onSubmit)}>
+              <FormControl isInvalid={errors.name} isRequired py="3">
+                <FormLabel htmlFor="name">Name</FormLabel>
+                <Input
+                  {...register('name', { required: 'This field is required' })}
+                  type="text"
+                  placeholder="My new wallet"
+                />
+                <FormErrorMessage>
+                  {errors.name && errors.name.message}
+                </FormErrorMessage>
               </FormControl>
 
               <FormControl py="3">
-                <FormLabel>Amount</FormLabel>
-                <Input type="number" />
+                <FormLabel htmlFor="amount">Amount</FormLabel>
+                <Input
+                  {...register('amount', { valueAsNumber: true })}
+                  type="number"
+                />
               </FormControl>
 
-              <FormControl isRequired py="3">
-                <FormLabel>Currency</FormLabel>
-                <Select placeholder="Select option">
+              <FormControl isInvalid={errors.currency} isRequired py="3">
+                <FormLabel htmlFor="currency">Currency</FormLabel>
+                <Select
+                  {...register('currency', {
+                    required: 'This field is required'
+                  })}
+                  placeholder="Select option"
+                >
                   <option value="EUR">EUR</option>
                   <option value="USD">USD</option>
                   <option value="PLN">PLN</option>
                 </Select>
+                <FormErrorMessage>
+                  {errors.currency && errors.currency.message}
+                </FormErrorMessage>
               </FormControl>
 
               <FormControl py="3">
-                <FormLabel>Set as default</FormLabel>
-                <Switch size="lg" />
+                <FormLabel htmlFor="setDefault">Set as default</FormLabel>
+                <Switch {...register('setDefault')} size="lg" />
                 <FormHelperText>
                   If you choose this wallet as default, settings of another
                   default wallet will be changed and a new wallet will be
                   default.
                 </FormHelperText>
               </FormControl>
+
+              <ModalFooter>
+                <Button
+                  onClick={!isValid ? handleSubmit(onSubmit) : onClose}
+                  colorScheme="blue"
+                  mr={3}
+                  type="submit"
+                >
+                  Save
+                </Button>
+                <Button mr={-3} onClick={onClose}>
+                  Cancel
+                </Button>
+              </ModalFooter>
             </form>
           </ModalBody>
-
-          <ModalFooter>
-            <Button
-              type="submit"
-              form="new-form"
-              onClick={onClose}
-              colorScheme="blue"
-              mr={3}
-            >
-              Save
-            </Button>
-            <Button type="submit" form="new-form" onClick={onClose}>
-              Cancel
-            </Button>
-          </ModalFooter>
         </ModalContent>
       </Modal>
     </>
