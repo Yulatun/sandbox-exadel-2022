@@ -20,7 +20,12 @@ import { DeleteComfirmationModal } from '../DeleteComfirmationModal';
 
 export const UserMenu = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const iconsThemeColor = useColorModeValue('black', 'white');
+  const userMenuBgThemeColor = useColorModeValue('orange.50', 'teal.800');
+  const userMenutextcolor = useColorModeValue('teal.900', 'orange.100');
+  const userMenuItemHoverBgColor = useColorModeValue('orang.100', 'teal.600');
+  const iconsThemeColor = useColorModeValue('teal.900', 'orange.300');
+  const iconsMenuThemeColor = useColorModeValue('teal.900', 'orange.100');
+  const iconsHoverThemeColor = useColorModeValue('teal.900', 'orange.300');
 
   return (
     <Menu>
@@ -30,23 +35,50 @@ export const UserMenu = () => {
         transition="all 0.2s"
         borderRadius="50%"
         aria-label={i18next.t('header.userMenu')}
-        _hover={{ bg: 'gray.100' }}
-        _focus={{ boxShadow: 'outline' }}
+        color={iconsThemeColor}
+        outline="none"
+        _hover={{
+          border: '2px',
+          borderColor: iconsHoverThemeColor
+        }}
       >
         <SettingsIcon w="30px" h="30px" />
       </MenuButton>
-      <MenuList>
-        <MenuItem icon={<SettingsIcon w={5} h={5} />}>
+      <MenuList
+        bg={userMenuBgThemeColor}
+        color={userMenutextcolor}
+        fontWeight="bold"
+      >
+        <MenuItem
+          _hover={{
+            bg: userMenuItemHoverBgColor
+          }}
+          icon={<SettingsIcon w={5} h={5} color={iconsMenuThemeColor} />}
+        >
           {i18next.t('header.userMenu.settings')}
         </MenuItem>
-        <MenuItem icon={<QuestionOutlineIcon w={5} h={5} />}>
+        <MenuItem
+          _hover={{
+            bg: userMenuItemHoverBgColor
+          }}
+          icon={<QuestionOutlineIcon w={5} h={5} color={iconsMenuThemeColor} />}
+        >
           {i18next.t('header.userMenu.help')}
         </MenuItem>
-        <MenuItem onClick={onOpen} icon={<DeleteIcon w={5} h={5} />}>
+        <MenuItem
+          _hover={{
+            bg: userMenuItemHoverBgColor
+          }}
+          onClick={onOpen}
+          icon={<DeleteIcon w={5} h={5} color={iconsMenuThemeColor} />}
+        >
           {i18next.t('header.userMenu.delete')}
         </MenuItem>
         <MenuItem
-          icon={<LogOutIcon width={5} height={5} color={iconsThemeColor} />}
+          _hover={{
+            bg: userMenuItemHoverBgColor
+          }}
+          icon={<LogOutIcon width={5} height={5} color={iconsMenuThemeColor} />}
         >
           {i18next.t('header.userMenu.logout')}
         </MenuItem>

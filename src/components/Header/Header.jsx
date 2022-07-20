@@ -18,9 +18,10 @@ import { Navbar } from './Navbar';
 import { UserMenu } from './UserMenu';
 
 export const Header = () => {
-  const headerBgThemeColor = useColorModeValue('purple.200', 'purple.700');
-  const iconsThemeColor = useColorModeValue('purple.900', 'white');
-
+  const headerBgThemeColor = useColorModeValue('orange.100', 'teal.900');
+  const headerTextColor = useColorModeValue('teal.900', 'orange.300');
+  const iconsThemeColor = useColorModeValue('teal.900', 'orange.300');
+  const iconsHoverThemeColor = useColorModeValue('teal.900', 'orange.300');
   return (
     <Flex
       as="header"
@@ -38,7 +39,7 @@ export const Header = () => {
       >
         <Flex align="center" justify="flex-start">
           <LogoWalletIcon width="45" height="45" color={iconsThemeColor} />
-          <Heading as="h1" mr="25px" ml="5px" size="lg">
+          <Heading as="h1" mr="25px" ml="5px" size="lg" color={headerTextColor}>
             BudgetTracker
           </Heading>
           <ColorModeToggle initialColorMode={theme.config.initialColorMode} />
@@ -50,14 +51,24 @@ export const Header = () => {
               w="50px"
               h="50px"
               borderRadius="50%"
-              colorScheme="gray"
-              variant="ghost"
+              borderColor="transparent"
+              variant="outline"
+              color={iconsThemeColor}
+              _active={{ bg: 'transparent' }}
+              _hover={{
+                border: '2px',
+                borderColor: iconsHoverThemeColor
+              }}
               aria-label={i18next.t('header.btn.notifications')}
               icon={<BellIcon w="30px" h="30px" />}
             />
             <Flex direction="column" align="flex-end" mr="10px" p="5px 15px">
-              <Text>{'props.userName'}</Text>
-              <Text>{'props.userEmail'}</Text>
+              <Text color={headerTextColor} fontWeight="bold">
+                {'props.userName'}
+              </Text>
+              <Text color={headerTextColor} fontWeight="bold">
+                {'props.userEmail'}
+              </Text>
             </Flex>
             <UserMenu />
           </Flex>
