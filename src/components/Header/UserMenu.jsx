@@ -22,7 +22,7 @@ export const UserMenu = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const userMenuBgThemeColor = useColorModeValue('orange.50', 'teal.800');
   const userMenutextcolor = useColorModeValue('teal.900', 'orange.100');
-  const userMenuItemHoverBgColor = useColorModeValue('orang.100', 'teal.600');
+  const userMenuItemHoverBgColor = useColorModeValue('orange.100', 'teal.600');
   const iconsThemeColor = useColorModeValue('teal.900', 'orange.300');
   const iconsMenuThemeColor = useColorModeValue('teal.900', 'orange.100');
   const iconsHoverThemeColor = useColorModeValue('teal.900', 'orange.300');
