@@ -9,13 +9,17 @@ import {
   MenuButton,
   MenuItem,
   MenuList,
-  useColorModeValue
+  useColorModeValue,
+  useDisclosure
 } from '@chakra-ui/react';
 import i18next from 'i18next';
 
 import { LogOutIcon } from '@/assets';
 
+import { DeleteComfirmationModal } from '../DeleteComfirmationModal';
+
 export const UserMenu = () => {
+  const { isOpen, onOpen, onClose } = useDisclosure();
   const iconsThemeColor = useColorModeValue('black', 'white');
 
   return (
@@ -38,7 +42,7 @@ export const UserMenu = () => {
         <MenuItem icon={<QuestionOutlineIcon w={5} h={5} />}>
           {i18next.t('header.userMenu.help')}
         </MenuItem>
-        <MenuItem icon={<DeleteIcon w={5} h={5} />}>
+        <MenuItem onClick={onOpen} icon={<DeleteIcon w={5} h={5} />}>
           {i18next.t('header.userMenu.delete')}
         </MenuItem>
         <MenuItem
@@ -47,6 +51,13 @@ export const UserMenu = () => {
           {i18next.t('header.userMenu.logout')}
         </MenuItem>
       </MenuList>
+      <DeleteComfirmationModal
+        isOpen={isOpen}
+        onSubmit={onClose}
+        onClose={onClose}
+        title={i18next.t('modal.delete_account.title')}
+        text={i18next.t('modal.delete_account.text')}
+      />
     </Menu>
   );
 };
