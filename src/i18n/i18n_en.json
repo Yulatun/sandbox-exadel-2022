@@ -13,5 +13,11 @@
   "header.navigation.about": "About",
   "header.navigation.categories": "Categories",
   "header.userName": "{{props.userName}}",
-  "header.userEmail": "{{props.userEmail}}"
+  "header.userEmail": "{{props.userEmail}}",
+  "login.appName": "PortMoney",
+  "login.form.labelEmail": "Email",
+  "login.form.labelPassword": "Password",
+  "login.form.inputPlaceholderEmail": "Email",
+  "login.form.inputPlaceholderPassword": "Password",
+  "login.form.btn.login": "Log in"
 }

@@ -14,7 +14,8 @@ import {
   InputGroup,
   InputRightElement,
   Stack,
-  useColorModeValue} from '@chakra-ui/react';
+  useColorModeValue
+} from '@chakra-ui/react';
 import i18next from 'i18next';
 
 import { LogoWalletIcon, UserIcon } from '@/assets';
@@ -56,13 +57,11 @@ export const LoginForm = () => {
         justify="center"
         flexDirection="column"
         borderWidth="1px"
-        borderStyle="solid"
-        borderColor="black"
         background="white"
       >
         <LogoWalletIcon width="45" height="45" color={iconsThemeColor} />
-        <Heading as="h1" mr="5px" ml="5px" size="lg">
-          PortMoney
+        <Heading as="h1" mr="5px" ml="5px" size="lg" color={iconsThemeColor}>
+          {i18next.t('login.appName')}
         </Heading>
       </Circle>
 
@@ -74,11 +73,13 @@ export const LoginForm = () => {
         background="white"
       >
         <form onSubmit={handleSubmit(onSubmit)}>
-          <FormControl>
-            <FormLabel htmlFor="email">{i18next.t('Email *')}</FormLabel>
+          <FormControl isRequired>
+            <FormLabel htmlFor="email">
+              {i18next.t('login.form.labelEmail')}
+            </FormLabel>
             <Input
               id="email"
-              placeholder="Email"
+              placeholder={i18next.t('login.form.inputPlaceholderEmail')}
               type="email"
               {...register('email', { required: true })}
             />
@@ -88,12 +89,14 @@ export const LoginForm = () => {
               </FormHelperText>
             )}
           </FormControl>
-          <FormControl>
-            <FormLabel htmlFor="password">{i18next.t('Password *')}</FormLabel>
+          <FormControl isRequired>
+            <FormLabel htmlFor="password">
+              {i18next.t('login.form.labelPassword')}
+            </FormLabel>
             <InputGroup size="md">
               <Input
                 id="password"
-                placeholder="Password"
+                placeholder={i18next.t('login.form.inputPlaceholderPassword')}
                 type={show ? 'text' : 'password'}
                 {...register('password', { required: true })}
               />
@@ -122,7 +125,7 @@ export const LoginForm = () => {
             margin="0 auto"
             mt="20px"
           >
-            {i18next.t('Log in')}
+            {i18next.t('login.form.btn.login')}
           </Button>
         </form>
       </Stack>
