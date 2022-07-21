@@ -31,5 +31,10 @@
   "addWallet.currency": "Currency",
   "addWallet.currency.placeholder": "Select option",
   "addWallet.setDefault": "Set as default",
-  "addWallet.setDefault.helperText": "If you choose this wallet as default, settings of another default wallet will be changed and a new wallet will be default."
+  "addWallet.setDefault.helperText": "If you choose this wallet as default, settings of another default wallet will be changed and a new wallet will be default.",
+  "addWallet.validationErrorMessage.name": "Please, enter wallet name",
+  "addWallet.validationErrorMessage.tooShort": "Name must be longer than 1 symbols",
+  "addWallet.validationErrorMessage.tooLong": "Name must be no longer than 30 symbols",
+  "addWallet.validationErrorMessage.default": "Name is not valid",
+  "addWallet.validationErrorMessage.currency": "Please, choose currency"
 }

@@ -15,6 +15,7 @@ import {
   ModalOverlay,
   Select,
   Switch,
+  Text,
   useDisclosure
 } from '@chakra-ui/react';
 import i18next from 'i18next';
@@ -30,6 +31,38 @@ export const AddWallet = () => {
 
   const onSubmit = () => {
     onClose();
+  };
+
+  const RenderErrorMessageTextName = () => {
+    if (!errors.name) return null;
+    switch (errors.name?.type) {
+      case 'required':
+        return (
+          <Text> {i18next.t('addWallet.validationErrorMessage.name')} </Text>
+        );
+      case 'minLength':
+        return (
+          <Text>{i18next.t('addWallet.validationErrorMessage.tooShort')}</Text>
+        );
+      case 'maxLength':
+        return (
+          <Text>{i18next.t('addWallet.validationErrorMessage.tooLong')} </Text>
+        );
+      default:
+        return (
+          <Text>{i18next.t('addWallet.validationErrorMessage.default')}</Text>
+        );
+    }
+  };
+
+  const RenderErrorMessageTextCurrency = () => {
+    if (!errors.currency) return null;
+    switch (errors.currency?.type) {
+      case 'required':
+        return (
+          <Text>{i18next.t('addWallet.validationErrorMessage.currency')}</Text>
+        );
+    }
   };
 
   return (
@@ -57,12 +90,7 @@ export const AddWallet = () => {
                 placeholder={i18next.t('addWallet.name.placeholder')}
               />
               <FormErrorMessage>
-                {errors.name?.type === 'required' &&
-                  'Please, enter wallet name'}
-                {errors.name?.type === 'minLength' &&
-                  'Name must be longer than 1 symbols'}
-                {errors.name?.type === 'maxLength' &&
-                  'Name must be no longer than 30 symbols'}
+                {RenderErrorMessageTextName()}
               </FormErrorMessage>
             </FormControl>
 
@@ -91,8 +119,7 @@ export const AddWallet = () => {
                 <option value="PLN">PLN</option>
               </Select>
               <FormErrorMessage>
-                {errors.currency?.type === 'required' &&
-                  'Please, choose currency'}
+                {RenderErrorMessageTextCurrency()}
               </FormErrorMessage>
             </FormControl>
 
