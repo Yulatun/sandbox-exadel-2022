@@ -55,8 +55,8 @@ export const UserMenu = () => {
         isOpen={isOpen}
         onSubmit={onClose}
         onClose={onClose}
-        title={i18next.t('modal.delete_account.title')}
-        text={i18next.t('modal.delete_account.text')}
+        title={i18next.t('modal.deleteAccount.title')}
+        text={i18next.t('modal.deleteAccount.text')}
       />
     </Menu>
   );
