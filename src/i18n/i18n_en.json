@@ -35,5 +35,10 @@
   "modal.addWallet.currency": "Currency",
   "modal.addWallet.currency.placeholder": "Select option",
   "modal.addWallet.setDefault": "Set as default",
-  "modal.addWallet.setDefault.helperText": "If you choose this wallet as default, settings of another default wallet will be changed and a new wallet will be default."
+  "modal.addWallet.setDefault.helperText": "If you choose this wallet as default, settings of another default wallet will be changed and a new wallet will be default.",
+  "modal.addWallet.validationErrorMessage.name": "Please, enter wallet name",
+  "modal.addWallet.validationErrorMessage.tooShort": "Name must be longer than 1 symbols",
+  "modal.addWallet.validationErrorMessage.tooLong": "Name must be no longer than 30 symbols",
+  "modal.addWallet.validationErrorMessage.default": "Name is not valid",
+  "modal.addWallet.validationErrorMessage.currency": "Please, choose currency"
 }
