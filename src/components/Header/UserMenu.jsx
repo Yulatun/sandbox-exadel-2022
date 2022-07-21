@@ -21,7 +21,7 @@ import { DeleteComfirmationModal } from '../DeleteComfirmationModal';
 export const UserMenu = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const userMenuBgThemeColor = useColorModeValue('orange.50', 'teal.800');
-  const userMenutextcolor = useColorModeValue('teal.900', 'orange.100');
+  const userMenuTextColor = useColorModeValue('teal.900', 'orange.100');
   const userMenuItemHoverBgColor = useColorModeValue('orange.100', 'teal.600');
   const iconsThemeColor = useColorModeValue('teal.900', 'orange.300');
   const iconsMenuThemeColor = useColorModeValue('teal.900', 'orange.100');
@@ -32,7 +32,8 @@ export const UserMenu = () => {
       <MenuButton
         w="50px"
         h="50px"
-        transition="all 0.2s"
+        border="2px"
+        borderColor="transparent"
         borderRadius="50%"
         aria-label={i18next.t('header.userMenu')}
         color={iconsThemeColor}
@@ -46,7 +47,7 @@ export const UserMenu = () => {
       </MenuButton>
       <MenuList
         bg={userMenuBgThemeColor}
-        color={userMenutextcolor}
+        color={userMenuTextColor}
         fontWeight="bold"
       >
         <MenuItem

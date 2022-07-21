@@ -9,14 +9,14 @@ import {
 import i18next from 'i18next';
 
 export const Navbar = () => {
-  const navbartextcolor = useColorModeValue('teal.900', 'orange.300');
+  const navbarTextColor = useColorModeValue('teal.900', 'orange.300');
 
   return (
     <Breadcrumb
       spacing="30px"
       separator=""
       fontSize="xl"
-      color={navbartextcolor}
+      color={navbarTextColor}
       fontWeight="bold"
     >
       <BreadcrumbItem>

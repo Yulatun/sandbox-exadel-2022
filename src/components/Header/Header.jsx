@@ -40,7 +40,7 @@ export const Header = () => {
         <Flex align="center" justify="flex-start">
           <LogoWalletIcon width="45" height="45" color={iconsThemeColor} />
           <Heading as="h1" mr="25px" ml="5px" size="lg" color={headerTextColor}>
-            BudgetTracker
+            {i18next.t('header.logo.budgetTracker')}
           </Heading>
           <ColorModeToggle initialColorMode={theme.config.initialColorMode} />
         </Flex>
