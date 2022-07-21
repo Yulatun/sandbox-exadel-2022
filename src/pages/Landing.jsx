@@ -9,7 +9,7 @@ export const Landing = () => {
       <Text fontSize="4xl" align="center">
         {i18next.t('landing.welcomeMessage')}
       </Text>
-      <Box bg="bisque" w="100%" p={4} color="blueviolet">
+      <Box bg="orange.200" w="100%" p={4}>
         <Flex direction="column" justify="center" align="center" m="4">
           <AddWallet />
         </Flex>
@@ -22,18 +22,16 @@ export const Landing = () => {
           maxW="30%"
           m="0 auto"
         >
-          <Text fontSize="1xl">
-            Field with buttons and Input just to touch them
-          </Text>
+          <Text fontSize="1xl">{i18next.t('button.input.field')}</Text>
           <Flex justify="center" wrap="wrap" m="2">
             <Button m="2" variant="primary">
-              Primary
+              {i18next.t('button.primary')}
             </Button>
             <Button m="2" variant="secondary">
-              Secondary
+              {i18next.t('button.secondary')}
             </Button>
             <Button m="2" variant="danger">
-              Danger
+              {i18next.t('button.danger')}
             </Button>
           </Flex>
           <Input placeholder="Input" />
