@@ -46,13 +46,23 @@ export const AddWallet = () => {
               <FormLabel htmlFor="name">
                 {i18next.t('addWallet.name')}
               </FormLabel>
+
               <Input
-                {...register('name')}
+                {...register('name', {
+                  required: true,
+                  minLength: 2,
+                  maxLength: 30
+                })}
                 type="text"
                 placeholder={i18next.t('addWallet.name.placeholder')}
               />
               <FormErrorMessage>
-                {errors.name && errors.name.message}
+                {errors.name?.type === 'required' &&
+                  'Please, enter wallet name'}
+                {errors.name?.type === 'minLength' &&
+                  'Name must be longer than 1 symbols'}
+                {errors.name?.type === 'maxLength' &&
+                  'Name must be no longer than 30 symbols'}
               </FormErrorMessage>
             </FormControl>
 
@@ -72,7 +82,7 @@ export const AddWallet = () => {
                 {i18next.t('addWallet.currency')}
               </FormLabel>
               <Select
-                {...register('currency')}
+                {...register('currency', { required: true })}
                 placeholder={i18next.t('addWallet.currency.placeholder')}
               >
                 {/* we will change these fields in the future, so no need to make i18next placeholders here */}
@@ -81,7 +91,8 @@ export const AddWallet = () => {
                 <option value="PLN">PLN</option>
               </Select>
               <FormErrorMessage>
-                {errors.currency && errors.currency.message}
+                {errors.currency?.type === 'required' &&
+                  'Please, choose currency'}
               </FormErrorMessage>
             </FormControl>
 
