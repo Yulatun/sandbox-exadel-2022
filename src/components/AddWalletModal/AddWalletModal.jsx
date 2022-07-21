@@ -34,22 +34,22 @@ export const AddWalletModal = () => {
 
   return (
     <>
-      <Button onClick={onOpen}>{i18next.t('addWallet.title')}</Button>
+      <Button onClick={onOpen}>{i18next.t('modal.addWallet.title')}</Button>
 
       <Modal closeOnOverlayClick={false} isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
         <ModalContent>
-          <ModalHeader>{i18next.t('addWallet.title')}</ModalHeader>
+          <ModalHeader>{i18next.t('modal.addWallet.title')}</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
             <FormControl isInvalid={errors.name} isRequired py="3">
               <FormLabel htmlFor="name">
-                {i18next.t('addWallet.name')}
+                {i18next.t('modal.addWallet.name')}
               </FormLabel>
               <Input
                 {...register('name')}
                 type="text"
-                placeholder={i18next.t('addWallet.name.placeholder')}
+                placeholder={i18next.t('modal.addWallet.name.placeholder')}
               />
               <FormErrorMessage>
                 {errors.name && errors.name.message}
@@ -58,22 +58,22 @@ export const AddWalletModal = () => {
 
             <FormControl py="3">
               <FormLabel htmlFor="amount">
-                {i18next.t('addWallet.amount')}
+                {i18next.t('modal.addWallet.amount')}
               </FormLabel>
               <Input
                 {...register('amount')}
                 type="number"
-                placeholder={i18next.t('addWallet.amount.placeholder')}
+                placeholder={i18next.t('modal.addWallet.amount.placeholder')}
               />
             </FormControl>
 
             <FormControl isInvalid={errors.currency} isRequired py="3">
               <FormLabel htmlFor="currency">
-                {i18next.t('addWallet.currency')}
+                {i18next.t('modal.addWallet.currency')}
               </FormLabel>
               <Select
                 {...register('currency')}
-                placeholder={i18next.t('addWallet.currency.placeholder')}
+                placeholder={i18next.t('modal.addWallet.currency.placeholder')}
               >
                 {/* we will change these fields in the future, so no need to make i18next placeholders here */}
                 <option value="EUR">EUR</option>
@@ -87,11 +87,11 @@ export const AddWalletModal = () => {
 
             <FormControl py="3">
               <FormLabel htmlFor="setDefault">
-                {i18next.t('addWallet.setDefault')}
+                {i18next.t('modal.addWallet.setDefault')}
               </FormLabel>
               <Switch {...register('setDefault')} size="lg" />
               <FormHelperText>
-                {i18next.t('addWallet.setDefault.helperText')}
+                {i18next.t('modal.addWallet.setDefault.helperText')}
               </FormHelperText>
             </FormControl>
 

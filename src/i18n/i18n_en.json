@@ -27,13 +27,13 @@
   "modal.deleteAccount.button.no": "No",
   "modal.deleteAccount.title": "Account deletion",
   "modal.deleteAccount.text": "Are you sure you want to delete your account? All your data will be lost, you can download your report from the Statistics page before confirming",
-  "addWallet.title": "Add new wallet",
-  "addWallet.name": "Name",
-  "addWallet.name.placeholder": "My new wallet",
-  "addWallet.amount": "Amount",
-  "addWallet.amount.placeholder": "123",
-  "addWallet.currency": "Currency",
-  "addWallet.currency.placeholder": "Select option",
-  "addWallet.setDefault": "Set as default",
-  "addWallet.setDefault.helperText": "If you choose this wallet as default, settings of another default wallet will be changed and a new wallet will be default."
+  "modal.addWallet.title": "Add new wallet",
+  "modal.addWallet.name": "Name",
+  "modal.addWallet.name.placeholder": "My new wallet",
+  "modal.addWallet.amount": "Amount",
+  "modal.addWallet.amount.placeholder": "123",
+  "modal.addWallet.currency": "Currency",
+  "modal.addWallet.currency.placeholder": "Select option",
+  "modal.addWallet.setDefault": "Set as default",
+  "modal.addWallet.setDefault.helperText": "If you choose this wallet as default, settings of another default wallet will be changed and a new wallet will be default."
 }
