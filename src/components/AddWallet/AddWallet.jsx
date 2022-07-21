@@ -15,6 +15,7 @@ import {
   ModalOverlay,
   Select,
   Switch,
+  Text,
   useDisclosure
 } from '@chakra-ui/react';
 import i18next from 'i18next';
@@ -46,13 +47,28 @@ export const AddWallet = () => {
               <FormLabel htmlFor="name">
                 {i18next.t('addWallet.name')}
               </FormLabel>
+
               <Input
-                {...register('name')}
+                {...register('name', {
+                  required: i18next.t('addWallet.validationErrorMessage.name'),
+                  minLength: {
+                    value: 2,
+                    message: i18next.t(
+                      'addWallet.validationErrorMessage.tooShort'
+                    )
+                  },
+                  maxLength: {
+                    value: 30,
+                    message: i18next.t(
+                      'addWallet.validationErrorMessage.tooLong'
+                    )
+                  }
+                })}
                 type="text"
                 placeholder={i18next.t('addWallet.name.placeholder')}
               />
               <FormErrorMessage>
-                {errors.name && errors.name.message}
+                <Text>{errors.name && errors.name.message}</Text>
               </FormErrorMessage>
             </FormControl>
 
@@ -72,7 +88,11 @@ export const AddWallet = () => {
                 {i18next.t('addWallet.currency')}
               </FormLabel>
               <Select
-                {...register('currency')}
+                {...register('currency', {
+                  required: i18next.t(
+                    'addWallet.validationErrorMessage.currency'
+                  )
+                })}
                 placeholder={i18next.t('addWallet.currency.placeholder')}
               >
                 {/* we will change these fields in the future, so no need to make i18next placeholders here */}
@@ -81,7 +101,7 @@ export const AddWallet = () => {
                 <option value="PLN">PLN</option>
               </Select>
               <FormErrorMessage>
-                {errors.currency && errors.currency.message}
+                <Text>{errors.currency && errors.currency.message}</Text>
               </FormErrorMessage>
             </FormControl>
 
