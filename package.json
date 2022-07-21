@@ -22,6 +22,7 @@
     "axios": "^0.27.2",
     "framer-motion": "^6.4.3",
     "i18next": "^21.8.13",
+    "moment": "^2.29.4",
     "react": "^18.0.0",
     "react-dom": "^18.0.0",
     "react-hook-form": "^7.33.1",
