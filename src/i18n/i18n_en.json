@@ -4,7 +4,6 @@
   "landing.welcomeMessage": "Welcome to the landing page!",
   "login.welcomeMessage": "Welcome to the login page!",
   "fallback.message": "Page does not exist",
-  "button.add": "Add",
   "button.submit": "Submit",
   "button.cancel": "Cancel",
   "button.addIncome": "+ Add Income",

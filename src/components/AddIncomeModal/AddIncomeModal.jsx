@@ -114,12 +114,10 @@ export const AddIncomeModal = ({ isOpen, onClose, onSubmit }) => {
         </ModalBody>
 
         <ModalFooter>
-          <Button mr="20px" onClick={onClose}>
-            {i18next.t('button.cancel')}
+          <Button mr="20px" type="submit" onClick={handleSubmit(onSubmit)}>
+            {i18next.t('button.submit')}
           </Button>
-          <Button type="submit" onClick={handleSubmit(onSubmit)}>
-            {i18next.t('button.add')}
-          </Button>
+          <Button onClick={onClose}>{i18next.t('button.cancel')}</Button>
         </ModalFooter>
       </ModalContent>
     </Modal>
