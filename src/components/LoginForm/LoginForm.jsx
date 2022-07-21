@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 import { ViewIcon, ViewOffIcon } from '@chakra-ui/icons';
@@ -13,6 +13,7 @@ import {
   InputGroup,
   InputRightElement,
   Stack,
+  useBoolean,
   useColorModeValue
 } from '@chakra-ui/react';
 import i18next from 'i18next';
@@ -20,8 +21,8 @@ import i18next from 'i18next';
 import { LogoWalletIcon } from '@/assets';
 
 export const LoginForm = () => {
-  const [show, setShow] = useState(false);
-  const handleClick = () => setShow(!show);
+  const [show, setShow] = useBoolean();
+
   const navigate = useNavigate();
   const iconsThemeColor = useColorModeValue('purple.900', 'white');
 
@@ -100,7 +101,7 @@ export const LoginForm = () => {
                 {...register('password', { required: true })}
               />
               <InputRightElement width="4.5rem">
-                <Button h="1.75rem" size="sm" onClick={handleClick}>
+                <Button h="1.75rem" size="sm" onClick={setShow.toggle}>
                   {show ? (
                     <ViewIcon w={5} h={5} />
                   ) : (
