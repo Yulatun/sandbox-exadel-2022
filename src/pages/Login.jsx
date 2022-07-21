@@ -1,16 +1,23 @@
-import { Box, Flex } from '@chakra-ui/react';
-import i18next from 'i18next';
+import { Flex } from '@chakra-ui/react';
+
+import { LoginForm } from '@/components';
 
 export const Login = () => {
   return (
     <>
-      <Box bg="bisque" w="100%" p={4} color="blueviolet">
-        <Flex direction="column" justify="center" align="center">
-          <main>
-            <h2>{i18next.t('login.welcomeMessage')}</h2>
-          </main>
-        </Flex>
-      </Box>
+      <Flex
+        bg="bisque"
+        w="100%"
+        justify="center"
+        p="100px"
+        color="blueviolet"
+        alignItems="center"
+        flexDirection="column"
+      >
+        <main>
+          <LoginForm />
+        </main>
+      </Flex>
     </>
   );
 };
