@@ -4,6 +4,8 @@
   "landing.welcomeMessage": "Welcome to the landing page!",
   "login.welcomeMessage": "Welcome to the login page!",
   "fallback.message": "Page does not exist",
+  "button.submit": "Submit",
+  "button.cancel": "Cancel",
   "header.btn.theme.light": "Light theme button",
   "header.btn.theme.dark": "Dark theme button",
   "header.btn.login": "LogIn button",
@@ -18,4 +20,23 @@
   "login.form.email": "Email",
   "login.form.password": "Password",
   "login.form.btn.login": "Log in"
+  "header.userMenu": "User menu",
+  "header.userMenu.settings": "Settings",
+  "header.userMenu.help": "Help",
+  "header.userMenu.delete": "Delete account",
+  "header.userMenu.logout": "Log out",
+  "modal.delete_account.button.yes": "Yes",
+  "modal.delete_account.button.no": "No",
+  "modal.delete_account.title": "Account deletion",
+  "modal.delete_account.text": "Are you sure you want to delete your account? All your data will be lost, you can download your report from the Statistics page before confirming",
+  "addWallet.title": "Add new wallet",
+  "addWallet.name": "Name",
+  "addWallet.name.placeholder": "My new wallet",
+  "addWallet.amount": "Amount",
+  "addWallet.amount.placeholder": "123",
+  "addWallet.currency": "Currency",
+  "addWallet.currency.placeholder": "Select option",
+  "addWallet.setDefault": "Set as default",
+  "addWallet.setDefault.helperText": "If you choose this wallet as default, settings of another default wallet will be changed and a new wallet will be default."
+
 }
