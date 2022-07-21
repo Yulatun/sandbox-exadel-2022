@@ -1,6 +1,6 @@
 import { extendTheme } from '@chakra-ui/react';
 
-import { Button, Input } from './components';
+import { Button, Form, Input } from './components';
 
 const config = {
   initialColorMode: 'system',
@@ -10,7 +10,8 @@ const config = {
 export const theme = extendTheme({
   components: {
     Button,
-    Input
+    Input,
+    Form
   },
   config
 });

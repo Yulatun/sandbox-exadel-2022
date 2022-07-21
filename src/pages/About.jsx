@@ -2,6 +2,8 @@ import {
   Box,
   Button,
   Flex,
+  FormControl,
+  FormLabel,
   Input,
   Text,
   useColorModeValue
@@ -41,7 +43,10 @@ export const About = () => {
               {i18next.t('button.danger')}
             </Button>
           </Flex>
-          <Input placeholder="Input" />
+          <FormControl variant="floating">
+            <Input placeholder=" " />
+            <FormLabel>Input</FormLabel>
+          </FormControl>
         </Flex>
       </Box>
     </>
