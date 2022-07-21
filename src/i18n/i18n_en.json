@@ -14,12 +14,10 @@
   "header.navigation.home": "Home",
   "header.navigation.about": "About",
   "header.navigation.categories": "Categories",
-  "header.userName": "{{props.userName}}",
-  "header.userEmail": "{{props.userEmail}}",
   "login.appName": "PortMoney",
   "login.form.email": "Email",
   "login.form.password": "Password",
-  "login.form.btn.login": "Log in"
+  "login.form.btn.login": "Log in",
   "header.userMenu": "User menu",
   "header.userMenu.settings": "Settings",
   "header.userMenu.help": "Help",
@@ -38,5 +36,4 @@
   "addWallet.currency.placeholder": "Select option",
   "addWallet.setDefault": "Set as default",
   "addWallet.setDefault.helperText": "If you choose this wallet as default, settings of another default wallet will be changed and a new wallet will be default."
-
 }
