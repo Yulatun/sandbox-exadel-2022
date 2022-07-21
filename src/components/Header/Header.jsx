@@ -39,8 +39,14 @@ export const Header = () => {
       >
         <Flex align="center" justify="flex-start">
           <LogoWalletIcon width="45" height="45" color={iconsThemeColor} />
-          <Heading as="h1" mr="25px" ml="5px" size="lg" color={headerTextColor}>
-            {i18next.t('header.logo.budgetTracker')}
+          <Heading
+            as="h1"
+            mr="25px"
+            ml="20px"
+            size="lg"
+            color={headerTextColor}
+          >
+            {i18next.t('login.appName')}
           </Heading>
           <ColorModeToggle initialColorMode={theme.config.initialColorMode} />
         </Flex>
