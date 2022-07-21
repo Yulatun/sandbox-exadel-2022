@@ -33,38 +33,6 @@ export const AddWallet = () => {
     onClose();
   };
 
-  const RenderErrorMessageTextName = () => {
-    if (!errors.name) return null;
-    switch (errors.name?.type) {
-      case 'required':
-        return (
-          <Text> {i18next.t('addWallet.validationErrorMessage.name')} </Text>
-        );
-      case 'minLength':
-        return (
-          <Text>{i18next.t('addWallet.validationErrorMessage.tooShort')}</Text>
-        );
-      case 'maxLength':
-        return (
-          <Text>{i18next.t('addWallet.validationErrorMessage.tooLong')} </Text>
-        );
-      default:
-        return (
-          <Text>{i18next.t('addWallet.validationErrorMessage.default')}</Text>
-        );
-    }
-  };
-
-  const RenderErrorMessageTextCurrency = () => {
-    if (!errors.currency) return null;
-    switch (errors.currency?.type) {
-      case 'required':
-        return (
-          <Text>{i18next.t('addWallet.validationErrorMessage.currency')}</Text>
-        );
-    }
-  };
-
   return (
     <>
       <Button onClick={onOpen}>{i18next.t('addWallet.title')}</Button>
@@ -82,15 +50,25 @@ export const AddWallet = () => {
 
               <Input
                 {...register('name', {
-                  required: true,
-                  minLength: 2,
-                  maxLength: 30
+                  required: i18next.t('addWallet.validationErrorMessage.name'),
+                  minLength: {
+                    value: 2,
+                    message: i18next.t(
+                      'addWallet.validationErrorMessage.tooShort'
+                    )
+                  },
+                  maxLength: {
+                    value: 30,
+                    message: i18next.t(
+                      'addWallet.validationErrorMessage.tooLong'
+                    )
+                  }
                 })}
                 type="text"
                 placeholder={i18next.t('addWallet.name.placeholder')}
               />
               <FormErrorMessage>
-                {RenderErrorMessageTextName()}
+                <Text>{errors.name && errors.name.message}</Text>
               </FormErrorMessage>
             </FormControl>
 
@@ -110,7 +88,11 @@ export const AddWallet = () => {
                 {i18next.t('addWallet.currency')}
               </FormLabel>
               <Select
-                {...register('currency', { required: true })}
+                {...register('currency', {
+                  required: i18next.t(
+                    'addWallet.validationErrorMessage.currency'
+                  )
+                })}
                 placeholder={i18next.t('addWallet.currency.placeholder')}
               >
                 {/* we will change these fields in the future, so no need to make i18next placeholders here */}
@@ -119,7 +101,7 @@ export const AddWallet = () => {
                 <option value="PLN">PLN</option>
               </Select>
               <FormErrorMessage>
-                {RenderErrorMessageTextCurrency()}
+                <Text>{errors.currency && errors.currency.message}</Text>
               </FormErrorMessage>
             </FormControl>
 
