@@ -10,7 +10,7 @@ import {
 import i18next from 'i18next';
 
 import { LogoWalletIcon } from '@/assets';
-import theme from '@/theme';
+import { theme } from '@/theme';
 
 import ColorModeToggle from '../ColorModeToggle';
 
