@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
@@ -18,12 +17,12 @@ import {
 } from '@chakra-ui/react';
 import i18next from 'i18next';
 
-import { LogoWalletIcon, UserIcon } from '@/assets';
+import { LogoWalletIcon } from '@/assets';
 
 export const LoginForm = () => {
   const [show, setShow] = useState(false);
   const handleClick = () => setShow(!show);
-  let navigate = useNavigate();
+  const navigate = useNavigate();
   const iconsThemeColor = useColorModeValue('purple.900', 'white');
 
   const {
@@ -41,7 +40,7 @@ export const LoginForm = () => {
   const password = watch('password');
   const isEmpty = !email || !password;
 
-  const onSubmit = (data) => {
+  const onSubmit = () => {
     reset();
     navigate('/', { replace: true });
   };
@@ -75,11 +74,11 @@ export const LoginForm = () => {
         <form onSubmit={handleSubmit(onSubmit)}>
           <FormControl isRequired>
             <FormLabel htmlFor="email">
-              {i18next.t('login.form.labelEmail')}
+              {i18next.t('login.form.email')}
             </FormLabel>
             <Input
               id="email"
-              placeholder={i18next.t('login.form.inputPlaceholderEmail')}
+              placeholder={i18next.t('login.form.email')}
               type="email"
               {...register('email', { required: true })}
             />
@@ -91,12 +90,12 @@ export const LoginForm = () => {
           </FormControl>
           <FormControl isRequired>
             <FormLabel htmlFor="password">
-              {i18next.t('login.form.labelPassword')}
+              {i18next.t('login.form.password')}
             </FormLabel>
             <InputGroup size="md">
               <Input
                 id="password"
-                placeholder={i18next.t('login.form.inputPlaceholderPassword')}
+                placeholder={i18next.t('login.form.password')}
                 type={show ? 'text' : 'password'}
                 {...register('password', { required: true })}
               />

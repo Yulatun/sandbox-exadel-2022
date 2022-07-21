@@ -15,9 +15,7 @@
   "header.userName": "{{props.userName}}",
   "header.userEmail": "{{props.userEmail}}",
   "login.appName": "PortMoney",
-  "login.form.labelEmail": "Email",
-  "login.form.labelPassword": "Password",
-  "login.form.inputPlaceholderEmail": "Email",
-  "login.form.inputPlaceholderPassword": "Password",
+  "login.form.email": "Email",
+  "login.form.password": "Password",
   "login.form.btn.login": "Log in"
 }
