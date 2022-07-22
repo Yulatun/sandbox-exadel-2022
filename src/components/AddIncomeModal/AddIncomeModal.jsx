@@ -20,13 +20,12 @@ import {
   Textarea
 } from '@chakra-ui/react';
 import i18next from 'i18next';
-import moment from 'moment';
 
 export const AddIncomeModal = ({ isOpen, onClose, onSubmit }) => {
   const { register, handleSubmit } = useForm({
     defaultValues: {
       wallet: 'wallet-1-default',
-      date: moment(new Date()).format('YYYY-MM-DD'),
+      date: new Date().toISOString().split('T')[0],
       isRecurring: 'recurring-no'
     }
   });
