@@ -6,7 +6,7 @@ import './i18n';
 
 import { ErrorBoundary } from './components';
 import { App } from './pages';
-import theme from './theme';
+import { theme } from './theme';
 
 import './index.css';
 
