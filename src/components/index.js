@@ -1,6 +1,8 @@
 export { AddExpenseModal } from './AddExpenseModal';
-export { AddWallet } from './AddWallet';
-export { DeleteComfirmationModal } from './DeleteComfirmationModal';
+export { AddIncomeModal } from './AddIncomeModal';
+export { AddWalletModal } from './AddWalletModal';
+export { DeleteConfirmationModal } from './DeleteConfirmationModal';
 export { ErrorBoundary } from './ErrorBoundary';
 export { Footer } from './Footer';
 export { Header } from './Header';
+export { LoginForm } from './LoginForm';

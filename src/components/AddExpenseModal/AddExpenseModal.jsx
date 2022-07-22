@@ -26,17 +26,16 @@ export const AddExpenseModal = ({ isOpen, onClose, onSubmit }) => {
     defaultValues: {
       wallet: 'wallet-1-default',
       payer: 'payer-default',
-      date: new Date().toISOString().split('T')[0],
-      isRecurring: 'recurring-no-default'
+      date: new Date().toISOString().split('T')[0]
     }
   });
 
   return (
     <Modal
+      size="3xl"
       closeOnOverlayClick={false}
       isOpen={isOpen}
       onClose={onClose}
-      size="3xl"
     >
       <ModalOverlay />
       <ModalContent>
@@ -132,3 +131,5 @@ export const AddExpenseModal = ({ isOpen, onClose, onSubmit }) => {
 };
 
 export default AddExpenseModal;
+
+/* const { isIncomeOpen, onIncomeOpen, onIncomeClose } = useDisclosure() */
