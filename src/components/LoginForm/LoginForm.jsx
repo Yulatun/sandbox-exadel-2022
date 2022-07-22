@@ -81,7 +81,15 @@ export const LoginForm = () => {
               id="email"
               placeholder={i18next.t('login.form.email')}
               type="email"
-              {...register('email', { required: true })}
+              {...register('email', {
+                required: 'Email is required',
+                pattern: {
+                  value: /^\w+([\\.-]?\w+)*@\w+([\\.-]?\w+)*(\.\w{2,3})+$/,
+                  message: 'Wrong email format'
+                },
+                max: { value: 254, message: 'Cannot exceed 254 characters' }
+              })}
+              // {...register('email', { required: true })}
             />
             {errors && errors.email && (
               <FormHelperText color="red">
@@ -98,7 +106,7 @@ export const LoginForm = () => {
                 id="password"
                 placeholder={i18next.t('login.form.password')}
                 type={show ? 'text' : 'password'}
-                {...register('password', { required: true })}
+                {...register('password', { required: 'Password is required' })}
               />
               <InputRightElement width="4.5rem">
                 <Button h="1.75rem" size="sm" onClick={setShow.toggle}>
