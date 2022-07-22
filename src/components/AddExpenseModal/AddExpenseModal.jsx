@@ -99,9 +99,9 @@ export const AddExpenseModal = ({ isOpen, onClose, onSubmit }) => {
               {...register('payer')}
             >
               <option value="payer-default">Me</option>
-              <option value="payer-2">add new payer</option>
-              <option value="payer-3">add new payer</option>
-              <option value="payer-4">add new payer</option>
+              <option value="payer-2">New payer</option>
+              <option value="payer-3">New payer</option>
+              <option value="payer-4">New payer</option>
             </Select>
           </FormControl>
 
