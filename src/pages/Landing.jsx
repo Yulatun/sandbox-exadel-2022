@@ -10,8 +10,8 @@ import {
 
 export const Landing = () => {
   const expenseModal = useDisclosure();
-  //const modal2 = useDisclosure()
-  const { isOpen, onOpen, onClose } = useDisclosure();
+  const incomeModal = useDisclosure();
+
   return (
     <>
       <Text fontSize="4xl" align="center">
@@ -28,13 +28,13 @@ export const Landing = () => {
               onSubmit={expenseModal.onClose}
               onClose={expenseModal.onClose}
             />
-            <Button mb="20px" onClick={onOpen}>
+            <Button mb="20px" onClick={incomeModal.onOpen}>
               {i18next.t('button.addIncome')}
             </Button>
             <AddIncomeModal
-              isOpen={isOpen}
-              onSubmit={onClose}
-              onClose={onClose}
+              isOpen={incomeModal.isOpen}
+              onSubmit={incomeModal.onClose}
+              onClose={incomeModal.onClose}
             />
           </Flex>
           <AddWalletModal />

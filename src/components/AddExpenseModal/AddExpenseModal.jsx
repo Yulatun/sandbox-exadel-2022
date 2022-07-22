@@ -131,5 +131,3 @@ export const AddExpenseModal = ({ isOpen, onClose, onSubmit }) => {
 };
 
 export default AddExpenseModal;
-
-/* const { isIncomeOpen, onIncomeOpen, onIncomeClose } = useDisclosure() */
