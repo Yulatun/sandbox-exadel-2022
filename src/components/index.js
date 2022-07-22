@@ -1,3 +1,4 @@
+export { AddIncomeModal } from './AddIncomeModal';
 export { AddWalletModal } from './AddWalletModal';
 export { DeleteConfirmationModal } from './DeleteConfirmationModal';
 export { ErrorBoundary } from './ErrorBoundary';
