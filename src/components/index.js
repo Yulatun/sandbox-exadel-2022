@@ -1,3 +1,4 @@
+export { AddExpenseModal } from './AddExpenseModal';
 export { AddIncomeModal } from './AddIncomeModal';
 export { AddWalletModal } from './AddWalletModal';
 export { DeleteConfirmationModal } from './DeleteConfirmationModal';
