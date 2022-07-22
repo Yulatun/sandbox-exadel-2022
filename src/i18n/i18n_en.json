@@ -44,5 +44,6 @@
   "addWallet.validationErrorMessage.tooShort": "Name must be longer than 1 symbols",
   "addWallet.validationErrorMessage.tooLong": "Name must be no longer than 30 symbols",
   "addWallet.validationErrorMessage.default": "Name is not valid",
-  "addWallet.validationErrorMessage.currency": "Please, choose currency"
+  "addWallet.validationErrorMessage.currency": "Please, choose currency",
+  "addWallet.validationErrorMessage.amount": "you can't have negative balance"
 }

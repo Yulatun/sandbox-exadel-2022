@@ -72,15 +72,22 @@ export const AddWallet = () => {
               </FormErrorMessage>
             </FormControl>
 
-            <FormControl py="3">
+            <FormControl isInvalid={errors.amount} py="3">
               <FormLabel htmlFor="amount">
                 {i18next.t('addWallet.amount')}
               </FormLabel>
               <Input
-                {...register('amount')}
+                {...register('amount', {
+                  validate: (amount) =>
+                    amount >= 0 ||
+                    i18next.t('addWallet.validationErrorMessage.amount')
+                })}
                 type="number"
                 placeholder={i18next.t('addWallet.amount.placeholder')}
               />
+              <FormErrorMessage>
+                <Text>{errors.amount && errors.amount.message}</Text>
+              </FormErrorMessage>
             </FormControl>
 
             <FormControl isInvalid={errors.currency} isRequired py="3">
