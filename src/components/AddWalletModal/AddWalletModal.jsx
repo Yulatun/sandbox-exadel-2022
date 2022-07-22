@@ -16,12 +16,14 @@ import {
   Select,
   Switch,
   Text,
+  useColorModeValue,
   useDisclosure
 } from '@chakra-ui/react';
 import i18next from 'i18next';
 
 export const AddWalletModal = () => {
   const { isOpen, onClose, onOpen } = useDisclosure();
+  const bgModal = useColorModeValue('orange.50', 'teal.600');
 
   const {
     register,
@@ -39,15 +41,16 @@ export const AddWalletModal = () => {
 
       <Modal closeOnOverlayClick={false} isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
-        <ModalContent>
+        <ModalContent bg={bgModal}>
           <ModalHeader>{i18next.t('modal.addWallet.title')}</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
-            <FormControl isInvalid={errors.name} isRequired py="3">
-              <FormLabel htmlFor="name">
-                {i18next.t('modal.addWallet.name')}
-              </FormLabel>
-
+            <FormControl
+              variant="floating"
+              isInvalid={errors.name}
+              isRequired
+              mb="7"
+            >
               <Input
                 {...register('name', {
                   required: i18next.t(
@@ -67,22 +70,21 @@ export const AddWalletModal = () => {
                   }
                 })}
                 type="text"
-                placeholder={i18next.t('modal.addWallet.name.placeholder')}
+                placeholder=" "
               />
-              <FormErrorMessage>
+              <FormLabel htmlFor="name">
+                {i18next.t('modal.addWallet.name')}
+              </FormLabel>
+              <FormErrorMessage pos="absolute" m="0">
                 <Text>{errors.name && errors.name.message}</Text>
               </FormErrorMessage>
             </FormControl>
 
-            <FormControl py="3">
+            <FormControl variant="floating">
+              <Input {...register('amount')} type="number" placeholder=" " />
               <FormLabel htmlFor="amount">
                 {i18next.t('modal.addWallet.amount')}
               </FormLabel>
-              <Input
-                {...register('amount')}
-                type="number"
-                placeholder={i18next.t('modal.addWallet.amount.placeholder')}
-              />
             </FormControl>
 
             <FormControl isInvalid={errors.currency} isRequired py="3">
@@ -102,7 +104,7 @@ export const AddWalletModal = () => {
                 <option value="USD">USD</option>
                 <option value="PLN">PLN</option>
               </Select>
-              <FormErrorMessage>
+              <FormErrorMessage pos="absolute" m="0">
                 <Text>{errors.currency && errors.currency.message}</Text>
               </FormErrorMessage>
             </FormControl>
@@ -126,7 +128,7 @@ export const AddWalletModal = () => {
               >
                 {i18next.t('button.submit')}
               </Button>
-              <Button mr={-3} onClick={onClose}>
+              <Button variant="danger" mr={-3} onClick={onClose}>
                 {i18next.t('button.cancel')}
               </Button>
             </ModalFooter>

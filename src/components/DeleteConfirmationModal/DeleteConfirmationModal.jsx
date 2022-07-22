@@ -9,7 +9,8 @@ import {
   ModalHeader,
   ModalOverlay,
   Stack,
-  Text
+  Text,
+  useColorModeValue
 } from '@chakra-ui/react';
 import i18next from 'i18next';
 
@@ -20,6 +21,7 @@ export const DeleteConfirmationModal = ({
   title,
   text
 }) => {
+  const bgModal = useColorModeValue('orange.50', 'teal.600');
   return (
     <Modal
       closeOnOverlayClick={false}
@@ -28,7 +30,7 @@ export const DeleteConfirmationModal = ({
       isCentered
     >
       <ModalOverlay />
-      <ModalContent>
+      <ModalContent bg={bgModal}>
         <ModalHeader>{title}</ModalHeader>
         <ModalCloseButton />
         <ModalBody>
@@ -42,7 +44,7 @@ export const DeleteConfirmationModal = ({
             <Button colorScheme="red" onClick={onSubmit}>
               {i18next.t('modal.deleteAccount.button.yes')}
             </Button>
-            <Button onClick={onClose} invert>
+            <Button variant="danger" onClick={onClose} invert>
               {i18next.t('modal.deleteAccount.button.no')}
             </Button>
           </Stack>

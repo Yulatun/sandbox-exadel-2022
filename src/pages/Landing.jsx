@@ -1,21 +1,16 @@
-import { Box, Flex, Text } from '@chakra-ui/react';
-import i18next from 'i18next';
+import { Box, Flex, useColorModeValue } from '@chakra-ui/react';
 
-import { AddWalletModal, Footer } from '@/components';
+import { AddWalletModal } from '@/components';
 
 export const Landing = () => {
+  const bgAddWallet = useColorModeValue('orange.100', 'teal.900');
   return (
     <>
-      <Text fontSize="4xl" align="center">
-        {i18next.t('landing.welcomeMessage')}
-      </Text>
-      <Box bg="orange.100" w="100%" p={4}>
+      <Box bg={bgAddWallet} w="100%" p={4}>
         <Flex direction="column" justify="center" align="center" m="4">
           <AddWalletModal />
         </Flex>
       </Box>
-
-      <Footer />
     </>
   );
 };
