@@ -20,7 +20,7 @@ import {
 } from '@chakra-ui/react';
 import i18next from 'i18next';
 
-export const AddWallet = () => {
+export const AddWalletModal = () => {
   const { isOpen, onClose, onOpen } = useDisclosure();
 
   const {
@@ -35,37 +35,39 @@ export const AddWallet = () => {
 
   return (
     <>
-      <Button onClick={onOpen}>{i18next.t('addWallet.title')}</Button>
+      <Button onClick={onOpen}>{i18next.t('modal.addWallet.title')}</Button>
 
       <Modal closeOnOverlayClick={false} isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
         <ModalContent>
-          <ModalHeader>{i18next.t('addWallet.title')}</ModalHeader>
+          <ModalHeader>{i18next.t('modal.addWallet.title')}</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
             <FormControl isInvalid={errors.name} isRequired py="3">
               <FormLabel htmlFor="name">
-                {i18next.t('addWallet.name')}
+                {i18next.t('modal.addWallet.name')}
               </FormLabel>
 
               <Input
                 {...register('name', {
-                  required: i18next.t('addWallet.validationErrorMessage.name'),
+                  required: i18next.t(
+                    'modal.addWallet.validationErrorMessage.name'
+                  ),
                   minLength: {
                     value: 2,
                     message: i18next.t(
-                      'addWallet.validationErrorMessage.tooShort'
+                      'modal.addWallet.validationErrorMessage.tooShort'
                     )
                   },
                   maxLength: {
                     value: 30,
                     message: i18next.t(
-                      'addWallet.validationErrorMessage.tooLong'
+                      'modal.addWallet.validationErrorMessage.tooLong'
                     )
                   }
                 })}
                 type="text"
-                placeholder={i18next.t('addWallet.name.placeholder')}
+                placeholder={i18next.t('modal.addWallet.name.placeholder')}
               />
               <FormErrorMessage>
                 <Text>{errors.name && errors.name.message}</Text>
@@ -74,26 +76,26 @@ export const AddWallet = () => {
 
             <FormControl py="3">
               <FormLabel htmlFor="amount">
-                {i18next.t('addWallet.amount')}
+                {i18next.t('modal.addWallet.amount')}
               </FormLabel>
               <Input
                 {...register('amount')}
                 type="number"
-                placeholder={i18next.t('addWallet.amount.placeholder')}
+                placeholder={i18next.t('modal.addWallet.amount.placeholder')}
               />
             </FormControl>
 
             <FormControl isInvalid={errors.currency} isRequired py="3">
               <FormLabel htmlFor="currency">
-                {i18next.t('addWallet.currency')}
+                {i18next.t('modal.addWallet.currency')}
               </FormLabel>
               <Select
                 {...register('currency', {
                   required: i18next.t(
-                    'addWallet.validationErrorMessage.currency'
+                    'modal.addWallet.validationErrorMessage.currency'
                   )
                 })}
-                placeholder={i18next.t('addWallet.currency.placeholder')}
+                placeholder={i18next.t('modal.addWallet.currency.placeholder')}
               >
                 {/* we will change these fields in the future, so no need to make i18next placeholders here */}
                 <option value="EUR">EUR</option>
@@ -107,11 +109,11 @@ export const AddWallet = () => {
 
             <FormControl py="3">
               <FormLabel htmlFor="setDefault">
-                {i18next.t('addWallet.setDefault')}
+                {i18next.t('modal.addWallet.setDefault')}
               </FormLabel>
               <Switch {...register('setDefault')} size="lg" />
               <FormHelperText>
-                {i18next.t('addWallet.setDefault.helperText')}
+                {i18next.t('modal.addWallet.setDefault.helperText')}
               </FormHelperText>
             </FormControl>
 

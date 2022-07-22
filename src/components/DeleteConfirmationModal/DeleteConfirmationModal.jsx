@@ -13,7 +13,7 @@ import {
 } from '@chakra-ui/react';
 import i18next from 'i18next';
 
-export const DeleteComfirmationModal = ({
+export const DeleteConfirmationModal = ({
   isOpen,
   onClose,
   onSubmit,
@@ -40,10 +40,10 @@ export const DeleteComfirmationModal = ({
         <ModalFooter>
           <Stack direction="row" spacing={5}>
             <Button colorScheme="red" onClick={onSubmit}>
-              {i18next.t('modal.delete_account.button.yes')}
+              {i18next.t('modal.deleteAccount.button.yes')}
             </Button>
             <Button onClick={onClose} invert>
-              {i18next.t('modal.delete_account.button.no')}
+              {i18next.t('modal.deleteAccount.button.no')}
             </Button>
           </Stack>
         </ModalFooter>
@@ -52,4 +52,4 @@ export const DeleteComfirmationModal = ({
   );
 };
 
-export default DeleteComfirmationModal;
+export default DeleteConfirmationModal;
