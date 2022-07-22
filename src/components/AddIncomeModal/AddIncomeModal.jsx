@@ -17,11 +17,14 @@ import {
   NumberInput,
   NumberInputField,
   Select,
-  Textarea
+  Textarea,
+  useColorModeValue
 } from '@chakra-ui/react';
 import i18next from 'i18next';
 
 export const AddIncomeModal = ({ isOpen, onClose, onSubmit }) => {
+  const bgModal = useColorModeValue('orange.50', 'teal.600');
+
   const { register, handleSubmit } = useForm({
     defaultValues: {
       wallet: 'wallet-1-default',
@@ -38,7 +41,7 @@ export const AddIncomeModal = ({ isOpen, onClose, onSubmit }) => {
       onClose={onClose}
     >
       <ModalOverlay />
-      <ModalContent>
+      <ModalContent bg={bgModal}>
         <ModalHeader>{i18next.t('modal.addIncome.title')}</ModalHeader>
         <ModalCloseButton />
         <ModalBody>
@@ -116,7 +119,9 @@ export const AddIncomeModal = ({ isOpen, onClose, onSubmit }) => {
           <Button mr="20px" type="submit" onClick={handleSubmit(onSubmit)}>
             {i18next.t('button.submit')}
           </Button>
-          <Button onClick={onClose}>{i18next.t('button.cancel')}</Button>
+          <Button variant="danger" onClick={onClose}>
+            {i18next.t('button.cancel')}
+          </Button>
         </ModalFooter>
       </ModalContent>
     </Modal>

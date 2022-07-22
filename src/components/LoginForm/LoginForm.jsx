@@ -57,7 +57,7 @@ export const LoginForm = () => {
         justify="center"
         flexDirection="column"
         borderWidth="1px"
-        background="white"
+        background="orange.50"
       >
         <LogoWalletIcon width="45" height="45" color={iconsThemeColor} />
         <Heading as="h1" mr="5px" ml="5px" size="lg" color={iconsThemeColor}>
@@ -69,39 +69,44 @@ export const LoginForm = () => {
         width="500px"
         p="4"
         boxShadow="xl"
-        borderRadius="4px"
-        background="white"
+        borderRadius="50"
+        background="orange.50"
       >
         <form onSubmit={handleSubmit(onSubmit)}>
-          <FormControl isRequired>
-            <FormLabel htmlFor="email">
-              {i18next.t('login.form.email')}
-            </FormLabel>
+          <FormControl variant="floating" isRequired mb="5" mt="5">
             <Input
               id="email"
-              placeholder={i18next.t('login.form.email')}
+              placeholder=" "
               type="email"
               {...register('email', { required: true })}
             />
+            <FormLabel htmlFor="email">
+              {i18next.t('login.form.email')}
+            </FormLabel>
             {errors && errors.email && (
               <FormHelperText color="red">
                 {errors.email.message && errors.email.message}
               </FormHelperText>
             )}
           </FormControl>
-          <FormControl isRequired>
-            <FormLabel htmlFor="password">
-              {i18next.t('login.form.password')}
-            </FormLabel>
+          <FormControl variant="floating" isRequired>
             <InputGroup size="md">
               <Input
                 id="password"
-                placeholder={i18next.t('login.form.password')}
+                placeholder=" "
                 type={show ? 'text' : 'password'}
                 {...register('password', { required: true })}
               />
+              <FormLabel htmlFor="password">
+                {i18next.t('login.form.password')}
+              </FormLabel>
               <InputRightElement width="4.5rem">
-                <Button h="1.75rem" size="sm" onClick={setShow.toggle}>
+                <Button
+                  variant="secondary"
+                  h="1.75rem"
+                  size="sm"
+                  onClick={setShow.toggle}
+                >
                   {show ? (
                     <ViewIcon w={5} h={5} />
                   ) : (
@@ -120,7 +125,6 @@ export const LoginForm = () => {
           <Button
             type="submit"
             disabled={isEmpty}
-            colorScheme="purple"
             display="block"
             margin="0 auto"
             mt="20px"

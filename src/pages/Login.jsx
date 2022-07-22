@@ -6,7 +6,7 @@ export const Login = () => {
   return (
     <>
       <Flex
-        bg="bisque"
+        bg="orange.100"
         w="100%"
         justify="center"
         p="100px"
