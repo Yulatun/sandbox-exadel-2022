@@ -1,3 +1,4 @@
-export { Button } from './button.js';
+export { Button } from './button';
 export { Form } from './form';
-export { Input } from './input.js';
+export { Input } from './input';
+export { Modal } from './modal';
