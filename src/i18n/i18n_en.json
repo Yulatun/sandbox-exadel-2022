@@ -65,8 +65,6 @@
   "modal.addWallet.title": "Add new wallet",
   "modal.addWallet.name": "Name",
   "modal.addWallet.name.placeholder": "My new wallet",
-  "modal.addWallet.amount": "Amount",
-  "modal.addWallet.amount.placeholder": "123",
   "modal.addWallet.currency": "Currency",
   "modal.addWallet.currency.placeholder": "Select option",
   "modal.addWallet.setDefault": "Set as default",
