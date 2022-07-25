@@ -132,6 +132,7 @@ export const LoginForm = () => {
             display="block"
             margin="0 auto"
             mt="20px"
+            _hover={isEmpty ? 'none' : null}
           >
             {i18next.t('login.form.btn.login')}
           </Button>
