@@ -1,26 +1,19 @@
+import { mode } from '@chakra-ui/theme-tools';
+
 export const Input = {
-  baseStyle: (props) => ({
-    field: {
-      color: props.colorMode === 'dark' ? 'white' : 'black',
-      bg: props.colorMode === 'dark' ? 'teal.600' : 'orange.50',
-      borderColor: props.colorMode === 'dark' ? 'orange.100' : 'teal.900',
-      borderWidth: 2,
-      _focus: {
-        borderColor: props.colorMode === 'dark' ? 'orange.100' : 'teal.900',
-        color: props.colorMode === 'dark' ? 'white' : 'black',
-        _placeholder: {
-          color: props.colorMode === 'dark' ? 'teal.600' : 'orange.50'
-        }
-      },
-      _hover: {
-        borderColor: props.colorMode === 'dark' ? 'teal.900' : 'orange.100'
-      },
-      _placeholder: {
-        color: props.colorMode === 'dark' ? 'orange.50' : 'teal.600'
+  variants: {
+    outline: (props) => ({
+      field: {
+        background: 'inherit',
+        border: '1px solid',
+        borderColor: mode('blackAlpha.500', 'inherit')(props),
+        _focus: {
+          zIndex: 1,
+          borderColor: 'transparent',
+          boxShadow: '0 0 2px 2px rgba(246, 173, 85, 0.6)'
+        },
+        _hover: { borderColor: mode('gray.300', 'whiteAlpha.400')(props) }
       }
-    }
-  }),
-  defaultProps: {
-    variant: null // null here!!!
+    })
   }
 };
