@@ -7,7 +7,7 @@ import { Categories } from './Categories';
 import { Fallback } from './Fallback';
 import { Landing } from './Landing';
 import { Login } from './Login';
-
+import { WalletViewPage } from './WalletViewPage';
 export const App = () => {
   return (
     <BrowserRouter>
@@ -17,6 +17,7 @@ export const App = () => {
           <Route path="/" element={<Landing />} />
           <Route path="/about" element={<About />} />
           <Route path="/categories" element={<Categories />} />
+          <Route path="/walletviewpage" element={<WalletViewPage />} />
           <Route path="*" element={<Fallback />} />
         </Route>
       </Routes>
