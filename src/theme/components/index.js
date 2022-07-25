@@ -4,3 +4,4 @@ export { Modal } from './modal';
 export { NumberInput } from './numberInput';
 export { Select } from './select';
 export { Switch } from './switch';
+export { Textarea } from './textarea';

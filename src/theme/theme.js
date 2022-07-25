@@ -7,7 +7,8 @@ import {
   Modal,
   NumberInput,
   Select,
-  Switch
+  Switch,
+  Textarea
 } from './components';
 
 const config = {
@@ -39,6 +40,7 @@ export const theme = extendTheme({
     Modal,
     NumberInput,
     Select,
-    Switch
+    Switch,
+    Textarea
   }
 });
