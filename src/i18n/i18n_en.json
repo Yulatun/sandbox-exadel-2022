@@ -75,5 +75,6 @@
   "modal.addWallet.validationErrorMessage.tooShort": "Name must be longer than 1 symbols",
   "modal.addWallet.validationErrorMessage.tooLong": "Name must be no longer than 30 symbols",
   "modal.addWallet.validationErrorMessage.default": "Name is not valid",
-  "modal.addWallet.validationErrorMessage.currency": "Please, choose currency"
+  "modal.addWallet.validationErrorMessage.currency": "Please, choose currency",
+  "walletView.headOfBalanceTitle": "Total Balance"
 }

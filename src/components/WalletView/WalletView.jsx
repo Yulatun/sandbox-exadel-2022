@@ -37,7 +37,7 @@ export const WalletView = (props) => {
           justify="center"
           color={textColor}
         >
-          <Flex>{i18n.t('walletView.headOfBalanceMessage')}</Flex>
+          <Flex>{i18n.t('walletView.headOfBalanceTitle')}</Flex>
           <Flex fontSize="4xl" fontWeight="bold" color={textColor}>
             {totalBalanceView}
           </Flex>
