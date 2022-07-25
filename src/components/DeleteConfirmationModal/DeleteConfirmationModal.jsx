@@ -42,7 +42,7 @@ export const DeleteConfirmationModal = ({
             <Button colorScheme="red" onClick={onSubmit}>
               {i18next.t('modal.deleteAccount.button.yes')}
             </Button>
-            <Button onClick={onClose} invert>
+            <Button variant="danger" onClick={onClose} invert>
               {i18next.t('modal.deleteAccount.button.no')}
             </Button>
           </Stack>

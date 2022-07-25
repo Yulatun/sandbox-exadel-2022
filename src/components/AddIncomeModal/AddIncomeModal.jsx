@@ -116,7 +116,9 @@ export const AddIncomeModal = ({ isOpen, onClose, onSubmit }) => {
           <Button mr="20px" type="submit" onClick={handleSubmit(onSubmit)}>
             {i18next.t('button.submit')}
           </Button>
-          <Button onClick={onClose}>{i18next.t('button.cancel')}</Button>
+          <Button variant="danger" onClick={onClose}>
+            {i18next.t('button.cancel')}
+          </Button>
         </ModalFooter>
       </ModalContent>
     </Modal>
