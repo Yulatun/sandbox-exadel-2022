@@ -74,17 +74,6 @@ export const AddWalletModal = () => {
               </FormErrorMessage>
             </FormControl>
 
-            <FormControl py="3">
-              <FormLabel htmlFor="amount">
-                {i18next.t('modal.addWallet.amount')}
-              </FormLabel>
-              <Input
-                {...register('amount')}
-                type="number"
-                placeholder={i18next.t('modal.addWallet.amount.placeholder')}
-              />
-            </FormControl>
-
             <FormControl isInvalid={errors.currency} isRequired py="3">
               <FormLabel htmlFor="currency">
                 {i18next.t('modal.addWallet.currency')}
