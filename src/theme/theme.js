@@ -3,7 +3,6 @@ import { mode } from '@chakra-ui/theme-tools';
 
 import {
   Button,
-  Form,
   Input,
   Modal,
   NumberInput,
@@ -36,7 +35,6 @@ export const theme = extendTheme({
   },
   components: {
     Button,
-    Form,
     Input,
     Modal,
     NumberInput,
