@@ -19,9 +19,12 @@ export const theme = extendTheme({
   },
   colors: {
     switch: {
-      200: '#38B2AC',
+      200: '#FBD38D',
       500: '#2C7A7B'
     }
+  },
+  shadows: {
+    outline: '0 0 2px 4px rgba(246, 173, 85, 0.6);'
   },
   components: {
     Button,
