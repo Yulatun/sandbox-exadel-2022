@@ -2,6 +2,7 @@ import { useForm } from 'react-hook-form';
 import {
   Button,
   FormControl,
+  FormErrorMessage,
   FormLabel,
   Input,
   InputGroup,
@@ -17,12 +18,17 @@ import {
   NumberInputField,
   Select,
   Stack,
+  Text,
   Textarea
 } from '@chakra-ui/react';
 import i18next from 'i18next';
 
 export const AddExpenseModal = ({ isOpen, onClose, onSubmit }) => {
-  const { register, handleSubmit } = useForm({
+  const {
+    register,
+    handleSubmit,
+    formState: { errors }
+  } = useForm({
     defaultValues: {
       wallet: 'wallet-1-default',
       payer: 'payer-default',
@@ -32,7 +38,7 @@ export const AddExpenseModal = ({ isOpen, onClose, onSubmit }) => {
 
   return (
     <Modal
-      size="3xl"
+      size="2xl"
       closeOnOverlayClick={false}
       isOpen={isOpen}
       onClose={onClose}
@@ -53,28 +59,46 @@ export const AddExpenseModal = ({ isOpen, onClose, onSubmit }) => {
             </Select>
           </FormControl>
 
-          <FormControl mb="20px" isRequired>
+          <FormControl mb="20px" isRequired isInvalid={errors.amount}>
             <FormLabel>{i18next.t('modal.addExpense.amount')}</FormLabel>
             <InputGroup>
               <NumberInput w="100%" precision={2}>
-                <NumberInputField {...register('amount')} />
+                <NumberInputField
+                  {...register('amount', {
+                    required: i18next.t(
+                      'modal.addExpense.validationErrorMessage.amount'
+                    )
+                  })}
+                />
               </NumberInput>
               <InputRightAddon>
                 {i18next.t('modal.addExpense.amount.dollarSign')}
               </InputRightAddon>
             </InputGroup>
+            <FormErrorMessage>
+              <Text>{errors.amount && errors.amount.message}</Text>
+            </FormErrorMessage>
           </FormControl>
 
-          <FormControl mb="20px" isRequired>
-            <FormLabel>{i18next.t('modal.addExpense.category')}</FormLabel>
+          <FormControl mb="20px" isRequired isInvalid={errors.category}>
+            <FormLabel htmlFor="category">
+              {i18next.t('modal.addExpense.category')}
+            </FormLabel>
             <Select
               placeholder={i18next.t('modal.addExpense.category.placeholder')}
-              {...register('category')}
+              {...register('category', {
+                required: i18next.t(
+                  'modal.addExpense.validationErrorMessage.category'
+                )
+              })}
             >
               <option value="category-1">Category 1</option>
               <option value="category-2">Category 2</option>
               <option value="category-3">Category 3</option>
             </Select>
+            <FormErrorMessage>
+              <Text>{errors.category && errors.category.message}</Text>
+            </FormErrorMessage>
           </FormControl>
 
           <FormControl mb="20px" isRequired>
