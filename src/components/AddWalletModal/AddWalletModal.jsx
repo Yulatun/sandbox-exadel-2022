@@ -115,7 +115,7 @@ export const AddWalletModal = () => {
               >
                 {i18next.t('button.submit')}
               </Button>
-              <Button mr={-3} onClick={onClose}>
+              <Button variant="danger" mr={-3} onClick={onClose}>
                 {i18next.t('button.cancel')}
               </Button>
             </ModalFooter>
