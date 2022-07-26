@@ -29,7 +29,7 @@ export const Button = {
         boxShadow: '2xl'
       }
     }),
-    warning: (props) => ({
+    danger: (props) => ({
       bg: mode('red.500', 'red.600')(props),
       color: 'white',
       _hover: {
