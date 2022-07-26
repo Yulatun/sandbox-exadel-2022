@@ -39,10 +39,10 @@ export const DeleteConfirmationModal = ({
 
         <ModalFooter>
           <Stack direction="row" spacing={5}>
-            <Button colorScheme="red" onClick={onSubmit}>
+            <Button variant="danger" onClick={onSubmit}>
               {i18next.t('modal.deleteAccount.button.yes')}
             </Button>
-            <Button variant="danger" onClick={onClose} invert>
+            <Button onClick={onClose} invert>
               {i18next.t('modal.deleteAccount.button.no')}
             </Button>
           </Stack>
