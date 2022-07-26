@@ -4,6 +4,7 @@ import { AppLayout } from '@/components/Layout';
 
 import { About } from './About';
 import { Categories } from './Categories';
+import { Expenses } from './Expenses';
 import { Fallback } from './Fallback';
 import { Landing } from './Landing';
 import { Login } from './Login';
@@ -18,6 +19,7 @@ export const App = () => {
           <Route path="/about" element={<About />} />
           <Route path="/categories" element={<Categories />} />
           <Route path="*" element={<Fallback />} />
+          <Route path="/expenses" element={<Expenses />} />
         </Route>
       </Routes>
     </BrowserRouter>
