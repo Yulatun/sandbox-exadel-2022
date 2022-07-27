@@ -5,6 +5,5 @@ import useLoginAction from '@/api/AuthHook';
 
 export function PrivateRoute({ children }) {
   const { user } = useLoginAction();
-  console.log(user);
   return user ? children : <Navigate to="/login" />;
 }
