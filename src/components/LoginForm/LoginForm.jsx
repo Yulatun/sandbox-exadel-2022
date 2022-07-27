@@ -132,7 +132,6 @@ export const LoginForm = () => {
           </FormControl>
 
           <Button
-            variant="secondary"
             type="submit"
             disabled={isEmpty}
             display="block"
