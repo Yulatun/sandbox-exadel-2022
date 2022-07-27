@@ -107,7 +107,7 @@ export const AddExpenseModal = ({ isOpen, onClose, onSubmit }) => {
               placeholder={i18next.t(
                 'modal.addExpense.subcategory.placeholder'
               )}
-              {...register('category')}
+              {...register('sub-category')}
             >
               <option value="subcategory-1">Subcategory 1</option>
               <option value="subcategory-2">Subcategory 2</option>
