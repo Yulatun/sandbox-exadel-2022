@@ -1,4 +1,5 @@
 import React from 'react';
+import { useQuery } from 'react-query';
 import { BellIcon } from '@chakra-ui/icons';
 import {
   Flex,
@@ -9,6 +10,7 @@ import {
 } from '@chakra-ui/react';
 import i18next from 'i18next';
 
+import loginAction from '@/api/AuthProvider';
 import { LogoWalletIcon } from '@/assets';
 import { theme } from '@/theme';
 
@@ -22,6 +24,8 @@ export const Header = () => {
   const headerTextColor = useColorModeValue('teal.900', 'orange.300');
   const iconsThemeColor = useColorModeValue('teal.900', 'orange.300');
   const iconsHoverThemeColor = useColorModeValue('teal.900', 'orange.300');
+
+  const user = useQuery(['user'], () => loginAction());
   return (
     <Flex
       as="header"
@@ -70,10 +74,7 @@ export const Header = () => {
             />
             <Flex direction="column" align="flex-end" mr="10px" p="5px 15px">
               <Text color={headerTextColor} fontWeight="bold">
-                {'props.userName'}
-              </Text>
-              <Text color={headerTextColor} fontWeight="bold">
-                {'props.userEmail'}
+                {user.data?.fullName || ' '}
               </Text>
             </Flex>
             <UserMenu />
