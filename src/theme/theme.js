@@ -1,5 +1,6 @@
 import { extendTheme } from '@chakra-ui/react';
 import { mode } from '@chakra-ui/theme-tools';
+import { css } from '@emotion/react';
 
 import {
   Button,
@@ -15,6 +16,13 @@ const config = {
   initialColorMode: 'system',
   useSystemColorMode: false
 };
+
+export const GlobalStyles = css`
+  .js-focus-visible :focus:not([data-focus-visible-added]) {
+    outline: none;
+    box-shadow: none;
+  }
+`;
 
 export const theme = extendTheme({
   config,
