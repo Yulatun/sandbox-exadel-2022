@@ -8,7 +8,7 @@ import { Expenses } from './Expenses';
 import { Fallback } from './Fallback';
 import { Landing } from './Landing';
 import { Login } from './Login';
-import { WalletViewPage } from './WalletViewPage';
+import { WalletView } from './WalletView';
 export const App = () => {
   return (
     <BrowserRouter>
@@ -18,7 +18,7 @@ export const App = () => {
           <Route path="/" element={<Landing />} />
           <Route path="/about" element={<About />} />
           <Route path="/categories" element={<Categories />} />
-          <Route path="/wallet/:id" element={<WalletViewPage />} />
+          <Route path="/wallet/:id" element={<WalletView />} />
           <Route path="*" element={<Fallback />} />
           <Route path="/expenses" element={<Expenses />} />
         </Route>

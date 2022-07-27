@@ -10,7 +10,7 @@ import {
 
 import { i18n } from '@/i18n';
 
-export const WalletView = (props) => {
+export const WalletCard = (props) => {
   const bgMain = useColorModeValue('orange.50', 'teal.800');
   const textColor = useColorModeValue('teal.900', 'orange.100');
   const bgBadge = useColorModeValue('orange.100', 'teal.700');
@@ -32,7 +32,7 @@ export const WalletView = (props) => {
           borderRadius={5}
           color={textColor}
         >
-          default
+          {i18n.t('walletView.nameOfDefaultBadge')}
         </Badge>
 
         <Heading as="h1" size="md" color={textColor} ml={10}>
