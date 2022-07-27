@@ -1,6 +1,6 @@
 import { mode } from '@chakra-ui/theme-tools';
 
-export const Input = {
+export const Select = {
   variants: {
     outline: (props) => ({
       field: {

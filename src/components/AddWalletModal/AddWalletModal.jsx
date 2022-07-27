@@ -105,21 +105,16 @@ export const AddWalletModal = () => {
                 {i18next.t('modal.addWallet.setDefault.helperText')}
               </FormHelperText>
             </FormControl>
-
-            <ModalFooter>
-              <Button
-                onClick={handleSubmit(onSubmit)}
-                colorScheme="blue"
-                mr={3}
-                type="submit"
-              >
-                {i18next.t('button.submit')}
-              </Button>
-              <Button mr={-3} onClick={onClose}>
-                {i18next.t('button.cancel')}
-              </Button>
-            </ModalFooter>
           </ModalBody>
+
+          <ModalFooter>
+            <Button onClick={handleSubmit(onSubmit)} mr={3}>
+              {i18next.t('button.submit')}
+            </Button>
+            <Button onClick={onClose} variant="danger">
+              {i18next.t('button.cancel')}
+            </Button>
+          </ModalFooter>
         </ModalContent>
       </Modal>
     </>

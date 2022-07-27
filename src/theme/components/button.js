@@ -1,42 +1,55 @@
+import { mode } from '@chakra-ui/theme-tools';
+
 export const Button = {
   variants: {
     primary: (props) => ({
-      borderWidth: 2,
-      borderColor: props.colorMode === 'dark' ? 'teal.900' : 'orange.50',
-      color: props.colorMode === 'dark' ? 'teal.900' : 'orange.100',
-      bg: props.colorMode === 'dark' ? 'orange.100' : 'teal.800',
+      bg: mode('teal.600', 'orange.200')(props),
+      color: mode('orange.50', 'teal.900')(props),
       _hover: {
-        color: props.colorMode === 'dark' ? 'teal.900' : 'orange.100',
-        bg: props.colorMode === 'dark' ? 'orange.200' : 'teal.600',
+        bg: mode('teal.700', 'orange.300')(props),
+        boxShadow: 'lg',
+        transition: 'all 0.3s ease-out',
         _disabled: {
-          bg: props.colorMode === 'dark' ? 'orange.100' : 'teal.800'
+          bg: mode('teal.600', 'orange.200')(props),
+          color: mode('orange.50', 'teal.900')(props)
         }
+      },
+      _active: {
+        boxShadow: 'xl'
       }
     }),
     secondary: (props) => ({
-      borderWidth: 2,
-      borderColor: props.colorMode === 'dark' ? 'orange.100' : 'teal.900',
-      color: props.colorMode === 'dark' ? 'orange.100' : 'teal.900',
-      bg: props.colorMode === 'dark' ? 'teal.800' : 'orange.50',
+      bg: 'transparent',
+      border: '2px solid',
+      borderColor: mode('teal.600', 'orange.200')(props),
+      color: mode('teal.700', 'orange.200')(props),
       _hover: {
-        bg: props.colorMode === 'dark' ? 'teal.600' : 'orange.100',
+        borderColor: mode('teal.700', 'orange.300')(props),
+        color: mode('teal.800', 'orange.300')(props),
+        boxShadow: 'xl',
+        transition: 'all 0.3s ease-out',
         _disabled: {
-          bg: props.colorMode === 'dark' ? 'teal.800' : 'orange.50'
+          color: mode('teal.800', 'orange.300')(props)
         }
+      },
+      _active: {
+        boxShadow: '2xl'
       }
     }),
     danger: (props) => ({
-      borderWidth: 2,
-      borderColor: 'red.600',
-      color: 'orange.100',
-      bg: 'red.600',
-      _hover: props.disabled
-        ? null
-        : {
-            color: 'orange.50',
-            borderColor: 'red.500',
-            bg: 'red.500'
-          }
+      bg: mode('red.500', 'red.600')(props),
+      color: 'white',
+      _hover: {
+        bg: mode('red.600', 'red.500')(props),
+        boxShadow: 'lg',
+        transition: 'all 0.3s ease-out',
+        _disabled: {
+          bg: mode('red.500', 'red.600')(props)
+        }
+      },
+      _active: {
+        boxShadow: 'xl'
+      }
     })
   },
   defaultProps: {
