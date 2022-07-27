@@ -27,7 +27,9 @@ export const AddIncomeModal = ({ isOpen, onClose, onSubmit }) => {
   const {
     register,
     handleSubmit,
-    formState: { errors }
+    formState: {
+      errors: { amount, category }
+    }
   } = useForm({
     defaultValues: {
       wallet: 'wallet-1-default',
@@ -59,7 +61,7 @@ export const AddIncomeModal = ({ isOpen, onClose, onSubmit }) => {
             </Select>
           </FormControl>
 
-          <FormControl mb="20px" isRequired isInvalid={errors.amount}>
+          <FormControl mb="20px" isRequired isInvalid={amount}>
             <FormLabel>{i18next.t('modal.addIncome.amount')}</FormLabel>
             <InputGroup>
               <NumberInput w="100%" precision={2}>
@@ -76,11 +78,11 @@ export const AddIncomeModal = ({ isOpen, onClose, onSubmit }) => {
               </InputRightAddon>
             </InputGroup>
             <FormErrorMessage>
-              <Text>{errors.amount && errors.amount.message}</Text>
+              <Text>{amount && amount.message}</Text>
             </FormErrorMessage>
           </FormControl>
 
-          <FormControl mb="20px" isRequired isInvalid={errors.category}>
+          <FormControl mb="20px" isRequired isInvalid={category}>
             <FormLabel htmlFor="category">
               {i18next.t('modal.addIncome.category')}
             </FormLabel>
@@ -100,7 +102,7 @@ export const AddIncomeModal = ({ isOpen, onClose, onSubmit }) => {
               </option>
             </Select>
             <FormErrorMessage>
-              <Text>{errors.category && errors.category.message}</Text>
+              <Text>{category && category.message}</Text>
             </FormErrorMessage>
           </FormControl>
 
