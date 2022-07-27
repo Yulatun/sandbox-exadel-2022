@@ -1,4 +1,12 @@
-import { Box, Flex, useColorModeValue } from '@chakra-ui/react';
+import {
+  Box,
+  Flex,
+  HStack,
+  Tag,
+  TagCloseButton,
+  TagLabel,
+  useColorModeValue
+} from '@chakra-ui/react';
 import i18next from 'i18next';
 
 import { Footer } from '@/components';
@@ -10,6 +18,22 @@ export const Expenses = () => {
     <>
       <Box bg={bgMain} w="100%" p={4}>
         <Flex bg={cardBg} direction="column" justify="center" align="center">
+          <Box bg={bgMain} w="100%" px={24} py={6}>
+            <HStack spacing={4}>
+              <Tag size="lg" variant="solid" colorScheme="teal">
+                <TagLabel>Food</TagLabel>
+                <TagCloseButton />
+              </Tag>
+              <Tag size="lg" variant="solid" colorScheme="teal">
+                <TagLabel>Beauty</TagLabel>
+                <TagCloseButton />
+              </Tag>
+              <Tag size="lg" variant="solid" colorScheme="teal">
+                <TagLabel>Utilities</TagLabel>
+                <TagCloseButton />
+              </Tag>
+            </HStack>
+          </Box>
           <main>
             <h2>{i18next.t('expenses.welcomeMessage')}</h2>
           </main>
