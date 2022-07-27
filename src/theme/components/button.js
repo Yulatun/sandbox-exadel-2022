@@ -5,23 +5,25 @@ export const Button = {
       borderColor: props.colorMode === 'dark' ? 'teal.900' : 'orange.50',
       color: props.colorMode === 'dark' ? 'teal.900' : 'orange.100',
       bg: props.colorMode === 'dark' ? 'orange.100' : 'teal.800',
-      _hover: props.disabled
-        ? null
-        : {
-            color: props.colorMode === 'dark' ? 'teal.900' : 'orange.100',
-            bg: props.colorMode === 'dark' ? 'orange.200' : 'teal.600'
-          }
+      _hover: {
+        color: props.colorMode === 'dark' ? 'teal.900' : 'orange.100',
+        bg: props.colorMode === 'dark' ? 'orange.200' : 'teal.600',
+        _disabled: {
+          bg: props.colorMode === 'dark' ? 'orange.100' : 'teal.800'
+        }
+      }
     }),
     secondary: (props) => ({
       borderWidth: 2,
       borderColor: props.colorMode === 'dark' ? 'orange.100' : 'teal.900',
       color: props.colorMode === 'dark' ? 'orange.100' : 'teal.900',
       bg: props.colorMode === 'dark' ? 'teal.800' : 'orange.50',
-      _hover: props.disabled
-        ? null
-        : {
-            bg: props.colorMode === 'dark' ? 'teal.600' : 'orange.100'
-          }
+      _hover: {
+        bg: props.colorMode === 'dark' ? 'teal.600' : 'orange.100',
+        _disabled: {
+          bg: props.colorMode === 'dark' ? 'teal.800' : 'orange.50'
+        }
+      }
     }),
     danger: (props) => ({
       borderWidth: 2,
