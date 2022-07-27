@@ -8,7 +8,11 @@ export const Button = {
       _hover: {
         bg: mode('teal.700', 'orange.300')(props),
         boxShadow: 'lg',
-        transition: 'all 0.3s ease-out'
+        transition: 'all 0.3s ease-out',
+        _disabled: {
+          bg: mode('teal.600', 'orange.200')(props),
+          color: mode('orange.50', 'teal.900')(props)
+        }
       },
       _active: {
         boxShadow: 'xl'
@@ -23,7 +27,10 @@ export const Button = {
         borderColor: mode('teal.700', 'orange.300')(props),
         color: mode('teal.800', 'orange.300')(props),
         boxShadow: 'xl',
-        transition: 'all 0.3s ease-out'
+        transition: 'all 0.3s ease-out',
+        _disabled: {
+          color: mode('teal.800', 'orange.300')(props)
+        }
       },
       _active: {
         boxShadow: '2xl'
@@ -35,7 +42,10 @@ export const Button = {
       _hover: {
         bg: mode('red.600', 'red.500')(props),
         boxShadow: 'lg',
-        transition: 'all 0.3s ease-out'
+        transition: 'all 0.3s ease-out',
+        _disabled: {
+          bg: mode('red.500', 'red.600')(props)
+        }
       },
       _active: {
         boxShadow: 'xl'
