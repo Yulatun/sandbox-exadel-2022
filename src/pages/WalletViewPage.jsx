@@ -12,7 +12,7 @@ export const WalletViewPage = () => {
         <Flex mr="35%" ml="38%" pos="relative" top="50px">
           <WalletView
             totalBalance={2000}
-            currency={'USD'}
+            currency="USD"
             name="nameOfWallet"
           ></WalletView>
         </Flex>

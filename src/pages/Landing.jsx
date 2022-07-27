@@ -32,7 +32,7 @@ export const Landing = () => {
           <AddWalletModal />
         </Flex>
       </Box>
-      <Link href="/walletviewpage/123"> Draft of Wallet Page</Link>
+      <Link href="/wallet/123"> Draft of Wallet Page</Link>
     </>
   );
 };
