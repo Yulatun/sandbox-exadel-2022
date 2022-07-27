@@ -21,24 +21,27 @@ export const WalletView = (props) => {
 
   return (
     <>
-      <Box
-        h="200px"
-        w="350px"
-        m={5}
-        borderRadius={10}
-        border="1px"
-        borderColor="green"
-        bg={bgMain}
-      >
-        <Flex
-          direction="column"
-          m={5}
+      <Box h="200px" w="400px" m={5} borderRadius={35} bg={bgMain} shadow="lg">
+        <Badge
+          ml="80%"
+          mt="5%"
+          fontSize="50%"
           align="center"
-          justify="center"
+          p={1}
+          bg={bgBadge}
+          borderRadius={5}
           color={textColor}
         >
-          <Flex>{i18n.t('walletView.headOfBalanceTitle')}</Flex>
-          <Flex fontSize="4xl" fontWeight="bold" color={textColor}>
+          default
+        </Badge>
+
+        <Heading as="h1" size="md" color={textColor} ml={10}>
+          {props.name}
+        </Heading>
+
+        <Flex direction="column" m={5} align="center" color={textColor}>
+          <Flex>{i18n.t('walletView.headOfBalanceMessage')}</Flex>
+          <Flex fontSize="2xl" fontWeight="bold" color={textColor}>
             {totalBalanceView}
           </Flex>
           <Text>{props.currency}</Text>
@@ -50,14 +53,7 @@ export const WalletView = (props) => {
           align="start"
           justify="flex-end"
           h="20%"
-        >
-          <Heading as="h1" size="md" color={textColor}>
-            {props.name}
-          </Heading>
-          <Badge w="20%" fontSize="50%" align="center" bg={bgBadge}>
-            default
-          </Badge>
-        </Flex>
+        ></Flex>
       </Box>
     </>
   );
