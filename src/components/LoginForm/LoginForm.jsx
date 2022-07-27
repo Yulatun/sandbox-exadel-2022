@@ -20,9 +20,8 @@ import {
 } from '@chakra-ui/react';
 import i18next from 'i18next';
 
+import loginAction from '@/api/AuthProvider';
 import { LogoWalletIcon } from '@/assets';
-
-import loginAction from '../../api/AuthProvider';
 
 export const LoginForm = () => {
   const [show, setShow] = useBoolean();

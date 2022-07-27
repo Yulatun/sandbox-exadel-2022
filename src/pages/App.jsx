@@ -2,6 +2,7 @@ import { QueryClient, QueryClientProvider } from 'react-query';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 
 import { AppLayout } from '@/components/Layout';
+import { PrivateRoute } from '@/components/Routes/PrivateRoute';
 
 import { About } from './About';
 import { Categories } from './Categories';
@@ -17,13 +18,49 @@ export const App = () => {
     <QueryClientProvider client={queryClient}>
       <BrowserRouter>
         <Routes>
-          <Route path="/login" element={<Login />} index />
+          <Route path="/login" element={<Login />} />
+
           <Route element={<AppLayout />}>
-            <Route path="/" element={<Landing />} />
-            <Route path="/about" element={<About />} />
-            <Route path="/categories" element={<Categories />} />
-            <Route path="*" element={<Fallback />} />
-            <Route path="/expenses" element={<Expenses />} />
+            <Route
+              path="/"
+              element={
+                <PrivateRoute>
+                  <Landing />
+                </PrivateRoute>
+              }
+            />
+            <Route
+              path="/about"
+              element={
+                <PrivateRoute>
+                  <About />
+                </PrivateRoute>
+              }
+            />
+            <Route
+              path="/categories"
+              element={
+                <PrivateRoute>
+                  <Categories />
+                </PrivateRoute>
+              }
+            />
+            <Route
+              path="*"
+              element={
+                <PrivateRoute>
+                  <Fallback />
+                </PrivateRoute>
+              }
+            />
+            <Route
+              path="/expenses"
+              element={
+                <PrivateRoute>
+                  <Expenses />
+                </PrivateRoute>
+              }
+            />
           </Route>
         </Routes>
       </BrowserRouter>
