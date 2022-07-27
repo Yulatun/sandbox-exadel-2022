@@ -1,7 +1,7 @@
 import { Box, Flex, useColorModeValue } from '@chakra-ui/react';
 import i18next from 'i18next';
 
-import { Footer } from '@/components';
+import { ExpensesTable, Footer } from '@/components';
 
 export const Expenses = () => {
   const cardBg = useColorModeValue('orange.50', 'teal.600');
@@ -14,6 +14,15 @@ export const Expenses = () => {
             <h2>{i18next.t('expenses.welcomeMessage')}</h2>
           </main>
         </Flex>
+        <ExpensesTable
+          category="food"
+          amount="2000"
+          wallet="name of Wallet"
+          payer="Me"
+          notes="Notes"
+          edit="edit"
+          delete="delete"
+        ></ExpensesTable>
       </Box>
       <Footer />
     </>
