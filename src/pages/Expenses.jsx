@@ -1,73 +1,62 @@
-import { Box, Flex, useColorModeValue } from '@chakra-ui/react';
-import i18next from 'i18next';
+import { Box, useColorModeValue } from '@chakra-ui/react';
 
-import { ExpensesTable, Footer } from '@/components';
+// import i18next from 'i18next';
+import { ExpenseItem, Footer } from '@/components';
 
 export const Expenses = () => {
-  const cardBg = useColorModeValue('orange.50', 'teal.600');
   const bgMain = useColorModeValue('orange.100', 'teal.900');
 
   const onDelete = () => {
-    // code with delete request
+    // code to delete
   };
   const onEdit = () => {
-    // code with path request
+    // code to edit
   };
 
   const transactionsTemplate = [
     {
+      id: '2c984cb7-70c5-44e9-bc92-65661f3209d9',
       date: '07.26',
       category: 'food',
-      amount: '100',
+      amount: 100,
       wallet: 'name of Wallet',
       payer: 'Me',
-      notes: 'Notes',
-      key: '1'
+      notes: 'Notes'
     },
     {
+      id: 'eb3608e5-4791-47a7-acfe-d3a7d9427e7f',
       date: '07.25',
-      category: 'long name of category',
-      amount: '200',
+      category: 'very long name of category',
+      amount: 200,
       wallet: 'name of Wallet',
       payer: 'Me',
-      notes: 'Notes',
-      key: '2'
+      notes: 'Notes'
     },
     {
+      id: '397cbf58-5558-4a3c-844d-f09650085b84',
       date: '07.24',
       category: 'go out',
-      amount: '300',
-      wallet: 'long name of Wallet',
+      amount: 300,
+      wallet: 'very long name of Wallet',
       payer: 'Child',
-      notes: 'Notes',
-      key: '3'
+      notes: 'really super long-long notes about expenses'
     }
   ];
-  const listTransactions = transactionsTemplate.map((singleTransaction) => {
+  const expensesTable = transactionsTemplate.map((singleTransaction) => {
     return (
-      <ExpensesTable
-        key={singleTransaction.key}
-        date={singleTransaction.date}
-        category={singleTransaction.category}
-        amount={singleTransaction.amount}
-        wallet={singleTransaction.wallet}
-        payer={singleTransaction.payer}
-        notes={singleTransaction.notes}
-        edit={onEdit}
-        delete={onDelete}
-      ></ExpensesTable>
+      <ExpenseItem
+        key={singleTransaction.id}
+        transaction={singleTransaction}
+        onEdit={onEdit}
+        onDelete={onDelete}
+      ></ExpenseItem>
     );
   });
 
   return (
     <>
-      <Box bg={bgMain} w="100%" p={4}>
-        <Flex bg={cardBg} direction="column" justify="center" align="center">
-          <main>
-            <h2>{i18next.t('expenses.welcomeMessage')}</h2>
-          </main>
-        </Flex>
-        {listTransactions}
+      <Box bg={bgMain} w="100%" p={4} h="1000px">
+        {expensesTable}
       </Box>
       <Footer />
     </>
