@@ -11,6 +11,15 @@ import i18next from 'i18next';
 
 import { Footer } from '@/components';
 
+export const FilterTag = ({ text }) => {
+  return (
+    <Tag size="lg" variant="solid" colorScheme="teal">
+      <TagLabel>{text}</TagLabel>
+      <TagCloseButton />
+    </Tag>
+  );
+};
+
 export const Expenses = () => {
   const cardBg = useColorModeValue('orange.50', 'teal.600');
   const bgMain = useColorModeValue('orange.100', 'teal.900');
@@ -20,18 +29,9 @@ export const Expenses = () => {
         <Flex bg={cardBg} direction="column" justify="center" align="center">
           <Box bg={bgMain} w="100%" px={24} py={6}>
             <HStack spacing={4}>
-              <Tag size="lg" variant="solid" colorScheme="teal">
-                <TagLabel>Food</TagLabel>
-                <TagCloseButton />
-              </Tag>
-              <Tag size="lg" variant="solid" colorScheme="teal">
-                <TagLabel>Beauty</TagLabel>
-                <TagCloseButton />
-              </Tag>
-              <Tag size="lg" variant="solid" colorScheme="teal">
-                <TagLabel>Utilities</TagLabel>
-                <TagCloseButton />
-              </Tag>
+              {['Food', 'Beauty', 'Utilities'].map((name) => (
+                <FilterTag key={name} text={name} />
+              ))}
             </HStack>
           </Box>
           <main>
