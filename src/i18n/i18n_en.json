@@ -81,5 +81,6 @@
   "modal.addWallet.validationErrorMessage.default": "Name is not valid",
   "modal.addWallet.validationErrorMessage.currency": "Please, choose currency",
   "walletView.headOfBalanceMessage": "Total Balance",
-  "walletView.nameOfDefaultBadge": "default"
+  "walletView.nameOfDefaultBadge": "default",
+  "wallet.createdMessage": "You create a new wallet successfully"
 }

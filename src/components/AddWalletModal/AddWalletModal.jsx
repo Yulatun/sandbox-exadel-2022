@@ -18,8 +18,9 @@ import {
   Text,
   useDisclosure
 } from '@chakra-ui/react';
-import axios from 'axios';
 import i18next from 'i18next';
+
+import { createWallet } from '@/api/ApiProvider';
 
 export const AddWalletModal = () => {
   const { isOpen, onClose, onOpen } = useDisclosure();
@@ -31,17 +32,8 @@ export const AddWalletModal = () => {
   } = useForm();
 
   const onSubmit = (data) => {
-    axios
-      .post('https://exadel-budget-manager.herokuapp.com/api/Wallet', {
-        name: data.name,
-        currency: {
-          currencyCode: data.currency
-        }
-      })
-      .then(() => {
-        alert(`You created a new wallet ${data.name}`);
-        onClose();
-      });
+    createWallet(data);
+    onClose();
   };
 
   return (
