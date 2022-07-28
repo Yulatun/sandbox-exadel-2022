@@ -3,6 +3,7 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom';
 
 import { AppLayout } from '@/components/Layout';
 import { PrivateRoute } from '@/components/Routes/PrivateRoute';
+import { PublicRoute } from '@/components/Routes/PublicRoute';
 
 import { About } from './About';
 import { Categories } from './Categories';
@@ -18,7 +19,15 @@ export const App = () => {
     <QueryClientProvider client={queryClient}>
       <BrowserRouter>
         <Routes>
-          <Route path="/login" element={<Login />} />
+          <Route
+            path="/login"
+            element={
+              <PublicRoute restricted redirectTo="/">
+                <Login />
+              </PublicRoute>
+            }
+          />
+          <Route path="*" element={<Fallback />} />
 
           <Route element={<AppLayout />}>
             <Route
@@ -45,14 +54,7 @@ export const App = () => {
                 </PrivateRoute>
               }
             />
-            <Route
-              path="*"
-              element={
-                <PrivateRoute>
-                  <Fallback />
-                </PrivateRoute>
-              }
-            />
+
             <Route
               path="/expenses"
               element={

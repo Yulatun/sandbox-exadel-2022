@@ -11,6 +11,6 @@ export default function loginAction() {
     });
   }).then((data) => {
     localStorage.setItem('token', data.token);
-    return data;
+    return data.user;
   });
 }

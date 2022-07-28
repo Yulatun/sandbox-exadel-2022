@@ -56,7 +56,6 @@ export const LoginForm = () => {
   const onSubmit = () => {
     mutation.mutate({ email, password });
     reset();
-    navigate('/', { replace: true });
   };
 
   return (

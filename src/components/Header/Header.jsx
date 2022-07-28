@@ -25,7 +25,8 @@ export const Header = () => {
   const iconsThemeColor = useColorModeValue('teal.900', 'orange.300');
   const iconsHoverThemeColor = useColorModeValue('teal.900', 'orange.300');
 
-  const user = useQuery(['user'], () => loginAction());
+  const { data } = useQuery(['user'], () => loginAction());
+
   return (
     <Flex
       as="header"
@@ -74,7 +75,7 @@ export const Header = () => {
             />
             <Flex direction="column" align="flex-end" mr="10px" p="5px 15px">
               <Text color={headerTextColor} fontWeight="bold">
-                {user.data?.fullName || ' '}
+                {data?.fullName || ' '}
               </Text>
             </Flex>
             <UserMenu />
