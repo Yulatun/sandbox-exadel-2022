@@ -1,4 +1,4 @@
-import { Box, Button, Flex, useDisclosure } from '@chakra-ui/react';
+import { Box, Button, Flex, Link, useDisclosure } from '@chakra-ui/react';
 import i18next from 'i18next';
 
 import { AddExpenseModal, AddIncomeModal, AddWalletModal } from '@/components';
@@ -9,10 +9,10 @@ export const Landing = () => {
 
   return (
     <>
-      <Box bg="orange.100" w="100%" p={4}>
-        <Flex direction="column" justify="center" align="center" m="4">
-          <Flex direction="row" justify="center" allign="center" m="4">
-            <Button mb="20px" onClick={expenseModal.onOpen}>
+      <Box w="100%" p={4}>
+        <Flex m={4} direction="column" justify="center" align="center">
+          <Flex m={4} direction="row" justify="center" align="center">
+            <Button m={4} onClick={expenseModal.onOpen}>
               {i18next.t('button.addExpense')}
             </Button>
             <AddExpenseModal
@@ -20,7 +20,7 @@ export const Landing = () => {
               onSubmit={expenseModal.onClose}
               onClose={expenseModal.onClose}
             />
-            <Button mb="20px" onClick={incomeModal.onOpen}>
+            <Button m={4} onClick={incomeModal.onOpen}>
               {i18next.t('button.addIncome')}
             </Button>
             <AddIncomeModal
@@ -32,6 +32,7 @@ export const Landing = () => {
           <AddWalletModal />
         </Flex>
       </Box>
+      <Link href="/wallet/123"> Draft of Wallet Page</Link>
     </>
   );
 };

@@ -1,6 +1,6 @@
 import { mode } from '@chakra-ui/theme-tools';
 
-export const Input = {
+export const Select = {
   variants: {
     outline: (props) => ({
       field: {
@@ -9,7 +9,6 @@ export const Input = {
         borderColor: mode('blackAlpha.500', 'inherit')(props),
         _focus: {
           zIndex: 1,
-          border: '1px solid',
           borderColor: 'orange.300',
           boxShadow: '0 0 2px 2px rgba(246, 173, 85, 0.6)'
         },
