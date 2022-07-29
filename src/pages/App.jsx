@@ -30,48 +30,19 @@ export const App = () => {
           />
           <Route path="*" element={<Fallback />} />
 
-          <Route element={<AppLayout />}>
-            <Route
-              path="/"
-              element={
-                <PrivateRoute>
-                  <Landing />
-                </PrivateRoute>
-              }
-            />
-            <Route
-              path="/about"
-              element={
-                <PrivateRoute>
-                  <About />
-                </PrivateRoute>
-              }
-            />
-            <Route
-              path="/categories"
-              element={
-                <PrivateRoute>
-                  <Categories />
-                </PrivateRoute>
-              }
-            />
+          <Route
+            element={
+              <PrivateRoute>
+                <AppLayout />
+              </PrivateRoute>
+            }
+          >
+            <Route path="/" element={<Landing />} />
+            <Route path="/about" element={<About />} />
+            <Route path="/categories" element={<Categories />} />
 
-            <Route
-              path="/expenses"
-              element={
-                <PrivateRoute>
-                  <Expenses />
-                </PrivateRoute>
-              }
-            />
-            <Route
-              path="/wallet/:id"
-              element={
-                <PrivateRoute>
-                  <WalletView />
-                </PrivateRoute>
-              }
-            />
+            <Route path="/expenses" element={<Expenses />} />
+            <Route path="/wallet/:id" element={<WalletView />} />
           </Route>
         </Routes>
       </BrowserRouter>
