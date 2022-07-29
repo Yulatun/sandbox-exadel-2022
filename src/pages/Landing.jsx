@@ -1,4 +1,4 @@
-import { Box, Button, Flex, useDisclosure } from '@chakra-ui/react';
+import { Box, Button, Flex, Link, useDisclosure } from '@chakra-ui/react';
 import i18next from 'i18next';
 
 import { AddExpenseModal, AddIncomeModal, AddWalletModal } from '@/components';
@@ -32,6 +32,7 @@ export const Landing = () => {
           <AddWalletModal />
         </Flex>
       </Box>
+      <Link href="/wallet/123"> Draft of Wallet Page</Link>
     </>
   );
 };
