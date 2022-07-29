@@ -5,14 +5,16 @@ import {
   AccordionItem,
   AccordionPanel,
   Box,
-  Button
+  Button,
+  useColorModeValue
 } from '@chakra-ui/react';
 
 export const AccordionComponent = (props) => {
+  const bgMain = useColorModeValue('orange.50', 'teal.800');
   return (
     <>
       <Accordion allowToggle="true" margin="20px">
-        <AccordionItem border="1px solid" borderRadius="5px">
+        <AccordionItem border="1px solid" borderRadius="5px" bg={bgMain}>
           <h2>
             <AccordionButton>
               <Box px={5} textAlign="left">

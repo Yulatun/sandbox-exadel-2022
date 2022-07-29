@@ -1,12 +1,21 @@
 import { AddIcon } from '@chakra-ui/icons';
-import { Box } from '@chakra-ui/react';
+import { Box, useColorModeValue } from '@chakra-ui/react';
 
 export const AccordionHeadings = (props) => {
+  const bgMain = useColorModeValue('orange.50', 'teal.800');
   return (
     <>
       <Box margin="20px">
-        <h2>{props.headingOne}</h2>
-        <Box display="flex" marginTop="15px">
+        <Box bg={bgMain} borderRadius="5px" padding="5px 10px">
+          <h2>{props.headingOne}</h2>
+        </Box>
+        <Box
+          display="flex"
+          marginTop="15px"
+          bg={bgMain}
+          borderRadius="5px"
+          padding="5px 10px"
+        >
           <AddIcon
             width="37px"
             height="37px"
