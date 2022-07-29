@@ -146,7 +146,7 @@ export const AddExpenseModal = ({ isOpen, onClose, onSubmit }) => {
             <Button type="submit" onClick={handleSubmit(onSubmit)}>
               {i18next.t('modal.addExpense.button.add')}
             </Button>
-            <Button variant="danger" mr="20px" onClick={onClose} invert>
+            <Button variant="secondary" mr="20px" onClick={onClose} invert>
               {i18next.t('modal.addExpense.button.cancel')}
             </Button>
           </Stack>
