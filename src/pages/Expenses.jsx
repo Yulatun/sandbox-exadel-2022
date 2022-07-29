@@ -58,16 +58,6 @@ export const Expenses = () => {
       notes: 'really super long-long notes about expenses'
     }
   ];
-  const expensesTable = transactionsTemplate.map((singleTransaction) => {
-    return (
-      <ExpenseItem
-        key={singleTransaction.id}
-        transaction={singleTransaction}
-        onEdit={onEdit}
-        onDelete={onDelete}
-      />
-    );
-  });
 
   return (
     <>
@@ -80,7 +70,16 @@ export const Expenses = () => {
               ))}
             </HStack>
 
-            <Box>{expensesTable}</Box>
+            <Box>
+              {transactionsTemplate.map((singleTransaction) => (
+                <ExpenseItem
+                  key={singleTransaction.id}
+                  transaction={singleTransaction}
+                  onEdit={onEdit}
+                  onDelete={onDelete}
+                />
+              ))}
+            </Box>
           </Box>
         </Flex>
       </Box>
