@@ -71,7 +71,7 @@ export const Expenses = () => {
 
   return (
     <>
-      <Box bg={bgMain} w="100%" p={4} h="1000px">
+      <Box bg={bgMain} w="100%">
         <Flex bg={cardBg} direction="column" justify="center" align="center">
           <Box bg={bgMain} w="100%" px={24} py={6}>
             <HStack spacing={4}>

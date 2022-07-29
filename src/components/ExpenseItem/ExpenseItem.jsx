@@ -17,15 +17,14 @@ export const ExpenseItem = ({ transaction, onEdit, onDelete }) => {
 
   return (
     <>
-      <Center>
+      <Center paddingY={3}>
         <HStack
           justify="space-around"
-          w="80%"
+          w="100%"
           boxShadow="lg"
           bg={bgMain}
           color={textColor}
-          p={3}
-          m={2}
+          paddingY={3}
         >
           <Box w="8%">{transaction.date}</Box>
           <Box
