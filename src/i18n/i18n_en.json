@@ -81,5 +81,22 @@
   "modal.addWallet.validationErrorMessage.default": "Name is not valid",
   "modal.addWallet.validationErrorMessage.currency": "Please, choose currency",
   "walletView.headOfBalanceMessage": "Total Balance",
-  "walletView.nameOfDefaultBadge": "default"
+  "walletView.nameOfDefaultBadge": "default",
+  "expenses.filters.heading": "Filter by",
+  "expenses.filters.btn.removeFilter": "Remove filter",
+  "expenses.filters.btn.clearAllFilters": "Clear all filters",
+  "expenses.filters.date.value": "Date",
+  "expenses.filters.date.calendar.today": "Today",
+  "expenses.filters.date.calendar.yesterday": "Yesterday",
+  "expenses.filters.date.calendar.thisWeek": "This week",
+  "expenses.filters.date.calendar.lastWeek": "Last week",
+  "expenses.filters.date.calendar.thisMonth": "This month",
+  "expenses.filters.date.calendar.lastMonth": "Last month",
+  "expenses.filters.date.calendar.customized": "Customize range",
+  "expenses.filters.date.calendar.range.name": "Range: ",
+  "expenses.filters.date.calendar.range.day": " day",
+  "expenses.filters.date.calendar.range.days": " days",
+  "expenses.filters.category.placeholder": "Category",
+  "expenses.filters.wallet.placeholder": "Wallet",
+  "expenses.filters.payer.placeholder": "Payer"
 }

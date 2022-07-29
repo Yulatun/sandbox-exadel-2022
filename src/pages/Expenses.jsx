@@ -9,7 +9,7 @@ import {
 } from '@chakra-ui/react';
 import i18next from 'i18next';
 
-import { Footer } from '@/components';
+import { FiltersExpenses, Footer } from '@/components';
 
 export const FilterTag = ({ text }) => {
   return (
@@ -28,6 +28,9 @@ export const Expenses = () => {
       <Box bg={bgMain} w="100%" p={4}>
         <Flex bg={cardBg} direction="column" justify="center" align="center">
           <Box bg={bgMain} w="100%" px={24} py={6}>
+            <Box mb="50px">
+              <FiltersExpenses />
+            </Box>
             <HStack spacing={4}>
               {['Food', 'Beauty', 'Utilities'].map((name) => (
                 <FilterTag key={name} text={name} />
