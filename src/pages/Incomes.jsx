@@ -1,50 +1,22 @@
-import { DeleteIcon, EditIcon } from '@chakra-ui/icons';
-import {
-  Box,
-  Center,
-  Flex,
-  HStack,
-  IconButton,
-  Tooltip,
-  useColorModeValue
-} from '@chakra-ui/react';
+import { Box, Flex, useColorModeValue } from '@chakra-ui/react';
 
-export const Incomes = ({ onEdit, onDelete }) => {
-  const bgMain = useColorModeValue('orange.50', 'teal.700');
-  const textColor = useColorModeValue('teal.900', 'orange.50');
+import { IncomeItem } from '@/components';
+
+export const Incomes = () => {
+  const bgMain = useColorModeValue('orange.100', 'teal.900');
+  const cardBg = useColorModeValue('orange.50', 'teal.600');
 
   return (
     <>
-      <Center paddingY={3}>
-        <HStack
-          justify="space-evenly"
-          w="80%"
-          bg={bgMain}
-          color={textColor}
-          paddingY={3}
-          boxShadow="lg"
-        >
-          <Box w="8%">16.08.1993</Box>
-          <Box w="15%">
-            <Tooltip>Salary from Freelance</Tooltip>
+      <Box bg={bgMain} w="100%">
+        <Flex bg={cardBg} direction="column" justify="center" align="center">
+          <Box bg={bgMain} w="100%">
+            <IncomeItem />
+            <IncomeItem />
+            <IncomeItem />
           </Box>
-          <Box w="10%">100$</Box>
-          <Box w="15%">
-            <Tooltip>Wallet in dollars</Tooltip>
-          </Box>
-
-          <Box w="10%">Notes</Box>
-
-          <Flex w="10%" justify="space-around">
-            <Box>
-              <IconButton onClick={onEdit} icon={<EditIcon />}></IconButton>
-            </Box>
-            <Box>
-              <IconButton onClick={onDelete} icon={<DeleteIcon />}></IconButton>
-            </Box>
-          </Flex>
-        </HStack>
-      </Center>
+        </Flex>
+      </Box>
     </>
   );
 };

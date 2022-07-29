@@ -6,5 +6,6 @@ export { ErrorBoundary } from './ErrorBoundary';
 export { ExpenseItem } from './ExpenseItem';
 export { Footer } from './Footer';
 export { Header } from './Header';
+export { IncomeItem } from './IncomeItem';
 export { LoginForm } from './LoginForm';
 export { WalletCard } from './WalletCard';
