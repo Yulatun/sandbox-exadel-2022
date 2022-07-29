@@ -1,7 +1,6 @@
 import { DeleteIcon, EditIcon } from '@chakra-ui/icons';
 import {
   Box,
-  Center,
   Flex,
   HStack,
   IconButton,
@@ -17,59 +16,55 @@ export const ExpenseItem = ({ transaction, onEdit, onDelete }) => {
 
   return (
     <>
-      <Center paddingY={3}>
-        <HStack
-          justify="space-around"
-          w="100%"
-          boxShadow="lg"
-          bg={bgMain}
-          color={textColor}
-          paddingY={3}
+      <HStack
+        justify="space-around"
+        w="100%"
+        boxShadow="lg"
+        bg={bgMain}
+        color={textColor}
+        paddingY={3}
+      >
+        <Box w="8%">{transaction.date}</Box>
+        <Box
+          w="15%"
+          textOverflow="ellipsis"
+          overflow="hidden"
+          whiteSpace="nowrap"
         >
-          <Box w="8%">{transaction.date}</Box>
-          <Box
-            w="15%"
-            textOverflow="ellipsis"
-            overflow="hidden"
-            whiteSpace="nowrap"
-          >
-            <Tooltip label={transaction.category}>
-              {transaction.category}
-            </Tooltip>
-          </Box>
-          <Box w="7%">{transaction.amount}</Box>
-          <Box
-            w="20%"
-            textOverflow="ellipsis"
-            overflow="hidden"
-            whiteSpace="nowrap"
-          >
-            <Tooltip label={transaction.wallet}>{transaction.wallet}</Tooltip>
-          </Box>
-          <Box w="10%">{transaction.payer}</Box>
-          <Box
-            w="10%"
-            textOverflow="ellipsis"
-            overflow="hidden"
-            whiteSpace="nowrap"
-          >
-            <Tooltip label={transaction.notes}>
-              <Flex align="center" justify="center">
-                <NoteIcon color={textColor}></NoteIcon>
-              </Flex>
-            </Tooltip>
-          </Box>
+          <Tooltip label={transaction.category}>{transaction.category}</Tooltip>
+        </Box>
+        <Box w="7%">{transaction.amount}</Box>
+        <Box
+          w="20%"
+          textOverflow="ellipsis"
+          overflow="hidden"
+          whiteSpace="nowrap"
+        >
+          <Tooltip label={transaction.wallet}>{transaction.wallet}</Tooltip>
+        </Box>
+        <Box w="10%">{transaction.payer}</Box>
+        <Box
+          w="10%"
+          textOverflow="ellipsis"
+          overflow="hidden"
+          whiteSpace="nowrap"
+        >
+          <Tooltip label={transaction.notes}>
+            <Flex align="center" justify="center">
+              <NoteIcon color={textColor}></NoteIcon>
+            </Flex>
+          </Tooltip>
+        </Box>
 
-          <Flex w="10%" justify="space-around">
-            <Box>
-              <IconButton onClick={onEdit} icon={<EditIcon />}></IconButton>
-            </Box>
-            <Box>
-              <IconButton onClick={onDelete} icon={<DeleteIcon />}></IconButton>
-            </Box>
-          </Flex>
-        </HStack>
-      </Center>
+        <Flex w="10%" justify="space-around">
+          <Box>
+            <IconButton onClick={onEdit} icon={<EditIcon />}></IconButton>
+          </Box>
+          <Box>
+            <IconButton onClick={onDelete} icon={<DeleteIcon />}></IconButton>
+          </Box>
+        </Flex>
+      </HStack>
     </>
   );
 };

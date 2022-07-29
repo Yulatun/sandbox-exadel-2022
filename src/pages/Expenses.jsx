@@ -5,7 +5,8 @@ import {
   Tag,
   TagCloseButton,
   TagLabel,
-  useColorModeValue
+  useColorModeValue,
+  VStack
 } from '@chakra-ui/react';
 
 import { ExpenseItem, Footer } from '@/components';
@@ -70,7 +71,7 @@ export const Expenses = () => {
               ))}
             </HStack>
 
-            <Box>
+            <VStack spacing={5} pt={5}>
               {transactionsTemplate.map((singleTransaction) => (
                 <ExpenseItem
                   key={singleTransaction.id}
@@ -79,7 +80,7 @@ export const Expenses = () => {
                   onDelete={onDelete}
                 />
               ))}
-            </Box>
+            </VStack>
           </Box>
         </Flex>
       </Box>
