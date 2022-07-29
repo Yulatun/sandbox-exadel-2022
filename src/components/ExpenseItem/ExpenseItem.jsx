@@ -1,7 +1,6 @@
 import { DeleteIcon, EditIcon } from '@chakra-ui/icons';
 import {
   Box,
-  Center,
   Flex,
   HStack,
   IconButton,
@@ -97,9 +96,5 @@ export const ExpenseItem = ({ transaction, onEdit, onDelete, version }) => {
     }
   };
 
-  return (
-    <>
-      <Center paddingY={3}>{chooseVersion(version)}</Center>
-    </>
-  );
+  return <>{chooseVersion(version)}</>;
 };
