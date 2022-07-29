@@ -1,5 +1,7 @@
 import React from 'react';
 import { useForm } from 'react-hook-form';
+import { useMutation } from 'react-query';
+import { useQueryClient } from 'react-query';
 import { useNavigate } from 'react-router-dom';
 import { ViewIcon, ViewOffIcon } from '@chakra-ui/icons';
 import {
@@ -18,6 +20,7 @@ import {
 } from '@chakra-ui/react';
 import i18next from 'i18next';
 
+import loginAction from '@/api/AuthProvider';
 import { LogoWalletIcon } from '@/assets';
 
 export const LoginForm = () => {
@@ -27,6 +30,14 @@ export const LoginForm = () => {
   const iconsThemeColor = useColorModeValue('teal.900', 'orange.300');
   const containerThemeColorBg = useColorModeValue('orange.50', 'teal.600');
 
+  const queryClient = useQueryClient();
+
+  const mutation = useMutation(loginAction, {
+    onSuccess: (data) => {
+      queryClient.setQueryData(['user'], () => data.user);
+      navigate('/', { replace: true });
+    }
+  });
   const {
     register,
     handleSubmit,
@@ -43,8 +54,8 @@ export const LoginForm = () => {
   const isEmpty = !email || !password;
 
   const onSubmit = () => {
+    mutation.mutate({ email, password });
     reset();
-    navigate('/', { replace: true });
   };
 
   return (
