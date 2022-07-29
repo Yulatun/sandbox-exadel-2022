@@ -2,17 +2,19 @@ import { DeleteIcon, EditIcon } from '@chakra-ui/icons';
 import {
   Box,
   Center,
+  Flex,
   HStack,
   IconButton,
   Tooltip,
   useColorModeValue
 } from '@chakra-ui/react';
 
-import { i18n } from '@/i18n';
+import { NoteIcon } from '@/assets';
 
 export const ExpenseItem = ({ transaction, onEdit, onDelete }) => {
   const bgMain = useColorModeValue('orange.50', 'teal.700');
   const textColor = useColorModeValue('teal.900', 'orange.50');
+
   return (
     <>
       <Center>
@@ -52,18 +54,21 @@ export const ExpenseItem = ({ transaction, onEdit, onDelete }) => {
             overflow="hidden"
             whiteSpace="nowrap"
           >
-            <Tooltip label={transaction.notes}>{transaction.notes}</Tooltip>
+            <Tooltip label={transaction.notes}>
+              <Flex align="center" justify="center">
+                <NoteIcon color={textColor}></NoteIcon>
+              </Flex>
+            </Tooltip>
           </Box>
-          <Box w="5%">
-            <IconButton onClick={onEdit} icon={<EditIcon />}>
-              {i18n.t('expenses.tableExpenses.buttonEdit')}
-            </IconButton>
-          </Box>
-          <Box w="5%">
-            <IconButton onClick={onDelete} icon={<DeleteIcon />}>
-              {i18n.t('expenses.tableExpenses.buttonDelete')}
-            </IconButton>
-          </Box>
+
+          <Flex w="10%" justify="space-around">
+            <Box>
+              <IconButton onClick={onEdit} icon={<EditIcon />}></IconButton>
+            </Box>
+            <Box>
+              <IconButton onClick={onDelete} icon={<DeleteIcon />}></IconButton>
+            </Box>
+          </Flex>
         </HStack>
       </Center>
     </>

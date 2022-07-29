@@ -1,6 +1,5 @@
 import { Box, useColorModeValue } from '@chakra-ui/react';
 
-// import i18next from 'i18next';
 import { ExpenseItem, Footer } from '@/components';
 
 export const Expenses = () => {
