@@ -1,10 +1,27 @@
-import { Box, useColorModeValue } from '@chakra-ui/react';
+import {
+  Box,
+  Flex,
+  HStack,
+  Tag,
+  TagCloseButton,
+  TagLabel,
+  useColorModeValue
+} from '@chakra-ui/react';
 
 import { ExpenseItem, Footer } from '@/components';
 
+export const FilterTag = ({ text }) => {
+  return (
+    <Tag size="lg" variant="solid" colorScheme="teal">
+      <TagLabel>{text}</TagLabel>
+      <TagCloseButton />
+    </Tag>
+  );
+};
+
 export const Expenses = () => {
   const bgMain = useColorModeValue('orange.100', 'teal.900');
-
+  const cardBg = useColorModeValue('orange.50', 'teal.600');
   const onDelete = () => {
     // code to delete
   };
@@ -55,7 +72,17 @@ export const Expenses = () => {
   return (
     <>
       <Box bg={bgMain} w="100%" p={4} h="1000px">
-        {expensesTable}
+        <Flex bg={cardBg} direction="column" justify="center" align="center">
+          <Box bg={bgMain} w="100%" px={24} py={6}>
+            <HStack spacing={4}>
+              {['Food', 'Beauty', 'Utilities'].map((name) => (
+                <FilterTag key={name} text={name} />
+              ))}
+            </HStack>
+
+            <Box>{expensesTable}</Box>
+          </Box>
+        </Flex>
       </Box>
       <Footer />
     </>
