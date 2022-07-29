@@ -20,7 +20,7 @@ import {
 } from '@chakra-ui/react';
 import i18next from 'i18next';
 
-import { createWallet } from '@/api/ApiProvider';
+import { createWallet } from '@/api/Wallet';
 
 export const AddWalletModal = () => {
   const { isOpen, onClose, onOpen } = useDisclosure();
@@ -32,7 +32,9 @@ export const AddWalletModal = () => {
   } = useForm();
 
   const onSubmit = (data) => {
-    createWallet(data);
+    createWallet(data)
+      .then(() => alert(i18next.t('wallet.createdMessage')))
+      .catch((err) => console.log(err));
     onClose();
   };
 
