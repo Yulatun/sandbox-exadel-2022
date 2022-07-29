@@ -1,5 +1,5 @@
 import React from 'react';
-import { Box, Flex, useColorModeValue } from '@chakra-ui/react';
+import { Box, Flex, useColorModeValue, VStack } from '@chakra-ui/react';
 
 import { ExpenseItem, Footer, WalletCard } from '@/components';
 
@@ -35,26 +35,26 @@ export const WalletView = () => {
     }
   ];
 
-  const transactions = transactionsTemplate.map((singleTransaction) => {
-    return (
-      <ExpenseItem
-        key={singleTransaction.id}
-        transaction={singleTransaction}
-        version="short"
-      />
-    );
-  });
   return (
     <>
-      <Box bg={bgMain} h="700px" w="850">
-        <Flex mr="35%" ml="38%" pos="relative" top="50px">
+      <Box bg={bgMain} px={24} py={6}>
+        <Flex mr="30%" ml="35%">
           <WalletCard
             totalBalance={2000}
             currency="USD"
             name="nameOfWallet"
           ></WalletCard>
         </Flex>
-        {transactions}
+        <VStack spacing={5} pt={5}>
+          {transactionsTemplate.map((singleTransaction) => (
+            <ExpenseItem
+              key={singleTransaction.id}
+              transaction={singleTransaction}
+              version="short"
+            />
+          ))}
+          ;
+        </VStack>
       </Box>
       <Footer />
     </>
