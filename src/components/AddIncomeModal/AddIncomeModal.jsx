@@ -2,6 +2,7 @@ import { useForm } from 'react-hook-form';
 import {
   Button,
   FormControl,
+  FormErrorMessage,
   FormHelperText,
   FormLabel,
   Input,
@@ -17,12 +18,19 @@ import {
   NumberInput,
   NumberInputField,
   Select,
+  Text,
   Textarea
 } from '@chakra-ui/react';
 import i18next from 'i18next';
 
 export const AddIncomeModal = ({ isOpen, onClose, onSubmit }) => {
-  const { register, handleSubmit } = useForm({
+  const {
+    register,
+    handleSubmit,
+    formState: {
+      errors: { amount, category }
+    }
+  } = useForm({
     defaultValues: {
       wallet: 'wallet-1-default',
       date: new Date().toISOString().split('T')[0],
@@ -53,23 +61,38 @@ export const AddIncomeModal = ({ isOpen, onClose, onSubmit }) => {
             </Select>
           </FormControl>
 
-          <FormControl mb="20px" isRequired>
+          <FormControl mb="20px" isRequired isInvalid={amount}>
             <FormLabel>{i18next.t('modal.addIncome.amount')}</FormLabel>
             <InputGroup>
               <NumberInput w="100%" precision={2}>
-                <NumberInputField {...register('amount')} />
+                <NumberInputField
+                  {...register('amount', {
+                    required: i18next.t(
+                      'modal.addIncome.validationErrorMessage.amount'
+                    )
+                  })}
+                />
               </NumberInput>
               <InputRightAddon>
                 {i18next.t('modal.addIncome.amount.dollarSign')}
               </InputRightAddon>
             </InputGroup>
+            <FormErrorMessage>
+              <Text>{amount && amount.message}</Text>
+            </FormErrorMessage>
           </FormControl>
 
-          <FormControl mb="20px" isRequired>
-            <FormLabel>{i18next.t('modal.addIncome.category')}</FormLabel>
+          <FormControl mb="20px" isRequired isInvalid={category}>
+            <FormLabel htmlFor="category">
+              {i18next.t('modal.addIncome.category')}
+            </FormLabel>
             <Select
               placeholder={i18next.t('modal.addIncome.category.placeholder')}
-              {...register('category')}
+              {...register('category', {
+                required: i18next.t(
+                  'modal.addIncome.validationErrorMessage.category'
+                )
+              })}
             >
               <option value="category-1">Category 1</option>
               <option value="category-2">Category 2</option>
@@ -78,6 +101,9 @@ export const AddIncomeModal = ({ isOpen, onClose, onSubmit }) => {
                 {i18next.t('modal.addIncome.category.option.addNew')}
               </option>
             </Select>
+            <FormErrorMessage>
+              <Text>{category && category.message}</Text>
+            </FormErrorMessage>
           </FormControl>
 
           <FormControl mb="20px" isRequired>
@@ -116,7 +142,7 @@ export const AddIncomeModal = ({ isOpen, onClose, onSubmit }) => {
           <Button mr="20px" type="submit" onClick={handleSubmit(onSubmit)}>
             {i18next.t('button.submit')}
           </Button>
-          <Button variant="danger" onClick={onClose}>
+          <Button variant="secondary" onClick={onClose}>
             {i18next.t('button.cancel')}
           </Button>
         </ModalFooter>

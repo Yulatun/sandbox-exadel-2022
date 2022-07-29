@@ -5,7 +5,8 @@ export const Textarea = {
     _focus: {
       _focus: {
         zIndex: 1,
-        borderColor: 'transparent',
+        border: '1px solid',
+        borderColor: 'orange.300',
         boxShadow: '0 0 2px 2px rgba(246, 173, 85, 0.6)'
       }
     },

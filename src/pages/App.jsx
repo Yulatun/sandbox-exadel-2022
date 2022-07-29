@@ -11,6 +11,7 @@ import { Expenses } from './Expenses';
 import { Fallback } from './Fallback';
 import { Landing } from './Landing';
 import { Login } from './Login';
+import { WalletView } from './WalletView';
 
 export const queryClient = new QueryClient();
 
@@ -60,6 +61,14 @@ export const App = () => {
               element={
                 <PrivateRoute>
                   <Expenses />
+                </PrivateRoute>
+              }
+            />
+            <Route
+              path="/wallet/:id"
+              element={
+                <PrivateRoute>
+                  <WalletView />
                 </PrivateRoute>
               }
             />
