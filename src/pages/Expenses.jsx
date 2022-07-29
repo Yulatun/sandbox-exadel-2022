@@ -65,7 +65,7 @@ export const Expenses = () => {
         transaction={singleTransaction}
         onEdit={onEdit}
         onDelete={onDelete}
-      ></ExpenseItem>
+      />
     );
   });
 
