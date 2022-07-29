@@ -1,7 +1,6 @@
 {
   "incomes.welcomeMessage": "Welcome to the incomes page!",
   "category.welcomeMessage": "Welcome to the categories!",
-  "expenses.welcomeMessage": "Welcome to the expenses!",
   "landing.welcomeMessage": "Welcome to the landing page!",
   "login.welcomeMessage": "Welcome to the login page!",
   "fallback.message": "Page does not exist",
