@@ -18,6 +18,11 @@ const config = {
 };
 
 export const GlobalStyles = css`
+  body {
+    max-width: 1080px;
+    margin: 0 auto;
+    float: none;
+  }
   .js-focus-visible :focus:not([data-focus-visible-added]) {
     outline: none;
     box-shadow: none;
@@ -40,7 +45,8 @@ export const theme = extendTheme({
     }
   },
   shadows: {
-    outline: '0 0 2px 4px rgba(246, 173, 85, 0.6);'
+    outline: '0 0 2px 4px rgba(246, 173, 85, 0.6);',
+    headerShadow: '0px 5px 3px -5px'
   },
   components: {
     Button,

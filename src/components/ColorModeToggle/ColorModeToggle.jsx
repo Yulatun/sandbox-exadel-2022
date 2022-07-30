@@ -9,7 +9,7 @@ const ColorModeToggle = () => {
 
   return (
     <IconButton
-      mr="20px"
+      mr="16px"
       w="50px"
       h="50px"
       border="2px"

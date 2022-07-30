@@ -50,7 +50,7 @@ export const UserMenu = () => {
           borderColor: iconsHoverThemeColor
         }}
       >
-        <SettingsIcon w="30px" h="30px" />
+        <SettingsIcon w="25px" h="25px" />
       </MenuButton>
       <MenuList
         bg={userMenuBgThemeColor}
