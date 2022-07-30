@@ -12,18 +12,10 @@ import {
   CalendarPrevButton,
   CalendarWeek
 } from '@uselessdev/datepicker';
-import {
-  differenceInCalendarDays,
-  format,
-  isMonday,
-  previousMonday,
-  previousSunday,
-  startOfMonth,
-  startOfWeek,
-  subDays,
-  toDate
-} from 'date-fns';
+import { differenceInCalendarDays } from 'date-fns';
 import i18next from 'i18next';
+
+import { datesObj, isCustomizedRange } from './utils';
 
 export const CalendarPicker = ({
   clearAllDateButtonsSelected,
@@ -35,45 +27,6 @@ export const CalendarPicker = ({
   setSelectedDateFilter
 }) => {
   const [daysNum, setDaysNum] = useState(0);
-  const today = new Date();
-  let previousMondayDate = null;
-
-  if (isMonday(today)) {
-    previousMondayDate = previousMonday(today);
-  } else {
-    previousMondayDate = previousMonday(previousMonday(today));
-  }
-
-  const datesObj = {
-    today: {
-      start: today,
-      end: today
-    },
-    yesterday: {
-      start: subDays(today, 1),
-      end: subDays(today, 1)
-    },
-    thisWeek: {
-      start: startOfWeek(today, { weekStartsOn: 1 }),
-      end: today
-    },
-    lastWeek: {
-      start: previousMondayDate,
-      end: previousSunday(today)
-    },
-    thisMonth: {
-      start: startOfMonth(today),
-      end: today
-    },
-    lastMonth: {
-      start: startOfMonth(startOfMonth(today) - 1),
-      end: toDate(startOfMonth(today) - 1)
-    },
-    customized: {
-      start: null,
-      end: null
-    }
-  };
 
   const handleSelectDate = (chosenDates) => setChosenDates(chosenDates);
 
@@ -100,23 +53,8 @@ export const CalendarPicker = ({
     }));
   };
 
-  const isCustomizedRange = (startDate, endDate) => {
-    if (chosenDates.start === null || chosenDates.end === null) return false;
-    if (startDate === null || endDate === null) return true;
-
-    if (
-      format(startDate, 'MM/dd/yyyy') !==
-        format(chosenDates.start, 'MM/dd/yyyy') ||
-      format(endDate, 'MM/dd/yyyy') !== format(chosenDates.end, 'MM/dd/yyyy')
-    ) {
-      return true;
-    }
-
-    return false;
-  };
-
-  const setIsCustomizedRange = ({ start: startDate, end: endDate }) => {
-    if (isCustomizedRange(startDate, endDate)) {
+  const changeToCustomizedRange = ({ start: startDate, end: endDate }) => {
+    if (isCustomizedRange(startDate, endDate, chosenDates)) {
       setSelectedDateFilter({
         value: 'date-customized',
         dates: chosenDates
@@ -213,20 +151,28 @@ export const CalendarPicker = ({
 
     setSelectedDateFilter({ ...selectedDateFilter, dates: chosenDates });
 
-    if (isDateButtonSelected.today) {
-      setIsCustomizedRange(datesObj.today);
-    } else if (isDateButtonSelected.yesterday) {
-      setIsCustomizedRange(datesObj.yesterday);
-    } else if (isDateButtonSelected.thisWeek) {
-      setIsCustomizedRange(datesObj.thisWeek);
-    } else if (isDateButtonSelected.lastWeek) {
-      setIsCustomizedRange(datesObj.lastWeek);
-    } else if (isDateButtonSelected.thisMonth) {
-      setIsCustomizedRange(datesObj.thisMonth);
-    } else if (isDateButtonSelected.lastMonth) {
-      setIsCustomizedRange(datesObj.lastMonth);
-    } else if (!!chosenDates.start || !!chosenDates.end) {
-      setIsCustomizedRange({ start: null, end: null });
+    switch (true) {
+      case isDateButtonSelected.today:
+        changeToCustomizedRange(datesObj.today);
+        break;
+      case isDateButtonSelected.yesterday:
+        changeToCustomizedRange(datesObj.yesterday);
+        break;
+      case isDateButtonSelected.thisWeek:
+        changeToCustomizedRange(datesObj.thisWeek);
+        break;
+      case isDateButtonSelected.lastWeek:
+        changeToCustomizedRange(datesObj.lastWeek);
+        break;
+      case isDateButtonSelected.thisMonth:
+        changeToCustomizedRange(datesObj.thisMonth);
+        break;
+      case isDateButtonSelected.lastMonth:
+        changeToCustomizedRange(datesObj.lastMonth);
+        break;
+      case !!chosenDates.start || !!chosenDates.end:
+        changeToCustomizedRange({ start: null, end: null });
+        break;
     }
   }, [chosenDates]);
 
