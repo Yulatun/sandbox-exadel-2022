@@ -9,8 +9,8 @@ export const Notification = () => {
   return (
     <IconButton
       mr={['14px', '14px', '14px', '0px']}
-      w="40px"
-      h="40px"
+      w="50px"
+      h="50px"
       borderRadius="50%"
       borderColor="transparent"
       variant="outline"
