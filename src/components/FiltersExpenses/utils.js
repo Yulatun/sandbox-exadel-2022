@@ -49,9 +49,36 @@ export const datesObj = {
   }
 };
 
+export const getNotCustomizedRange = ({ start: startDate, end: endDate }) => {
+  if (!startDate || (!startDate && endDate)) return false;
+
+  if (startDate && !endDate) {
+    endDate = startDate;
+  }
+
+  let notCustomizedRangeName = Object.entries(datesObj).find((el) => {
+    return (
+      el[0] !== 'customized' &&
+      format(new Date(el[1].start), 'MM/dd/yyyy') ===
+        format(startDate, 'MM/dd/yyyy') &&
+      format(new Date(el[1].end), 'MM/dd/yyyy') ===
+        format(endDate, 'MM/dd/yyyy')
+    );
+  });
+
+  if (notCustomizedRangeName) return notCustomizedRangeName[0];
+
+  return false;
+};
+
 export const isCustomizedRange = (startDate, endDate, chosenDates) => {
-  if (chosenDates.start === null || chosenDates.end === null) return false;
-  if (startDate === null || endDate === null) return true;
+  if (!chosenDates.start) return false;
+  if (
+    (chosenDates.start && !chosenDates.end) ||
+    startDate === null ||
+    endDate === null
+  )
+    return true;
 
   if (
     format(startDate, 'MM/dd/yyyy') !==

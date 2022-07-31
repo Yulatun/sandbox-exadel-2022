@@ -15,7 +15,7 @@ import {
 import { differenceInCalendarDays } from 'date-fns';
 import i18next from 'i18next';
 
-import { datesObj, isCustomizedRange } from './utils';
+import { datesObj, getNotCustomizedRange, isCustomizedRange } from './utils';
 
 export const CalendarPicker = ({
   clearAllDateButtonsSelected,
@@ -53,8 +53,10 @@ export const CalendarPicker = ({
     }));
   };
 
-  const changeToCustomizedRange = ({ start: startDate, end: endDate }) => {
-    if (isCustomizedRange(startDate, endDate, chosenDates)) {
+  const changeToRightRange = ({ start: startDate, end: endDate }) => {
+    let chosenRange = getNotCustomizedRange(chosenDates);
+
+    if (isCustomizedRange(startDate, endDate, chosenDates) && !chosenRange) {
       setSelectedDateFilter({
         value: 'date-customized',
         dates: chosenDates
@@ -63,6 +65,16 @@ export const CalendarPicker = ({
       setIsDateButtonSelected((prevState) => ({
         ...prevState,
         customized: true
+      }));
+    } else if (chosenRange) {
+      setSelectedDateFilter({
+        value: chosenRange,
+        dates: datesObj[chosenRange]
+      });
+      clearAllDateButtonsSelected();
+      setIsDateButtonSelected((prevState) => ({
+        ...prevState,
+        [chosenRange]: true
       }));
     }
   };
@@ -145,33 +157,39 @@ export const CalendarPicker = ({
   };
 
   useEffect(() => {
-    setDaysNum(
-      differenceInCalendarDays(chosenDates.end, chosenDates.start) + 1 || 0
-    );
+    if (chosenDates.start && !chosenDates.end) {
+      setDaysNum(
+        differenceInCalendarDays(chosenDates.start, chosenDates.start) + 1 || 0
+      );
+    } else {
+      setDaysNum(
+        differenceInCalendarDays(chosenDates.end, chosenDates.start) + 1 || 0
+      );
+    }
 
     setSelectedDateFilter({ ...selectedDateFilter, dates: chosenDates });
 
     switch (true) {
       case isDateButtonSelected.today:
-        changeToCustomizedRange(datesObj.today);
+        changeToRightRange(datesObj.today);
         break;
       case isDateButtonSelected.yesterday:
-        changeToCustomizedRange(datesObj.yesterday);
+        changeToRightRange(datesObj.yesterday);
         break;
       case isDateButtonSelected.thisWeek:
-        changeToCustomizedRange(datesObj.thisWeek);
+        changeToRightRange(datesObj.thisWeek);
         break;
       case isDateButtonSelected.lastWeek:
-        changeToCustomizedRange(datesObj.lastWeek);
+        changeToRightRange(datesObj.lastWeek);
         break;
       case isDateButtonSelected.thisMonth:
-        changeToCustomizedRange(datesObj.thisMonth);
+        changeToRightRange(datesObj.thisMonth);
         break;
       case isDateButtonSelected.lastMonth:
-        changeToCustomizedRange(datesObj.lastMonth);
+        changeToRightRange(datesObj.lastMonth);
         break;
       case !!chosenDates.start || !!chosenDates.end:
-        changeToCustomizedRange({ start: null, end: null });
+        changeToRightRange({ start: null, end: null });
         break;
     }
   }, [chosenDates]);

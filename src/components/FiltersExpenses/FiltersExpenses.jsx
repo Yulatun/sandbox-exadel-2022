@@ -71,18 +71,25 @@ export const FiltersExpenses = () => {
       !isDateSelectOpen &&
       selectedDateFilter.value === 'date-customized' &&
       !!Object.values(selectedDateFilter.dates).length &&
-      selectedDateFilter.dates.start !== null &&
-      selectedDateFilter.dates.end === null
+      selectedDateFilter.dates.start &&
+      !selectedDateFilter.dates.end
     ) {
-      setChosenDates({
-        ...chosenDates,
-        end: selectedDateFilter.dates.start
-      });
+      setChosenDates((prevState) => ({
+        ...prevState,
+        end: prevState.start
+      }));
+      setSelectedDateFilter((prevState) => ({
+        ...prevState,
+        dates: {
+          start: prevState.dates.start,
+          end: prevState.dates.start
+        }
+      }));
     } else if (
       !isDateSelectOpen &&
       selectedDateFilter.value === 'date-customized' &&
       !!Object.values(selectedDateFilter.dates).length &&
-      selectedDateFilter.dates.start === null
+      !selectedDateFilter.dates.start
     ) {
       setChosenDates({
         start: null,
@@ -93,6 +100,17 @@ export const FiltersExpenses = () => {
         value: ''
       });
       setIsDateButtonSelected({ ...isDateButtonSelected, customized: false });
+    } else if (
+      !isDateSelectOpen &&
+      selectedDateFilter.value !== 'date-customized' &&
+      !!Object.values(selectedDateFilter.dates).length &&
+      chosenDates.start &&
+      !chosenDates.end
+    ) {
+      setChosenDates((prevState) => ({
+        ...prevState,
+        end: prevState.start
+      }));
     }
   }, [isDateSelectOpen]);
 
