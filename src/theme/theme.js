@@ -18,11 +18,11 @@ const config = {
 };
 
 export const GlobalStyles = css`
-  body {
-    max-width: 1080px;
-    margin: 0 auto;
-    float: none;
-  }
+  // body {
+  //   max-width: 1080px;
+  //   margin: 0 auto;
+  //   float: none;
+  // }
   .js-focus-visible :focus:not([data-focus-visible-added]) {
     outline: none;
     box-shadow: none;
