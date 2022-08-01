@@ -94,8 +94,8 @@
   "expenses.filters.date.calendar.lastMonth": "Last month",
   "expenses.filters.date.calendar.customized": "Customize range",
   "expenses.filters.date.calendar.range.name": "Range: ",
-  "expenses.filters.date.calendar.range.day": " day",
-  "expenses.filters.date.calendar.range.days": " days",
+  "expenses.filters.date.calendar.range.day_one": " day",
+  "expenses.filters.date.calendar.range.day_other": " days",
   "expenses.filters.category.placeholder": "Category",
   "expenses.filters.wallet.placeholder": "Wallet",
   "expenses.filters.payer.placeholder": "Payer"

@@ -21,7 +21,7 @@ import { CalendarPicker } from './CalendarPicker';
 export const FiltersExpenses = () => {
   const [chosenDates, setChosenDates] = useState({});
 
-  const [isDateButtonSelected, setIsDateButtonSelected] = useState({
+  const [dateButtonSelected, setDateButtonSelected] = useState({
     today: false,
     yesterday: false,
     thisWeek: false,
@@ -99,7 +99,7 @@ export const FiltersExpenses = () => {
         ...selectedDateFilter,
         value: ''
       });
-      setIsDateButtonSelected({ ...isDateButtonSelected, customized: false });
+      setDateButtonSelected({ ...dateButtonSelected, customized: false });
     } else if (
       !isDateSelectOpen &&
       selectedDateFilter.value !== 'date-customized' &&
@@ -127,8 +127,8 @@ export const FiltersExpenses = () => {
   };
 
   const clearAllDateButtonsSelected = () => {
-    setIsDateButtonSelected({
-      ...isDateButtonSelected,
+    setDateButtonSelected({
+      ...dateButtonSelected,
       today: false,
       yesterday: false,
       thisWeek: false,
@@ -216,8 +216,8 @@ export const FiltersExpenses = () => {
                 clearAllDateButtonsSelected={clearAllDateButtonsSelected}
                 chosenDates={chosenDates}
                 setChosenDates={setChosenDates}
-                isDateButtonSelected={isDateButtonSelected}
-                setIsDateButtonSelected={setIsDateButtonSelected}
+                dateButtonSelected={dateButtonSelected}
+                setDateButtonSelected={setDateButtonSelected}
                 selectedDateFilter={selectedDateFilter}
                 setSelectedDateFilter={setSelectedDateFilter}
               />

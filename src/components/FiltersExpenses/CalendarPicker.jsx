@@ -21,8 +21,8 @@ export const CalendarPicker = ({
   clearAllDateButtonsSelected,
   chosenDates,
   setChosenDates,
-  isDateButtonSelected,
-  setIsDateButtonSelected,
+  dateButtonSelected,
+  setDateButtonSelected,
   selectedDateFilter,
   setSelectedDateFilter
 }) => {
@@ -42,12 +42,12 @@ export const CalendarPicker = ({
   };
 
   const setIsCheckedIcon = (period) => {
-    if (isDateButtonSelected[period]) clearDatesAndValues();
+    if (dateButtonSelected[period]) clearDatesAndValues();
 
-    let isSelected = isDateButtonSelected[period];
+    let isSelected = dateButtonSelected[period];
 
     clearAllDateButtonsSelected();
-    setIsDateButtonSelected((prevState) => ({
+    setDateButtonSelected((prevState) => ({
       ...prevState,
       [period]: !isSelected
     }));
@@ -62,7 +62,7 @@ export const CalendarPicker = ({
         dates: chosenDates
       });
       clearAllDateButtonsSelected();
-      setIsDateButtonSelected((prevState) => ({
+      setDateButtonSelected((prevState) => ({
         ...prevState,
         customized: true
       }));
@@ -72,88 +72,22 @@ export const CalendarPicker = ({
         dates: datesObj[chosenRange]
       });
       clearAllDateButtonsSelected();
-      setIsDateButtonSelected((prevState) => ({
+      setDateButtonSelected((prevState) => ({
         ...prevState,
         [chosenRange]: true
       }));
     }
   };
 
-  const setTodayDay = (event) => {
-    setChosenDates(datesObj.today);
+  const setDay = (event, day) => {
+    setChosenDates(datesObj[day]);
 
     setSelectedDateFilter({
       ...selectedDateFilter,
       value: event.target.dataset.value
     });
 
-    setIsCheckedIcon('today');
-  };
-
-  const setYesterdayDay = (event) => {
-    setChosenDates(datesObj.yesterday);
-
-    setSelectedDateFilter({
-      ...selectedDateFilter,
-      value: event.target.dataset.value
-    });
-
-    setIsCheckedIcon('yesterday');
-  };
-
-  const setThisWeek = (event) => {
-    setChosenDates(datesObj.thisWeek);
-
-    setSelectedDateFilter({
-      ...selectedDateFilter,
-      value: event.target.dataset.value
-    });
-
-    setIsCheckedIcon('thisWeek');
-  };
-
-  const setLastWeek = (event) => {
-    setChosenDates(datesObj.lastWeek);
-
-    setSelectedDateFilter({
-      ...selectedDateFilter,
-      value: event.target.dataset.value
-    });
-
-    setIsCheckedIcon('lastWeek');
-  };
-
-  const setThisMonth = (event) => {
-    setChosenDates(datesObj.thisMonth);
-
-    setSelectedDateFilter({
-      ...selectedDateFilter,
-      value: event.target.dataset.value
-    });
-
-    setIsCheckedIcon('thisMonth');
-  };
-
-  const setLastMonth = (event) => {
-    setChosenDates(datesObj.lastMonth);
-
-    setSelectedDateFilter({
-      ...selectedDateFilter,
-      value: event.target.dataset.value
-    });
-
-    setIsCheckedIcon('lastMonth');
-  };
-
-  const setCustomizedRange = (event) => {
-    setChosenDates(datesObj.customized);
-
-    setSelectedDateFilter({
-      ...selectedDateFilter,
-      value: event.target.dataset.value
-    });
-
-    setIsCheckedIcon('customized');
+    setIsCheckedIcon(day);
   };
 
   useEffect(() => {
@@ -170,22 +104,22 @@ export const CalendarPicker = ({
     setSelectedDateFilter({ ...selectedDateFilter, dates: chosenDates });
 
     switch (true) {
-      case isDateButtonSelected.today:
+      case dateButtonSelected.today:
         changeToRightRange(datesObj.today);
         break;
-      case isDateButtonSelected.yesterday:
+      case dateButtonSelected.yesterday:
         changeToRightRange(datesObj.yesterday);
         break;
-      case isDateButtonSelected.thisWeek:
+      case dateButtonSelected.thisWeek:
         changeToRightRange(datesObj.thisWeek);
         break;
-      case isDateButtonSelected.lastWeek:
+      case dateButtonSelected.lastWeek:
         changeToRightRange(datesObj.lastWeek);
         break;
-      case isDateButtonSelected.thisMonth:
+      case dateButtonSelected.thisMonth:
         changeToRightRange(datesObj.thisMonth);
         break;
-      case isDateButtonSelected.lastMonth:
+      case dateButtonSelected.lastMonth:
         changeToRightRange(datesObj.lastMonth);
         break;
       case !!chosenDates.start || !!chosenDates.end:
@@ -197,50 +131,21 @@ export const CalendarPicker = ({
   return (
     <Flex alignItems="stretch" rounded="md" overflow="hidden">
       <List p="20px 0" w="200px">
-        <ListItem data-value="date-today" onClick={setTodayDay}>
-          {isDateButtonSelected.today && (
-            <ListIcon w="13px" h="13px" as={CheckIcon} />
-          )}
-          {i18next.t('expenses.filters.date.calendar.today')}
-        </ListItem>
-        <ListItem data-value="date-yesterday" onClick={setYesterdayDay}>
-          {isDateButtonSelected.yesterday && (
-            <ListIcon w="13px" h="13px" as={CheckIcon} />
-          )}
-
-          {i18next.t('expenses.filters.date.calendar.yesterday')}
-        </ListItem>
-        <ListItem data-value="date-thisWeek" onClick={setThisWeek}>
-          {isDateButtonSelected.thisWeek && (
-            <ListIcon w="13px" h="13px" as={CheckIcon} />
-          )}
-          {i18next.t('expenses.filters.date.calendar.thisWeek')}
-        </ListItem>
-        <ListItem data-value="date-lastWeek" onClick={setLastWeek}>
-          {isDateButtonSelected.lastWeek && (
-            <ListIcon w="13px" h="13px" as={CheckIcon} />
-          )}
-          {i18next.t('expenses.filters.date.calendar.lastWeek')}
-        </ListItem>
-        <ListItem data-value="date-thisMonth" onClick={setThisMonth}>
-          {isDateButtonSelected.thisMonth && (
-            <ListIcon w="13px" h="13px" as={CheckIcon} />
-          )}
-          {i18next.t('expenses.filters.date.calendar.thisMonth')}
-        </ListItem>
-        <ListItem data-value="date-lastMonth" onClick={setLastMonth}>
-          {isDateButtonSelected.lastMonth && (
-            <ListIcon w="13px" h="13px" as={CheckIcon} />
-          )}
-          {i18next.t('expenses.filters.date.calendar.lastMonth')}
-        </ListItem>
-        <ListItem data-value="date-customized" onClick={setCustomizedRange}>
-          {isDateButtonSelected.customized && (
-            <ListIcon w="13px" h="13px" as={CheckIcon} />
-          )}
-          {i18next.t('expenses.filters.date.calendar.customized')}
-          <CalendarIcon ml="5px" w="18px" h="18px" />
-        </ListItem>
+        {Object.entries(dateButtonSelected).map((el) => (
+          <ListItem
+            key={el[0]}
+            data-value={el[0]}
+            onClick={(event) => setDay(event, el[0])}
+          >
+            {dateButtonSelected[el[0]] && (
+              <ListIcon w="13px" h="13px" as={CheckIcon} />
+            )}
+            {i18next.t(`expenses.filters.date.calendar.${el[0]}`)}
+            {el[0] === 'customized' && (
+              <CalendarIcon ml="5px" w="18px" h="18px" />
+            )}
+          </ListItem>
+        ))}
       </List>
 
       <Calendar
@@ -267,9 +172,9 @@ export const CalendarPicker = ({
           <Text ml="10px">
             {i18next.t('expenses.filters.date.calendar.range.name')}
             {daysNum}{' '}
-            {daysNum === 1
-              ? i18next.t('expenses.filters.date.calendar.range.day')
-              : i18next.t('expenses.filters.date.calendar.range.days')}
+            {i18next.t('expenses.filters.date.calendar.range.day', {
+              count: daysNum
+            })}
           </Text>
         </Box>
       </Calendar>
