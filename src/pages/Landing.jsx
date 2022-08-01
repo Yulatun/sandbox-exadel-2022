@@ -1,7 +1,7 @@
 import { Box, Button, Flex, Link, useDisclosure } from '@chakra-ui/react';
 import i18next from 'i18next';
 
-import { AddExpenseModal, AddIncomeModal, AddWalletModal } from '@/components';
+import { AddExpenseModal, AddIncomeModal, WalletsList } from '@/components';
 
 export const Landing = () => {
   const expenseModal = useDisclosure();
@@ -29,7 +29,7 @@ export const Landing = () => {
               onClose={incomeModal.onClose}
             />
           </Flex>
-          <AddWalletModal />
+          <WalletsList />
         </Flex>
       </Box>
       <Link href="/wallet/123"> Draft of Wallet Page</Link>
