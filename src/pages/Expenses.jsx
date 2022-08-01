@@ -9,7 +9,7 @@ import {
   VStack
 } from '@chakra-ui/react';
 
-import { ExpenseItem, Footer } from '@/components';
+import { ExpenseItem, FiltersExpenses, Footer } from '@/components';
 
 export const FilterTag = ({ text }) => {
   return (
@@ -65,6 +65,9 @@ export const Expenses = () => {
       <Box bg={bgMain} w="100%">
         <Flex bg={cardBg} direction="column" justify="center" align="center">
           <Box bg={bgMain} w="100%" px={24} py={6}>
+            <Box mb="50px">
+              <FiltersExpenses />
+            </Box>
             <HStack spacing={4}>
               {['Food', 'Beauty', 'Utilities'].map((name) => (
                 <FilterTag key={name} text={name} />

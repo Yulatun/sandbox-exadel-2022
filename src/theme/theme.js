@@ -1,10 +1,16 @@
 import { extendTheme } from '@chakra-ui/react';
 import { mode } from '@chakra-ui/theme-tools';
 import { css } from '@emotion/react';
+import { CalendarDefaultTheme } from '@uselessdev/datepicker';
 
 import {
   Button,
+  Calendar,
+  CalendarControl,
+  CalendarDay,
+  CalendarMonth,
   Input,
+  List,
   Modal,
   NumberInput,
   Select,
@@ -24,7 +30,7 @@ export const GlobalStyles = css`
   }
 `;
 
-export const theme = extendTheme({
+export const theme = extendTheme(CalendarDefaultTheme, {
   config,
   styles: {
     global: (props) => ({
@@ -45,10 +51,15 @@ export const theme = extendTheme({
   components: {
     Button,
     Input,
+    List,
     Modal,
     NumberInput,
     Select,
     Switch,
-    Textarea
+    Textarea,
+    Calendar,
+    CalendarControl,
+    CalendarMonth,
+    CalendarDay
   }
 });
