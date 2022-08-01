@@ -4,9 +4,10 @@ import i18next from 'i18next';
 
 import { LogoWalletIcon } from '@/assets';
 
-import { CentralTheme } from '../../theme/theme';
+import { useCentralTheme } from '../../theme/theme';
 
 export const Logo = () => {
+  const { textColor } = useCentralTheme();
   return (
     <Box>
       <Flex
@@ -17,15 +18,9 @@ export const Logo = () => {
         <LogoWalletIcon
           width={{ base: '40px', xl: '45px' }}
           height={{ base: '40px', xl: '45px' }}
-          color={CentralTheme().textColor}
+          color={textColor}
         />
-        <Heading
-          as="h1"
-          size="md"
-          color={CentralTheme().textColor}
-          mr="16px"
-          ml="16px"
-        >
+        <Heading as="h1" size="md" color={textColor} mr="16px" ml="16px">
           {i18next.t('login.appName')}
         </Heading>
       </Flex>

@@ -13,7 +13,7 @@ import {
 } from '@chakra-ui/react';
 import i18next from 'i18next';
 
-import { CentralTheme } from '../../theme/theme';
+import { useCentralTheme } from '../../theme/theme';
 
 import { Navbar } from './Navbar';
 import { UserName } from './UserName';
@@ -21,6 +21,7 @@ import { UserName } from './UserName';
 export const NavDrawer = () => {
   const { isOpen, onClose, onToggle } = useDisclosure();
   const btnRef = React.useRef();
+  const { bgColor, popupBgColor, textColor } = useCentralTheme();
 
   return (
     <>
@@ -29,9 +30,9 @@ export const NavDrawer = () => {
           marginLeft="auto"
           borderWidth="2px"
           borderStyle="solid"
-          borderColor={CentralTheme().textColor}
-          bgColor={CentralTheme().bgColor}
-          color={CentralTheme().textColor}
+          borderColor={textColor}
+          bgColor={bgColor}
+          color={textColor}
           ref={btnRef}
           size="sm"
           icon={isOpen ? <CloseIcon /> : <HamburgerIcon fontSize="20px" />}
@@ -54,17 +55,12 @@ export const NavDrawer = () => {
             size="22px"
             top={10}
             right={10}
-            color={CentralTheme().textColor}
+            color={textColor}
           />
-          <DrawerHeader
-            pt="30px"
-            minH="100px"
-            pl={6}
-            bg={CentralTheme().bgColor}
-          >
+          <DrawerHeader pt="30px" minH="100px" pl={6} bg={bgColor}>
             <UserName />
           </DrawerHeader>
-          <DrawerBody bg={CentralTheme().popupBgColor}>
+          <DrawerBody bg={popupBgColor}>
             <Navbar />
           </DrawerBody>
         </DrawerContent>

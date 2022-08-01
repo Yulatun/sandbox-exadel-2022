@@ -1,7 +1,7 @@
 import React from 'react';
 import { Box, Flex } from '@chakra-ui/react';
 
-import { CentralTheme } from '../../theme/theme';
+import { useCentralTheme } from '../../theme/theme';
 import ColorModeToggle from '../ColorModeToggle';
 
 import { Logo } from './Logo';
@@ -12,14 +12,15 @@ import { UserMenu } from './UserMenu';
 import { UserName } from './UserName';
 
 export const Header = (isOpen) => {
+  const { bgColor, textColor } = useCentralTheme();
   return (
     <Flex
       as="header"
       justify="center"
       minH="100px"
-      bg={CentralTheme().bgColor}
+      bg={bgColor}
       boxShadow="headerShadow"
-      color={CentralTheme().textColor}
+      color={textColor}
     >
       <Flex
         align="center"

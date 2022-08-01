@@ -32,7 +32,7 @@ export const teal900 = 'teal.900',
   orange100 = 'orange.100',
   orange50 = 'orange.50';
 
-export const CentralTheme = () => {
+export const useCentralTheme = () => {
   let bgColor = useColorModeValue(orange100, teal900);
   let textColor = useColorModeValue(teal900, orange300);
   let popupBgColor = useColorModeValue(orange50, teal800);

@@ -2,9 +2,10 @@ import { BellIcon } from '@chakra-ui/icons';
 import { IconButton } from '@chakra-ui/react';
 import i18next from 'i18next';
 
-import { CentralTheme } from '../../theme/theme';
+import { useCentralTheme } from '../../theme/theme';
 
 export const Notification = () => {
+  const { textColor } = useCentralTheme();
   return (
     <IconButton
       mr={['14px', '14px', '14px', '0px']}
@@ -13,11 +14,11 @@ export const Notification = () => {
       borderRadius="50%"
       borderColor="transparent"
       variant="outline"
-      color={CentralTheme().textColor}
+      color={textColor}
       _active={{ bg: 'transparent' }}
       _hover={{
         border: '2px',
-        borderColor: CentralTheme().textColor
+        borderColor: textColor
       }}
       aria-label={i18next.t('header.btn.notifications')}
       icon={<BellIcon w="30px" h="30px" />}

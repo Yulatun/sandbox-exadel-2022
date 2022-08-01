@@ -8,15 +8,16 @@ import {
 } from '@chakra-ui/react';
 import i18next from 'i18next';
 
-import { CentralTheme } from '../../theme/theme';
+import { useCentralTheme } from '../../theme/theme';
 
 export const Navbar = () => {
+  const { textColor } = useCentralTheme();
   return (
     <Breadcrumb
       spacing="16px"
       separator=""
       fontSize="xl"
-      color={CentralTheme().textColor}
+      color={textColor}
       fontWeight="bold"
     >
       <Flex direction={{ base: 'column', lg: 'row', xl: 'row' }}>
