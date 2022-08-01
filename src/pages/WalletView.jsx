@@ -37,7 +37,7 @@ export const WalletView = () => {
 
   return (
     <>
-      <Box bg={bgMain} px={24} py={6}>
+      <Box bg={bgMain} px={24} py={6} mt={6}>
         <Flex mr="30%" ml="35%">
           <WalletCard
             totalBalance={2000}
