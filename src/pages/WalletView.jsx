@@ -50,7 +50,7 @@ export const WalletView = () => {
             <ExpenseItem
               key={singleTransaction.id}
               transaction={singleTransaction}
-              version="short"
+              isShortView
             />
           ))}
           ;

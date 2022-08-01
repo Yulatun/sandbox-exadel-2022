@@ -10,11 +10,11 @@ import {
 
 import { NoteIcon } from '@/assets';
 
-export const ExpenseItem = ({ transaction, onEdit, onDelete, version }) => {
+export const ExpenseItem = ({ transaction, onEdit, onDelete, isShortView }) => {
   const bgMain = useColorModeValue('orange.50', 'teal.700');
   const textColor = useColorModeValue('teal.900', 'orange.50');
 
-  const isLongDisplayVersion = version !== 'short';
+  const isLongDisplayVersion = !isShortView;
 
   const renderLongVersionFragment = () => {
     return (
@@ -43,10 +43,10 @@ export const ExpenseItem = ({ transaction, onEdit, onDelete, version }) => {
 
         <Flex w="10%" justify="space-around">
           <Box>
-            <IconButton onClick={onEdit} icon={<EditIcon />}></IconButton>
+            <IconButton onClick={onEdit} icon={<EditIcon />} />
           </Box>
           <Box>
-            <IconButton onClick={onDelete} icon={<DeleteIcon />}></IconButton>
+            <IconButton onClick={onDelete} icon={<DeleteIcon />} />
           </Box>
         </Flex>
       </>
