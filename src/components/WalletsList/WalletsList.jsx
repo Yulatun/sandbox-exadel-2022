@@ -7,6 +7,7 @@ import {
   useColorModeValue,
   VStack
 } from '@chakra-ui/react';
+import i18next from 'i18next';
 
 import { PiggyBankIcon } from '@/assets';
 
@@ -44,24 +45,17 @@ export const WalletsList = () => {
               spacing={8}
               alignItems="flex-start"
               justify="center"
-              // bg="gray.400"
             >
               <Heading as="h4" size="md" fontWeight="bold">
-                Total Balance:{' '}
+                {i18next.t('walletView.headOfBalanceMessage')}&#58;
               </Heading>
-              <Text>Choose your wallet</Text>
+              <Text>{i18next.t('modal.addExpense.wallet')}</Text>
               <AddWalletModal />
             </VStack>
           </GridItem>
           <GridItem area="center">
-            <VStack
-              w="full"
-              h="full"
-              p={8}
-              spacing={8}
-              justify="center"
-              // bg="gray.300"
-            >
+            <VStack w="full" h="full" p={8} spacing={8} justify="center">
+              {/* Next step will be adopting the view of this component for that layout */}
               <WalletCard />
             </VStack>
           </GridItem>
@@ -73,10 +67,9 @@ export const WalletsList = () => {
               spacing={8}
               alignItems="center"
               justify="center"
-              // bg="gray.200"
             >
               <PiggyBankIcon w={24} h={24} color={iconsThemeColor} />
-              <Text fontWeight="bold">0$</Text>
+              <Text fontWeight="bold">0 &#36;</Text>
             </VStack>
           </GridItem>
         </Grid>
