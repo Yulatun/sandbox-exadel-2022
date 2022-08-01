@@ -1,6 +1,7 @@
 import React from 'react';
-import { Box, Flex, useColorModeValue } from '@chakra-ui/react';
+import { Box, Flex } from '@chakra-ui/react';
 
+import { CentralTheme } from '../../theme/theme';
 import ColorModeToggle from '../ColorModeToggle';
 
 import { Logo } from './Logo';
@@ -11,22 +12,20 @@ import { UserMenu } from './UserMenu';
 import { UserName } from './UserName';
 
 export const Header = (isOpen) => {
-  const headerBgThemeColor = useColorModeValue('orange.100', 'teal.900');
-  const headerTextColor = useColorModeValue('teal.900', 'orange.300');
   return (
     <Flex
       as="header"
       justify="center"
       minH="100px"
-      bg={headerBgThemeColor}
+      bg={CentralTheme().bgColor}
       boxShadow="headerShadow"
-      color={headerTextColor}
+      color={CentralTheme().textColor}
     >
       <Flex
         align="center"
         justify="space-between"
         maxWidth="1200px"
-        w={'100%'}
+        w="100%"
         p="15px 30px"
       >
         <Logo />

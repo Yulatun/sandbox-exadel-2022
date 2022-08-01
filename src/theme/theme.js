@@ -1,4 +1,5 @@
 import { extendTheme } from '@chakra-ui/react';
+import { useColorModeValue } from '@chakra-ui/react';
 import { mode } from '@chakra-ui/theme-tools';
 import { css } from '@emotion/react';
 
@@ -18,16 +19,33 @@ const config = {
 };
 
 export const GlobalStyles = css`
-  // body {
-  //   max-width: 1080px;
-  //   margin: 0 auto;
-  //   float: none;
-  // }
   .js-focus-visible :focus:not([data-focus-visible-added]) {
     outline: none;
     box-shadow: none;
   }
 `;
+export const teal900 = 'teal.900',
+  teal800 = 'teal.800',
+  teal700 = 'teal.700',
+  teal600 = 'teal.600',
+  orange300 = 'orange.300',
+  orange100 = 'orange.100',
+  orange50 = 'orange.50';
+
+export const CentralTheme = () => {
+  let bgColor = useColorModeValue(orange100, teal900);
+  let textColor = useColorModeValue(teal900, orange300);
+  let popupBgColor = useColorModeValue(orange50, teal800);
+  let popupTextColor = useColorModeValue(teal900, orange100);
+  let hoverBgColor = useColorModeValue(orange100, teal600);
+  return {
+    bgColor,
+    textColor,
+    popupBgColor,
+    popupTextColor,
+    hoverBgColor
+  };
+};
 
 export const theme = extendTheme({
   config,

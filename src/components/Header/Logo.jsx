@@ -1,12 +1,12 @@
 import React from 'react';
-import { Box, Flex, Heading, useColorModeValue } from '@chakra-ui/react';
+import { Box, Flex, Heading } from '@chakra-ui/react';
 import i18next from 'i18next';
 
 import { LogoWalletIcon } from '@/assets';
 
+import { CentralTheme } from '../../theme/theme';
+
 export const Logo = () => {
-  const iconsThemeColor = useColorModeValue('teal.900', 'orange.300');
-  const headerTextColor = useColorModeValue('teal.900', 'orange.300');
   return (
     <Box>
       <Flex
@@ -17,9 +17,15 @@ export const Logo = () => {
         <LogoWalletIcon
           width={{ base: '40px', xl: '45px' }}
           height={{ base: '40px', xl: '45px' }}
-          color={iconsThemeColor}
+          color={CentralTheme().textColor}
         />
-        <Heading as="h1" size="md" color={headerTextColor} mr="16px" ml="16px">
+        <Heading
+          as="h1"
+          size="md"
+          color={CentralTheme().textColor}
+          mr="16px"
+          ml="16px"
+        >
           {i18next.t('login.appName')}
         </Heading>
       </Flex>

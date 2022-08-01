@@ -10,23 +10,17 @@ import {
   MenuButton,
   MenuItem,
   MenuList,
-  useColorModeValue,
   useDisclosure
 } from '@chakra-ui/react';
 import i18next from 'i18next';
 
 import { LogOutIcon } from '@/assets';
 
+import { CentralTheme } from '../../theme/theme';
 import { DeleteConfirmationModal } from '../DeleteConfirmationModal';
 
 export const UserMenu = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const userMenuBgThemeColor = useColorModeValue('orange.50', 'teal.800');
-  const userMenuTextColor = useColorModeValue('teal.900', 'orange.100');
-  const userMenuItemHoverBgColor = useColorModeValue('orange.100', 'teal.600');
-  const iconsThemeColor = useColorModeValue('teal.900', 'orange.300');
-  const iconsMenuThemeColor = useColorModeValue('teal.900', 'orange.100');
-  const iconsHoverThemeColor = useColorModeValue('teal.900', 'orange.300');
   const navigate = useNavigate();
 
   const logout = () => {
@@ -43,51 +37,67 @@ export const UserMenu = () => {
         borderColor="transparent"
         borderRadius="50%"
         aria-label={i18next.t('header.userMenu')}
-        color={iconsThemeColor}
+        color={CentralTheme().textColor}
         outline="none"
         _hover={{
           border: '2px',
-          borderColor: iconsHoverThemeColor
+          borderColor: CentralTheme().textColor
         }}
       >
         <SettingsIcon w="25px" h="25px" />
       </MenuButton>
       <MenuList
-        bg={userMenuBgThemeColor}
-        color={userMenuTextColor}
+        bg={CentralTheme().popupBgColor}
+        color={CentralTheme().popupTextColor}
         fontWeight="bold"
       >
         <MenuItem
           _hover={{
-            bg: userMenuItemHoverBgColor
+            bg: CentralTheme().hoverBgColor
           }}
-          icon={<SettingsIcon w={5} h={5} color={iconsMenuThemeColor} />}
+          icon={
+            <SettingsIcon w={5} h={5} color={CentralTheme().popupTextColor} />
+          }
         >
           {i18next.t('header.userMenu.settings')}
         </MenuItem>
         <MenuItem
           _hover={{
-            bg: userMenuItemHoverBgColor
+            bg: CentralTheme().hoverBgColor
           }}
-          icon={<QuestionOutlineIcon w={5} h={5} color={iconsMenuThemeColor} />}
+          icon={
+            <QuestionOutlineIcon
+              w={5}
+              h={5}
+              color={CentralTheme().popupTextColor}
+            />
+          }
         >
           {i18next.t('header.userMenu.help')}
         </MenuItem>
         <MenuItem
           _hover={{
-            bg: userMenuItemHoverBgColor
+            bg: CentralTheme().hoverBgColor
           }}
           onClick={onOpen}
-          icon={<DeleteIcon w={5} h={5} color={iconsMenuThemeColor} />}
+          icon={
+            <DeleteIcon w={5} h={5} color={CentralTheme().popupTextColor} />
+          }
         >
           {i18next.t('header.userMenu.delete')}
         </MenuItem>
         <MenuItem
           _hover={{
-            bg: userMenuItemHoverBgColor
+            bg: CentralTheme().hoverBgColor
           }}
           onClick={logout}
-          icon={<LogOutIcon width={5} height={5} color={iconsMenuThemeColor} />}
+          icon={
+            <LogOutIcon
+              width={5}
+              height={5}
+              color={CentralTheme().popupTextColor}
+            />
+          }
         >
           {i18next.t('header.userMenu.logout')}
         </MenuItem>

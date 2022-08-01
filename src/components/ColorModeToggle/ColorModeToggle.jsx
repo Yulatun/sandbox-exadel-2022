@@ -1,12 +1,11 @@
 import { MoonIcon, SunIcon } from '@chakra-ui/icons';
-import { IconButton, useColorMode, useColorModeValue } from '@chakra-ui/react';
+import { IconButton, useColorMode } from '@chakra-ui/react';
 import i18next from 'i18next';
+
+import { CentralTheme } from '../../theme/theme';
 
 const ColorModeToggle = () => {
   const { colorMode, toggleColorMode } = useColorMode();
-  const iconsThemeColor = useColorModeValue('teal.900', 'orange.300');
-  const iconsHoverThemeColor = useColorModeValue('teal.900', 'orange.300');
-
   return (
     <IconButton
       mr="16px"
@@ -15,10 +14,10 @@ const ColorModeToggle = () => {
       border="2px"
       borderRadius="50%"
       borderColor="transparent"
-      color={iconsThemeColor}
+      color={CentralTheme().textColor}
       _hover={{
         border: '2px',
-        borderColor: iconsHoverThemeColor
+        borderColor: CentralTheme().textColor
       }}
       _active={{ bg: 'transparent' }}
       variant="outline"

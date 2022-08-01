@@ -21,6 +21,7 @@
   "header.navigation.about": "About",
   "header.navigation.categories": "Categories",
   "header.navigation.expenses": "Expenses",
+  "header.drawer.open": "Open menu",
   "login.appName": "PortMoney",
   "login.form.email": "Email",
   "login.form.password": "Password",
