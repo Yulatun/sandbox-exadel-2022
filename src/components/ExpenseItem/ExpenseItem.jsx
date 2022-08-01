@@ -10,30 +10,15 @@ import {
 
 import { NoteIcon } from '@/assets';
 
-export const ExpenseItem = ({ transaction, onEdit, onDelete }) => {
+export const ExpenseItem = ({ transaction, onEdit, onDelete, isShortView }) => {
   const bgMain = useColorModeValue('orange.50', 'teal.700');
   const textColor = useColorModeValue('teal.900', 'orange.50');
 
-  return (
-    <>
-      <HStack
-        justify="space-around"
-        w="100%"
-        boxShadow="lg"
-        bg={bgMain}
-        color={textColor}
-        paddingY={3}
-      >
-        <Box w="8%">{transaction.date}</Box>
-        <Box
-          w="15%"
-          textOverflow="ellipsis"
-          overflow="hidden"
-          whiteSpace="nowrap"
-        >
-          <Tooltip label={transaction.category}>{transaction.category}</Tooltip>
-        </Box>
-        <Box w="7%">{transaction.amount}</Box>
+  const isLongDisplayVersion = !isShortView;
+
+  const renderLongVersionFragment = () => {
+    return (
+      <>
         <Box
           w="20%"
           textOverflow="ellipsis"
@@ -58,12 +43,38 @@ export const ExpenseItem = ({ transaction, onEdit, onDelete }) => {
 
         <Flex w="10%" justify="space-around">
           <Box>
-            <IconButton onClick={onEdit} icon={<EditIcon />}></IconButton>
+            <IconButton onClick={onEdit} icon={<EditIcon />} />
           </Box>
           <Box>
-            <IconButton onClick={onDelete} icon={<DeleteIcon />}></IconButton>
+            <IconButton onClick={onDelete} icon={<DeleteIcon />} />
           </Box>
         </Flex>
+      </>
+    );
+  };
+
+  return (
+    <>
+      <HStack
+        justify="space-around"
+        w="100%"
+        boxShadow="lg"
+        bg={bgMain}
+        color={textColor}
+        paddingY={5}
+        maxW="container.xl"
+      >
+        <Box w="8%">{transaction.date}</Box>
+        <Box
+          w="15%"
+          textOverflow="ellipsis"
+          overflow="hidden"
+          whiteSpace="nowrap"
+        >
+          <Tooltip label={transaction.category}>{transaction.category}</Tooltip>
+        </Box>
+        <Box w="7%">{transaction.amount}</Box>
+        {isLongDisplayVersion && renderLongVersionFragment()}
       </HStack>
     </>
   );
