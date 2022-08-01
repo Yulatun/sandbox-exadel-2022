@@ -25,7 +25,7 @@ export const Header = (isOpen) => {
       <Flex
         align="center"
         justify="space-between"
-        maxWidth="1200px"
+        maxW="container.xl"
         w="100%"
         p="15px 30px"
       >
