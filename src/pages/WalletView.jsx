@@ -8,7 +8,7 @@ export const WalletView = () => {
 
   return (
     <>
-      <Box bg={bgMain} h="700px" w="850">
+      <Box bg={bgMain} h="800px" w="850">
         <Flex mr="35%" ml="38%" pos="relative" top="50px">
           <WalletCard
             totalBalance={2000}

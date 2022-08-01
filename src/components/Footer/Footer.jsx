@@ -1,4 +1,5 @@
 import { Flex, Text } from '@chakra-ui/react';
+import i18next from 'i18next';
 
 export const Footer = () => {
   const currentYear = new Date().getFullYear();
@@ -17,7 +18,7 @@ export const Footer = () => {
     >
       <footer>
         <Text color="#ccb" fontSize="xl">
-          Exadel Internship {currentYear}
+          {i18next.t('footer.message')} {currentYear}
         </Text>
       </footer>
     </Flex>

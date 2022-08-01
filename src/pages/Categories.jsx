@@ -1,6 +1,18 @@
 import { Grid, GridItem } from '@chakra-ui/react';
 
-import { AccordionComponent, AccordionHeadings } from '@/components';
+import { AccordionComponent, AccordionHeadings, Footer } from '@/components';
+
+import { AccordionArray } from '../components/AccordionComponent/AccordionArray';
+
+function createAccordion(accordionContent) {
+  return (
+    <AccordionComponent
+      key={accordionContent.id}
+      title={accordionContent.title}
+      content={accordionContent.content}
+    />
+  );
+}
 
 export const Categories = () => {
   return (
@@ -11,21 +23,17 @@ export const Categories = () => {
             headingOne="Categories of Expenses "
             headingTwo="Add expense Category"
           />
-          <AccordionComponent name="Category 1" message="I am random message" />
-          <AccordionComponent name="Category 1" message="I am random message" />
-          <AccordionComponent name="Category 1" message="I am random message" />
+          {AccordionArray.map(createAccordion)}
         </GridItem>
         <GridItem className="incomeCol">
           <AccordionHeadings
             headingOne="Categories of Incomes"
             headingTwo="Add income Category"
           />
-          <AccordionComponent
-            name="Category 1"
-            message="I am also random message"
-          />
+          {AccordionArray.map(createAccordion)}
         </GridItem>
       </Grid>
+      <Footer />
     </>
   );
 };
