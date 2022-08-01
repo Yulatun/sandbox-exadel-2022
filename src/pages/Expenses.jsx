@@ -62,7 +62,7 @@ export const Expenses = () => {
 
   return (
     <>
-      <Box bg={bgMain} w="100%">
+      <Box bg={bgMain} w="100%" mt={6}>
         <Flex bg={cardBg} direction="column" justify="center" align="center">
           <Box bg={bgMain} w="100%" px={24} py={6}>
             <Box mb="50px">
