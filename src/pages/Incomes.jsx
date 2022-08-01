@@ -14,7 +14,7 @@ export const Incomes = () => {
   return (
     <Box bg={bgMain} w="100%" mt={6}>
       <Flex bg={bgMain} direction="column" justify="center" align="center">
-        <VStack w="80%" pt={5} align="stretch" justify="center">
+        <VStack w="80%" pt={5} spacing={5} align="stretch" justify="center">
           {isFetched &&
             data.data
               .filter((data) => data.transactionType === 'Income')
