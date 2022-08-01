@@ -1,4 +1,5 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import {
   DeleteIcon,
   QuestionOutlineIcon,
@@ -26,6 +27,12 @@ export const UserMenu = () => {
   const iconsThemeColor = useColorModeValue('teal.900', 'orange.300');
   const iconsMenuThemeColor = useColorModeValue('teal.900', 'orange.100');
   const iconsHoverThemeColor = useColorModeValue('teal.900', 'orange.300');
+  const navigate = useNavigate();
+
+  const logout = () => {
+    localStorage.removeItem('token');
+    navigate('/login', { replace: true });
+  };
 
   return (
     <Menu>
@@ -79,6 +86,7 @@ export const UserMenu = () => {
           _hover={{
             bg: userMenuItemHoverBgColor
           }}
+          onClick={logout}
           icon={<LogOutIcon width={5} height={5} color={iconsMenuThemeColor} />}
         >
           {i18next.t('header.userMenu.logout')}
