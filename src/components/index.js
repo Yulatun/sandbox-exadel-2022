@@ -7,6 +7,7 @@ export { ExpenseItem } from './ExpenseItem';
 export { FiltersExpenses } from './FiltersExpenses';
 export { Footer } from './Footer';
 export { Header } from './Header';
+export { IncomeItem } from './IncomeItem';
 export { LoginForm } from './LoginForm';
 export { WalletCard } from './WalletCard';
 export { WalletsList } from './WalletsList';

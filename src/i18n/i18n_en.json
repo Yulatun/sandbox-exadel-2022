@@ -1,5 +1,5 @@
 {
-  "about.welcomeMessage": "Welcome to the about page!",
+  "incomes.welcomeMessage": "Welcome to the incomes page!",
   "category.welcomeMessage": "Welcome to the categories!",
   "landing.welcomeMessage": "Welcome to the landing page!",
   "login.welcomeMessage": "Welcome to the login page!",
@@ -18,7 +18,7 @@
   "header.btn.settings": "Settings button",
   "header.btn.notifications": "Notifications button",
   "header.navigation.home": "Home",
-  "header.navigation.about": "About",
+  "header.navigation.incomes": "Incomes",
   "header.navigation.categories": "Categories",
   "header.navigation.expenses": "Expenses",
   "header.drawer.open": "Open menu",
