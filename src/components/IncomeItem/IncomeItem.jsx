@@ -8,43 +8,45 @@ import {
   Tooltip,
   useColorModeValue
 } from '@chakra-ui/react';
+import { format } from 'date-fns';
 
 import { NoteIcon } from '@/assets';
-
-export const IncomeItem = ({ onEdit, onDelete }) => {
+export const IncomeItem = ({ transaction, onEdit, onDelete }) => {
   const bgMain = useColorModeValue('orange.50', 'teal.700');
   const textColor = useColorModeValue('teal.900', 'orange.50');
 
   return (
     <>
-      <Center paddingY={3}>
+      <Center paddingY={2}>
         <HStack
           justify="space-evenly"
-          w="80%"
+          w="100%"
           bg={bgMain}
           color={textColor}
-          paddingY={3}
+          paddingY={4}
           boxShadow="lg"
         >
-          <Box w="8%">16.08</Box>
+          <Box w="8%">
+            {format(new Date(transaction.dateOfTransaction), 'dd.MM.yyyy')}
+          </Box>
           <Box
             w="15%"
             textOverflow="ellipsis"
             overflow="hidden"
             whiteSpace="nowrap"
           >
-            <Tooltip label="Salary from Freelance">
-              Salary from Freelance
+            <Tooltip label={transaction.id}>
+              {transaction.transactionType}
             </Tooltip>
           </Box>
-          <Box w="10%">100$</Box>
+          <Box w="10%">{transaction.value}</Box>
           <Box
             w="15%"
             textOverflow="ellipsis"
             overflow="hidden"
             whiteSpace="nowrap"
           >
-            <Tooltip label="Wallet in dollars">Wallet in dollars</Tooltip>
+            <Tooltip label={transaction.categoryId}>Wallet in dollars</Tooltip>
           </Box>
 
           <Box
@@ -53,7 +55,7 @@ export const IncomeItem = ({ onEdit, onDelete }) => {
             overflow="hidden"
             whiteSpace="nowrap"
           >
-            <Tooltip label="Notes">
+            <Tooltip label={transaction.description}>
               <Flex align="center" justify="center">
                 <NoteIcon color={textColor}></NoteIcon>
               </Flex>
