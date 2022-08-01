@@ -62,6 +62,7 @@ export const ExpenseItem = ({ transaction, onEdit, onDelete, isShortView }) => {
         bg={bgMain}
         color={textColor}
         paddingY={5}
+        maxW="container.xl"
       >
         <Box w="8%">{transaction.date}</Box>
         <Box
