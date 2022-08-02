@@ -7,6 +7,7 @@ import {
   Tooltip,
   useColorModeValue
 } from '@chakra-ui/react';
+import { format } from 'date-fns';
 
 import { NoteIcon } from '@/assets';
 
@@ -25,16 +26,16 @@ export const ExpenseItem = ({ transaction, onEdit, onDelete, isShortView }) => {
           overflow="hidden"
           whiteSpace="nowrap"
         >
-          <Tooltip label={transaction.wallet}>{transaction.wallet}</Tooltip>
+          <Tooltip label={'transaction.wallet'}>{'transaction.wallet'}</Tooltip>
         </Box>
-        <Box w="10%">{transaction.payer}</Box>
+        <Box w="10%">{'transaction.payer'}</Box>
         <Box
           w="10%"
           textOverflow="ellipsis"
           overflow="hidden"
           whiteSpace="nowrap"
         >
-          <Tooltip label={transaction.notes}>
+          <Tooltip label={transaction.description}>
             <Flex align="center" justify="center">
               <NoteIcon color={textColor}></NoteIcon>
             </Flex>
@@ -54,28 +55,30 @@ export const ExpenseItem = ({ transaction, onEdit, onDelete, isShortView }) => {
   };
 
   return (
-    <>
-      <HStack
-        justify="space-around"
-        w="100%"
-        boxShadow="lg"
-        bg={bgMain}
-        color={textColor}
-        paddingY={5}
-        maxW="container.xl"
+    <HStack
+      justify="space-around"
+      w="100%"
+      boxShadow="lg"
+      bg={bgMain}
+      color={textColor}
+      paddingY={5}
+      maxW="container.xl"
+    >
+      <Box w="8%">
+        {format(new Date(transaction.dateOfTransaction), 'dd.MM.yyyy')}
+      </Box>
+      <Box
+        w="15%"
+        textOverflow="ellipsis"
+        overflow="hidden"
+        whiteSpace="nowrap"
       >
-        <Box w="8%">{transaction.date}</Box>
-        <Box
-          w="15%"
-          textOverflow="ellipsis"
-          overflow="hidden"
-          whiteSpace="nowrap"
-        >
-          <Tooltip label={transaction.category}>{transaction.category}</Tooltip>
-        </Box>
-        <Box w="7%">{transaction.amount}</Box>
-        {isLongDisplayVersion && renderLongVersionFragment()}
-      </HStack>
-    </>
+        <Tooltip label={'transaction.subcategory'}>
+          {'transaction.category'}
+        </Tooltip>
+      </Box>
+      <Box w="7%">{transaction.value}</Box>
+      {isLongDisplayVersion && renderLongVersionFragment()}
+    </HStack>
   );
 };
