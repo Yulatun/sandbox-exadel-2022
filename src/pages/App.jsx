@@ -5,10 +5,10 @@ import { AppLayout } from '@/components/Layout';
 import { PrivateRoute } from '@/components/Routes/PrivateRoute';
 import { PublicRoute } from '@/components/Routes/PublicRoute';
 
-import { About } from './About';
 import { Categories } from './Categories';
 import { Expenses } from './Expenses';
 import { Fallback } from './Fallback';
+import { Incomes } from './Incomes';
 import { Landing } from './Landing';
 import { Login } from './Login';
 import { WalletView } from './WalletView';
@@ -38,7 +38,7 @@ export const App = () => {
             }
           >
             <Route path="/" element={<Landing />} />
-            <Route path="/about" element={<About />} />
+            <Route path="/incomes" element={<Incomes />} />
             <Route path="/categories" element={<Categories />} />
 
             <Route path="/expenses" element={<Expenses />} />
