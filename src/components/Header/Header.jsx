@@ -25,7 +25,7 @@ export const Header = (isOpen) => {
       <Flex
         align="center"
         justify="space-between"
-        maxWidth="1200px"
+        maxWidth="container.xl"
         w="100%"
         p="15px 30px"
       >
@@ -34,8 +34,8 @@ export const Header = (isOpen) => {
         <Box
           display={{ base: isOpen ? 'none' : 'block', lg: 'block' }}
           flexBasis={{ base: '100%', md: 'auto' }}
-          ml={{ base: '24px', xl: '48px' }}
-          mr={{ base: '24px', xl: '48px' }}
+          ml={{ base: '16px', xl: '48px' }}
+          mr={{ base: '16px', xl: '48px' }}
         >
           <Navbar />
         </Box>
@@ -43,8 +43,8 @@ export const Header = (isOpen) => {
         <Box
           display={{ base: isOpen ? 'none' : 'block', lg: 'block' }}
           flexBasis={{ base: '100%', md: 'auto' }}
-          ml={{ base: '24px', xl: '36px' }}
-          mr={{ base: '24px', xl: '36px' }}
+          ml={{ base: '16px', xl: '36px' }}
+          mr={{ base: '16px', xl: '36px' }}
         >
           <UserName />
         </Box>
