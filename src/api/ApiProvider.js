@@ -1,4 +1,8 @@
+import { createStandaloneToast } from '@chakra-ui/toast';
 import axios from 'axios';
+
+export const { ToastContainer, toast } = createStandaloneToast();
+
 export const instance = axios.create({
   baseURL: import.meta.env.VITE_API_URL,
   timeout: 1000
@@ -11,22 +15,52 @@ const responseSuccessInterceptor = (response) => {
 const networkErrorInterceptor = (error) => {
   switch (error.response.status) {
     case 401:
-      console.log('Unauthorized');
+      toast({
+        title: 'Unauthorized',
+        status: 'error',
+        duration: 9000,
+        isClosable: true
+      });
       break;
     case 403:
-      console.log('Forbidden');
+      toast({
+        title: 'Forbidden',
+        status: 'error',
+        duration: 9000,
+        isClosable: true
+      });
       break;
     case 404:
-      console.log('Not Found');
+      toast({
+        title: 'Not Found',
+        status: 'error',
+        duration: 9000,
+        isClosable: true
+      });
       break;
     case 500:
-      console.log('Internal Server Error');
+      toast({
+        title: 'Internal Server Error',
+        status: 'error',
+        duration: 9000,
+        isClosable: true
+      });
       break;
     case 502:
-      console.log('Bad Gateway');
+      toast({
+        title: 'Bad Gateway',
+        status: 'error',
+        duration: 9000,
+        isClosable: true
+      });
       break;
     default:
-      console.log('Error');
+      toast({
+        title: 'Error',
+        status: 'error',
+        duration: 9000,
+        isClosable: true
+      });
       break;
   }
   return Promise.reject(error);
