@@ -44,7 +44,7 @@ export const Header = (isOpen) => {
           display={{ base: isOpen ? 'none' : 'block', lg: 'block' }}
           flexBasis={{ base: '100%', md: 'auto' }}
           ml={{ base: '8px', xl: '36px' }}
-          mr={{ base: '8px', xl: '36px' }}
+          mr={{ lg: 0, xl: '36px' }}
         >
           <UserName />
         </Box>
