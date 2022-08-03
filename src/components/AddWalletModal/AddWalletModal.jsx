@@ -1,4 +1,5 @@
 import { useForm } from 'react-hook-form';
+import { useQuery } from 'react-query';
 import {
   Button,
   FormControl,
@@ -20,10 +21,12 @@ import {
 } from '@chakra-ui/react';
 import i18next from 'i18next';
 
+import getCurrency from '@/api/getCurrency';
 import { createWallet } from '@/api/Wallet';
 
 export const AddWalletModal = () => {
   const { isOpen, onClose, onOpen } = useDisclosure();
+  const { data, isFetched } = useQuery(['currency'], getCurrency);
 
   const {
     register,
@@ -91,10 +94,10 @@ export const AddWalletModal = () => {
                 })}
                 placeholder={i18next.t('modal.addWallet.currency.placeholder')}
               >
-                {/* we will change these fields in the future, so no need to make i18next placeholders here */}
-                <option value="EUR">EUR</option>
-                <option value="USD">USD</option>
-                <option value="PLN">PLN</option>
+                {isFetched &&
+                  data.data.map((currency, id) => {
+                    return <option key={id}>{currency.currencyCode}</option>;
+                  })}
               </Select>
               <FormErrorMessage>
                 <Text>{errors.currency && errors.currency.message}</Text>
