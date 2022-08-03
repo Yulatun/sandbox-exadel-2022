@@ -1,13 +1,12 @@
 import { createStandaloneToast } from '@chakra-ui/toast';
 import axios from 'axios';
 
-export const { toast } = createStandaloneToast();
-
 export const instance = axios.create({
   baseURL: import.meta.env.VITE_API_URL,
   timeout: 1000
 });
 
+const { toast } = createStandaloneToast();
 const responseSuccessInterceptor = (response) => {
   return response;
 };
