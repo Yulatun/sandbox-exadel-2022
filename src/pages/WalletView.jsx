@@ -1,16 +1,11 @@
 import { useState } from 'react';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
-import {
-  Box,
-  Flex,
-  useColorModeValue,
-  useDisclosure,
-  VStack
-} from '@chakra-ui/react';
+import { Box, Flex, useDisclosure, VStack } from '@chakra-ui/react';
 import i18next from 'i18next';
 
 import { deleteTransactions, getTransactions } from '@/api/Transactions';
 import { DeleteConfirmationModal, ExpenseItem, WalletCard } from '@/components';
+import { useCentralTheme } from '@/theme';
 
 export const WalletView = () => {
   const [chosenTransactionObj, setChosenTransactionObj] = useState({});
@@ -32,7 +27,7 @@ export const WalletView = () => {
     }
   );
 
-  const bgMain = useColorModeValue('orange.100', 'teal.900');
+  const { bgColor } = useCentralTheme();
 
   const onDelete = () => {
     mutationTransaction.mutate();
@@ -43,7 +38,7 @@ export const WalletView = () => {
   };
 
   return (
-    <Box bg={bgMain} px={24} py={6} mt={6}>
+    <Box bg={bgColor} px={24} py={6} mt={6}>
       <Flex mr="30%" ml="35%">
         <WalletCard
           totalBalance={2000}
