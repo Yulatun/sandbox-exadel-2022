@@ -1,7 +1,7 @@
 import { createStandaloneToast } from '@chakra-ui/toast';
 import axios from 'axios';
 
-export const { ToastContainer, toast } = createStandaloneToast();
+export const { toast } = createStandaloneToast();
 
 export const instance = axios.create({
   baseURL: import.meta.env.VITE_API_URL,
