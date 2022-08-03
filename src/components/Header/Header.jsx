@@ -34,8 +34,8 @@ export const Header = (isOpen) => {
         <Box
           display={{ base: isOpen ? 'none' : 'block', lg: 'block' }}
           flexBasis={{ base: '100%', md: 'auto' }}
-          ml={{ base: '24px', xl: '48px' }}
-          mr={{ base: '24px', xl: '48px' }}
+          ml={{ base: '8px', xl: '48px' }}
+          mr={{ base: '8px', xl: '48px' }}
         >
           <Navbar />
         </Box>
@@ -43,8 +43,8 @@ export const Header = (isOpen) => {
         <Box
           display={{ base: isOpen ? 'none' : 'block', lg: 'block' }}
           flexBasis={{ base: '100%', md: 'auto' }}
-          ml={{ base: '24px', xl: '36px' }}
-          mr={{ base: '24px', xl: '36px' }}
+          ml={{ base: '8px', xl: '36px' }}
+          mr={{ lg: 0, xl: '36px' }}
         >
           <UserName />
         </Box>
