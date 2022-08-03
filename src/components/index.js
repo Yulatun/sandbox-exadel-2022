@@ -10,6 +10,6 @@ export { Header } from './Header';
 export { IncomeItem } from './IncomeItem';
 export { LoginForm } from './LoginForm';
 export { Preloader } from './Preloader';
-export { TransactionItem } from './TransactionItem';
+export { TransactionList } from './TransactionList';
 export { WalletCard } from './WalletCard';
 export { WalletsList } from './WalletsList';
