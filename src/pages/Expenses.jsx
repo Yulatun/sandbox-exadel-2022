@@ -1,3 +1,5 @@
+import { useState } from 'react';
+import { useMutation, useQuery, useQueryClient } from 'react-query';
 import {
   Box,
   Flex,
@@ -6,10 +8,18 @@ import {
   TagCloseButton,
   TagLabel,
   useColorModeValue,
+  useDisclosure,
   VStack
 } from '@chakra-ui/react';
+import i18next from 'i18next';
 
-import { ExpenseItem, FiltersExpenses, Footer } from '@/components';
+import { deleteTransactions, getTransactions } from '@/api/Transactions';
+import {
+  DeleteConfirmationModal,
+  ExpenseItem,
+  FiltersExpenses,
+  Footer
+} from '@/components';
 
 export const FilterTag = ({ text }) => {
   return (
@@ -21,44 +31,33 @@ export const FilterTag = ({ text }) => {
 };
 
 export const Expenses = () => {
+  const [chosenExpenseId, setChosenExpenseId] = useState();
+
   const bgMain = useColorModeValue('orange.100', 'teal.900');
   const cardBg = useColorModeValue('orange.50', 'teal.600');
+
+  const deleteModal = useDisclosure();
+  const queryClient = useQueryClient();
+
+  const { data, isFetched } = useQuery(['transactions'], () =>
+    getTransactions()
+  );
+
+  const mutationTransaction = useMutation(
+    () => deleteTransactions(chosenExpenseId),
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries(['transactions']);
+      }
+    }
+  );
   const onDelete = () => {
-    // code to delete
+    mutationTransaction.mutate();
+    deleteModal.onClose();
   };
   const onEdit = () => {
     // code to edit
   };
-
-  const transactionsTemplate = [
-    {
-      id: '2c984cb7-70c5-44e9-bc92-65661f3209d9',
-      date: '07.26',
-      category: 'food',
-      amount: 100,
-      wallet: 'name of Wallet',
-      payer: 'Me',
-      notes: 'Notes'
-    },
-    {
-      id: 'eb3608e5-4791-47a7-acfe-d3a7d9427e7f',
-      date: '07.25',
-      category: 'very long name of category',
-      amount: 200,
-      wallet: 'name of Wallet',
-      payer: 'Me',
-      notes: 'Notes'
-    },
-    {
-      id: '397cbf58-5558-4a3c-844d-f09650085b84',
-      date: '07.24',
-      category: 'go out',
-      amount: 300,
-      wallet: 'very long name of Wallet',
-      payer: 'Child',
-      notes: 'really super long-long notes about expenses'
-    }
-  ];
 
   return (
     <>
@@ -75,15 +74,28 @@ export const Expenses = () => {
             </HStack>
 
             <VStack spacing={5} pt={5}>
-              {transactionsTemplate.map((singleTransaction) => (
-                <ExpenseItem
-                  key={singleTransaction.id}
-                  transaction={singleTransaction}
-                  onEdit={onEdit}
-                  onDelete={onDelete}
-                />
-              ))}
+              {isFetched &&
+                data.data
+                  .filter((data) => data.transactionType === 'Expense')
+                  .map((dataTransaction) => (
+                    <ExpenseItem
+                      key={dataTransaction.id}
+                      transaction={dataTransaction}
+                      onEdit={onEdit}
+                      onDelete={() => {
+                        setChosenExpenseId(dataTransaction.id);
+                        deleteModal.onOpen();
+                      }}
+                    />
+                  ))}
             </VStack>
+            <DeleteConfirmationModal
+              isOpen={deleteModal.isOpen}
+              onSubmit={onDelete}
+              onClose={deleteModal.onClose}
+              title={i18next.t('modal.deleteExpense.title')}
+              text={i18next.t('modal.deleteExpense.text')}
+            />
           </Box>
         </Flex>
       </Box>
