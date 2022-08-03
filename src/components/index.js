@@ -1,3 +1,4 @@
+export { AddCategoryModal } from './AddCategoryModal';
 export { AddExpenseModal } from './AddExpenseModal';
 export { AddIncomeModal } from './AddIncomeModal';
 export { AddWalletModal } from './AddWalletModal';
