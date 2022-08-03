@@ -29,6 +29,12 @@ export const WalletsList = () => {
         borderRadius={35}
         shadow="lg"
       >
+        <Box display="flex" justifyContent="center" mt="10px">
+          <Heading as="h4" size="md" fontWeight="bold">
+            {i18next.t('walletView.headOfBalanceMessage')}&#58;
+          </Heading>
+        </Box>
+
         <Grid
           templateAreas={{
             base: `'left right' 'center center'`,
@@ -41,20 +47,23 @@ export const WalletsList = () => {
             <VStack
               w="full"
               h="full"
-              p={8}
+              p={3}
               spacing={8}
-              alignItems="flex-start"
+              alignItems="center"
               justify="center"
             >
-              <Heading as="h4" size="md" fontWeight="bold">
-                {i18next.t('walletView.headOfBalanceMessage')}&#58;
-              </Heading>
-              <Text>{i18next.t('modal.addExpense.wallet')}</Text>
               <AddWalletModal />
             </VStack>
           </GridItem>
           <GridItem area="center">
-            <VStack w="full" h="full" p={8} spacing={8} justify="center">
+            <VStack
+              w="full"
+              h="full"
+              p={8}
+              spacing={8}
+              justify="center"
+              flexDirection="row"
+            >
               {/* Next step will be adopting the view of this component for that layout */}
               <WalletCard />
             </VStack>
