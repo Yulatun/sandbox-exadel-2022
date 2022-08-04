@@ -1,0 +1,1 @@
+export { AccordionComponent } from './AccordionComponent';
