@@ -1,4 +1,7 @@
 {
+  "about.welcomeMessage": "Welcome to the about page!",
+  "category.category": "Category",
+  "category.randomMessage": "I am a random message",
   "incomes.welcomeMessage": "Welcome to the incomes page!",
   "category.category": "Category",
   "category.randomMessage": "I am a random message",
@@ -13,7 +16,9 @@
   "button.danger": "Danger",
   "button.submit": "Submit",
   "button.cancel": "Cancel",
-  "button.addExpense": "+ Add Expense",
+  "button.edit": "Edit",
+  "button.delete": "Delete",
+  "button.addExpense": "+ Add expense",
   "button.addIncome": "+ Add Income",
   "header.btn.theme.light": "Light theme button",
   "header.btn.theme.dark": "Dark theme button",
