@@ -26,7 +26,7 @@ import { DeleteConfirmationModal } from '@/components';
 
 export const AddCategoryModal = ({ isOpen, onClose, categoryType }) => {
   const categoriesDeleteModal = useDisclosure();
-  const [color, setColor] = useState('green');
+  const [color, setColor] = useState('green.500');
   const {
     register,
     handleSubmit,
@@ -45,18 +45,22 @@ export const AddCategoryModal = ({ isOpen, onClose, categoryType }) => {
       .catch((err) => console.log(err));
     onClose();
   };
+  const closeAllModals = () => {
+    categoriesDeleteModal.onClose();
+    onClose();
+  };
 
   const { data, isFetched } = useQuery([], () => getCategory());
 
   return (
     <>
-      <Modal isOpen={isOpen} onClose={onClose} bg="red">
+      <Modal isOpen={isOpen} onClose={categoriesDeleteModal.onOpen} bg="red">
         <ModalOverlay />
         <ModalContent>
           <ModalHeader>
-            {i18next.t('modal.addCategory.header.Add')}
-            {categoryType}
-            {i18next.t('modal.addCategory.header.Category')}
+            {categoryType === 'income'
+              ? i18next.t('modal.addCategory.header.incomeCategory')
+              : i18next.t('modal.addCategory.header.expensesCategory')}
           </ModalHeader>
           <ModalCloseButton />
           <ModalBody>
@@ -74,16 +78,16 @@ export const AddCategoryModal = ({ isOpen, onClose, categoryType }) => {
                         message: 'Your name is too long'
                       },
                       pattern: {
-                        value: /[A-Za-z]/,
+                        value: /^[a-zA-Z0-9 ]*$/,
                         message: i18next.t(
                           'modal.addCategory.validationErrorMessage.pattern'
                         )
                       },
                       validate: (name) =>
                         (isFetched &&
-                          data.data
-                            .filter((data) => data.existName)
-                            .map((data) => data.existNameS)
+                          !data.data
+                            .filter((data) => data.name)
+                            .map((data) => data.name)
                             .includes(name)) ||
                         i18next.t(
                           'modal.addCategory.validationErrorMessage.nameExist'
@@ -101,7 +105,7 @@ export const AddCategoryModal = ({ isOpen, onClose, categoryType }) => {
             </FormControl>
 
             <FormControl>
-              <Flex pt={5}>
+              <Flex pt={10}>
                 <FormLabel pt="1%" w="40%">
                   {i18next.t('modal.addCategory.colorPicker')}
                 </FormLabel>
@@ -127,6 +131,7 @@ export const AddCategoryModal = ({ isOpen, onClose, categoryType }) => {
       <DeleteConfirmationModal
         isOpen={categoriesDeleteModal.isOpen}
         onClose={categoriesDeleteModal.onClose}
+        onSubmit={closeAllModals}
         text={i18next.t('modal.deleteCategory.text')}
       />
     </>

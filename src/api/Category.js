@@ -12,7 +12,6 @@ export const createCategory = async (data, categoryType, color) => {
 
 export const getCategory = async () => {
   return instance.get(
-    '/api/Category?userId=34e7bbf8-1685-4fb8-8a77-7964ec3e90ca',
-    {}
+    '/api/Category?userId=34e7bbf8-1685-4fb8-8a77-7964ec3e90ca'
   );
 };

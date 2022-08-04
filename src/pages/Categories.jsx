@@ -1,11 +1,8 @@
 import { Button, Flex, Grid, GridItem, useDisclosure } from '@chakra-ui/react';
 import i18next from 'i18next';
 
-import {
-  AccordionComponent,
-  AccordionHeadings,
-  AddCategoryModal
-} from '@/components';
+import { AddCategoryModal } from '@/components';
+import { AccordionComponent, AccordionHeadings } from '@/components';
 
 import { AccordionArray } from '../components/AccordionComponent/AccordionArray';
 
@@ -32,23 +29,22 @@ export const Categories = () => {
           />
           {AccordionArray.map(createAccordion)}
         </GridItem>
-        <GridItem className="incomeCol" onClick={incomeCategoriesModal.onOpen}>
+        <GridItem className="incomeCol">
           <AccordionHeadings
             headingOne={i18next.t('income.categoryHeading')}
             headingTwo={i18next.t('income.addCategoryHeading')}
           />
           {AccordionArray.map(createAccordion)}
         </GridItem>
-      </Grid>
-      <Flex>
-        <Button onClick={incomeCategoriesModal.onOpen}>
-          {' '}
-          add Income Category
-        </Button>
+
         <Button onClick={expensesCategoriesModal.onOpen}>
-          {' '}
           add Expenses Category
         </Button>
+        <Button onClick={incomeCategoriesModal.onOpen}>
+          add Income Category
+        </Button>
+      </Grid>
+      <Flex>
         <AddCategoryModal
           isOpen={incomeCategoriesModal.isOpen}
           onSubmit={incomeCategoriesModal.onClose}
