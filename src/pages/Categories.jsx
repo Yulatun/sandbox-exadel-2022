@@ -1,6 +1,6 @@
 import { Grid, GridItem } from '@chakra-ui/react';
 
-import { AccordionComponent, AccordionHeadings, Footer } from '@/components';
+import { AccordionComponent, AccordionHeadings } from '@/components';
 
 import { AccordionArray } from '../components/AccordionComponent/AccordionArray';
 
@@ -33,7 +33,6 @@ export const Categories = () => {
           {AccordionArray.map(createAccordion)}
         </GridItem>
       </Grid>
-      <Footer />
     </>
   );
 };
