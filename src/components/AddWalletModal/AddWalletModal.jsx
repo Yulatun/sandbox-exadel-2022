@@ -1,4 +1,5 @@
 import { useForm } from 'react-hook-form';
+import { useQuery } from 'react-query';
 import {
   Button,
   FormControl,
@@ -20,8 +21,12 @@ import {
 } from '@chakra-ui/react';
 import i18next from 'i18next';
 
+import getCurrency from '@/api/getCurrency';
+import { createWallet } from '@/api/Wallet';
+
 export const AddWalletModal = () => {
   const { isOpen, onClose, onOpen } = useDisclosure();
+  const { data, isFetched } = useQuery(['currency'], getCurrency);
 
   const {
     register,
@@ -29,7 +34,10 @@ export const AddWalletModal = () => {
     formState: { errors }
   } = useForm();
 
-  const onSubmit = () => {
+  const onSubmit = (data) => {
+    createWallet(data)
+      .then(() => alert(i18next.t('wallet.createdMessage')))
+      .catch((err) => console.log(err));
     onClose();
   };
 
@@ -86,10 +94,10 @@ export const AddWalletModal = () => {
                 })}
                 placeholder={i18next.t('modal.addWallet.currency.placeholder')}
               >
-                {/* we will change these fields in the future, so no need to make i18next placeholders here */}
-                <option value="EUR">EUR</option>
-                <option value="USD">USD</option>
-                <option value="PLN">PLN</option>
+                {isFetched &&
+                  data.data.map((currency, id) => {
+                    return <option key={id}>{currency.currencyCode}</option>;
+                  })}
               </Select>
               <FormErrorMessage>
                 <Text>{errors.currency && errors.currency.message}</Text>
@@ -111,7 +119,7 @@ export const AddWalletModal = () => {
             <Button onClick={handleSubmit(onSubmit)} mr={3}>
               {i18next.t('button.submit')}
             </Button>
-            <Button onClick={onClose} variant="danger">
+            <Button onClick={onClose} variant="secondary">
               {i18next.t('button.cancel')}
             </Button>
           </ModalFooter>

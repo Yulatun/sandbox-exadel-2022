@@ -1,41 +1,38 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import {
-  Breadcrumb,
-  BreadcrumbItem,
-  BreadcrumbLink,
-  useColorModeValue
-} from '@chakra-ui/react';
+import { Breadcrumb, BreadcrumbItem, BreadcrumbLink } from '@chakra-ui/react';
 import i18next from 'i18next';
 
-export const Navbar = () => {
-  const navbarTextColor = useColorModeValue('teal.900', 'orange.300');
+import { useCentralTheme } from '../../theme/theme';
 
+export const Navbar = () => {
+  const { textColor } = useCentralTheme();
   return (
     <Breadcrumb
-      spacing="30px"
+      spacing="16px"
       separator=""
       fontSize="xl"
-      color={navbarTextColor}
+      color={textColor}
       fontWeight="bold"
+      sx={{ ol: { display: 'flex', alignItems: 'center' } }}
     >
-      <BreadcrumbItem>
-        <BreadcrumbLink as={Link} to="/">
+      <BreadcrumbItem mr={{ base: 2, xl: 4 }}>
+        <BreadcrumbLink as={Link} to="/" textUnderlineOffset="4px">
           {i18next.t('header.navigation.home')}
         </BreadcrumbLink>
       </BreadcrumbItem>
-      <BreadcrumbItem>
-        <BreadcrumbLink as={Link} to="/about">
-          {i18next.t('header.navigation.about')}
+      <BreadcrumbItem mr={{ base: 2, xl: 4 }}>
+        <BreadcrumbLink as={Link} to="/incomes" textUnderlineOffset="4px">
+          {i18next.t('header.navigation.incomes')}
         </BreadcrumbLink>
       </BreadcrumbItem>
-      <BreadcrumbItem>
-        <BreadcrumbLink as={Link} to="/categories">
+      <BreadcrumbItem mr={{ base: 2, xl: 4 }}>
+        <BreadcrumbLink as={Link} to="/categories" textUnderlineOffset="4px">
           {i18next.t('header.navigation.categories')}
         </BreadcrumbLink>
       </BreadcrumbItem>
-      <BreadcrumbItem>
-        <BreadcrumbLink as={Link} to="/expenses">
+      <BreadcrumbItem mr={{ base: 2, xl: 4 }}>
+        <BreadcrumbLink as={Link} to="/expenses" textUnderlineOffset="4px">
           {i18next.t('header.navigation.expenses')}
         </BreadcrumbLink>
       </BreadcrumbItem>
