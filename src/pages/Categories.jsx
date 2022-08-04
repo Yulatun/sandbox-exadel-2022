@@ -1,4 +1,5 @@
 import { Grid, GridItem } from '@chakra-ui/react';
+import i18next from 'i18next';
 
 import { AccordionComponent, AccordionHeadings } from '@/components';
 
@@ -20,15 +21,15 @@ export const Categories = () => {
       <Grid templateColumns="repeat(2, 1fr)" height="100vh">
         <GridItem className="expenseCol">
           <AccordionHeadings
-            headingOne="Categories of Expenses "
-            headingTwo="Add expense Category"
+            headingOne= {i18next.t('expenses.categoryHeading')}
+            headingTwo={i18next.t('expenses.addCategoryHeading')}
           />
           {AccordionArray.map(createAccordion)}
         </GridItem>
         <GridItem className="incomeCol">
           <AccordionHeadings
-            headingOne="Categories of Incomes"
-            headingTwo="Add income Category"
+            headingOne={i18next.t('income.categoryHeading')}
+            headingTwo={i18next.t('income.addCategoryHeading')}
           />
           {AccordionArray.map(createAccordion)}
         </GridItem>
