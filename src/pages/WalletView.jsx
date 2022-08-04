@@ -3,7 +3,7 @@ import { useMutation, useQuery, useQueryClient } from 'react-query';
 import { Box, Flex, useDisclosure, VStack } from '@chakra-ui/react';
 import i18next from 'i18next';
 
-import { deleteTransactions, getTransactions } from '@/api/Transactions';
+import { deleteTransaction, getTransactions } from '@/api/Transactions';
 import { DeleteConfirmationModal, ExpenseItem, WalletCard } from '@/components';
 import { useCentralTheme } from '@/theme';
 
@@ -19,7 +19,7 @@ export const WalletView = () => {
   );
 
   const mutationTransaction = useMutation(
-    () => deleteTransactions(chosenTransactionObj.id),
+    () => deleteTransaction(chosenTransactionObj.id),
     {
       onSuccess: () => {
         queryClient.invalidateQueries(['transactions']);

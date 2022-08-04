@@ -9,7 +9,7 @@ import {
 } from '@chakra-ui/react';
 import i18next from 'i18next';
 
-import { deleteTransactions, getTransactions } from '@/api/Transactions';
+import { deleteTransaction, getTransactions } from '@/api/Transactions';
 import { DeleteConfirmationModal, IncomeItem } from '@/components';
 
 export const Incomes = () => {
@@ -25,7 +25,7 @@ export const Incomes = () => {
   );
 
   const mutationTransaction = useMutation(
-    () => deleteTransactions(chosenIncomeId),
+    () => deleteTransaction(chosenIncomeId),
     {
       onSuccess: () => {
         queryClient.invalidateQueries(['transactions']);

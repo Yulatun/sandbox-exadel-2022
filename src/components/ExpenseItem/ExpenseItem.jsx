@@ -26,9 +26,9 @@ export const ExpenseItem = ({ transaction, onEdit, onDelete, isShortView }) => {
           overflow="hidden"
           whiteSpace="nowrap"
         >
-          <Tooltip label={'transaction.wallet'}>{'transaction.wallet'}</Tooltip>
+          <Tooltip label={transaction.walletId}>{'transaction.wallet'}</Tooltip>
         </Box>
-        <Box w="10%">{'transaction.payer'}</Box>
+        <Box w="10%">{transaction.payer}</Box>
         <Box
           w="10%"
           textOverflow="ellipsis"
