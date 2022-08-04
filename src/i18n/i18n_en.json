@@ -103,5 +103,6 @@
   "expenses.filters.date.calendar.range.day_other": " days",
   "expenses.filters.category.placeholder": "Category",
   "expenses.filters.wallet.placeholder": "Wallet",
-  "expenses.filters.payer.placeholder": "Payer"
+  "expenses.filters.payer.placeholder": "Payer",
+  "transaction.recentTransactions": "Recent transactions"
 }

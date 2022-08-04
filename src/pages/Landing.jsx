@@ -1,11 +1,25 @@
-import { Box, Button, Flex, Link, useDisclosure } from '@chakra-ui/react';
+import { useQuery } from 'react-query';
+import { Box, Button, Flex, Link, Text, useDisclosure } from '@chakra-ui/react';
 import i18next from 'i18next';
 
-import { AddExpenseModal, AddIncomeModal, WalletsList } from '@/components';
+import { getTransactions } from '@/api/Transactions';
+import {
+  AddExpenseModal,
+  AddIncomeModal,
+  TransactionList,
+  WalletsList
+} from '@/components';
+import { useCentralTheme } from '@/theme';
 
 export const Landing = () => {
   const expenseModal = useDisclosure();
   const incomeModal = useDisclosure();
+
+  const { textColor } = useCentralTheme();
+
+  const { data, isFetched } = useQuery(['transactions'], () =>
+    getTransactions()
+  );
 
   return (
     <>
@@ -33,6 +47,14 @@ export const Landing = () => {
         </Flex>
       </Box>
       <Link href="/wallet/123"> Draft of Wallet Page</Link>
+      <Box w="100%" p={4}>
+        <Flex direction="column" justify="center" align="center">
+          <Text color={textColor} fontSize="xl">
+            {i18next.t('transaction.recentTransactions')}
+          </Text>
+          {isFetched && <TransactionList list={data.data} />}
+        </Flex>
+      </Box>
     </>
   );
 };
