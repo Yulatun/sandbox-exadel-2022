@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
+import { useQuery } from 'react-query';
 import {
   Button,
   Flex,
@@ -18,9 +19,9 @@ import {
   useDisclosure
 } from '@chakra-ui/react';
 import { ColorPicker } from 'chakra-color-picker';
+import i18next from 'i18next';
 
-import { createCategory } from '@/api/Category';
-// import i18next from 'i18next';
+import { createCategory, getCategory } from '@/api/Category';
 import { DeleteConfirmationModal } from '@/components';
 
 export const AddCategoryModal = ({ isOpen, onClose, categoryType }) => {
@@ -45,34 +46,52 @@ export const AddCategoryModal = ({ isOpen, onClose, categoryType }) => {
     onClose();
   };
 
+  const { data, isFetched } = useQuery([], () => getCategory());
+
   return (
     <>
       <Modal isOpen={isOpen} onClose={onClose} bg="red">
         <ModalOverlay />
         <ModalContent>
-          <ModalHeader>Add {categoryType} Category</ModalHeader>
+          <ModalHeader>
+            {i18next.t('modal.addCategory.header.Add')}
+            {categoryType}
+            {i18next.t('modal.addCategory.header.Category')}
+          </ModalHeader>
           <ModalCloseButton />
           <ModalBody>
             <FormControl isRequired isInvalid={name}>
               <Flex>
                 <FormLabel htmlFor="name" w="40%">
-                  Category name
+                  {i18next.t('modal.addCategory.formName')}
                 </FormLabel>
                 <Flex flexDirection="column">
                   <Input
                     {...register('name', {
-                      required: 'Please fill in the name',
+                      required: i18next.t('Please fill in the name'),
                       maxLength: {
                         value: 100,
                         message: 'Your name is too long'
                       },
                       pattern: {
                         value: /[A-Za-z]/,
-                        message:
-                          'Only latin letters, numbers and special characters are allowed'
-                      }
+                        message: i18next.t(
+                          'modal.addCategory.validationErrorMessage.pattern'
+                        )
+                      },
+                      validate: (name) =>
+                        (isFetched &&
+                          data.data
+                            .filter((data) => data.existName)
+                            .map((data) => data.existNameS)
+                            .includes(name)) ||
+                        i18next.t(
+                          'modal.addCategory.validationErrorMessage.nameExist'
+                        )
                     })}
-                    placeholder="Category name"
+                    placeholder={i18next.t(
+                      'modal.addCategory.name.placeholder'
+                    )}
                   />
                   <FormErrorMessage>
                     <Text>{name && name.message}</Text>
@@ -84,7 +103,7 @@ export const AddCategoryModal = ({ isOpen, onClose, categoryType }) => {
             <FormControl>
               <Flex pt={5}>
                 <FormLabel pt="1%" w="40%">
-                  Color
+                  {i18next.t('modal.addCategory.colorPicker')}
                 </FormLabel>
                 <ColorPicker
                   borderRadius="50px"
@@ -97,18 +116,19 @@ export const AddCategoryModal = ({ isOpen, onClose, categoryType }) => {
 
           <ModalFooter>
             <Button colorScheme="blue" mr={3} onClick={handleSubmit(onSubmit)}>
-              Add
+              {i18next.t('modal.addCategory.addButton')}
             </Button>
-
-            <Button onClick={categoriesDeleteModal.onOpen}>Cancel</Button>
+            <Button onClick={categoriesDeleteModal.onOpen}>
+              {i18next.t('modal.addCategory.cancelButton')}
+            </Button>
           </ModalFooter>
-          <DeleteConfirmationModal
-            isOpen={categoriesDeleteModal.isOpen}
-            onClose={categoriesDeleteModal.onClose}
-            text="“Do you really want to cancel the creation of the category? All you entered data will be lost”"
-          />
         </ModalContent>
       </Modal>
+      <DeleteConfirmationModal
+        isOpen={categoriesDeleteModal.isOpen}
+        onClose={categoriesDeleteModal.onClose}
+        text={i18next.t('modal.deleteCategory.text')}
+      />
     </>
   );
 };

@@ -13,7 +13,7 @@ export const Categories = () => {
           isOpen={categoriesModal.isOpen}
           onSubmit={categoriesModal.onClose}
           onClose={categoriesModal.onClose}
-          categoryType="Income"
+          categoryType="income"
         />
       </Flex>
     </>
