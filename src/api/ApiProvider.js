@@ -1,6 +1,8 @@
 import { createStandaloneToast } from '@chakra-ui/toast';
 import axios from 'axios';
 
+import logout from '@/helpers/authorization';
+
 export const instance = axios.create({
   baseURL: import.meta.env.VITE_API_URL,
   timeout: 1000
@@ -14,8 +16,10 @@ const responseSuccessInterceptor = (response) => {
 const networkErrorInterceptor = (error) => {
   switch (error.response.status) {
     case 401:
+      logout();
       toast({
-        title: 'Unauthorized',
+        title:
+          "You don't have permission to access this page. Redirecting to login page",
         status: 'error',
         duration: 9000,
         isClosable: true
