@@ -16,7 +16,6 @@ export const WalletCard = (props) => {
     <>
       <Box
         h="200px"
-        w={['280px', '350px', '300px', '500px']}
         m={[2, 5, 5, 5]}
         borderRadius={35}
         bg={popupBgColor}
