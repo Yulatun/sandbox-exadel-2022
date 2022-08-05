@@ -2,7 +2,7 @@ import { BellIcon } from '@chakra-ui/icons';
 import { IconButton } from '@chakra-ui/react';
 import i18next from 'i18next';
 
-import { useCentralTheme } from '../../theme/theme';
+import { useCentralTheme } from '@/theme';
 
 export const Notification = () => {
   const { textColor } = useCentralTheme();

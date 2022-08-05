@@ -1,19 +1,12 @@
 import { DeleteIcon, EditIcon } from '@chakra-ui/icons';
-import {
-  Box,
-  Flex,
-  HStack,
-  IconButton,
-  Tooltip,
-  useColorModeValue
-} from '@chakra-ui/react';
+import { Box, Flex, HStack, IconButton, Tooltip } from '@chakra-ui/react';
 import { format } from 'date-fns';
 
 import { NoteIcon } from '@/assets';
+import { useCentralTheme } from '@/theme';
 
 export const ExpenseItem = ({ transaction, onEdit, onDelete, isShortView }) => {
-  const bgMain = useColorModeValue('orange.50', 'teal.700');
-  const textColor = useColorModeValue('teal.900', 'orange.50');
+  const { popupExpBgColor, popupExpTextColor } = useCentralTheme();
 
   const isLongDisplayVersion = !isShortView;
 
@@ -37,7 +30,7 @@ export const ExpenseItem = ({ transaction, onEdit, onDelete, isShortView }) => {
         >
           <Tooltip label={transaction.description}>
             <Flex align="center" justify="center">
-              <NoteIcon color={textColor}></NoteIcon>
+              <NoteIcon color={popupExpTextColor}></NoteIcon>
             </Flex>
           </Tooltip>
         </Box>
@@ -59,8 +52,8 @@ export const ExpenseItem = ({ transaction, onEdit, onDelete, isShortView }) => {
       justify="space-around"
       w="100%"
       boxShadow="lg"
-      bg={bgMain}
-      color={textColor}
+      bg={popupExpBgColor}
+      color={popupExpTextColor}
       paddingY={5}
       maxW="container.xl"
     >

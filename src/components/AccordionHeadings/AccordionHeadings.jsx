@@ -1,18 +1,19 @@
 import { AddIcon } from '@chakra-ui/icons';
-import { Box, useColorModeValue } from '@chakra-ui/react';
+import { Box } from '@chakra-ui/react';
 
+import { useCentralTheme } from '@/theme';
 export const AccordionHeadings = (props) => {
-  const bgMain = useColorModeValue('orange.50', 'teal.800');
+  const { popupBgColor } = useCentralTheme();
   return (
     <>
       <Box margin="20px">
-        <Box bg={bgMain} borderRadius="5px" padding="5px 10px">
+        <Box bg={popupBgColor} borderRadius="5px" padding="5px 10px">
           <h2>{props.headingOne}</h2>
         </Box>
         <Box
           display="flex"
           marginTop="15px"
-          bg={bgMain}
+          bg={popupBgColor}
           borderRadius="5px"
           padding="5px 10px"
         >
