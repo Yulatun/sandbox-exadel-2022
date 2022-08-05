@@ -41,7 +41,9 @@ export const AddCategoryModal = ({ isOpen, onClose, categoryType }) => {
 
   const onSubmit = (data) => {
     createCategory(data, categoryType, color)
-      .then(() => alert('you have created new category'))
+      .then(() =>
+        alert(i18next.t('modal.addCategory.submitSuccessful.message'))
+      )
       .catch((err) => console.log(err));
     onClose();
   };
@@ -50,7 +52,7 @@ export const AddCategoryModal = ({ isOpen, onClose, categoryType }) => {
     onClose();
   };
 
-  const { data, isFetched } = useQuery([], () => getCategory());
+  const { data, isFetched } = useQuery(['categories'], getCategory());
 
   return (
     <>
@@ -72,13 +74,17 @@ export const AddCategoryModal = ({ isOpen, onClose, categoryType }) => {
                 <Flex flexDirection="column">
                   <Input
                     {...register('name', {
-                      required: i18next.t('Please fill in the name'),
+                      required: i18next.t(
+                        'modal.addCategory.validationErrorMessage.name'
+                      ),
                       maxLength: {
                         value: 100,
-                        message: 'Your name is too long'
+                        message: i18next.t(
+                          'modal.addCategory.validationErrorMessage.nameIsLong'
+                        )
                       },
                       pattern: {
-                        value: /^[a-zA-Z0-9 ]*$/,
+                        value: /^[a-zA-Z0-9$@$!%*?&#^-_. +]+$/,
                         message: i18next.t(
                           'modal.addCategory.validationErrorMessage.pattern'
                         )
