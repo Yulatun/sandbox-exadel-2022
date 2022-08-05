@@ -1,5 +1,6 @@
 export { AccordionComponent } from './AccordionComponent';
 export { AccordionHeadings } from './AccordionHeadings';
+export { AddCategoryModal } from './AddCategoryModal';
 export { AddExpenseModal } from './AddExpenseModal';
 export { AddIncomeModal } from './AddIncomeModal';
 export { AddWalletModal } from './AddWalletModal';

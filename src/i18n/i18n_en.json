@@ -131,5 +131,18 @@
   "expenses.filters.category.placeholder": "Category",
   "expenses.filters.wallet.placeholder": "Wallet",
   "expenses.filters.payer.placeholder": "Payer",
-  "transaction.recentTransactions": "Recent transactions"
+  "modal.addCategory.validationErrorMessage.name": "Please fill in the name",
+  "modal.addCategory.validationErrorMessage.pattern": "Only latin letters, numbers and special characters ",
+  "modal.addCategory.name.placeholder": "Category name",
+  "modal.addCategory.addButton": "Add",
+  "modal.addCategory.cancelButton": " Cancel",
+  "modal.addCategory.header.incomeCategory": "Add income category",
+  "modal.addCategory.header.expensesCategory": "Add expenses category",
+  "modal.addCategory.formName": "Category name",
+  "modal.addCategory.colorPicker": "Color",
+  "modal.deleteCategory.text": "Do you really want to cancel the creation of the category? All you entered data will be lost",
+  "modal.addCategory.validationErrorMessage.nameExist": "This name already exists",
+  "transaction.recentTransactions": "Recent transactions",
+  "modal.addCategory.validationErrorMessage.nameIsLong": "Your name is too long",
+  "modal.addCategory.submitSuccessful.message": "you have created new category"
 }
