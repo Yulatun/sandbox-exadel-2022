@@ -27,9 +27,11 @@ import { DeleteConfirmationModal } from '@/components';
 export const AddCategoryModal = ({ isOpen, onClose, categoryType }) => {
   const categoriesDeleteModal = useDisclosure();
   const [color, setColor] = useState('green.500');
+
   const {
     register,
     handleSubmit,
+    reset,
     formState: {
       errors: { name }
     }
@@ -45,6 +47,7 @@ export const AddCategoryModal = ({ isOpen, onClose, categoryType }) => {
         alert(i18next.t('modal.addCategory.submitSuccessful.message'))
       )
       .catch((err) => console.log(err));
+    reset();
     onClose();
   };
   const closeAllModals = () => {
@@ -104,7 +107,7 @@ export const AddCategoryModal = ({ isOpen, onClose, categoryType }) => {
                     placeholder={i18next.t(
                       'modal.addCategory.name.placeholder'
                     )}
-                  />
+                  ></Input>
                   <FormErrorMessage>
                     <Text>{name && name.message}</Text>
                   </FormErrorMessage>
