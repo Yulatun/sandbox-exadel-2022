@@ -17,7 +17,7 @@ import {
 } from '@chakra-ui/react';
 import i18next from 'i18next';
 
-import { useCentralTheme } from '../../theme/theme';
+import { useCentralTheme } from '@/theme';
 
 import { UserName } from './UserName';
 
@@ -83,13 +83,23 @@ export const NavDrawer = () => {
               }}
             >
               <BreadcrumbItem mt={6} mb={2}>
-                <BreadcrumbLink as={Link} to="/" textUnderlineOffset="4px">
+                <BreadcrumbLink
+                  as={Link}
+                  to="/"
+                  textUnderlineOffset="4px"
+                  onClick={onClose}
+                >
                   {i18next.t('header.navigation.home')}
                 </BreadcrumbLink>
               </BreadcrumbItem>
               <BreadcrumbItem my={2}>
-                <BreadcrumbLink as={Link} to="/about" textUnderlineOffset="4px">
-                  {i18next.t('header.navigation.about')}
+                <BreadcrumbLink
+                  as={Link}
+                  to="/incomes"
+                  textUnderlineOffset="4px"
+                  onClick={onClose}
+                >
+                  {i18next.t('header.navigation.incomes')}
                 </BreadcrumbLink>
               </BreadcrumbItem>
               <BreadcrumbItem my={2}>
@@ -97,6 +107,7 @@ export const NavDrawer = () => {
                   as={Link}
                   to="/categories"
                   textUnderlineOffset="4px"
+                  onClick={onClose}
                 >
                   {i18next.t('header.navigation.categories')}
                 </BreadcrumbLink>
@@ -106,6 +117,7 @@ export const NavDrawer = () => {
                   as={Link}
                   to="/expenses"
                   textUnderlineOffset="4px"
+                  onClick={onClose}
                 >
                   {i18next.t('header.navigation.expenses')}
                 </BreadcrumbLink>

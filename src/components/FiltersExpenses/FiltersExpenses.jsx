@@ -9,11 +9,12 @@ import {
   IconButton,
   Input,
   InputGroup,
-  InputRightElement,
-  useColorModeValue
+  InputRightElement
 } from '@chakra-ui/react';
 import { Select } from 'chakra-react-select';
 import i18next from 'i18next';
+
+import { useCentralTheme } from '@/theme';
 
 import { CalendarPicker } from './CalendarPicker';
 
@@ -44,12 +45,8 @@ export const FiltersExpenses = () => {
 
   const calendarRef = useRef(null);
 
-  const inputValueColor = useColorModeValue('gray.400', 'whiteAlpha.400');
-  const inputSelectBg = useColorModeValue('gray.100', 'whiteAlpha.300');
-  const inputSelectBorderColor = useColorModeValue(
-    'gray.200',
-    'whiteAlpha.300'
-  );
+  const { textColor, inputValueColor, inputSelectBg, inputSelectBorderColor } =
+    useCentralTheme();
 
   const handleClickOutside = (event) => {
     if (calendarRef.current && !calendarRef.current.contains(event.target)) {
@@ -176,7 +173,7 @@ export const FiltersExpenses = () => {
 
   return (
     <Flex flexDir="column" w="100%">
-      <Heading mb="15px" as="h3" size="lg">
+      <Heading mb="15px" as="h3" size="lg" color={textColor}>
         {i18next.t('expenses.filters.heading')}
       </Heading>
 
@@ -185,7 +182,7 @@ export const FiltersExpenses = () => {
           pos="relative"
           alignItems="center"
           mr="25px"
-          mb="10px"
+          mb="16px"
           pr="34px"
           minW="200px"
           ref={calendarRef}
@@ -244,7 +241,7 @@ export const FiltersExpenses = () => {
           pos="relative"
           alignItems="center"
           mr="25px"
-          mb="10px"
+          mb="16px"
           pr="34px"
           minW="200px"
         >
@@ -290,7 +287,7 @@ export const FiltersExpenses = () => {
           pos="relative"
           alignItems="center"
           mr="25px"
-          mb="10px"
+          mb="16px"
           pr="34px"
           minW="200px"
         >
@@ -334,7 +331,7 @@ export const FiltersExpenses = () => {
           pos="relative"
           alignItems="center"
           mr="35px"
-          mb="10px"
+          mb="16px"
           pr="34px"
           minW="200px"
         >

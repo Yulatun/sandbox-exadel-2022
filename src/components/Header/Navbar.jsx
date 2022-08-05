@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { Breadcrumb, BreadcrumbItem, BreadcrumbLink } from '@chakra-ui/react';
 import i18next from 'i18next';
 
-import { useCentralTheme } from '../../theme/theme';
+import { useCentralTheme } from '@/theme';
 
 export const Navbar = () => {
   const { textColor } = useCentralTheme();

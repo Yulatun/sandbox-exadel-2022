@@ -21,7 +21,7 @@ export const Categories = () => {
   const incomeCategoriesModal = useDisclosure();
   return (
     <>
-      <Grid templateColumns="repeat(2, 1fr)" height="100vh">
+      <Grid templateColumns="repeat(2, 1fr)" height="100vh" mt={8}>
         <GridItem className="expenseCol">
           <AccordionHeadings
             headingOne={i18next.t('expenses.categoryHeading')}

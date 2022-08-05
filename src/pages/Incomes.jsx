@@ -1,21 +1,15 @@
 import { useState } from 'react';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
-import {
-  Box,
-  Flex,
-  useColorModeValue,
-  useDisclosure,
-  VStack
-} from '@chakra-ui/react';
+import { Box, Flex, useDisclosure, VStack } from '@chakra-ui/react';
 import i18next from 'i18next';
 
 import { deleteTransactions, getTransactions } from '@/api/Transactions';
 import { DeleteConfirmationModal, IncomeItem } from '@/components';
+import { useCentralTheme } from '@/theme';
 
 export const Incomes = () => {
   const [chosenIncomeId, setChosenIncomeId] = useState();
-
-  const bgMain = useColorModeValue('orange.100', 'teal.900');
+  const { bgColor } = useCentralTheme();
 
   const deleteModal = useDisclosure();
   const queryClient = useQueryClient();
@@ -42,8 +36,8 @@ export const Incomes = () => {
   };
 
   return (
-    <Box bg={bgMain} w="100%" mt={6}>
-      <Flex bg={bgMain} direction="column" justify="center" align="center">
+    <Box bg={bgColor} w="100%" mt={6}>
+      <Flex bg={bgColor} direction="column" justify="center" align="center">
         <VStack w="80%" pt={5} spacing={5} align="stretch" justify="center">
           {isFetched &&
             data.data

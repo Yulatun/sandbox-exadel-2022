@@ -3,8 +3,7 @@ import { Box, Flex, Heading } from '@chakra-ui/react';
 import i18next from 'i18next';
 
 import { LogoWalletIcon } from '@/assets';
-
-import { useCentralTheme } from '../../theme/theme';
+import { useCentralTheme } from '@/theme';
 
 export const Logo = () => {
   const { textColor } = useCentralTheme();
