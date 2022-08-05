@@ -6,15 +6,15 @@ import {
   Flex,
   FormControl,
   Heading,
-  HStack,
   IconButton,
   Input,
   InputGroup,
-  InputRightElement,
-  useColorModeValue
+  InputRightElement
 } from '@chakra-ui/react';
 import { Select } from 'chakra-react-select';
 import i18next from 'i18next';
+
+import { useCentralTheme } from '@/theme';
 
 import { CalendarPicker } from './CalendarPicker';
 
@@ -45,12 +45,8 @@ export const FiltersExpenses = () => {
 
   const calendarRef = useRef(null);
 
-  const inputValueColor = useColorModeValue('gray.400', 'whiteAlpha.400');
-  const inputSelectBg = useColorModeValue('gray.100', 'whiteAlpha.300');
-  const inputSelectBorderColor = useColorModeValue(
-    'gray.200',
-    'whiteAlpha.300'
-  );
+  const { textColor, inputValueColor, inputSelectBg, inputSelectBorderColor } =
+    useCentralTheme();
 
   const handleClickOutside = (event) => {
     if (calendarRef.current && !calendarRef.current.contains(event.target)) {
@@ -177,16 +173,18 @@ export const FiltersExpenses = () => {
 
   return (
     <Flex flexDir="column" w="100%">
-      <Heading mb="15px" as="h3" size="lg">
+      <Heading mb="15px" as="h3" size="lg" color={textColor}>
         {i18next.t('expenses.filters.heading')}
       </Heading>
 
-      <HStack spacing="30px" w="100%">
+      <Flex flexWrap="wrap" w="100%">
         <Flex
           pos="relative"
           alignItems="center"
+          mr="25px"
+          mb="16px"
           pr="34px"
-          minW="270px"
+          minW="200px"
           ref={calendarRef}
         >
           <InputGroup onClick={() => setIsDateSelectOpen(!isDateSelectOpen)}>
@@ -239,7 +237,14 @@ export const FiltersExpenses = () => {
           )}
         </Flex>
 
-        <Flex pos="relative" alignItems="center" pr="34px" minW="270px">
+        <Flex
+          pos="relative"
+          alignItems="center"
+          mr="25px"
+          mb="16px"
+          pr="34px"
+          minW="200px"
+        >
           <FormControl>
             <Select
               value={selectedCategoryFilters}
@@ -278,7 +283,14 @@ export const FiltersExpenses = () => {
           )}
         </Flex>
 
-        <Flex pos="relative" alignItems="center" pr="34px" minW="270px">
+        <Flex
+          pos="relative"
+          alignItems="center"
+          mr="25px"
+          mb="16px"
+          pr="34px"
+          minW="200px"
+        >
           <FormControl>
             <Select
               value={selectedWalletFilters}
@@ -315,7 +327,14 @@ export const FiltersExpenses = () => {
           )}
         </Flex>
 
-        <Flex pos="relative" alignItems="center" pr="34px" minW="270px">
+        <Flex
+          pos="relative"
+          alignItems="center"
+          mr="35px"
+          mb="16px"
+          pr="34px"
+          minW="200px"
+        >
           <FormControl>
             <Select
               value={selectedPayerFilters}
@@ -358,19 +377,17 @@ export const FiltersExpenses = () => {
           !!selectedCategoryFilters.length ||
           !!selectedWalletFilters.length ||
           !!selectedPayerFilters.length) && (
-          <Flex pl="50px">
-            <Button
-              onClick={() => {
-                if (confirm('Are you sure?')) {
-                  clearAllSelects();
-                }
-              }}
-            >
-              {i18next.t('expenses.filters.btn.clearAllFilters')}
-            </Button>
-          </Flex>
+          <Button
+            onClick={() => {
+              if (confirm('Are you sure?')) {
+                clearAllSelects();
+              }
+            }}
+          >
+            {i18next.t('expenses.filters.btn.clearAllFilters')}
+          </Button>
         )}
-      </HStack>
+      </Flex>
     </Flex>
   );
 };

@@ -1,3 +1,6 @@
+export { AccordionComponent } from './AccordionComponent';
+export { AccordionHeadings } from './AccordionHeadings';
+export { AddCategoryModal } from './AddCategoryModal';
 export { AddExpenseModal } from './AddExpenseModal';
 export { AddIncomeModal } from './AddIncomeModal';
 export { AddWalletModal } from './AddWalletModal';
@@ -9,5 +12,7 @@ export { Footer } from './Footer';
 export { Header } from './Header';
 export { IncomeItem } from './IncomeItem';
 export { LoginForm } from './LoginForm';
+export { Preloader } from './Preloader';
+export { TransactionList } from './TransactionList';
 export { WalletCard } from './WalletCard';
 export { WalletsList } from './WalletsList';

@@ -1,25 +1,17 @@
 import { useQuery } from 'react-query';
-import {
-  Box,
-  Grid,
-  GridItem,
-  Heading,
-  Text,
-  useColorModeValue,
-  VStack
-} from '@chakra-ui/react';
+import { Box, Grid, GridItem, Heading, Text, VStack } from '@chakra-ui/react';
 import i18next from 'i18next';
 
 import getWallets from '@/api/getWallet';
 import { PiggyBankIcon } from '@/assets';
+import { useCentralTheme } from '@/theme';
 
 import { AddWalletModal } from '../AddWalletModal';
 import { WalletCard } from '../WalletCard';
 import { WalletCarousel } from '../WalletCarousel';
 
 export const WalletsList = () => {
-  const iconsThemeColor = useColorModeValue('teal.900', 'orange.300');
-  const bgSection = useColorModeValue('orange.200', 'teal.700');
+  const { textColor, sectionBgColor } = useCentralTheme();
   const { data, isFetched } = useQuery(['wallet'], () =>
     getWallets('34e7bbf8-1685-4fb8-8a77-7964ec3e90ca')
   );
@@ -31,7 +23,7 @@ export const WalletsList = () => {
         w="full"
         maxW="container.xl"
         p={0}
-        bg={bgSection}
+        bg={sectionBgColor}
         borderRadius={35}
         shadow="lg"
       >
@@ -47,7 +39,10 @@ export const WalletsList = () => {
             md: `'left center right'`
           }}
           templateRows={'auto'}
-          templateColumns={{ base: '2fr 1fr', md: '1fr 3fr 1fr' }}
+          templateColumns={{
+            base: '2fr 1fr',
+            md: '1fr 3fr 1fr'
+          }}
         >
           <GridItem area="left">
             <VStack
@@ -66,7 +61,7 @@ export const WalletsList = () => {
               <VStack
                 w="full"
                 h="full"
-                p={8}
+                p={2}
                 spacing={8}
                 justify="center"
                 flexDirection="row"
@@ -86,12 +81,16 @@ export const WalletsList = () => {
             <VStack
               w="full"
               h="full"
-              p={8}
+              p={[8, 8, 4, 8]}
               spacing={8}
               alignItems="center"
               justify="center"
             >
-              <PiggyBankIcon w={24} h={24} color={iconsThemeColor} />
+              <PiggyBankIcon
+                w={[16, 16, 16, 24]}
+                h={[16, 16, 16, 24]}
+                color={textColor}
+              />
               <Text fontWeight="bold">0 &#36;</Text>
             </VStack>
           </GridItem>

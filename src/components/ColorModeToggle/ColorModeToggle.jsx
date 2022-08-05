@@ -2,7 +2,7 @@ import { MoonIcon, SunIcon } from '@chakra-ui/icons';
 import { IconButton, useColorMode } from '@chakra-ui/react';
 import i18next from 'i18next';
 
-import { useCentralTheme } from '../../theme/theme';
+import { useCentralTheme } from '@/theme';
 
 const ColorModeToggle = () => {
   const { colorMode, toggleColorMode } = useColorMode();

@@ -1,6 +1,10 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { CloseIcon, HamburgerIcon } from '@chakra-ui/icons';
 import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
   Drawer,
   DrawerBody,
   DrawerCloseButton,
@@ -13,9 +17,8 @@ import {
 } from '@chakra-ui/react';
 import i18next from 'i18next';
 
-import { useCentralTheme } from '../../theme/theme';
+import { useCentralTheme } from '@/theme';
 
-import { Navbar } from './Navbar';
 import { UserName } from './UserName';
 
 export const NavDrawer = () => {
@@ -39,6 +42,10 @@ export const NavDrawer = () => {
           aria-label={i18next.t('header.drawer.open')}
           display={{ base: 'block', lg: 'none' }}
           onClick={onToggle}
+          _hover={{
+            bgColor: textColor,
+            color: bgColor
+          }}
         />
       </Flex>
       <Drawer
@@ -61,7 +68,61 @@ export const NavDrawer = () => {
             <UserName />
           </DrawerHeader>
           <DrawerBody bg={popupBgColor}>
-            <Navbar />
+            <Breadcrumb
+              spacing="16px"
+              separator=""
+              fontSize="xl"
+              color={textColor}
+              fontWeight="bold"
+              sx={{
+                ol: {
+                  display: 'flex',
+                  alignItems: 'flex-start',
+                  flexDirection: 'column'
+                }
+              }}
+            >
+              <BreadcrumbItem mt={6} mb={2}>
+                <BreadcrumbLink
+                  as={Link}
+                  to="/"
+                  textUnderlineOffset="4px"
+                  onClick={onClose}
+                >
+                  {i18next.t('header.navigation.home')}
+                </BreadcrumbLink>
+              </BreadcrumbItem>
+              <BreadcrumbItem my={2}>
+                <BreadcrumbLink
+                  as={Link}
+                  to="/incomes"
+                  textUnderlineOffset="4px"
+                  onClick={onClose}
+                >
+                  {i18next.t('header.navigation.incomes')}
+                </BreadcrumbLink>
+              </BreadcrumbItem>
+              <BreadcrumbItem my={2}>
+                <BreadcrumbLink
+                  as={Link}
+                  to="/categories"
+                  textUnderlineOffset="4px"
+                  onClick={onClose}
+                >
+                  {i18next.t('header.navigation.categories')}
+                </BreadcrumbLink>
+              </BreadcrumbItem>
+              <BreadcrumbItem my={2}>
+                <BreadcrumbLink
+                  as={Link}
+                  to="/expenses"
+                  textUnderlineOffset="4px"
+                  onClick={onClose}
+                >
+                  {i18next.t('header.navigation.expenses')}
+                </BreadcrumbLink>
+              </BreadcrumbItem>
+            </Breadcrumb>
           </DrawerBody>
         </DrawerContent>
       </Drawer>
