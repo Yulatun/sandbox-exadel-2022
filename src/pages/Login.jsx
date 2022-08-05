@@ -1,15 +1,16 @@
-import { Flex, useColorModeValue } from '@chakra-ui/react';
+import { Flex } from '@chakra-ui/react';
 
 import { LoginForm } from '@/components';
+import { useCentralTheme } from '@/theme';
 
 import ColorModeToggle from '../components/ColorModeToggle/ColorModeToggle';
-
 export const Login = () => {
-  const headerBgThemeColor = useColorModeValue('orange.100', 'teal.900');
+  const { bgColor } = useCentralTheme();
+
   return (
     <>
       <Flex
-        bg={headerBgThemeColor}
+        bg={bgColor}
         w="100%"
         justify="center"
         p="100px"

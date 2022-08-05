@@ -7,7 +7,6 @@ import {
   Tag,
   TagCloseButton,
   TagLabel,
-  useColorModeValue,
   useDisclosure,
   VStack
 } from '@chakra-ui/react';
@@ -19,6 +18,7 @@ import {
   ExpenseItem,
   FiltersExpenses
 } from '@/components';
+import { useCentralTheme } from '@/theme';
 
 export const FilterTag = ({ text }) => {
   return (
@@ -32,8 +32,7 @@ export const FilterTag = ({ text }) => {
 export const Expenses = () => {
   const [chosenExpenseId, setChosenExpenseId] = useState();
 
-  const bgMain = useColorModeValue('orange.100', 'teal.900');
-  const cardBg = useColorModeValue('orange.50', 'teal.600');
+  const { bgColor, containerBgColor } = useCentralTheme();
 
   const deleteModal = useDisclosure();
   const queryClient = useQueryClient();
@@ -59,9 +58,14 @@ export const Expenses = () => {
   };
 
   return (
-    <Box bg={bgMain} w="100%" mt={6}>
-      <Flex bg={cardBg} direction="column" justify="center" align="center">
-        <Box bg={bgMain} w="100%" px={24} py={6}>
+    <Box bg={bgColor} w="100%" mt={6}>
+      <Flex
+        bg={containerBgColor}
+        direction="column"
+        justify="center"
+        align="center"
+      >
+        <Box bg={bgColor} w="100%" px={24} py={6}>
           <Box mb="50px">
             <FiltersExpenses />
           </Box>

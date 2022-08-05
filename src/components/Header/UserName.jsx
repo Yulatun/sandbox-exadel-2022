@@ -3,8 +3,7 @@ import { useQuery } from 'react-query';
 import { Flex, Text } from '@chakra-ui/react';
 
 import loginAction from '@/api/AuthProvider';
-
-import { useCentralTheme } from '../../theme/theme';
+import { useCentralTheme } from '@/theme';
 
 export const UserName = () => {
   const { data } = useQuery(['user'], () => loginAction());

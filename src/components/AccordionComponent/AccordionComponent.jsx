@@ -8,12 +8,13 @@ import {
   Button,
   HStack,
   Spacer,
-  Text,
-  useColorModeValue
+  Text
 } from '@chakra-ui/react';
 
+import { useCentralTheme } from '@/theme';
+
 export const AccordionComponent = (props) => {
-  const bgMain = useColorModeValue('orange.50', 'teal.800');
+  const { popupBgColor } = useCentralTheme();
 
   return (
     <>
@@ -21,7 +22,7 @@ export const AccordionComponent = (props) => {
         <AccordionItem
           border="1px transparent"
           borderRadius={8}
-          bg={bgMain}
+          bg={popupBgColor}
           position="relative"
           boxShadow="sm"
         >
