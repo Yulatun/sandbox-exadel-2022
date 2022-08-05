@@ -15,8 +15,8 @@ import {
 import i18next from 'i18next';
 
 import { LogOutIcon } from '@/assets';
+import { useCentralTheme } from '@/theme';
 
-import { useCentralTheme } from '../../theme/theme';
 import { DeleteConfirmationModal } from '../DeleteConfirmationModal';
 
 export const UserMenu = () => {

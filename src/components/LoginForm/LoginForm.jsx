@@ -15,20 +15,20 @@ import {
   InputGroup,
   InputRightElement,
   Stack,
-  useBoolean,
-  useColorModeValue
+  useBoolean
 } from '@chakra-ui/react';
 import i18next from 'i18next';
 
 import loginAction from '@/api/AuthProvider';
 import { LogoWalletIcon } from '@/assets';
+import { useCentralTheme } from '@/theme';
 
 export const LoginForm = () => {
   const [show, setShow] = useBoolean();
 
   const navigate = useNavigate();
-  const iconsThemeColor = useColorModeValue('teal.900', 'orange.300');
-  const containerThemeColorBg = useColorModeValue('orange.50', 'teal.600');
+
+  const { textColor, containerBgColor } = useCentralTheme();
 
   const queryClient = useQueryClient();
 
@@ -69,10 +69,10 @@ export const LoginForm = () => {
         justify="center"
         flexDirection="column"
         borderWidth="1px"
-        background={containerThemeColorBg}
+        background={containerBgColor}
       >
-        <LogoWalletIcon width="45" height="45" color={iconsThemeColor} />
-        <Heading as="h1" mr="5px" ml="5px" size="lg" color={iconsThemeColor}>
+        <LogoWalletIcon width="45" height="45" color={textColor} />
+        <Heading as="h1" mr="5px" ml="5px" size="lg" color={textColor}>
           {i18next.t('login.appName')}
         </Heading>
       </Circle>
@@ -82,7 +82,7 @@ export const LoginForm = () => {
         p="4"
         boxShadow="xl"
         borderRadius="4px"
-        background={containerThemeColorBg}
+        background={containerBgColor}
       >
         <form onSubmit={handleSubmit(onSubmit)}>
           <FormControl isRequired>

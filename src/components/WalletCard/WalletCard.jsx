@@ -1,19 +1,11 @@
 import React from 'react';
-import {
-  Badge,
-  Box,
-  Flex,
-  Heading,
-  Text,
-  useColorModeValue
-} from '@chakra-ui/react';
+import { Badge, Box, Flex, Heading, Text } from '@chakra-ui/react';
 
 import { i18n } from '@/i18n';
+import { useCentralTheme } from '@/theme';
 
 export const WalletCard = (props) => {
-  const bgMain = useColorModeValue('orange.50', 'teal.800');
-  const textColor = useColorModeValue('teal.900', 'orange.100');
-  const bgBadge = useColorModeValue('orange.100', 'teal.700');
+  const { popupBgColor, popupTextColor, badgeBgColor } = useCentralTheme();
 
   const totalBalanceView = new Intl.NumberFormat('de-DE', {
     minimumFractionDigits: 2
@@ -21,27 +13,34 @@ export const WalletCard = (props) => {
 
   return (
     <>
-      <Box h="200px" w="400px" m={5} borderRadius={35} bg={bgMain} shadow="lg">
+      <Box
+        h="200px"
+        w={['280px', '350px', '300px', '500px']}
+        m={[2, 5, 5, 5]}
+        borderRadius={35}
+        bg={popupBgColor}
+        shadow="lg"
+      >
         <Badge
           ml="80%"
           mt="5%"
           fontSize="50%"
           align="center"
           p={1}
-          bg={bgBadge}
+          bg={badgeBgColor}
           borderRadius={5}
-          color={textColor}
+          color={popupTextColor}
         >
           {i18n.t('walletView.nameOfDefaultBadge')}
         </Badge>
 
-        <Heading as="h1" size="md" color={textColor} ml={10}>
+        <Heading as="h1" size="md" color={popupTextColor} ml={10}>
           {props.name}
         </Heading>
 
-        <Flex direction="column" m={5} align="center" color={textColor}>
+        <Flex direction="column" m={5} align="center" color={popupTextColor}>
           <Flex>{i18n.t('walletView.headOfBalanceMessage')}</Flex>
-          <Flex fontSize="2xl" fontWeight="bold" color={textColor}>
+          <Flex fontSize="2xl" fontWeight="bold" color={popupTextColor}>
             {totalBalanceView}
           </Flex>
           <Text>{props.currency}</Text>

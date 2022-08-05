@@ -74,7 +74,7 @@ export const EditExpenseModal = ({
         <ModalBody>
           <FormControl mb="20px" isRequired>
             <FormLabel>{i18next.t('modal.editExpense.wallet')}</FormLabel>
-            {(isFetchedWallets && (
+            {(!!dataWallets && !!dataWallets.data && isFetchedWallets && (
               <Select {...register('wallet')}>
                 {!!Object.keys(dataWallets).length &&
                   dataWallets.data.map((wallet) => (
@@ -83,15 +83,14 @@ export const EditExpenseModal = ({
                     </option>
                   ))}
               </Select>
-            )) ||
-              (!isFetchedWallets && (
-                <Skeleton
-                  height="40px"
-                  borderRadius="5px"
-                  startColor="orange.100"
-                  endColor="orange.200"
-                />
-              ))}
+            )) || (
+              <Skeleton
+                height="40px"
+                borderRadius="5px"
+                startColor="orange.100"
+                endColor="orange.200"
+              />
+            )}
           </FormControl>
 
           <FormControl mb="20px" isRequired isInvalid={amount}>
@@ -119,35 +118,36 @@ export const EditExpenseModal = ({
             <FormLabel htmlFor="category">
               {i18next.t('modal.editExpense.category')}
             </FormLabel>
-            {(isFetchedDefaultCategories && (
-              <Select
-                placeholder={i18next.t(
-                  'modal.editExpense.category.placeholder'
-                )}
-                {...register('category', {
-                  required: i18next.t(
-                    'modal.editExpense.validationErrorMessage.category'
-                  )
-                })}
-              >
-                {!!Object.keys(dataDefaultCategories).length &&
-                  dataDefaultCategories.data
-                    .filter((category) => category.categoryType === 'Expense')
-                    .map((category) => (
-                      <option key={category.id} value={category.id}>
-                        {category.name}
-                      </option>
-                    ))}
-              </Select>
-            )) ||
-              (!isFetchedDefaultCategories && (
-                <Skeleton
-                  height="40px"
-                  borderRadius="5px"
-                  startColor="orange.100"
-                  endColor="orange.200"
-                />
-              ))}
+            {(!!dataDefaultCategories &&
+              !!dataDefaultCategories.data &&
+              isFetchedDefaultCategories && (
+                <Select
+                  placeholder={i18next.t(
+                    'modal.editExpense.category.placeholder'
+                  )}
+                  {...register('category', {
+                    required: i18next.t(
+                      'modal.editExpense.validationErrorMessage.category'
+                    )
+                  })}
+                >
+                  {!!Object.keys(dataDefaultCategories).length &&
+                    dataDefaultCategories.data
+                      .filter((category) => category.categoryType === 'Expense')
+                      .map((category) => (
+                        <option key={category.id} value={category.id}>
+                          {category.name}
+                        </option>
+                      ))}
+                </Select>
+              )) || (
+              <Skeleton
+                height="40px"
+                borderRadius="5px"
+                startColor="orange.100"
+                endColor="orange.200"
+              />
+            )}
             <FormErrorMessage>
               <Text>{category && category.message}</Text>
             </FormErrorMessage>
@@ -155,27 +155,29 @@ export const EditExpenseModal = ({
 
           <FormControl mb="20px">
             <FormLabel>{i18next.t('modal.editExpense.subcategory')}</FormLabel>
-            {(isFetchedDefaultCategories && (
-              <Select
-                placeholder={i18next.t(
-                  'modal.editExpense.subcategory.placeholder'
-                )}
-                {...register('subcategory')}
-              >
-                {!!Object.keys(dataDefaultCategories).length &&
-                  dataDefaultCategories.data
-                    .filter((category) => category.categoryType === 'Expense')
-                    .map(
-                      (category) =>
-                        !!category.subCategories.length &&
-                        category.subCategories.map((subcategory) => (
-                          <option key={subcategory.id} value={subcategory.id}>
-                            {subcategory.name}
-                          </option>
-                        ))
-                    )}
-              </Select>
-            )) ||
+            {(!!dataDefaultCategories &&
+              !!dataDefaultCategories.data &&
+              isFetchedDefaultCategories && (
+                <Select
+                  placeholder={i18next.t(
+                    'modal.editExpense.subcategory.placeholder'
+                  )}
+                  {...register('subcategory')}
+                >
+                  {!!Object.keys(dataDefaultCategories).length &&
+                    dataDefaultCategories.data
+                      .filter((category) => category.categoryType === 'Expense')
+                      .map(
+                        (category) =>
+                          !!category.subCategories.length &&
+                          category.subCategories.map((subcategory) => (
+                            <option key={subcategory.id} value={subcategory.id}>
+                              {subcategory.name}
+                            </option>
+                          ))
+                      )}
+                </Select>
+              )) ||
               (!isFetchedDefaultCategories && (
                 <Skeleton
                   height="40px"

@@ -21,9 +21,13 @@ export const Expenses = () => {
 
   const editExpenseModal = useDisclosure();
   const deleteExpenseModal = useDisclosure();
+
   const queryClient = useQueryClient();
 
-  const { data, isFetched } = useQuery(['transactions'], getTransactions);
+  const { data: dataTransactions, isFetched: isFetchedTransactions } = useQuery(
+    ['transactions'],
+    getTransactions
+  );
 
   const editingTransaction = useMutation(
     (data) =>
@@ -84,7 +88,8 @@ export const Expenses = () => {
       flexDir="column"
       alignItems="center"
       justifyContent="flex-start"
-      py="30px"
+      py={8}
+      px={4}
       w="100%"
     >
       <Box mb="50px" w="100%">
@@ -98,9 +103,11 @@ export const Expenses = () => {
       </HStack>
 
       <VStack spacing={5} pt={5} w="100%">
-        {isFetched &&
-          data.data
-            .filter((data) => data.transactionType === 'Income')
+        {!!dataTransactions &&
+          !!dataTransactions.data &&
+          isFetchedTransactions &&
+          dataTransactions.data
+            .filter((data) => data.transactionType === 'Expense')
             .map((dataTransaction) => (
               <ExpenseItem
                 key={dataTransaction.id}
