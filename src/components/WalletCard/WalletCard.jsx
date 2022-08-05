@@ -1,11 +1,20 @@
 import React from 'react';
-import { Badge, Box, Flex, Heading, Text } from '@chakra-ui/react';
+import { Link as RouterLink } from 'react-router-dom';
+import {
+  Badge,
+  Box,
+  Center,
+  Flex,
+  Heading,
+  Link,
+  Text
+} from '@chakra-ui/react';
 
 import { i18n } from '@/i18n';
 import { useCentralTheme } from '@/theme';
 
 export const WalletCard = (props) => {
-  const { wallet } = props;
+  const { wallet, showLink } = props;
   const { popupBgColor, popupTextColor, badgeBgColor } = useCentralTheme();
 
   const totalBalanceView = new Intl.NumberFormat('de-DE', {
@@ -14,13 +23,7 @@ export const WalletCard = (props) => {
 
   return (
     <>
-      <Box
-        h="200px"
-        m={[2, 5, 5, 5]}
-        borderRadius={35}
-        bg={popupBgColor}
-        shadow="lg"
-      >
+      <Box h="200px" borderRadius={35} bg={popupBgColor} shadow="lg">
         <Badge
           ml="80%"
           mt="5%"
@@ -34,9 +37,24 @@ export const WalletCard = (props) => {
           {i18n.t('walletView.nameOfDefaultBadge')}
         </Badge>
 
-        <Heading as="h1" size="md" color={popupTextColor} ml={10}>
-          {wallet.name}
-        </Heading>
+        <Center>
+          {showLink ? (
+            <Link
+              as={RouterLink}
+              to={`wallet/${wallet.id}`}
+              size="lg"
+              color={popupTextColor}
+            >
+              <Heading size="md" color={popupTextColor}>
+                {wallet.name}{' '}
+              </Heading>
+            </Link>
+          ) : (
+            <Heading as="h1" size="md" color={popupTextColor}>
+              {wallet.name}
+            </Heading>
+          )}{' '}
+        </Center>
 
         <Flex direction="column" m={5} align="center" color={popupTextColor}>
           <Flex>{i18n.t('walletView.headOfBalanceMessage')}</Flex>

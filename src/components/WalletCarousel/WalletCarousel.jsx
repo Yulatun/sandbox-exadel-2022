@@ -1,26 +1,30 @@
 import React from 'react';
 import { Carousel } from 'react-responsive-carousel';
-import { ArrowBackIcon, ArrowForwardIcon } from '@chakra-ui/icons';
-import { Icon } from '@chakra-ui/react';
+import { ChevronLeftIcon, ChevronRightIcon } from '@chakra-ui/icons';
+import { Box, Icon, IconButton, useBreakpointValue } from '@chakra-ui/react';
 
 import { WalletCard } from '../WalletCard';
 
 import 'react-responsive-carousel/lib/styles/carousel.min.css';
 
 export const WalletCarousel = ({ wallets }) => {
+  const percentage = useBreakpointValue({
+    lg: 33.3,
+    base: 50
+  });
   return (
-    <>
+    <Box width="100%" px="10px">
       <Carousel
-        width="500px"
         showThumbs={false}
         showStatus={false}
-        centerMode={true}
-        centerSlidePercentage={30}
+        centerMode
+        centerSlidePercentage={percentage}
         showIndicators={false}
-        infiniteLoop={true}
         renderArrowPrev={(onClickHandler, hasPrev, label) =>
           hasPrev && (
-            <button
+            <IconButton
+              size="sm"
+              isRound
               type="button"
               onClick={onClickHandler}
               title={label}
@@ -28,41 +32,42 @@ export const WalletCarousel = ({ wallets }) => {
                 left: 15,
                 position: 'absolute',
                 zIndex: 2,
-                top: 'calc(90% - 15px)',
-                width: 30,
-                height: 30,
+                top: 'calc(50% - 15px)',
+
                 cursor: 'pointer'
               }}
             >
-              <Icon as={ArrowBackIcon} />
-            </button>
+              <Icon as={ChevronLeftIcon} />
+            </IconButton>
           )
         }
         renderArrowNext={(onClickHandler, hasNext, label) =>
           hasNext && (
-            <button
+            <IconButton
+              isRound
+              size="sm"
               type="button"
               onClick={onClickHandler}
               title={label}
               style={{
                 position: 'absolute',
                 zIndex: 2,
-                top: 'calc(90% - 15px)',
-                width: 30,
-                height: 30,
+                top: 'calc(50% - 15px)',
                 cursor: 'pointer',
                 right: 15
               }}
             >
-              <Icon as={ArrowForwardIcon} />
-            </button>
+              <Icon as={ChevronRightIcon} />
+            </IconButton>
           )
         }
       >
         {wallets.map((wallet) => (
-          <WalletCard key={wallet.id} wallet={wallet} />
+          <Box key={wallet.id} display="block" mx="5px" py="10px">
+            <WalletCard wallet={wallet} showLink />
+          </Box>
         ))}
       </Carousel>
-    </>
+    </Box>
   );
 };

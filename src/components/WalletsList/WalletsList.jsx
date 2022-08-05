@@ -12,9 +12,10 @@ import { WalletCarousel } from '../WalletCarousel';
 
 export const WalletsList = () => {
   const { textColor, sectionBgColor } = useCentralTheme();
-  const { data, isFetched } = useQuery(['wallet'], () =>
-    getWallets('34e7bbf8-1685-4fb8-8a77-7964ec3e90ca')
-  );
+  const { data, isFetched } = useQuery(['wallet'], async () => {
+    const response = await getWallets('34e7bbf8-1685-4fb8-8a77-7964ec3e90ca');
+    return { data: [...response.data, response.data[0]] };
+  });
 
   return (
     <>
@@ -35,13 +36,8 @@ export const WalletsList = () => {
 
         <Grid
           templateAreas={{
-            base: `'left right' 'center center'`,
-            md: `'left center right'`
-          }}
-          templateRows={'auto'}
-          templateColumns={{
-            base: '2fr 1fr',
-            md: '1fr 3fr 1fr'
+            base: "'left right' 'center center'",
+            lg: "'left center center right'"
           }}
         >
           <GridItem area="left">
@@ -56,27 +52,25 @@ export const WalletsList = () => {
               <AddWalletModal />
             </VStack>
           </GridItem>
-          {isFetched && (
-            <GridItem area="center">
-              <VStack
-                w="full"
-                h="full"
-                p={2}
-                spacing={8}
-                justify="center"
-                flexDirection="row"
-                alignItems="baseline"
-              >
-                {data.data.length > 3 ? (
-                  <WalletCarousel wallets={data.data} />
-                ) : (
-                  data.data.map((wallet) => {
-                    return <WalletCard key={wallet.id} wallet={wallet} />;
-                  })
-                )}
-              </VStack>
-            </GridItem>
-          )}
+          <GridItem area="center">
+            {isFetched &&
+              (data.data.length > 3 ? (
+                <WalletCarousel wallets={data.data} />
+              ) : (
+                <Grid
+                  templateColumns={`repeat(${data.data.length}, 1fr)`}
+                  gap={3}
+                >
+                  {data.data.map((wallet) => {
+                    return (
+                      <GridItem key={wallet.id}>
+                        <WalletCard wallet={wallet} />
+                      </GridItem>
+                    );
+                  })}
+                </Grid>
+              ))}
+          </GridItem>
           <GridItem area="right">
             <VStack
               w="full"

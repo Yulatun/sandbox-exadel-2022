@@ -46,9 +46,18 @@ export const AddWalletModal = () => {
 
   return (
     <>
-      <Flex alignItems="center">
+      <Flex
+        direction="column"
+        mb="10px"
+        alignItems="center"
+        mr="25px"
+        ml="25px"
+      >
         <IconButton
-          mr="10px"
+          width="40px"
+          height="40px"
+          isRound
+          mb="5px"
           colorScheme="blue"
           aria-label={i18next.t('modal.addWallet.title')}
           onClick={onOpen}
