@@ -3,7 +3,7 @@ import { useMutation, useQuery, useQueryClient } from 'react-query';
 import { Box, Flex, useDisclosure, VStack } from '@chakra-ui/react';
 import i18next from 'i18next';
 
-import { deleteTransactions, getTransactions } from '@/api/Transactions';
+import { deleteTransaction, getTransactions } from '@/api/Transactions';
 import { DeleteConfirmationModal, IncomeItem } from '@/components';
 import { useCentralTheme } from '@/theme';
 
@@ -14,12 +14,13 @@ export const Incomes = () => {
   const deleteModal = useDisclosure();
   const queryClient = useQueryClient();
 
-  const { data, isFetched } = useQuery(['transactions'], () =>
-    getTransactions()
+  const { data: dataTransactions, isFetched: isFetchedTransactions } = useQuery(
+    ['transactions'],
+    getTransactions
   );
 
   const mutationTransaction = useMutation(
-    () => deleteTransactions(chosenIncomeId),
+    () => deleteTransaction(chosenIncomeId),
     {
       onSuccess: () => {
         queryClient.invalidateQueries(['transactions']);
@@ -39,8 +40,10 @@ export const Incomes = () => {
     <Box bg={bgColor} w="100%" mt={6}>
       <Flex bg={bgColor} direction="column" justify="center" align="center">
         <VStack w="80%" pt={5} spacing={5} align="stretch" justify="center">
-          {isFetched &&
-            data.data
+          {!!dataTransactions &&
+            !!dataTransactions.data &&
+            isFetchedTransactions &&
+            dataTransactions.data
               .filter((data) => data.transactionType === 'Income')
               .map((dataTransaction) => (
                 <IncomeItem
