@@ -1,5 +1,4 @@
 import React from 'react';
-// import { useNavigate } from 'react-router-dom';
 import {
   DeleteIcon,
   QuestionOutlineIcon,
@@ -16,20 +15,14 @@ import i18next from 'i18next';
 
 import { LogOutIcon } from '@/assets';
 import logout from '@/helpers/authorization';
+import { useCentralTheme } from '@/theme';
 
-import { useCentralTheme } from '../../theme/theme';
 import { DeleteConfirmationModal } from '../DeleteConfirmationModal';
 
 export const UserMenu = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
-  // const navigate = useNavigate();
   const { hoverBgColor, popupBgColor, popupTextColor, textColor } =
     useCentralTheme();
-
-  // const logout = () => {
-  //   localStorage.removeItem('token');
-  //   navigate('/login', { replace: true });
-  // };
 
   return (
     <Menu>

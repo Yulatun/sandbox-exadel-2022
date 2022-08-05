@@ -21,7 +21,7 @@ export const Categories = () => {
       <Grid templateColumns="repeat(2, 1fr)" height="100vh">
         <GridItem className="expenseCol">
           <AccordionHeadings
-            headingOne= {i18next.t('expenses.categoryHeading')}
+            headingOne={i18next.t('expenses.categoryHeading')}
             headingTwo={i18next.t('expenses.addCategoryHeading')}
           />
           {AccordionArray.map(createAccordion)}
