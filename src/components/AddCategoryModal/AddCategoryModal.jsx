@@ -92,7 +92,9 @@ export const AddCategoryModal = ({ isOpen, onClose, categoryType }) => {
                       validate: (name) =>
                         (isFetched &&
                           !data.data
-                            .filter((data) => data.name)
+                            .filter(
+                              (data) => data.categoryType === categoryType
+                            )
                             .map((data) => data.name)
                             .includes(name)) ||
                         i18next.t(
