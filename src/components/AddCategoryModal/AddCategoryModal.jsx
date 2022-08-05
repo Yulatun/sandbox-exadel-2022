@@ -52,7 +52,7 @@ export const AddCategoryModal = ({ isOpen, onClose, categoryType }) => {
     onClose();
   };
 
-  const { data, isFetched } = useQuery(['categories'], getCategory());
+  const { data, isFetched } = useQuery(['categories'], getCategory);
 
   return (
     <>
