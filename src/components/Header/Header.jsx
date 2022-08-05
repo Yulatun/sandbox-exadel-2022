@@ -1,7 +1,8 @@
 import React from 'react';
 import { Box, Flex } from '@chakra-ui/react';
 
-import { useCentralTheme } from '../../theme/theme';
+import { useCentralTheme } from '@/theme';
+
 import ColorModeToggle from '../ColorModeToggle';
 
 import { Logo } from './Logo';

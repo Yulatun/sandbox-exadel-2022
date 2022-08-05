@@ -18,10 +18,10 @@ function createAccordion(accordionContent) {
 export const Categories = () => {
   return (
     <>
-      <Grid templateColumns="repeat(2, 1fr)" height="100vh">
+      <Grid templateColumns="repeat(2, 1fr)" height="100vh" mt={8}>
         <GridItem className="expenseCol">
           <AccordionHeadings
-            headingOne= {i18next.t('expenses.categoryHeading')}
+            headingOne={i18next.t('expenses.categoryHeading')}
             headingTwo={i18next.t('expenses.addCategoryHeading')}
           />
           {AccordionArray.map(createAccordion)}
