@@ -19,6 +19,7 @@ function createAccordion(accordionContent) {
 export const Categories = () => {
   const expensesCategoriesModal = useDisclosure();
   const incomeCategoriesModal = useDisclosure();
+
   return (
     <>
       <Grid templateColumns="repeat(2, 1fr)" height="100vh" mt={8}>
