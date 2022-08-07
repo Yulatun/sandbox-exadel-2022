@@ -96,7 +96,8 @@ export const NotificationsMenu = ({ userId }) => {
                   zIndex="1"
                   alignItems="center"
                   justifyContent="center"
-                  w="18px"
+                  px={1}
+                  minW="18px"
                   h="18px"
                   borderRadius="50%"
                   fontSize="14px"
