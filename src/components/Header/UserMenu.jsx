@@ -14,6 +14,7 @@ import {
 } from '@chakra-ui/react';
 import i18next from 'i18next';
 
+import { deleteAccount } from '@/api/DeleteAccount';
 import { LogOutIcon } from '@/assets';
 import { useCentralTheme } from '@/theme';
 
@@ -28,6 +29,14 @@ export const UserMenu = () => {
   const logout = () => {
     localStorage.removeItem('token');
     navigate('/login', { replace: true });
+  };
+
+  const onDelete = () => {
+    deleteAccount()
+      .then(() => alert(i18next.t('delete.account.successful.message')))
+      .catch((err) => console.log(err));
+    onClose();
+    logout();
   };
 
   return (
@@ -85,8 +94,9 @@ export const UserMenu = () => {
         </MenuItem>
       </MenuList>
       <DeleteConfirmationModal
+        onSubmit={onDelete}
         isOpen={isOpen}
-        onSubmit={onClose}
+        // onSubmit={onClose}
         onClose={onClose}
         title={i18next.t('modal.deleteAccount.title')}
         text={i18next.t('modal.deleteAccount.text')}

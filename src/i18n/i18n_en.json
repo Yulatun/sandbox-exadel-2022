@@ -147,5 +147,6 @@
   "modal.addCategory.validationErrorMessage.nameExist": "This name already exists",
   "transaction.recentTransactions": "Recent transactions",
   "modal.addCategory.validationErrorMessage.nameIsLong": "Your name is too long",
-  "modal.addCategory.submitSuccessful.message": "you have created new category"
+  "modal.addCategory.submitSuccessful.message": "you have created new category",
+  "delete.account.successful.message": "you deleted your account successful"
 }
