@@ -30,7 +30,7 @@ import { getWallets } from '@/api/Wallet';
 
 export const AddIncomeModal = ({ isOpen, onClose, onSubmit, userData }) => {
   const { data: dataWallets, isFetched: isFetchedWallets } = useQuery(
-    ['wallets', userData.id],
+    ['wallets'],
     getWallets
   );
   const { data: dataDefaultCategories, isFetched: isFetchedDefaultCategories } =

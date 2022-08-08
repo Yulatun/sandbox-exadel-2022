@@ -1,5 +1,5 @@
 import { useQuery } from 'react-query';
-import { Box, Button, Flex, Link, Text, useDisclosure } from '@chakra-ui/react';
+import { Box, Button, Flex, Text, useDisclosure } from '@chakra-ui/react';
 import i18next from 'i18next';
 
 import { createIncome, getTransactions } from '@/api/Transactions';
@@ -80,7 +80,7 @@ export const Landing = () => {
           <WalletsList />
         </Flex>
       </Box>
-      <Link href="/wallet/123"> Draft of Wallet Page</Link>
+
       <Box w="100%" p={4}>
         <Flex direction="column" justify="center" align="center">
           <Text color={textColor} fontSize="xl">

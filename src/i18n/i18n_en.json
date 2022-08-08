@@ -81,7 +81,7 @@
   "modal.deleteExpense.text": "Are you sure you want to delete the expense?",
   "modal.deleteIncome.title": "Transaction deletion",
   "modal.deleteIncome.text": "Are you sure you want to delete the income?",
-  "modal.addWallet.title": "Add new wallet",
+  "modal.addWallet.title": "Add wallet",
   "modal.addWallet.name": "Name",
   "modal.addWallet.name.placeholder": "My new wallet",
   "modal.addWallet.currency": "Currency",
