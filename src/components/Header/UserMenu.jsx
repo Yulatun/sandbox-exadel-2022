@@ -1,5 +1,4 @@
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
 import {
   DeleteIcon,
   QuestionOutlineIcon,
@@ -16,20 +15,16 @@ import i18next from 'i18next';
 
 import { deleteAccount } from '@/api/DeleteAccount';
 import { LogOutIcon } from '@/assets';
+import logout from '@/helpers/authorization';
 import { useCentralTheme } from '@/theme';
 
 import { DeleteConfirmationModal } from '../DeleteConfirmationModal';
 
 export const UserMenu = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const navigate = useNavigate();
+
   const { hoverBgColor, popupBgColor, popupTextColor, textColor } =
     useCentralTheme();
-
-  const logout = () => {
-    localStorage.removeItem('token');
-    navigate('/login', { replace: true });
-  };
 
   const onDelete = () => {
     deleteAccount()
@@ -96,7 +91,6 @@ export const UserMenu = () => {
       <DeleteConfirmationModal
         onSubmit={onDelete}
         isOpen={isOpen}
-        // onSubmit={onClose}
         onClose={onClose}
         title={i18next.t('modal.deleteAccount.title')}
         text={i18next.t('modal.deleteAccount.text')}
