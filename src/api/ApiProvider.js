@@ -1,6 +1,9 @@
 import { createStandaloneToast } from '@chakra-ui/toast';
 import axios from 'axios';
 
+import logout from '@/helpers/authorization';
+import { i18n } from '@/i18n';
+
 export const instance = axios.create({
   baseURL: import.meta.env.VITE_API_URL,
   timeout: 1000
@@ -14,8 +17,9 @@ const responseSuccessInterceptor = (response) => {
 const networkErrorInterceptor = (error) => {
   switch (error.response.status) {
     case 401:
+      logout();
       toast({
-        title: 'Unauthorized',
+        title: i18n.t('toast.error.unauthorized'),
         status: 'error',
         duration: 9000,
         isClosable: true
@@ -23,7 +27,7 @@ const networkErrorInterceptor = (error) => {
       break;
     case 403:
       toast({
-        title: 'Forbidden',
+        title: i18n.t('toast.error.forbidden'),
         status: 'error',
         duration: 9000,
         isClosable: true
@@ -31,7 +35,7 @@ const networkErrorInterceptor = (error) => {
       break;
     case 404:
       toast({
-        title: 'Not Found',
+        title: i18n.t('toast.error.notFound'),
         status: 'error',
         duration: 9000,
         isClosable: true
@@ -39,7 +43,7 @@ const networkErrorInterceptor = (error) => {
       break;
     case 500:
       toast({
-        title: 'Internal Server Error',
+        title: i18n.t('toast.error.internalServerError'),
         status: 'error',
         duration: 9000,
         isClosable: true
@@ -47,7 +51,7 @@ const networkErrorInterceptor = (error) => {
       break;
     case 502:
       toast({
-        title: 'Bad Gateway',
+        title: i18n.t('toast.error.badGateway'),
         status: 'error',
         duration: 9000,
         isClosable: true
@@ -55,7 +59,7 @@ const networkErrorInterceptor = (error) => {
       break;
     default:
       toast({
-        title: 'Error',
+        title: i18n.t('toast.error.default'),
         status: 'error',
         duration: 9000,
         isClosable: true
