@@ -1,7 +1,9 @@
 import { instance } from './ApiProvider';
 
-export const getWallets = async () => {
-  return instance.get('/api/v1/Wallet');
+export const getWallets = async (params) => {
+  const userId = params.queryKey[1];
+
+  return instance.get(`/api/v1/Wallet?userId=${userId}`);
 };
 
 export const createWallet = async (data) => {

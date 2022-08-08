@@ -13,7 +13,7 @@ import { UserMenu } from './UserMenu';
 import { UserName } from './UserName';
 
 export const Header = (isOpen) => {
-  const userId = '34e7bbf8-1685-4fb8-8a77-7964ec3e90ca';
+  const userId = 'b5b4edac-1eab-489b-9796-d03041e708fd';
 
   const { bgColor, textColor } = useCentralTheme();
 

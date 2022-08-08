@@ -71,6 +71,7 @@
   "modal.addIncome.note": "Note",
   "modal.addIncome.validationErrorMessage.amount": "Please, add the sum",
   "modal.addIncome.validationErrorMessage.category": "Please, choose the category",
+  "modal.addIncome.createdMessage": "You create a new income successfully",
   "modal.notification.text": "{{chosenNotificationData.description}}",
   "modal.deleteAccount.button.yes": "Yes",
   "modal.deleteAccount.button.no": "No",
