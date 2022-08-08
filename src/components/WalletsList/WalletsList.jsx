@@ -2,7 +2,7 @@ import { useQuery } from 'react-query';
 import { Box, Grid, GridItem, Heading, Text, VStack } from '@chakra-ui/react';
 import i18next from 'i18next';
 
-import getWallets from '@/api/getWallet';
+import { getWallets } from '@/api/Wallet';
 import { PiggyBankIcon } from '@/assets';
 import { useCentralTheme } from '@/theme';
 
@@ -13,7 +13,7 @@ import { WalletCarousel } from '../WalletCarousel';
 export const WalletsList = () => {
   const { textColor, sectionBgColor } = useCentralTheme();
   const { data, isFetched } = useQuery(['wallet'], async () => {
-    const response = await getWallets('34e7bbf8-1685-4fb8-8a77-7964ec3e90ca');
+    const response = await getWallets();
     return { data: [...response.data, response.data[0]] };
   });
 
