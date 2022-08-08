@@ -1,6 +1,17 @@
 import React from 'react';
-import { Badge, Box, Flex, Heading, Text } from '@chakra-ui/react';
+import { DeleteIcon } from '@chakra-ui/icons';
+import {
+  Badge,
+  Box,
+  Flex,
+  Heading,
+  IconButton,
+  Text,
+  useDisclosure
+} from '@chakra-ui/react';
+import i18next from 'i18next';
 
+import { DeleteConfirmationModal } from '@/components';
 import { i18n } from '@/i18n';
 import { useCentralTheme } from '@/theme';
 
@@ -10,6 +21,11 @@ export const WalletCard = (props) => {
   const totalBalanceView = new Intl.NumberFormat('de-DE', {
     minimumFractionDigits: 2
   }).format(props.totalBalance);
+
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  const onDelete = () => {
+    onClose();
+  };
 
   return (
     <>
@@ -45,6 +61,17 @@ export const WalletCard = (props) => {
           </Flex>
           <Text>{props.currency}</Text>
         </Flex>
+        <IconButton
+          onClick={onOpen}
+          ml="80%"
+          icon={<DeleteIcon />}
+        ></IconButton>
+        <DeleteConfirmationModal
+          isOpen={isOpen}
+          onSubmit={onDelete}
+          onClose={onClose}
+          text={i18next.t('modal.deleteWallet.text')}
+        />
         <Flex
           direction="column"
           p={2}
