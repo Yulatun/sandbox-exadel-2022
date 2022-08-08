@@ -1,3 +1,5 @@
+import { LOCAL_STORAGE_API_KEY } from '@/helpers/constants';
+
 export default function loginAction() {
   return new Promise((resolve) => {
     resolve({
@@ -10,7 +12,7 @@ export default function loginAction() {
       token: 'DTYHKL57HGGJ'
     });
   }).then((data) => {
-    localStorage.setItem('token', data.token);
+    localStorage.setItem(LOCAL_STORAGE_API_KEY, data.token);
     return data.user;
   });
 }
