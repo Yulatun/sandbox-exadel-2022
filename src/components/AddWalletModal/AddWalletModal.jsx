@@ -24,12 +24,16 @@ import {
 } from '@chakra-ui/react';
 import i18next from 'i18next';
 
-import getCurrency from '@/api/getCurrency';
+import { getCurrency } from '@/api/Currency';
 import { createWallet } from '@/api/Wallet';
 
 export const AddWalletModal = () => {
   const { isOpen, onClose, onOpen } = useDisclosure();
-  const { data, isFetched } = useQuery(['currency'], getCurrency);
+
+  const { data: dataCurrency, isFetched: isFetchedCurrency } = useQuery(
+    ['currency'],
+    getCurrency
+  );
 
   const {
     register,
@@ -114,9 +118,13 @@ export const AddWalletModal = () => {
                 })}
                 placeholder={i18next.t('modal.addWallet.currency.placeholder')}
               >
-                {isFetched &&
-                  data.data.map((currency, id) => {
-                    return <option key={id}>{currency.currencyCode}</option>;
+                {!!dataCurrency &&
+                  !!dataCurrency.data &&
+                  isFetchedCurrency &&
+                  dataCurrency.data.map((currency) => {
+                    return (
+                      <option key={currency.id}>{currency.currencyCode}</option>
+                    );
                   })}
               </Select>
               <FormErrorMessage>
