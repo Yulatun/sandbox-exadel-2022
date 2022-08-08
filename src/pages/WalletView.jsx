@@ -15,7 +15,7 @@ export const WalletView = () => {
 
   const { data: dataTransactions, isFetched: isFetchedTransactions } = useQuery(
     ['transactions'],
-    () => getTransactions()
+    getTransactions
   );
 
   const mutationTransaction = useMutation(
@@ -47,7 +47,9 @@ export const WalletView = () => {
         ></WalletCard>
       </Flex>
       <VStack spacing={5} pt={5}>
-        {isFetchedTransactions &&
+        {!!dataTransactions &&
+          !!dataTransactions.data &&
+          isFetchedTransactions &&
           dataTransactions.data
             .filter((data) => data.id === data.id)
             .map((dataTransaction) => (

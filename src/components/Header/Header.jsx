@@ -8,12 +8,15 @@ import ColorModeToggle from '../ColorModeToggle';
 import { Logo } from './Logo';
 import { Navbar } from './Navbar';
 import { NavDrawer } from './NavDrawer';
-import { Notification } from './Notification';
+import { NotificationsMenu } from './NotificationsMenu';
 import { UserMenu } from './UserMenu';
 import { UserName } from './UserName';
 
 export const Header = (isOpen) => {
+  const userId = '34e7bbf8-1685-4fb8-8a77-7964ec3e90ca';
+
   const { bgColor, textColor } = useCentralTheme();
+
   return (
     <Flex
       as="header"
@@ -40,7 +43,7 @@ export const Header = (isOpen) => {
         >
           <Navbar />
         </Box>
-        <Notification />
+        <NotificationsMenu userId={userId} />
         <Box
           display={{ base: isOpen ? 'none' : 'block', lg: 'block' }}
           flexBasis={{ base: '100%', md: 'auto' }}

@@ -17,8 +17,9 @@ export const Landing = () => {
 
   const { textColor } = useCentralTheme();
 
-  const { data, isFetched } = useQuery(['transactions'], () =>
-    getTransactions()
+  const { data: dataTransactions, isFetched: isFetchedTransactions } = useQuery(
+    ['transactions'],
+    getTransactions
   );
 
   return (
@@ -52,7 +53,11 @@ export const Landing = () => {
           <Text color={textColor} fontSize="xl">
             {i18next.t('transaction.recentTransactions')}
           </Text>
-          {isFetched && <TransactionList list={data.data} />}
+          {!!dataTransactions &&
+            !!dataTransactions.data &&
+            isFetchedTransactions && (
+              <TransactionList list={dataTransactions.data} />
+            )}
         </Flex>
       </Box>
     </>

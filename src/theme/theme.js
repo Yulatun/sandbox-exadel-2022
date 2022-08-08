@@ -58,6 +58,8 @@ export const useCentralTheme = () => {
   let inputSelectBorderColor = useColorModeValue(gray200, whiteAlpha300);
   let badgeBgColor = useColorModeValue(orange100, teal700);
   let sectionBgColor = useColorModeValue(orange200, teal700);
+  let notificationUnreadBgColor = useColorModeValue(orange200, teal700);
+  let notificationReadBgColor = useColorModeValue(orange50, teal900);
   return {
     bgColor,
     textColor,
@@ -71,7 +73,9 @@ export const useCentralTheme = () => {
     inputSelectBorderColor,
     containerBgColor,
     badgeBgColor,
-    sectionBgColor
+    sectionBgColor,
+    notificationUnreadBgColor,
+    notificationReadBgColor
   };
 };
 

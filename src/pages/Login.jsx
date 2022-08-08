@@ -8,20 +8,18 @@ export const Login = () => {
   const { bgColor } = useCentralTheme();
 
   return (
-    <>
-      <Flex
-        bg={bgColor}
-        w="100%"
-        justify="center"
-        p="100px"
-        alignItems="center"
-        flexDirection="column"
-      >
-        <main>
-          <ColorModeToggle />
-          <LoginForm />
-        </main>
-      </Flex>
-    </>
+    <Flex
+      bg={bgColor}
+      w="100%"
+      justify="center"
+      p="100px"
+      alignItems="center"
+      flexDirection="column"
+    >
+      <main>
+        <ColorModeToggle />
+        <LoginForm />
+      </main>
+    </Flex>
   );
 };
