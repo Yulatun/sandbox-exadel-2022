@@ -13,7 +13,7 @@ import { NoteIcon } from '@/assets';
 import { useCentralTheme } from '@/theme';
 
 export const TransactionList = ({ list }) => {
-  const { bgColor, textColor } = useCentralTheme();
+  const { popupBgColor, textColor } = useCentralTheme();
 
   const onEdit = () => {
     // onEdit
@@ -29,7 +29,7 @@ export const TransactionList = ({ list }) => {
         <HStack
           justify="space-evenly"
           w="100%"
-          bg={bgColor}
+          bg={popupBgColor}
           color={textColor}
           paddingY={4}
           boxShadow="lg"
