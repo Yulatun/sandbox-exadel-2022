@@ -39,7 +39,10 @@ export const AddWalletModal = () => {
   } = useForm();
 
   const onSubmit = (data) => {
-    createWallet(data)
+    const currency = dataCurrency.data.find(
+      (item) => item.currencyCode === data.currency
+    );
+    createWallet(data, currency)
       .then(() => alert(i18next.t('wallet.createdMessage')))
       .catch((err) => console.log(err));
     onClose();
