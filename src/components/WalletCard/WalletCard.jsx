@@ -23,6 +23,7 @@ export const WalletCard = (props) => {
   }).format(props.totalBalance);
 
   const { isOpen, onOpen, onClose } = useDisclosure();
+
   const onDelete = () => {
     onClose();
   };

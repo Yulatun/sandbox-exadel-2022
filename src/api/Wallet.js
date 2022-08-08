@@ -13,3 +13,7 @@ export const createWallet = async (data) => {
   });
   return response;
 };
+
+export const deleteWallet = async (userId, walletId) => {
+  return instance.delete(`/api/v1/Wallet/${userId}/${walletId}`);
+};
