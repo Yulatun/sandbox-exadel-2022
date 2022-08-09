@@ -13,6 +13,7 @@ import {
 } from '@chakra-ui/react';
 import i18next from 'i18next';
 
+import { deleteAccount } from '@/api/DeleteAccount';
 import { LogOutIcon } from '@/assets';
 import logout from '@/helpers/authorization';
 import { useCentralTheme } from '@/theme';
@@ -21,8 +22,17 @@ import { DeleteConfirmationModal } from '../DeleteConfirmationModal';
 
 export const UserMenu = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
+
   const { hoverBgColor, popupBgColor, popupTextColor, textColor } =
     useCentralTheme();
+
+  const onDelete = () => {
+    deleteAccount()
+      .then(() => alert(i18next.t('delete.account.successful.message')))
+      .catch((err) => console.log(err));
+    onClose();
+    logout();
+  };
 
   return (
     <Menu>
@@ -79,8 +89,8 @@ export const UserMenu = () => {
         </MenuItem>
       </MenuList>
       <DeleteConfirmationModal
+        onSubmit={onDelete}
         isOpen={isOpen}
-        onSubmit={onClose}
         onClose={onClose}
         title={i18next.t('modal.deleteAccount.title')}
         text={i18next.t('modal.deleteAccount.text')}

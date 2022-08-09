@@ -127,6 +127,7 @@
   "transaction.recentTransactions": "Recent transactions",
   "modal.addCategory.validationErrorMessage.nameIsLong": "Your name is too long",
   "modal.addCategory.submitSuccessful.message": "you have created new category",
+  "delete.account.successful.message": "you deleted your account successful",
   "toast.error.badGateway": "Bad Gateway. Something wrong with a website's server communication. Wait a minute or two and try to reload the page.",
   "toast.error.default": "Error. Something went wrong, try again later.",
   "toast.error.forbidden": "Forbidden. You don't have permission to access this page.",
