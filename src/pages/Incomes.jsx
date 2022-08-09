@@ -8,6 +8,11 @@ import { DeleteConfirmationModal, IncomeItem } from '@/components';
 import { useCentralTheme } from '@/theme';
 
 export const Incomes = () => {
+  const userData = {
+    id: 'b5b4edac-1eab-489b-9796-d03041e708fd',
+    defaultWallet: '7cfe651f-6e02-4e14-9872-6a6a308a3981'
+  };
+
   const [chosenIncomeId, setChosenIncomeId] = useState();
   const { bgColor } = useCentralTheme();
 
@@ -15,7 +20,7 @@ export const Incomes = () => {
   const queryClient = useQueryClient();
 
   const { data: dataTransactions, isFetched: isFetchedTransactions } = useQuery(
-    ['transactions'],
+    ['transactions', userData.id],
     getTransactions
   );
 

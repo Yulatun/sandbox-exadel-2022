@@ -25,7 +25,7 @@ export const Landing = () => {
   const { textColor } = useCentralTheme();
 
   const { data: dataTransactions, isFetched: isFetchedTransactions } = useQuery(
-    ['transactions'],
+    ['transactions', userData.id],
     getTransactions
   );
 
