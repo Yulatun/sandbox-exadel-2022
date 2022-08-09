@@ -1,8 +1,11 @@
 import { Button, Flex, Grid, GridItem, useDisclosure } from '@chakra-ui/react';
 import i18next from 'i18next';
 
-import { AddCategoryModal } from '@/components';
-import { AccordionComponent, AccordionHeadings } from '@/components';
+import {
+  AccordionComponent,
+  AccordionHeadings,
+  AddCategoryModal
+} from '@/components';
 
 import { AccordionArray } from '../components/AccordionComponent/AccordionArray';
 

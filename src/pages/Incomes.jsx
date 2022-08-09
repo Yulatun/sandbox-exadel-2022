@@ -4,10 +4,15 @@ import { Box, Flex, useDisclosure, VStack } from '@chakra-ui/react';
 import i18next from 'i18next';
 
 import { deleteTransaction, getTransactions } from '@/api/Transactions';
-import { DeleteConfirmationModal, IncomeItem } from '@/components';
+import { DeleteConfirmationModal, IncomeItem, Preloader } from '@/components';
 import { useCentralTheme } from '@/theme';
 
 export const Incomes = () => {
+  const userData = {
+    id: 'b5b4edac-1eab-489b-9796-d03041e708fd',
+    defaultWallet: '7cfe651f-6e02-4e14-9872-6a6a308a3981'
+  };
+
   const [chosenIncomeId, setChosenIncomeId] = useState();
   const { bgColor } = useCentralTheme();
 
@@ -15,7 +20,7 @@ export const Incomes = () => {
   const queryClient = useQueryClient();
 
   const { data: dataTransactions, isFetched: isFetchedTransactions } = useQuery(
-    ['transactions'],
+    ['transactions', userData.id],
     getTransactions
   );
 
@@ -40,6 +45,7 @@ export const Incomes = () => {
     <Box bg={bgColor} w="100%" mt={6}>
       <Flex bg={bgColor} direction="column" justify="center" align="center">
         <VStack w="80%" pt={5} spacing={5} align="stretch" justify="center">
+          {!isFetchedTransactions ? <Preloader /> : null}
           {!!dataTransactions &&
             !!dataTransactions.data &&
             isFetchedTransactions &&

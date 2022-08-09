@@ -1,26 +1,51 @@
 import { useQuery } from 'react-query';
-import { Box, Button, Flex, Link, Text, useDisclosure } from '@chakra-ui/react';
+import { Box, Button, Flex, Text, useDisclosure } from '@chakra-ui/react';
 import i18next from 'i18next';
 
-import { getTransactions } from '@/api/Transactions';
+import { createIncome, getTransactions } from '@/api/Transactions';
 import {
   AddExpenseModal,
   AddIncomeModal,
+  NotificationModal,
+  Preloader,
   TransactionList,
   WalletsList
 } from '@/components';
 import { useCentralTheme } from '@/theme';
 
 export const Landing = () => {
+  const userData = {
+    id: 'b5b4edac-1eab-489b-9796-d03041e708fd',
+    defaultWallet: '7cfe651f-6e02-4e14-9872-6a6a308a3981'
+  };
+
   const expenseModal = useDisclosure();
   const incomeModal = useDisclosure();
+  const createTransactionModal = useDisclosure();
 
   const { textColor } = useCentralTheme();
 
   const { data: dataTransactions, isFetched: isFetchedTransactions } = useQuery(
-    ['transactions'],
+    ['transactions', userData.id],
     getTransactions
   );
+
+  const createIncomeOnSubmit = (data) => {
+    createIncome({
+      walletId: data.wallet,
+      categoryId: data.category,
+      dateOfTransaction: new Date(
+        `${data.date}T${new Date().toISOString().split('T')[1]}`
+      ),
+      value: Number(data.amount),
+      description: data.note
+    })
+      .then(() => {
+        createTransactionModal.onOpen();
+      })
+      .catch((err) => console.log(err));
+    incomeModal.onClose();
+  };
 
   return (
     <>
@@ -40,19 +65,29 @@ export const Landing = () => {
             </Button>
             <AddIncomeModal
               isOpen={incomeModal.isOpen}
-              onSubmit={incomeModal.onClose}
+              onSubmit={createIncomeOnSubmit}
               onClose={incomeModal.onClose}
+              userData={userData}
             />
           </Flex>
+          {!incomeModal.isOpen && (
+            <NotificationModal
+              isOpen={createTransactionModal.isOpen}
+              onSubmit={createTransactionModal.onClose}
+              onClose={createTransactionModal.onClose}
+              text={i18next.t('modal.addIncome.createdMessage')}
+            />
+          )}
           <WalletsList />
         </Flex>
       </Box>
-      <Link href="/wallet/123"> Draft of Wallet Page</Link>
+
       <Box w="100%" p={4}>
         <Flex direction="column" justify="center" align="center">
           <Text color={textColor} fontSize="xl">
             {i18next.t('transaction.recentTransactions')}
           </Text>
+          {!isFetchedTransactions ? <Preloader /> : null}
           {!!dataTransactions &&
             !!dataTransactions.data &&
             isFetchedTransactions && (

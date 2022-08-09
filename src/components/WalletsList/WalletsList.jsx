@@ -1,14 +1,23 @@
+import { useQuery } from 'react-query';
 import { Box, Grid, GridItem, Heading, Text, VStack } from '@chakra-ui/react';
 import i18next from 'i18next';
 
+import { getWallets } from '@/api/Wallet';
 import { PiggyBankIcon } from '@/assets';
+import {
+  AddWalletModal,
+  Preloader,
+  WalletCard,
+  WalletCarousel
+} from '@/components';
 import { useCentralTheme } from '@/theme';
-
-import { AddWalletModal } from '../AddWalletModal';
-import { WalletCard } from '../WalletCard';
 
 export const WalletsList = () => {
   const { textColor, sectionBgColor } = useCentralTheme();
+  const { data, isFetched } = useQuery(['wallet'], async () => {
+    const response = await getWallets();
+    return { data: [...response.data, response.data[0]] };
+  });
 
   return (
     <>
@@ -21,38 +30,49 @@ export const WalletsList = () => {
         borderRadius={35}
         shadow="lg"
       >
+        <Box display="flex" justifyContent="center" mt="10px">
+          <Heading as="h4" size="md" fontWeight="bold">
+            {i18next.t('walletView.headOfBalanceMessage')}&#58;
+          </Heading>
+        </Box>
+
         <Grid
           templateAreas={{
-            base: `'left right' 'center center'`,
-            md: `'left center right'`
-          }}
-          templateRows={'auto'}
-          templateColumns={{
-            base: '2fr 1fr',
-            md: '1fr 3fr 1fr'
+            base: "'left right' 'center center'",
+            lg: "'left center center right'"
           }}
         >
           <GridItem area="left">
             <VStack
               w="full"
               h="full"
-              p={8}
+              p={3}
               spacing={8}
-              alignItems="flex-start"
+              alignItems="center"
               justify="center"
             >
-              <Heading as="h4" size="md" fontWeight="bold">
-                {i18next.t('walletView.headOfBalanceMessage')}&#58;
-              </Heading>
-              <Text>{i18next.t('modal.addExpense.wallet')}</Text>
               <AddWalletModal />
             </VStack>
           </GridItem>
           <GridItem area="center">
-            <VStack w="full" h="full" p={2} spacing={8} justify="center">
-              {/* Next step will be adopting the view of this component for that layout */}
-              <WalletCard />
-            </VStack>
+            {!isFetched ? <Preloader /> : null}
+            {isFetched &&
+              (data.data.length > 3 ? (
+                <WalletCarousel wallets={data.data} />
+              ) : (
+                <Grid
+                  templateColumns={`repeat(${data.data.length}, 1fr)`}
+                  gap={3}
+                >
+                  {data.data.map((wallet) => {
+                    return (
+                      <GridItem key={wallet.id}>
+                        <WalletCard wallet={wallet} />
+                      </GridItem>
+                    );
+                  })}
+                </Grid>
+              ))}
           </GridItem>
           <GridItem area="right">
             <VStack

@@ -1,11 +1,14 @@
 import { useForm } from 'react-hook-form';
 import { useQuery } from 'react-query';
+import { AddIcon } from '@chakra-ui/icons';
 import {
   Button,
+  Flex,
   FormControl,
   FormErrorMessage,
   FormHelperText,
   FormLabel,
+  IconButton,
   Input,
   Modal,
   ModalBody,
@@ -39,7 +42,10 @@ export const AddWalletModal = () => {
   } = useForm();
 
   const onSubmit = (data) => {
-    createWallet(data)
+    const currency = dataCurrency.data.find(
+      (item) => item.currencyCode === data.currency
+    );
+    createWallet(data, currency)
       .then(() => alert(i18next.t('wallet.createdMessage')))
       .catch((err) => console.log(err));
     onClose();
@@ -47,8 +53,25 @@ export const AddWalletModal = () => {
 
   return (
     <>
-      <Button onClick={onOpen}>{i18next.t('modal.addWallet.title')}</Button>
-
+      <Flex
+        direction="column"
+        mb="10px"
+        alignItems="center"
+        mr="25px"
+        ml="25px"
+      >
+        <IconButton
+          width="40px"
+          height="40px"
+          isRound
+          mb="5px"
+          colorScheme="blue"
+          aria-label={i18next.t('modal.addWallet.title')}
+          onClick={onOpen}
+          icon={<AddIcon />}
+        />
+        {i18next.t('modal.addWallet.title')}
+      </Flex>
       <Modal closeOnOverlayClick={false} isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
         <ModalContent>
