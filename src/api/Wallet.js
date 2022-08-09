@@ -8,7 +8,7 @@ export const getWallets = async () => {
 
 export const createWallet = async (data, currency) => {
   return instance.post('/api/v1/Wallet', {
-    userId: '52945808-41cf-4522-b879-62dc5128dc06',
+    userId: 'b5b4edac-1eab-489b-9796-d03041e708fd',
     name: data.name,
     currency,
     setDefault: data.setDefault
