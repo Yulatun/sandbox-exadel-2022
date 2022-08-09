@@ -150,5 +150,15 @@
   "toast.error.forbidden": "Forbidden. You don't have permission to access this page.",
   "toast.error.internalServerError": "Internal Server Error. The server encountered an internal error and was unable to complete your request. Please try again later.",
   "toast.error.notFound": "Page not found. Try going back to previous page.",
-  "toast.error.unauthorized": "Unauthorized. You don't have permission to access this page. You will be redirected to login page."
+  "toast.error.unauthorized": "Unauthorized. You don't have permission to access this page. You will be redirected to login page.",
+  "modal.addPayer.header": "Payer creation",
+  "modal.addPayer.formName": "New Payer",
+  "modal.addPayer.validationErrorMessage.nameIsLong": "Your name is too long",
+  "modal.addPayer.validationErrorMessage.pattern": "Only latin letters, numbers and special characters",
+  "modal.addPayer.validationErrorMessage.nameExist": "This Payer already exists",
+  "modal.addPayer.placeholder": "new name",
+  "modal.addPayer.addButton": "Add",
+  "modal.addPayer.cancelButton": " Cancel",
+  "modal.addExpense.addPayerQuestion": "Can not find the right person?",
+  "modal.addExpense.addPayer": "+ Add new payer"
 }

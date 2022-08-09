@@ -3,6 +3,7 @@ export { AccordionHeadings } from './AccordionHeadings';
 export { AddCategoryModal } from './AddCategoryModal';
 export { AddExpenseModal } from './AddExpenseModal';
 export { AddIncomeModal } from './AddIncomeModal';
+export { AddPayerModal } from './AddPayerModal';
 export { AddWalletModal } from './AddWalletModal';
 export { DeleteConfirmationModal } from './DeleteConfirmationModal';
 export { ErrorBoundary } from './ErrorBoundary';
