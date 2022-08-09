@@ -7,7 +7,7 @@ export const Preloader = () => {
 
   return (
     <>
-      <Center p={4}>
+      <Center p={4} h="full">
         <Spinner thickness={4} speed="0.8s" color={textColor} size="xl" />
       </Center>
     </>
