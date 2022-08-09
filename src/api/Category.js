@@ -1,8 +1,8 @@
 import { instance } from './ApiProvider';
 
 export const createCategory = async (data, categoryType, color) => {
-  const response = instance.post('/api/Category', {
-    userId: 'c182e85e-af59-4793-ac75-e873a2d464e3',
+  const response = instance.post('/api/v1/Category', {
+    userId: 'b5b4edac-1eab-489b-9796-d03041e708fd',
     name: data.name,
     categoryType: categoryType,
     color: color
@@ -12,6 +12,6 @@ export const createCategory = async (data, categoryType, color) => {
 
 export const getCategory = async () => {
   return instance.get(
-    '/api/Category?userId=c182e85e-af59-4793-ac75-e873a2d464e3'
+    '/api/v1/Category?userId=b5b4edac-1eab-489b-9796-d03041e708fd'
   );
 };
