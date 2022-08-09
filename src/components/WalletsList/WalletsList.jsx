@@ -16,7 +16,7 @@ export const WalletsList = () => {
   const { textColor, sectionBgColor } = useCentralTheme();
   const { data, isFetched } = useQuery(['wallet'], async () => {
     const response = await getWallets();
-    return { data: [...response.data, response.data[0]] };
+    return { data: [...response.data] };
   });
 
   return (
