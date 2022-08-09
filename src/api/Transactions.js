@@ -4,8 +4,10 @@ export const createIncome = async (data) => {
   return instance.post('/api/v1/Transaction/Income', data);
 };
 
-export const getTransactions = async () => {
-  return instance.get('/api/v1/Transaction');
+export const getTransactions = async (params) => {
+  const userId = params.queryKey[1];
+
+  return instance.get(`/api/v1/Transaction?userId=${userId}`);
 };
 
 export const editTransaction = async (data) => {

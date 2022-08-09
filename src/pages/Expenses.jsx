@@ -17,6 +17,11 @@ import { EditExpenseModal } from '@/components/EditExpenseModal';
 import { FiltersTag } from '@/components/FiltersTag';
 
 export const Expenses = () => {
+  const userData = {
+    id: 'b5b4edac-1eab-489b-9796-d03041e708fd',
+    defaultWallet: '7cfe651f-6e02-4e14-9872-6a6a308a3981'
+  };
+
   const [chosenExpenseData, setChosenExpenseData] = useState({});
 
   const editExpenseModal = useDisclosure();
@@ -25,7 +30,7 @@ export const Expenses = () => {
   const queryClient = useQueryClient();
 
   const { data: dataTransactions, isFetched: isFetchedTransactions } = useQuery(
-    ['transactions'],
+    ['transactions', userData.id],
     getTransactions
   );
 
