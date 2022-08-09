@@ -15,67 +15,66 @@ export const instance = axios.create({
 
 const { toast } = createStandaloneToast();
 const responseSuccessInterceptor = (response) => {
-  return response;
+  return catchErrors(response);
+};
+const catchErrors = (request) => {
+  switch (request.status) {
+    case 401:
+      logout();
+      toast({
+        title: i18n.t('toast.error.unauthorized'),
+        status: 'error',
+        duration: 9000,
+        isClosable: true
+      });
+      break;
+    case 403:
+      toast({
+        title: i18n.t('toast.error.forbidden'),
+        status: 'error',
+        duration: 9000,
+        isClosable: true
+      });
+      break;
+    case 404:
+      toast({
+        title: i18n.t('toast.error.notFound'),
+        status: 'error',
+        duration: 9000,
+        isClosable: true
+      });
+      break;
+    case 500:
+      toast({
+        title: i18n.t('toast.error.internalServerError'),
+        status: 'error',
+        duration: 9000,
+        isClosable: true
+      });
+      break;
+    case 502:
+      toast({
+        title: i18n.t('toast.error.badGateway'),
+        status: 'error',
+        duration: 9000,
+        isClosable: true
+      });
+      break;
+    default:
+      return request;
+  }
+
+  return Promise.reject(request);
 };
 
 const networkErrorInterceptor = (error) => {
-  if (error.response) {
-    switch (error.response.status) {
-      case 401:
-        logout();
-        toast({
-          title: i18n.t('toast.error.unauthorized'),
-          status: 'error',
-          duration: 9000,
-          isClosable: true
-        });
-        break;
-      case 403:
-        toast({
-          title: i18n.t('toast.error.forbidden'),
-          status: 'error',
-          duration: 9000,
-          isClosable: true
-        });
-        break;
-      case 404:
-        toast({
-          title: i18n.t('toast.error.notFound'),
-          status: 'error',
-          duration: 9000,
-          isClosable: true
-        });
-        break;
-      case 500:
-        toast({
-          title: i18n.t('toast.error.internalServerError'),
-          status: 'error',
-          duration: 9000,
-          isClosable: true
-        });
-        break;
-      case 502:
-        toast({
-          title: i18n.t('toast.error.badGateway'),
-          status: 'error',
-          duration: 9000,
-          isClosable: true
-        });
-        break;
-      default:
-        toast({
-          title: i18n.t('toast.error.default'),
-          status: 'error',
-          duration: 9000,
-          isClosable: true
-        });
-        break;
-    }
-  }
-  return Promise.reject(error);
+  return catchErrors(error);
 };
 
 instance.interceptors.response.use(
   responseSuccessInterceptor,
   networkErrorInterceptor
 );
+instance.interceptors.request.use((request) => {
+  return request;
+}, networkErrorInterceptor);
