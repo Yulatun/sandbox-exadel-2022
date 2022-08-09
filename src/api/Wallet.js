@@ -6,12 +6,11 @@ export const getWallets = async () => {
   });
 };
 
-export const createWallet = async (data) => {
-  const response = instance.post('/api/v1/Wallet', {
+export const createWallet = async (data, currency) => {
+  return instance.post('/api/v1/Wallet', {
+    userId: '52945808-41cf-4522-b879-62dc5128dc06',
     name: data.name,
-    currency: {
-      currencyCode: data.currency
-    }
+    currency,
+    setDefault: data.setDefault
   });
-  return response;
 };
