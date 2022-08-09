@@ -4,7 +4,7 @@ import { Box, Flex, useDisclosure, VStack } from '@chakra-ui/react';
 import i18next from 'i18next';
 
 import { deleteTransaction, getTransactions } from '@/api/Transactions';
-import { DeleteConfirmationModal, IncomeItem } from '@/components';
+import { DeleteConfirmationModal, IncomeItem, Preloader } from '@/components';
 import { useCentralTheme } from '@/theme';
 
 export const Incomes = () => {
@@ -45,6 +45,7 @@ export const Incomes = () => {
     <Box bg={bgColor} w="100%" mt={6}>
       <Flex bg={bgColor} direction="column" justify="center" align="center">
         <VStack w="80%" pt={5} spacing={5} align="stretch" justify="center">
+          {!isFetchedTransactions ? <Preloader /> : null}
           {!!dataTransactions &&
             !!dataTransactions.data &&
             isFetchedTransactions &&

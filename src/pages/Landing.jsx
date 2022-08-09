@@ -6,10 +6,11 @@ import { createIncome, getTransactions } from '@/api/Transactions';
 import {
   AddExpenseModal,
   AddIncomeModal,
+  NotificationModal,
+  Preloader,
   TransactionList,
   WalletsList
 } from '@/components';
-import { NotificationModal } from '@/components/NotificationModal';
 import { useCentralTheme } from '@/theme';
 
 export const Landing = () => {
@@ -86,6 +87,7 @@ export const Landing = () => {
           <Text color={textColor} fontSize="xl">
             {i18next.t('transaction.recentTransactions')}
           </Text>
+          {!isFetchedTransactions ? <Preloader /> : null}
           {!!dataTransactions &&
             !!dataTransactions.data &&
             isFetchedTransactions && (

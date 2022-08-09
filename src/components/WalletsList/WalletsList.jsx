@@ -4,11 +4,13 @@ import i18next from 'i18next';
 
 import { getWallets } from '@/api/Wallet';
 import { PiggyBankIcon } from '@/assets';
+import {
+  AddWalletModal,
+  Preloader,
+  WalletCard,
+  WalletCarousel
+} from '@/components';
 import { useCentralTheme } from '@/theme';
-
-import { AddWalletModal } from '../AddWalletModal';
-import { WalletCard } from '../WalletCard';
-import { WalletCarousel } from '../WalletCarousel';
 
 export const WalletsList = () => {
   const { textColor, sectionBgColor } = useCentralTheme();
@@ -53,6 +55,7 @@ export const WalletsList = () => {
             </VStack>
           </GridItem>
           <GridItem area="center">
+            {!isFetched ? <Preloader /> : null}
             {isFetched &&
               (data.data.length > 3 ? (
                 <WalletCarousel wallets={data.data} />
