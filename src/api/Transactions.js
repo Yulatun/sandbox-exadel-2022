@@ -1,5 +1,9 @@
 import { instance } from './ApiProvider';
 
+export const createIncome = async (data) => {
+  return instance.post('/api/v1/Transaction/Income', data);
+};
+
 export const getTransactions = async () => {
   return instance.get('/api/v1/Transaction');
 };

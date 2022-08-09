@@ -1,4 +1,5 @@
 import { useForm } from 'react-hook-form';
+import { useQuery } from 'react-query';
 import {
   Button,
   FormControl,
@@ -18,12 +19,23 @@ import {
   NumberInput,
   NumberInputField,
   Select,
+  Skeleton,
   Text,
   Textarea
 } from '@chakra-ui/react';
 import i18next from 'i18next';
 
-export const AddIncomeModal = ({ isOpen, onClose, onSubmit }) => {
+import { getDefaultCategories } from '@/api/DefaultCategories';
+import { getWallets } from '@/api/Wallet';
+
+export const AddIncomeModal = ({ isOpen, onClose, onSubmit, userData }) => {
+  const { data: dataWallets, isFetched: isFetchedWallets } = useQuery(
+    ['wallets'],
+    getWallets
+  );
+  const { data: dataDefaultCategories, isFetched: isFetchedDefaultCategories } =
+    useQuery(['defaultCategories'], getDefaultCategories);
+
   const {
     register,
     handleSubmit,
@@ -32,7 +44,7 @@ export const AddIncomeModal = ({ isOpen, onClose, onSubmit }) => {
     }
   } = useForm({
     defaultValues: {
-      wallet: 'wallet-1-default',
+      wallet: userData.defaultWallet,
       date: new Date().toISOString().split('T')[0],
       isRecurring: 'recurring-no'
     }
@@ -52,13 +64,23 @@ export const AddIncomeModal = ({ isOpen, onClose, onSubmit }) => {
         <ModalBody>
           <FormControl mb="20px" isRequired>
             <FormLabel>{i18next.t('modal.addIncome.wallet')}</FormLabel>
-            <Select {...register('wallet')}>
-              <option value="wallet-1-default">
-                Wallet by default (in dollars)
-              </option>
-              <option value="wallet-2">Wallet 2 (in euro)</option>
-              <option value="wallet-3">Wallet 3 (in zl)</option>
-            </Select>
+            {(!!dataWallets && !!dataWallets.data && isFetchedWallets && (
+              <Select {...register('wallet')}>
+                {!!Object.keys(dataWallets).length &&
+                  dataWallets.data.map((wallet) => (
+                    <option key={wallet.id} value={wallet.id}>
+                      {wallet.name}
+                    </option>
+                  ))}
+              </Select>
+            )) || (
+              <Skeleton
+                height="40px"
+                borderRadius="5px"
+                startColor="orange.100"
+                endColor="orange.200"
+              />
+            )}
           </FormControl>
 
           <FormControl mb="20px" isRequired isInvalid={amount}>
@@ -86,21 +108,36 @@ export const AddIncomeModal = ({ isOpen, onClose, onSubmit }) => {
             <FormLabel htmlFor="category">
               {i18next.t('modal.addIncome.category')}
             </FormLabel>
-            <Select
-              placeholder={i18next.t('modal.addIncome.category.placeholder')}
-              {...register('category', {
-                required: i18next.t(
-                  'modal.addIncome.validationErrorMessage.category'
-                )
-              })}
-            >
-              <option value="category-1">Category 1</option>
-              <option value="category-2">Category 2</option>
-              <option value="category-3">Category 3</option>
-              <option value="category-new">
-                {i18next.t('modal.addIncome.category.option.addNew')}
-              </option>
-            </Select>
+            {(!!dataDefaultCategories &&
+              !!dataDefaultCategories.data &&
+              isFetchedDefaultCategories && (
+                <Select
+                  placeholder={i18next.t(
+                    'modal.addIncome.category.placeholder'
+                  )}
+                  {...register('category', {
+                    required: i18next.t(
+                      'modal.addIncome.validationErrorMessage.category'
+                    )
+                  })}
+                >
+                  {!!Object.keys(dataDefaultCategories).length &&
+                    dataDefaultCategories.data
+                      .filter((category) => category.categoryType === 'Expense')
+                      .map((category) => (
+                        <option key={category.id} value={category.id}>
+                          {category.name}
+                        </option>
+                      ))}
+                </Select>
+              )) || (
+              <Skeleton
+                height="40px"
+                borderRadius="5px"
+                startColor="orange.100"
+                endColor="orange.200"
+              />
+            )}
             <FormErrorMessage>
               <Text>{category && category.message}</Text>
             </FormErrorMessage>
@@ -139,7 +176,7 @@ export const AddIncomeModal = ({ isOpen, onClose, onSubmit }) => {
         </ModalBody>
 
         <ModalFooter>
-          <Button mr="20px" type="submit" onClick={handleSubmit(onSubmit)}>
+          <Button mr="20px" onClick={handleSubmit(onSubmit)}>
             {i18next.t('button.submit')}
           </Button>
           <Button variant="secondary" onClick={onClose}>
