@@ -26,7 +26,7 @@ import {
 } from '@chakra-ui/react';
 import i18next from 'i18next';
 
-import { getPayers } from '@/api/Payer';
+import { getPayers } from '@/api/User';
 import { AddPayerModal } from '@/components';
 
 export const AddExpenseModal = ({ isOpen, onClose, onSubmit }) => {

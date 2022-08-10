@@ -21,7 +21,7 @@ import {
 import { ColorPicker } from 'chakra-color-picker';
 import i18next from 'i18next';
 
-import { createCategory, getCategory } from '@/api/Category';
+import { createCategory, getCategories } from '@/api/Category';
 import { DeleteConfirmationModal } from '@/components';
 
 export const AddCategoryModal = ({ isOpen, onClose, categoryType }) => {
@@ -43,7 +43,13 @@ export const AddCategoryModal = ({ isOpen, onClose, categoryType }) => {
   };
 
   const onSubmit = (data) => {
-    createCategory(data, categoryType, color)
+    createCategory({
+      name: data.name,
+      limit: 0,
+      limitPeriod: 'Daily',
+      categoryType: categoryType,
+      color: color
+    })
       .then(() =>
         alert(i18next.t('modal.addCategory.submitSuccessful.message'))
       )
@@ -56,7 +62,7 @@ export const AddCategoryModal = ({ isOpen, onClose, categoryType }) => {
     onClose();
   };
 
-  const { data, isFetched } = useQuery(['categories'], getCategory);
+  const { data, isFetched } = useQuery(['categories'], getCategories);
 
   const onCancel = () => {
     isDirty ? categoriesDeleteModal.onOpen() : onClose();

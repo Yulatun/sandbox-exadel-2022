@@ -24,7 +24,7 @@ import {
 } from '@chakra-ui/react';
 import i18next from 'i18next';
 
-import { getCurrency } from '@/api/Currency';
+import { getCurrencies } from '@/api/Currency';
 import { createWallet } from '@/api/Wallet';
 
 export const AddWalletModal = () => {
@@ -32,7 +32,7 @@ export const AddWalletModal = () => {
 
   const { data: dataCurrency, isFetched: isFetchedCurrency } = useQuery(
     ['currency'],
-    getCurrency
+    getCurrencies
   );
 
   const {
@@ -45,7 +45,12 @@ export const AddWalletModal = () => {
     const currency = dataCurrency.data.find(
       (item) => item.currencyCode === data.currency
     );
-    createWallet(data, currency)
+
+    createWallet({
+      name: data.name,
+      currency,
+      setDefault: data.setDefault
+    })
       .then(() => alert(i18next.t('wallet.createdMessage')))
       .catch((err) => console.log(err));
     onClose();

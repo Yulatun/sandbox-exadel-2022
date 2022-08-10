@@ -5,7 +5,7 @@ import { format } from 'date-fns';
 import { NoteIcon } from '@/assets';
 import { useCentralTheme } from '@/theme';
 
-export const ExpenseItem = ({ transaction, onEdit, onDelete, isShortView }) => {
+export const ExpenseItem = ({ expenseData, onEdit, onDelete, isShortView }) => {
   const { popupExpBgColor, popupExpTextColor } = useCentralTheme();
 
   const isLongDisplayVersion = !isShortView;
@@ -19,16 +19,16 @@ export const ExpenseItem = ({ transaction, onEdit, onDelete, isShortView }) => {
           overflow="hidden"
           whiteSpace="nowrap"
         >
-          <Tooltip label={transaction.walletId}>{'transaction.wallet'}</Tooltip>
+          <Tooltip label={expenseData.walletId}>{'transaction.wallet'}</Tooltip>
         </Box>
-        <Box w="10%">{transaction.payer}</Box>
+        <Box w="10%">{expenseData.payer}</Box>
         <Box
           w="10%"
           textOverflow="ellipsis"
           overflow="hidden"
           whiteSpace="nowrap"
         >
-          <Tooltip label={transaction.description}>
+          <Tooltip label={expenseData.description}>
             <Flex align="center" justify="center">
               <NoteIcon color={popupExpTextColor}></NoteIcon>
             </Flex>
@@ -58,7 +58,7 @@ export const ExpenseItem = ({ transaction, onEdit, onDelete, isShortView }) => {
       maxW="container.xl"
     >
       <Box w="8%">
-        {format(new Date(transaction.dateOfTransaction), 'dd.MM.yyyy')}
+        {format(new Date(expenseData.dateOfTransaction), 'dd.MM.yyyy')}
       </Box>
       <Box
         w="15%"
@@ -70,7 +70,7 @@ export const ExpenseItem = ({ transaction, onEdit, onDelete, isShortView }) => {
           {'transaction.category'}
         </Tooltip>
       </Box>
-      <Box w="7%">{transaction.value}</Box>
+      <Box w="7%">{expenseData.value}</Box>
       {isLongDisplayVersion && renderLongVersionFragment()}
     </HStack>
   );
