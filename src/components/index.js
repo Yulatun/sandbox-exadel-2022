@@ -5,7 +5,7 @@ export { AddExpenseModal } from './AddExpenseModal';
 export { AddIncomeModal } from './AddIncomeModal';
 export { AddPayerModal } from './AddPayerModal';
 export { AddWalletModal } from './AddWalletModal';
-export { DeleteConfirmationModal } from './DeleteConfirmationModal';
+export { ConfirmationModal } from './ConfirmationModal';
 export { ErrorBoundary } from './ErrorBoundary';
 export { ExpenseItem } from './ExpenseItem';
 export { FiltersExpenses } from './FiltersExpenses';
