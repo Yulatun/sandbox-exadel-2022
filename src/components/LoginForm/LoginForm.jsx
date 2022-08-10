@@ -17,14 +17,18 @@ import {
   Stack,
   useBoolean
 } from '@chakra-ui/react';
+import { createStandaloneToast } from '@chakra-ui/toast';
 import i18next from 'i18next';
 
-import loginAction from '@/api/AuthProvider';
+import { loginAction } from '@/api/Authorisation';
 import { LogoWalletIcon } from '@/assets';
+import { LOCAL_STORAGE_API_KEY } from '@/helpers/constants';
+import { i18n } from '@/i18n';
 import { useCentralTheme } from '@/theme';
 
 export const LoginForm = () => {
   const [show, setShow] = useBoolean();
+  const { toast } = createStandaloneToast();
 
   const navigate = useNavigate();
 
@@ -34,8 +38,12 @@ export const LoginForm = () => {
 
   const mutation = useMutation(loginAction, {
     onSuccess: (data) => {
-      queryClient.setQueryData(['user'], () => data.user);
+      localStorage.setItem(LOCAL_STORAGE_API_KEY, data.data.token);
+      queryClient.setQueryData(['user'], () => data.data.user);
       navigate('/', { replace: true });
+    },
+    onError() {
+      toast({ title: i18n.t('toast.error.notAuthorized') });
     }
   });
   const {

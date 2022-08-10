@@ -1,15 +1,17 @@
 import { Navigate } from 'react-router-dom';
 
-export function PublicRoute({
+import { isTokenValid } from '@/helpers/authorization';
+
+export const PublicRoute = ({
   children,
   restricted = false,
   redirectTo = '/'
-}) {
-  const token = localStorage.getItem('token');
-  const shouldRedirect = token && restricted;
+}) => {
+  const shouldRedirect = isTokenValid() && restricted;
+
   return (
     <>
       {shouldRedirect ? <Navigate to={redirectTo} replace={false} /> : children}
     </>
   );
-}
+};

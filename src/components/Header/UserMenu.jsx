@@ -15,7 +15,7 @@ import i18next from 'i18next';
 
 import { deleteAccount } from '@/api/DeleteAccount';
 import { LogOutIcon } from '@/assets';
-import logout from '@/helpers/authorization';
+import { logout } from '@/helpers/authorization';
 import { useCentralTheme } from '@/theme';
 
 import { DeleteConfirmationModal } from '../DeleteConfirmationModal';
