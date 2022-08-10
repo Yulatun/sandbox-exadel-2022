@@ -1,5 +1,6 @@
 import { useQuery } from 'react-query';
-import { Box, Flex, Heading, Text, VStack } from '@chakra-ui/react';
+import { Link as RouterLink } from 'react-router-dom';
+import { Box, Flex, Heading, Link, Text, VStack } from '@chakra-ui/react';
 import i18next from 'i18next';
 
 import { getWallets } from '@/api/Wallet';
@@ -18,7 +19,7 @@ export const WalletsList = () => {
     getWallets
   );
 
-  const { textColor, sectionBgColor } = useCentralTheme();
+  const { popupTextColor, textColor, sectionBgColor } = useCentralTheme();
 
   return (
     <Box
@@ -46,15 +47,33 @@ export const WalletsList = () => {
             <WalletCarousel walletsData={dataWallets.data} />
           ) : dataWallets.data.length === 1 ? (
             <Flex justifyContent="center" w="40%">
-              {dataWallets.data.map((wallet) => {
-                return <WalletCard key={wallet.id} walletData={wallet} />;
-              })}
+              {dataWallets.data.map((wallet) => (
+                <Link
+                  key={wallet.id}
+                  as={RouterLink}
+                  to={`wallet/${wallet.id}`}
+                  w="100%"
+                  color={popupTextColor}
+                  _hover={{ textDecoration: 'none' }}
+                >
+                  <WalletCard walletData={wallet} isLink />
+                </Link>
+              ))}
             </Flex>
           ) : (
             <Flex justifyContent="center" w="70%">
-              {dataWallets.data.map((wallet) => {
-                return <WalletCard key={wallet.id} walletData={wallet} />;
-              })}
+              {dataWallets.data.map((wallet) => (
+                <Link
+                  key={wallet.id}
+                  as={RouterLink}
+                  to={`wallet/${wallet.id}`}
+                  w="100%"
+                  color={popupTextColor}
+                  _hover={{ textDecoration: 'none' }}
+                >
+                  <WalletCard walletData={wallet} isLink />
+                </Link>
+              ))}
             </Flex>
           ))}
         <VStack
