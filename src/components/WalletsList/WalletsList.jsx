@@ -30,11 +30,11 @@ export const WalletsList = () => {
       borderRadius={35}
       shadow="lg"
     >
-      <Box display="flex" justifyContent="center" mt="10px">
+      <Flex justifyContent="center" my="10px">
         <Heading as="h4" size="md" fontWeight="bold">
           {i18next.t('walletView.headOfBalanceMessage')}&#58;
         </Heading>
-      </Box>
+      </Flex>
 
       <Flex alignItems="center" justifyContent="space-between">
         <AddWalletModal />
@@ -44,12 +44,18 @@ export const WalletsList = () => {
           isFetchedWallets &&
           (dataWallets.data.length > 3 ? (
             <WalletCarousel walletsData={dataWallets.data} />
-          ) : (
-            <Box>
+          ) : dataWallets.data.length === 1 ? (
+            <Flex justifyContent="center" w="40%">
               {dataWallets.data.map((wallet) => {
                 return <WalletCard key={wallet.id} walletData={wallet} />;
               })}
-            </Box>
+            </Flex>
+          ) : (
+            <Flex justifyContent="center" w="70%">
+              {dataWallets.data.map((wallet) => {
+                return <WalletCard key={wallet.id} walletData={wallet} />;
+              })}
+            </Flex>
           ))}
         <VStack
           p={[8, 8, 4, 8]}

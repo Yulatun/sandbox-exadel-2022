@@ -5,13 +5,14 @@ import { getUser } from '@/api/User';
 import { i18n } from '@/i18n';
 import { useCentralTheme } from '@/theme';
 
-export const WalletCard = ({ walletData }) => {
+export const WalletCard = ({ walletData, isLink }) => {
   const { data: dataUser, isFetched: isFetchedUser } = useQuery(
     ['user'],
     getUser
   );
 
-  const { popupBgColor, popupTextColor, badgeBgColor } = useCentralTheme();
+  const { bgColor, popupBgColor, popupTextColor, badgeBgColor } =
+    useCentralTheme();
 
   const totalBalanceView = new Intl.NumberFormat('de-DE', {
     minimumFractionDigits: 2
@@ -23,11 +24,13 @@ export const WalletCard = ({ walletData }) => {
       flexDir="column"
       justifyContent="center"
       alignItems="center"
+      mx="5px"
       w="95%"
       h="200px"
       borderRadius={35}
       bg={popupBgColor}
       shadow="lg"
+      _hover={isLink && { bgColor: bgColor }}
     >
       {!!dataUser &&
         !!dataUser.data &&

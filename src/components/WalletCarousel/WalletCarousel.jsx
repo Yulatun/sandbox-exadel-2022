@@ -81,7 +81,7 @@ export const WalletCarousel = ({ walletsData }) => {
             color={popupTextColor}
             _hover={{ textDecoration: 'none' }}
           >
-            <WalletCard walletData={wallet} showLink />
+            <WalletCard walletData={wallet} isLink />
           </Link>
         ))}
       </Carousel>
