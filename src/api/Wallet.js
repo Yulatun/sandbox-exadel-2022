@@ -8,6 +8,6 @@ export const createWallet = async (data) => {
   return instance.post('/api/v1/Wallet', data);
 };
 
-export const deleteWallet = async (userId, walletId) => {
-  return instance.delete(`/api/v1/Wallet/${userId}/${walletId}`);
+export const deleteWallet = async (dataId) => {
+  return instance.delete(`/api/v1/Wallet/${dataId}`);
 };
