@@ -4,7 +4,7 @@ import { Box, Flex, useDisclosure, VStack } from '@chakra-ui/react';
 import i18next from 'i18next';
 
 import { deleteIncome, getIncomes } from '@/api/Transaction';
-import { DeleteConfirmationModal, IncomeItem, Preloader } from '@/components';
+import { ConfirmationModal, IncomeItem, Preloader } from '@/components';
 import { useCentralTheme } from '@/theme';
 
 export const Incomes = () => {
@@ -53,7 +53,7 @@ export const Incomes = () => {
               />
             ))}
         </VStack>
-        <DeleteConfirmationModal
+        <ConfirmationModal
           isOpen={deleteModal.isOpen}
           onSubmit={onDelete}
           onClose={deleteModal.onClose}

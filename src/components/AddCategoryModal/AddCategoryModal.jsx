@@ -22,7 +22,7 @@ import { ColorPicker } from 'chakra-color-picker';
 import i18next from 'i18next';
 
 import { createCategory, getCategories } from '@/api/Category';
-import { DeleteConfirmationModal } from '@/components';
+import { ConfirmationModal } from '@/components';
 
 export const AddCategoryModal = ({ isOpen, onClose, categoryType }) => {
   const categoriesDeleteModal = useDisclosure();
@@ -155,7 +155,7 @@ export const AddCategoryModal = ({ isOpen, onClose, categoryType }) => {
           </ModalFooter>
         </ModalContent>
       </Modal>
-      <DeleteConfirmationModal
+      <ConfirmationModal
         isOpen={categoriesDeleteModal.isOpen}
         onClose={categoriesDeleteModal.onClose}
         onSubmit={closeAllModals}

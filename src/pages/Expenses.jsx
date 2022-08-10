@@ -4,11 +4,7 @@ import { Box, Flex, HStack, useDisclosure, VStack } from '@chakra-ui/react';
 import i18next from 'i18next';
 
 import { deleteExpense, editExpense, getExpenses } from '@/api/Transaction';
-import {
-  DeleteConfirmationModal,
-  ExpenseItem,
-  FiltersExpenses
-} from '@/components';
+import { ConfirmationModal, ExpenseItem, FiltersExpenses } from '@/components';
 import { EditExpenseModal } from '@/components/EditExpenseModal';
 import { FiltersTag } from '@/components/FiltersTag';
 
@@ -125,7 +121,7 @@ export const Expenses = () => {
         />
       )}
       {!!Object.keys(chosenExpenseData).length && (
-        <DeleteConfirmationModal
+        <ConfirmationModal
           isOpen={deleteExpenseModal.isOpen}
           onSubmit={saveOnDelete}
           onClose={deleteExpenseModal.onClose}

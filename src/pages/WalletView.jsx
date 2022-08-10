@@ -10,7 +10,7 @@ import {
   getIncomes
 } from '@/api/Transaction';
 import {
-  DeleteConfirmationModal,
+  ConfirmationModal,
   ExpenseItem,
   IncomeItem,
   WalletCard
@@ -110,7 +110,7 @@ export const WalletView = () => {
               );
             })}
       </VStack>
-      <DeleteConfirmationModal
+      <ConfirmationModal
         isOpen={deleteModal.isOpen}
         onSubmit={onDelete}
         onClose={deleteModal.onClose}
