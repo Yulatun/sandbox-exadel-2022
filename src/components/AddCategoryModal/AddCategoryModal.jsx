@@ -33,9 +33,10 @@ export const AddCategoryModal = ({ isOpen, onClose, categoryType }) => {
     handleSubmit,
     reset,
     formState: {
+      isDirty,
       errors: { name }
     }
-  } = useForm({});
+  } = useForm({ defaultValues: { name: '' } });
 
   const handleColorChange = (color) => {
     setColor(color);
@@ -57,13 +58,22 @@ export const AddCategoryModal = ({ isOpen, onClose, categoryType }) => {
 
   const { data, isFetched } = useQuery(['categories'], getCategory);
 
+  const onCancel = () => {
+    isDirty ? categoriesDeleteModal.onOpen() : onClose();
+  };
+
   return (
     <>
-      <Modal isOpen={isOpen} onClose={categoriesDeleteModal.onOpen} bg="red">
+      <Modal
+        isOpen={isOpen}
+        onClose={categoriesDeleteModal.onOpen}
+        bg="red"
+        closeOnOverlayClick={false}
+      >
         <ModalOverlay />
         <ModalContent>
           <ModalHeader>
-            {categoryType === 'income'
+            {categoryType === 'Income'
               ? i18next.t('modal.addCategory.header.incomeCategory')
               : i18next.t('modal.addCategory.header.expensesCategory')}
           </ModalHeader>
@@ -133,7 +143,7 @@ export const AddCategoryModal = ({ isOpen, onClose, categoryType }) => {
             <Button colorScheme="blue" mr={3} onClick={handleSubmit(onSubmit)}>
               {i18next.t('modal.addCategory.addButton')}
             </Button>
-            <Button onClick={categoriesDeleteModal.onOpen}>
+            <Button onClick={onCancel}>
               {i18next.t('modal.addCategory.cancelButton')}
             </Button>
           </ModalFooter>
