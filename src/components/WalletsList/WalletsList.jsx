@@ -1,9 +1,19 @@
-import { useQuery } from 'react-query';
-import { Box, Grid, GridItem, Heading, Text, VStack } from '@chakra-ui/react';
+import { useQuery, useQueryClient } from 'react-query';
+import {
+  Box,
+  Grid,
+  GridItem,
+  Heading,
+  Text,
+  useDisclosure,
+  VStack
+} from '@chakra-ui/react';
 import i18next from 'i18next';
 
 import { getWallets } from '@/api/Wallet';
+import { deleteWallet } from '@/api/Wallet';
 import { PiggyBankIcon } from '@/assets';
+import { DeleteConfirmationModal } from '@/components';
 import {
   AddWalletModal,
   Preloader,
@@ -14,10 +24,22 @@ import { useCentralTheme } from '@/theme';
 
 export const WalletsList = () => {
   const { textColor, sectionBgColor } = useCentralTheme();
-  const { data, isFetched } = useQuery(['wallet'], async () => {
+  const { data, isFetched } = useQuery(['wallets'], async () => {
     const response = await getWallets();
     return { data: [...response.data, response.data[0]] };
   });
+
+  const queryClient = useQueryClient();
+  const deleteModal = useDisclosure();
+
+  const onDelete = (id) => {
+    deleteWallet(id);
+    queryClient.setQueryData(['wallets'], () =>
+      data.data.filter((id) => data.id !== id)
+    );
+    WalletsList();
+    deleteModal.onClose();
+  };
 
   return (
     <>
@@ -67,10 +89,21 @@ export const WalletsList = () => {
                   {data.data.map((wallet) => {
                     return (
                       <GridItem key={wallet.id}>
-                        <WalletCard wallet={wallet} />
+                        <WalletCard
+                          wallet={wallet}
+                          onDelete={() => {
+                            deleteModal.onOpen();
+                          }}
+                        />
                       </GridItem>
                     );
                   })}
+                  <DeleteConfirmationModal
+                    isOpen={deleteModal.isOpen}
+                    onSubmit={onDelete}
+                    onClose={deleteModal.onClose}
+                    text={i18next.t('modal.deleteWallet.text')}
+                  />
                 </Grid>
               ))}
           </GridItem>
