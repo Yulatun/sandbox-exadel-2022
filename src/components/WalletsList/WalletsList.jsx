@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { useQuery, useQueryClient } from 'react-query';
 import {
   Box,
@@ -31,9 +32,9 @@ export const WalletsList = () => {
 
   const queryClient = useQueryClient();
   const deleteModal = useDisclosure();
-
-  const onDelete = (id) => {
-    deleteWallet(id);
+  const [chosenWalletId, setChosenWalletId] = useState();
+  const onDelete = () => {
+    deleteWallet(chosenWalletId);
     queryClient.setQueryData(['wallets'], () =>
       data.data.filter((id) => data.id !== id)
     );
@@ -92,6 +93,7 @@ export const WalletsList = () => {
                         <WalletCard
                           wallet={wallet}
                           onDelete={() => {
+                            setChosenWalletId(wallet.id);
                             deleteModal.onOpen();
                           }}
                         />
