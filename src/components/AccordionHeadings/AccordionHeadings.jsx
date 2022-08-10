@@ -1,4 +1,3 @@
-// import { AddIcon } from '@chakra-ui/icons';
 import { Box } from '@chakra-ui/react';
 
 import { useCentralTheme } from '@/theme';
