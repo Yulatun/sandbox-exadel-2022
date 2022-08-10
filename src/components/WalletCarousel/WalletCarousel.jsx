@@ -1,19 +1,30 @@
-import React from 'react';
 import { Carousel } from 'react-responsive-carousel';
+import { Link as RouterLink } from 'react-router-dom';
 import { ChevronLeftIcon, ChevronRightIcon } from '@chakra-ui/icons';
-import { Box, Icon, IconButton, useBreakpointValue } from '@chakra-ui/react';
+import {
+  Box,
+  Icon,
+  IconButton,
+  Link,
+  useBreakpointValue
+} from '@chakra-ui/react';
+
+import { useCentralTheme } from '@/theme';
 
 import { WalletCard } from '../WalletCard';
 
 import 'react-responsive-carousel/lib/styles/carousel.min.css';
 
-export const WalletCarousel = ({ wallets }) => {
+export const WalletCarousel = ({ walletsData }) => {
   const percentage = useBreakpointValue({
-    lg: 33.3,
+    lg: 33.33,
     base: 50
   });
+
+  const { popupTextColor } = useCentralTheme();
+
   return (
-    <Box width="100%" px="10px">
+    <Box w="70%">
       <Carousel
         showThumbs={false}
         showStatus={false}
@@ -29,11 +40,10 @@ export const WalletCarousel = ({ wallets }) => {
               onClick={onClickHandler}
               title={label}
               style={{
-                left: 15,
                 position: 'absolute',
-                zIndex: 2,
                 top: 'calc(50% - 15px)',
-
+                left: 0,
+                zIndex: 2,
                 cursor: 'pointer'
               }}
             >
@@ -51,10 +61,10 @@ export const WalletCarousel = ({ wallets }) => {
               title={label}
               style={{
                 position: 'absolute',
-                zIndex: 2,
                 top: 'calc(50% - 15px)',
-                cursor: 'pointer',
-                right: 15
+                right: 0,
+                zIndex: 2,
+                cursor: 'pointer'
               }}
             >
               <Icon as={ChevronRightIcon} />
@@ -62,10 +72,17 @@ export const WalletCarousel = ({ wallets }) => {
           )
         }
       >
-        {wallets.map((wallet) => (
-          <Box key={wallet.id} display="block" mx="5px" py="10px">
-            <WalletCard wallet={wallet} showLink />
-          </Box>
+        {walletsData.map((wallet) => (
+          <Link
+            key={wallet.id}
+            as={RouterLink}
+            to={`wallet/${wallet.id}`}
+            size="lg"
+            color={popupTextColor}
+            _hover={{ textDecoration: 'none' }}
+          >
+            <WalletCard walletData={wallet} showLink />
+          </Link>
         ))}
       </Carousel>
     </Box>

@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
+import { useParams } from 'react-router-dom';
 import { Box, Flex, useDisclosure, VStack } from '@chakra-ui/react';
 import i18next from 'i18next';
 
@@ -9,6 +10,7 @@ import {
   getExpenses,
   getIncomes
 } from '@/api/Transaction';
+import { getWallets } from '@/api/Wallet';
 import {
   DeleteConfirmationModal,
   ExpenseItem,
@@ -18,10 +20,19 @@ import {
 import { useCentralTheme } from '@/theme';
 
 export const WalletView = () => {
+  const { id: walletId } = useParams();
+
   const [chosenTransactionObj, setChosenTransactionObj] = useState({});
 
   const deleteModal = useDisclosure();
   const queryClient = useQueryClient();
+
+  const { bgColor } = useCentralTheme();
+
+  const { data: dataWallets, isFetched: isFetchedWallets } = useQuery(
+    ['wallets'],
+    getWallets
+  );
 
   const { data: dataIncomes, isFetched: isFetchedIncomes } = useQuery(
     ['incomes'],
@@ -37,7 +48,7 @@ export const WalletView = () => {
     () => deleteIncome(chosenTransactionObj.id),
     {
       onSuccess: () => {
-        queryClient.invalidateQueries(['income']);
+        queryClient.invalidateQueries(['incomes']);
       }
     }
   );
@@ -46,14 +57,17 @@ export const WalletView = () => {
     () => deleteExpense(chosenTransactionObj.id),
     {
       onSuccess: () => {
-        queryClient.invalidateQueries(['expense']);
+        queryClient.invalidateQueries(['expenses']);
       }
     }
   );
 
-  const { bgColor } = useCentralTheme();
+  const openOnDelete = (dataTransaction) => {
+    setChosenTransactionObj(dataTransaction);
+    deleteModal.onOpen();
+  };
 
-  const onDelete = () => {
+  const deleteOnSubmit = () => {
     if (chosenTransactionObj.transactionType === 'Income') {
       mutationIncome.mutate();
       deleteModal.onClose();
@@ -63,6 +77,7 @@ export const WalletView = () => {
     mutationExpense.mutate();
     deleteModal.onClose();
   };
+
   const onEdit = () => {
     // code to edit
   };
@@ -70,12 +85,13 @@ export const WalletView = () => {
   return (
     <Box bg={bgColor} px={24} py={6} mt={6}>
       <Flex mr="30%" ml="35%">
-        {/* It doesn't work with static props */}
-        <WalletCard
-          totalBalance={2000}
-          currency="USD"
-          name="nameOfWallet"
-        ></WalletCard>
+        {!!dataWallets && !!dataWallets.data && isFetchedWallets && (
+          <WalletCard
+            walletData={dataWallets.data.find(
+              (wallet) => wallet.id === walletId
+            )}
+          />
+        )}
       </Flex>
       <VStack spacing={5} pt={5}>
         {!!dataIncomes &&
@@ -85,7 +101,10 @@ export const WalletView = () => {
           isFetchedIncomes &&
           isFetchedExpenses &&
           [...dataIncomes.data, ...dataExpenses.data]
-            .filter((data) => data.id === data.id)
+            .filter((data) => data.walletId === walletId)
+            .sort((transactionA, transactionB) => {
+              transactionA.dateOfTransaction - transactionB.dateOfTransaction;
+            })
             .map((dataTransaction) => {
               return dataTransaction.transactionType === 'Income' ? (
                 <IncomeItem
@@ -93,8 +112,7 @@ export const WalletView = () => {
                   incomeData={dataTransaction}
                   onEdit={onEdit}
                   onDelete={() => {
-                    setChosenTransactionObj(dataTransaction);
-                    deleteModal.onOpen();
+                    openOnDelete(dataTransaction);
                   }}
                 />
               ) : (
@@ -103,8 +121,7 @@ export const WalletView = () => {
                   expenseData={dataTransaction}
                   onEdit={onEdit}
                   onDelete={() => {
-                    setChosenTransactionObj(dataTransaction);
-                    deleteModal.onOpen();
+                    openOnDelete(dataTransaction);
                   }}
                 />
               );
@@ -112,7 +129,7 @@ export const WalletView = () => {
       </VStack>
       <DeleteConfirmationModal
         isOpen={deleteModal.isOpen}
-        onSubmit={onDelete}
+        onSubmit={deleteOnSubmit}
         onClose={deleteModal.onClose}
         title={
           !!chosenTransactionObj.transactionType &&
