@@ -17,7 +17,7 @@ import {
 } from '@chakra-ui/react';
 import i18next from 'i18next';
 
-import { createPayer, getPayers } from '@/api/Payer';
+import { createPayer, getPayers } from '@/api/User';
 
 export const AddPayerModal = ({ isOpen, onClose }) => {
   const {
@@ -30,7 +30,7 @@ export const AddPayerModal = ({ isOpen, onClose }) => {
   } = useForm({});
 
   const onSubmit = (data) => {
-    createPayer(data).then(() => {
+    createPayer(data.name).then(() => {
       reset();
       onClose(data);
     });

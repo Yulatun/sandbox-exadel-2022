@@ -4,8 +4,10 @@ import { format } from 'date-fns';
 
 import { NoteIcon } from '@/assets';
 import { useCentralTheme } from '@/theme';
-export const IncomeItem = ({ transaction, onEdit, onDelete }) => {
+
+export const IncomeItem = ({ incomeData, onEdit, onDelete }) => {
   const { popupExpBgColor, popupExpTextColor } = useCentralTheme();
+
   return (
     <HStack
       justify="space-evenly"
@@ -16,7 +18,7 @@ export const IncomeItem = ({ transaction, onEdit, onDelete }) => {
       boxShadow="lg"
     >
       <Box w="8%">
-        {format(new Date(transaction.dateOfTransaction), 'dd.MM.yyyy')}
+        {format(new Date(incomeData.dateOfTransaction), 'dd.MM.yyyy')}
       </Box>
       <Box
         w="15%"
@@ -24,16 +26,16 @@ export const IncomeItem = ({ transaction, onEdit, onDelete }) => {
         overflow="hidden"
         whiteSpace="nowrap"
       >
-        <Tooltip label={transaction.id}>{transaction.transactionType}</Tooltip>
+        <Tooltip label={incomeData.id}>{incomeData.transactionType}</Tooltip>
       </Box>
-      <Box w="10%">{transaction.value}</Box>
+      <Box w="10%">{incomeData.value}</Box>
       <Box
         w="15%"
         textOverflow="ellipsis"
         overflow="hidden"
         whiteSpace="nowrap"
       >
-        <Tooltip label={transaction.categoryId}>Wallet in dollars</Tooltip>
+        <Tooltip label={incomeData.categoryId}>Wallet in dollars</Tooltip>
       </Box>
 
       <Box
@@ -42,7 +44,7 @@ export const IncomeItem = ({ transaction, onEdit, onDelete }) => {
         overflow="hidden"
         whiteSpace="nowrap"
       >
-        <Tooltip label={transaction.description}>
+        <Tooltip label={incomeData.description}>
           <Flex align="center" justify="center">
             <NoteIcon color={popupExpTextColor}></NoteIcon>
           </Flex>

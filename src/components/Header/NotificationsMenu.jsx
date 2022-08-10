@@ -17,7 +17,7 @@ import { useCentralTheme } from '@/theme';
 
 import { NotificationModal } from '../NotificationModal';
 
-export const NotificationsMenu = ({ userId }) => {
+export const NotificationsMenu = () => {
   const [chosenNotificationData, setChosenNotificationData] = useState({});
 
   const queryClient = useQueryClient();
@@ -25,13 +25,10 @@ export const NotificationsMenu = ({ userId }) => {
   const readNotificationModal = useDisclosure();
 
   const { data: dataNotifications, isFetched: isFetchedNotifications } =
-    useQuery(['notifications', userId], getNotifications);
+    useQuery(['notifications'], getNotifications);
 
   const editingNotification = useMutation(
-    (data) =>
-      readNotification({ ...data }, userId).catch((error) =>
-        console.log(error)
-      ),
+    (data) => readNotification(data.id).catch((error) => console.log(error)),
     {
       onSuccess: () => {
         queryClient.invalidateQueries(['notifications']);

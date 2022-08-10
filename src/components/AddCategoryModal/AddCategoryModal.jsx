@@ -21,7 +21,7 @@ import {
 import { ColorPicker } from 'chakra-color-picker';
 import i18next from 'i18next';
 
-import { createCategory, getCategory } from '@/api/Category';
+import { createCategory, getCategories } from '@/api/Category';
 import { DeleteConfirmationModal } from '@/components';
 
 export const AddCategoryModal = ({ isOpen, onClose, categoryType }) => {
@@ -33,16 +33,23 @@ export const AddCategoryModal = ({ isOpen, onClose, categoryType }) => {
     handleSubmit,
     reset,
     formState: {
+      isDirty,
       errors: { name }
     }
-  } = useForm({});
+  } = useForm({ defaultValues: { name: '' } });
 
   const handleColorChange = (color) => {
     setColor(color);
   };
 
   const onSubmit = (data) => {
-    createCategory(data, categoryType, color)
+    createCategory({
+      name: data.name,
+      limit: 0,
+      limitPeriod: 'Daily',
+      categoryType: categoryType,
+      color: color
+    })
       .then(() =>
         alert(i18next.t('modal.addCategory.submitSuccessful.message'))
       )
@@ -55,15 +62,24 @@ export const AddCategoryModal = ({ isOpen, onClose, categoryType }) => {
     onClose();
   };
 
-  const { data, isFetched } = useQuery(['categories'], getCategory);
+  const { data, isFetched } = useQuery(['categories'], getCategories);
+
+  const onCancel = () => {
+    isDirty ? categoriesDeleteModal.onOpen() : onClose();
+  };
 
   return (
     <>
-      <Modal isOpen={isOpen} onClose={categoriesDeleteModal.onOpen} bg="red">
+      <Modal
+        isOpen={isOpen}
+        onClose={categoriesDeleteModal.onOpen}
+        bg="red"
+        closeOnOverlayClick={false}
+      >
         <ModalOverlay />
         <ModalContent>
           <ModalHeader>
-            {categoryType === 'income'
+            {categoryType === 'Income'
               ? i18next.t('modal.addCategory.header.incomeCategory')
               : i18next.t('modal.addCategory.header.expensesCategory')}
           </ModalHeader>
@@ -133,7 +149,7 @@ export const AddCategoryModal = ({ isOpen, onClose, categoryType }) => {
             <Button colorScheme="blue" mr={3} onClick={handleSubmit(onSubmit)}>
               {i18next.t('modal.addCategory.addButton')}
             </Button>
-            <Button onClick={categoriesDeleteModal.onOpen}>
+            <Button onClick={onCancel}>
               {i18next.t('modal.addCategory.cancelButton')}
             </Button>
           </ModalFooter>

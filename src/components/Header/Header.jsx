@@ -13,8 +13,6 @@ import { UserMenu } from './UserMenu';
 import { UserName } from './UserName';
 
 export const Header = (isOpen) => {
-  const userId = 'b5b4edac-1eab-489b-9796-d03041e708fd';
-
   const { bgColor, textColor } = useCentralTheme();
 
   return (
@@ -43,7 +41,7 @@ export const Header = (isOpen) => {
         >
           <Navbar />
         </Box>
-        <NotificationsMenu userId={userId} />
+        <NotificationsMenu />
         <Box
           display={{ base: isOpen ? 'none' : 'block', lg: 'block' }}
           flexBasis={{ base: '100%', md: 'auto' }}

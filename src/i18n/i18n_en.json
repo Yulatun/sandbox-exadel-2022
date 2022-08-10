@@ -141,7 +141,7 @@
   "modal.addCategory.header.expensesCategory": "Add expenses category",
   "modal.addCategory.formName": "Category name",
   "modal.addCategory.colorPicker": "Color",
-  "modal.deleteCategory.text": "Do you really want to cancel the creation of the category? All you entered data will be lost",
+  "modal.deleteCategory.text": "Do you really want to cancel the creation of the category? All your entered data will be lost",
   "modal.addCategory.validationErrorMessage.nameExist": "This name already exists",
   "transaction.recentTransactions": "Recent transactions",
   "modal.addCategory.validationErrorMessage.nameIsLong": "Your name is too long",

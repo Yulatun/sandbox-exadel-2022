@@ -2,7 +2,7 @@ import { useQuery } from 'react-query';
 import { Box, Button, Flex, Text, useDisclosure } from '@chakra-ui/react';
 import i18next from 'i18next';
 
-import { createIncome, getTransactions } from '@/api/Transactions';
+import { createIncome, getExpenses, getIncomes } from '@/api/Transaction';
 import {
   AddExpenseModal,
   AddIncomeModal,
@@ -25,9 +25,14 @@ export const Landing = () => {
 
   const { textColor } = useCentralTheme();
 
-  const { data: dataTransactions, isFetched: isFetchedTransactions } = useQuery(
-    ['transactions', userData.id],
-    getTransactions
+  const { data: dataIncomes, isFetched: isFetchedIncomes } = useQuery(
+    ['incomes'],
+    getIncomes
+  );
+
+  const { data: dataExpenses, isFetched: isFetchedExpenses } = useQuery(
+    ['expenses'],
+    getExpenses
   );
 
   const createIncomeOnSubmit = (data) => {
@@ -87,11 +92,16 @@ export const Landing = () => {
           <Text color={textColor} fontSize="xl">
             {i18next.t('transaction.recentTransactions')}
           </Text>
-          {!isFetchedTransactions ? <Preloader /> : null}
-          {!!dataTransactions &&
-            !!dataTransactions.data &&
-            isFetchedTransactions && (
-              <TransactionList list={dataTransactions.data} />
+          {!isFetchedIncomes || !isFetchedExpenses ? <Preloader /> : null}
+          {!!dataIncomes &&
+            !!dataExpenses &&
+            !!dataIncomes.data &&
+            !!dataExpenses.data &&
+            isFetchedIncomes &&
+            isFetchedExpenses && (
+              <TransactionList
+                list={[...dataIncomes.data, ...dataExpenses.data]}
+              />
             )}
         </Flex>
       </Box>

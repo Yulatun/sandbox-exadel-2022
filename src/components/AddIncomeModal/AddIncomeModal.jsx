@@ -25,7 +25,7 @@ import {
 } from '@chakra-ui/react';
 import i18next from 'i18next';
 
-import { getDefaultCategories } from '@/api/DefaultCategories';
+import { getDefaultCategories } from '@/api/DefaultCategory';
 import { getWallets } from '@/api/Wallet';
 
 export const AddIncomeModal = ({ isOpen, onClose, onSubmit, userData }) => {
@@ -123,7 +123,7 @@ export const AddIncomeModal = ({ isOpen, onClose, onSubmit, userData }) => {
                 >
                   {!!Object.keys(dataDefaultCategories).length &&
                     dataDefaultCategories.data
-                      .filter((category) => category.categoryType === 'Expense')
+                      .filter((category) => category.categoryType === 'Income')
                       .map((category) => (
                         <option key={category.id} value={category.id}>
                           {category.name}

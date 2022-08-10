@@ -1,4 +1,4 @@
-import React from 'react';
+import { useQuery } from 'react-query';
 import {
   DeleteIcon,
   QuestionOutlineIcon,
@@ -13,7 +13,7 @@ import {
 } from '@chakra-ui/react';
 import i18next from 'i18next';
 
-import { deleteAccount } from '@/api/DeleteAccount';
+import { deleteUser, getUser } from '@/api/User';
 import { LogOutIcon } from '@/assets';
 import { logout } from '@/helpers/authorization';
 import { useCentralTheme } from '@/theme';
@@ -21,13 +21,15 @@ import { useCentralTheme } from '@/theme';
 import { DeleteConfirmationModal } from '../DeleteConfirmationModal';
 
 export const UserMenu = () => {
+  const { data: dataUser } = useQuery(['user'], getUser);
+
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   const { hoverBgColor, popupBgColor, popupTextColor, textColor } =
     useCentralTheme();
 
   const onDelete = () => {
-    deleteAccount()
+    deleteUser(dataUser.id)
       .then(() => alert(i18next.t('delete.account.successful.message')))
       .catch((err) => console.log(err));
     onClose();
