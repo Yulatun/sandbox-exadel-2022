@@ -1,15 +1,12 @@
 import { createStandaloneToast } from '@chakra-ui/toast';
 import axios from 'axios';
 
-import logout from '@/helpers/authorization';
+import { logout } from '@/helpers/authorization';
 import { LOCAL_STORAGE_API_KEY } from '@/helpers/constants';
 import { i18n } from '@/i18n';
 
 export const instance = axios.create({
   baseURL: import.meta.env.VITE_API_URL,
-  headers: {
-    Authorization: `Bearer ${localStorage.getItem(LOCAL_STORAGE_API_KEY)}`
-  },
   validateStatus: () => true
 });
 
@@ -76,5 +73,9 @@ instance.interceptors.response.use(
   networkErrorInterceptor
 );
 instance.interceptors.request.use((request) => {
+  const token = localStorage.getItem(LOCAL_STORAGE_API_KEY);
+  if (token) {
+    request.headers['Authorization'] = `Bearer ${token}`;
+  }
   return request;
 }, networkErrorInterceptor);

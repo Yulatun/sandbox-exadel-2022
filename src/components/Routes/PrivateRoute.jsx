@@ -1,8 +1,11 @@
-import React from 'react';
 import { Navigate } from 'react-router-dom';
 
-export function PrivateRoute({ children }) {
-  const token = localStorage.getItem('token');
+import { isTokenValid, logout } from '@/helpers/authorization';
 
-  return token ? children : <Navigate to="/login" />;
-}
+export const PrivateRoute = ({ children }) => {
+  const isTokenValidValue = isTokenValid();
+
+  if (!isTokenValidValue) logout();
+
+  return isTokenValidValue ? children : <Navigate to="/login" />;
+};
