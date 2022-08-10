@@ -64,7 +64,12 @@ export const AddCategoryModal = ({ isOpen, onClose, categoryType }) => {
 
   return (
     <>
-      <Modal isOpen={isOpen} onClose={categoriesDeleteModal.onOpen} bg="red">
+      <Modal
+        isOpen={isOpen}
+        onClose={categoriesDeleteModal.onOpen}
+        bg="red"
+        closeOnOverlayClick={false}
+      >
         <ModalOverlay />
         <ModalContent>
           <ModalHeader>
