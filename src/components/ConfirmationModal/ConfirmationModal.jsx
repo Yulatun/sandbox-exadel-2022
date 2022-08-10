@@ -13,12 +13,13 @@ import {
 } from '@chakra-ui/react';
 import i18next from 'i18next';
 
-export const DeleteConfirmationModal = ({
+export const ConfirmationModal = ({
   isOpen,
   onClose,
   onSubmit,
   title,
-  text
+  text,
+  variant
 }) => {
   return (
     <Modal
@@ -39,11 +40,11 @@ export const DeleteConfirmationModal = ({
 
         <ModalFooter>
           <Stack direction="row" spacing={5}>
-            <Button variant="danger" onClick={onSubmit}>
-              {i18next.t('modal.deleteAccount.button.yes')}
+            <Button variant={variant} onClick={onSubmit}>
+              {i18next.t('modal.confirmation.button.yes')}
             </Button>
             <Button onClick={onClose} variant="secondary">
-              {i18next.t('modal.deleteAccount.button.no')}
+              {i18next.t('modal.confirmation.button.no')}
             </Button>
           </Stack>
         </ModalFooter>
@@ -52,4 +53,4 @@ export const DeleteConfirmationModal = ({
   );
 };
 
-export default DeleteConfirmationModal;
+export default ConfirmationModal;
