@@ -3,8 +3,18 @@ import { useMutation, useQuery, useQueryClient } from 'react-query';
 import { Box, Flex, useDisclosure, VStack } from '@chakra-ui/react';
 import i18next from 'i18next';
 
-import { deleteTransaction, getTransactions } from '@/api/Transactions';
-import { DeleteConfirmationModal, ExpenseItem, WalletCard } from '@/components';
+import {
+  deleteExpense,
+  deleteIncome,
+  getExpenses,
+  getIncomes
+} from '@/api/Transaction';
+import {
+  DeleteConfirmationModal,
+  ExpenseItem,
+  IncomeItem,
+  WalletCard
+} from '@/components';
 import { useCentralTheme } from '@/theme';
 
 export const WalletView = () => {
@@ -13,16 +23,30 @@ export const WalletView = () => {
   const deleteModal = useDisclosure();
   const queryClient = useQueryClient();
 
-  const { data: dataTransactions, isFetched: isFetchedTransactions } = useQuery(
-    ['transactions'],
-    getTransactions
+  const { data: dataIncomes, isFetched: isFetchedIncomes } = useQuery(
+    ['incomes'],
+    getIncomes
   );
 
-  const mutationTransaction = useMutation(
-    () => deleteTransaction(chosenTransactionObj.id),
+  const { data: dataExpenses, isFetched: isFetchedExpenses } = useQuery(
+    ['expenses'],
+    getExpenses
+  );
+
+  const mutationIncome = useMutation(
+    () => deleteIncome(chosenTransactionObj.id),
     {
       onSuccess: () => {
-        queryClient.invalidateQueries(['transactions']);
+        queryClient.invalidateQueries(['income']);
+      }
+    }
+  );
+
+  const mutationExpense = useMutation(
+    () => deleteExpense(chosenTransactionObj.id),
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries(['expense']);
       }
     }
   );
@@ -30,7 +54,13 @@ export const WalletView = () => {
   const { bgColor } = useCentralTheme();
 
   const onDelete = () => {
-    mutationTransaction.mutate();
+    if (chosenTransactionObj.transactionType === 'Income') {
+      mutationIncome.mutate();
+      deleteModal.onClose();
+      return;
+    }
+
+    mutationExpense.mutate();
     deleteModal.onClose();
   };
   const onEdit = () => {
@@ -40,6 +70,7 @@ export const WalletView = () => {
   return (
     <Box bg={bgColor} px={24} py={6} mt={6}>
       <Flex mr="30%" ml="35%">
+        {/* It doesn't work with static props */}
         <WalletCard
           totalBalance={2000}
           currency="USD"
@@ -47,22 +78,37 @@ export const WalletView = () => {
         ></WalletCard>
       </Flex>
       <VStack spacing={5} pt={5}>
-        {!!dataTransactions &&
-          !!dataTransactions.data &&
-          isFetchedTransactions &&
-          dataTransactions.data
+        {!!dataIncomes &&
+          !!dataExpenses &&
+          !!dataIncomes.data &&
+          !!dataExpenses.data &&
+          isFetchedIncomes &&
+          isFetchedExpenses &&
+          [...dataIncomes.data, ...dataExpenses.data]
             .filter((data) => data.id === data.id)
-            .map((dataTransaction) => (
-              <ExpenseItem
-                key={dataTransaction.id}
-                transaction={dataTransaction}
-                onEdit={onEdit}
-                onDelete={() => {
-                  setChosenTransactionObj(dataTransaction);
-                  deleteModal.onOpen();
-                }}
-              />
-            ))}
+            .map((dataTransaction) => {
+              return dataTransaction.transactionType === 'Income' ? (
+                <IncomeItem
+                  key={dataTransaction.id}
+                  incomeData={dataTransaction}
+                  onEdit={onEdit}
+                  onDelete={() => {
+                    setChosenTransactionObj(dataTransaction);
+                    deleteModal.onOpen();
+                  }}
+                />
+              ) : (
+                <ExpenseItem
+                  key={dataTransaction.id}
+                  expenseData={dataTransaction}
+                  onEdit={onEdit}
+                  onDelete={() => {
+                    setChosenTransactionObj(dataTransaction);
+                    deleteModal.onOpen();
+                  }}
+                />
+              );
+            })}
       </VStack>
       <DeleteConfirmationModal
         isOpen={deleteModal.isOpen}

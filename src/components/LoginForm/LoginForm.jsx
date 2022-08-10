@@ -20,7 +20,7 @@ import {
 import { createStandaloneToast } from '@chakra-ui/toast';
 import i18next from 'i18next';
 
-import { loginAction } from '@/api/Authorisation';
+import { loginAction } from '@/api/Authorization';
 import { LogoWalletIcon } from '@/assets';
 import { LOCAL_STORAGE_API_KEY } from '@/helpers/constants';
 import { i18n } from '@/i18n';

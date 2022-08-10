@@ -26,7 +26,7 @@ import {
 import { format } from 'date-fns';
 import i18next from 'i18next';
 
-import { getDefaultCategories } from '@/api/DefaultCategories';
+import { getDefaultCategories } from '@/api/DefaultCategory';
 import { getWallets } from '@/api/Wallet';
 
 export const EditExpenseModal = ({

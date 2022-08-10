@@ -3,11 +3,7 @@ import { useMutation, useQuery, useQueryClient } from 'react-query';
 import { Box, Flex, HStack, useDisclosure, VStack } from '@chakra-ui/react';
 import i18next from 'i18next';
 
-import {
-  deleteTransaction,
-  editTransaction,
-  getTransactions
-} from '@/api/Transactions';
+import { deleteExpense, editExpense, getExpenses } from '@/api/Transaction';
 import {
   DeleteConfirmationModal,
   ExpenseItem,
@@ -17,11 +13,6 @@ import { EditExpenseModal } from '@/components/EditExpenseModal';
 import { FiltersTag } from '@/components/FiltersTag';
 
 export const Expenses = () => {
-  const userData = {
-    id: 'b5b4edac-1eab-489b-9796-d03041e708fd',
-    defaultWallet: '7cfe651f-6e02-4e14-9872-6a6a308a3981'
-  };
-
   const [chosenExpenseData, setChosenExpenseData] = useState({});
 
   const editExpenseModal = useDisclosure();
@@ -29,14 +20,14 @@ export const Expenses = () => {
 
   const queryClient = useQueryClient();
 
-  const { data: dataTransactions, isFetched: isFetchedTransactions } = useQuery(
-    ['transactions', userData.id],
-    getTransactions
+  const { data: dataExpenses, isFetched: isFetchedExpenses } = useQuery(
+    ['expenses'],
+    getExpenses
   );
 
-  const editingTransaction = useMutation(
+  const editingExpense = useMutation(
     (data) =>
-      editTransaction({
+      editExpense({
         ...chosenExpenseData,
         walletId: data.wallet,
         categoryId: data.category,
@@ -49,16 +40,16 @@ export const Expenses = () => {
         .catch((error) => console.log(error)),
     {
       onSuccess: () => {
-        queryClient.invalidateQueries(['transactions']);
+        queryClient.invalidateQueries(['expenses']);
       }
     }
   );
 
   const deletingTransaction = useMutation(
-    () => deleteTransaction(chosenExpenseData.id),
+    () => deleteExpense(chosenExpenseData.id),
     {
       onSuccess: () => {
-        queryClient.invalidateQueries(['transactions']);
+        queryClient.invalidateQueries(['expenses']);
       }
     }
   );
@@ -74,7 +65,7 @@ export const Expenses = () => {
   };
 
   const saveOnEdit = (data) => {
-    editingTransaction.mutate(data);
+    editingExpense.mutate(data);
     editExpenseModal.onClose();
   };
 
@@ -108,19 +99,17 @@ export const Expenses = () => {
       </HStack>
 
       <VStack spacing={5} pt={5} w="100%">
-        {!!dataTransactions &&
-          !!dataTransactions.data &&
-          isFetchedTransactions &&
-          dataTransactions.data
-            .filter((data) => data.transactionType === 'Expense')
-            .map((dataTransaction) => (
-              <ExpenseItem
-                key={dataTransaction.id}
-                transaction={dataTransaction}
-                onEdit={() => openOnEdit(dataTransaction)}
-                onDelete={() => openOnDelete(dataTransaction)}
-              />
-            ))}
+        {!!dataExpenses &&
+          !!dataExpenses.data &&
+          isFetchedExpenses &&
+          dataExpenses.data.map((expenseData) => (
+            <ExpenseItem
+              key={expenseData.id}
+              expenseData={expenseData}
+              onEdit={() => openOnEdit(expenseData)}
+              onDelete={() => openOnDelete(expenseData)}
+            />
+          ))}
       </VStack>
 
       {!!Object.keys(chosenExpenseData).length && (
