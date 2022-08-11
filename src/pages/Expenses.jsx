@@ -4,10 +4,10 @@ import { Box, Flex, HStack, useDisclosure, VStack } from '@chakra-ui/react';
 import i18next from 'i18next';
 
 import { deleteExpense, editExpense, getExpenses } from '@/api/Transaction';
+import { getWallets } from '@/api/Wallet';
 import { ConfirmationModal, ExpenseItem, FiltersExpenses } from '@/components';
 import { EditExpenseModal } from '@/components/EditExpenseModal';
 import { FiltersTag } from '@/components/FiltersTag';
-
 export const Expenses = () => {
   const [chosenExpenseData, setChosenExpenseData] = useState({});
 
@@ -19,6 +19,11 @@ export const Expenses = () => {
   const { data: dataExpenses, isFetched: isFetchedExpenses } = useQuery(
     ['expenses'],
     getExpenses
+  );
+
+  const { data: dataWallets, isFetched: isFetchedWallets } = useQuery(
+    ['wallets'],
+    getWallets
   );
 
   const editingExpense = useMutation(
@@ -75,6 +80,25 @@ export const Expenses = () => {
     editExpenseModal.onClose();
   };
 
+  let allTransactions = [];
+  if (
+    !!dataExpenses &&
+    dataWallets &&
+    !!dataExpenses.data &&
+    dataWallets.data &&
+    isFetchedExpenses &&
+    isFetchedWallets &&
+    dataExpenses.data
+  ) {
+    allTransactions = [dataExpenses.data];
+    allTransactions.forEach((transaction) => {
+      let wallet = dataWallets.data.find(
+        (wallet) => wallet.id === transaction.walletId
+      );
+      transaction.currency = wallet.currency;
+    });
+  }
+
   return (
     <Flex
       flexDir="column"
@@ -95,17 +119,14 @@ export const Expenses = () => {
       </HStack>
 
       <VStack spacing={5} pt={5} w="100%">
-        {!!dataExpenses &&
-          !!dataExpenses.data &&
-          isFetchedExpenses &&
-          dataExpenses.data.map((expenseData) => (
-            <ExpenseItem
-              key={expenseData.id}
-              expenseData={expenseData}
-              onEdit={() => openOnEdit(expenseData)}
-              onDelete={() => openOnDelete(expenseData)}
-            />
-          ))}
+        {allTransactions.map((expenseData) => (
+          <ExpenseItem
+            key={expenseData.id}
+            expenseData={expenseData}
+            onEdit={() => openOnEdit(expenseData)}
+            onDelete={() => openOnDelete(expenseData)}
+          />
+        ))}
       </VStack>
 
       {!!Object.keys(chosenExpenseData).length && (
