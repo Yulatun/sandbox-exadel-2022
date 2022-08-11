@@ -1,5 +1,5 @@
 import { AddIcon } from '@chakra-ui/icons';
-import { Box } from '@chakra-ui/react';
+import { Box, IconButton } from '@chakra-ui/react';
 
 import { useCentralTheme } from '@/theme';
 export const AccordionHeadings = (props) => {
@@ -26,10 +26,11 @@ export const AccordionHeadings = (props) => {
           padding="5px 8px"
           backgroundColor="transparent"
         >
-          <AddIcon
-            width="38px"
-            height="37px"
-            padding="0.7rem"
+          <IconButton
+            width="45px"
+            height="45px"
+            fontSize="14px"
+            padding="0.8rem"
             border="2px solid transparent"
             backgroundColor={popupBgColor}
             boxShadow="base"
@@ -37,10 +38,13 @@ export const AccordionHeadings = (props) => {
             cursor="pointer"
             color={textColor}
             _hover={{
+              transition: 'all 0.3s ease-out',
               boxShadow: 'base',
               border: '2px',
               borderColor: textColor
             }}
+            icon={<AddIcon w="15px" h="25px" />}
+            onClick={props.action}
           />
           <Box
             paddingTop="4px"
