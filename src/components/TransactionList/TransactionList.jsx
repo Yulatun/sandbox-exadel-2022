@@ -35,6 +35,7 @@ export const TransactionList = ({ list }) => {
         pb="15px"
         mt="10px"
         boxShadow="2xl"
+        bg={popupBgColor}
       >
         <Box w="27%">
           <Heading as="h2" pl="60px" size="sm" color={textColor}>
