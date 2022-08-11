@@ -52,20 +52,17 @@ export const Landing = () => {
     isFetchedExpenses &&
     isFetchedWallets
   ) {
-    allTransactions = [...dataIncomes.data, ...dataExpenses.data];
+    allTransactions = [...dataIncomes.data.incomes, ...dataExpenses.data];
 
     allTransactions
       .sort((a, b) => {
         return new Date(b.dateOfTransaction) - new Date(a.dateOfTransaction);
       })
-      // .slice(0, 10)
       .forEach((transaction) => {
-        function getWalletByWalletId(walletId) {
-          return dataWallets.data.find((wallet) => wallet.id === walletId);
-        }
-        let walletId = transaction.walletId;
-        let walletById = getWalletByWalletId(walletId);
-        transaction.currency = walletById.currency;
+        let wallet = dataWallets.data.find(
+          (wallet) => wallet.id === transaction.walletId
+        );
+        transaction.currency = wallet.currency;
       });
   }
 
