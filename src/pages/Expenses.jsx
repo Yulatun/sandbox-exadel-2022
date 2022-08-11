@@ -83,14 +83,14 @@ export const Expenses = () => {
   let allTransactions = [];
   if (
     !!dataExpenses &&
-    dataWallets &&
+    !!dataWallets &&
     !!dataExpenses.data &&
-    dataWallets.data &&
+    !!dataExpenses.data.expenses &&
+    !!dataWallets.data &&
     isFetchedExpenses &&
-    isFetchedWallets &&
-    dataExpenses.data
+    isFetchedWallets
   ) {
-    allTransactions = [dataExpenses.data];
+    allTransactions = [...dataExpenses.data.expenses];
     allTransactions.forEach((transaction) => {
       let wallet = dataWallets.data.find(
         (wallet) => wallet.id === transaction.walletId
@@ -98,7 +98,6 @@ export const Expenses = () => {
       transaction.currency = wallet.currency;
     });
   }
-
   return (
     <Flex
       flexDir="column"

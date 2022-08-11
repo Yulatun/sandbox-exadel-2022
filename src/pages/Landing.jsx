@@ -46,16 +46,17 @@ export const Landing = () => {
     !!dataExpenses &&
     !!dataWallets &&
     !!dataIncomes.data &&
-    !!dataExpenses.data &&
-    !!dataExpenses.data.incomes &&
-    dataWallets.data &&
+    !!dataIncomes.data &&
+    !!dataIncomes.data.incomes &&
+    !!dataExpenses.data.expenses &&
+    !!dataWallets.data &&
     isFetchedIncomes &&
     isFetchedExpenses &&
     isFetchedWallets
   ) {
     allTransactions = [
       ...dataIncomes.data.incomes,
-      ...dataExpenses.data.incomes
+      ...dataExpenses.data.expenses
     ];
 
     allTransactions

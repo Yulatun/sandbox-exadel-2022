@@ -45,6 +45,7 @@ export const Incomes = () => {
     !!dataWallets &&
     !!dataIncomes.data &&
     !!dataWallets.data &&
+    !!dataIncomes.data.incomes &&
     isFetchedIncomes &&
     isFetchedWallets
   ) {
@@ -53,7 +54,6 @@ export const Incomes = () => {
       let wallet = dataWallets.data.find(
         (wallet) => wallet.id === transaction.walletId
       );
-      console.log(wallet.currency);
       transaction.currency = wallet.currency;
     });
   }

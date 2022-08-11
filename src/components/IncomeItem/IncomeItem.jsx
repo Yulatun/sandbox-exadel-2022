@@ -30,7 +30,7 @@ export const IncomeItem = ({ incomeData, onEdit, onDelete }) => {
       </Box>
       <Box w="10%">
         {incomeData.value}
-        {incomeData.currency}
+        {incomeData.currency.symbol}
       </Box>
       <Box
         w="15%"

@@ -72,7 +72,7 @@ export const ExpenseItem = ({ expenseData, onEdit, onDelete, isShortView }) => {
       </Box>
       <Box w="7%">
         {expenseData.value}
-        {expenseData.currency}
+        {expenseData.currency.symbol}
       </Box>
       {isLongDisplayVersion && renderLongVersionFragment()}
     </HStack>
