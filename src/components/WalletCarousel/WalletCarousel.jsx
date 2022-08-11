@@ -21,7 +21,7 @@ export const WalletCarousel = ({ walletsData }) => {
     base: 50
   });
 
-  const { bgColor, popupTextColor } = useCentralTheme();
+  const { popupTextColor } = useCentralTheme();
 
   return (
     <Box w="70%">
@@ -79,9 +79,9 @@ export const WalletCarousel = ({ walletsData }) => {
             to={`wallet/${wallet.id}`}
             size="lg"
             color={popupTextColor}
-            _hover={{ textDecoration: 'none', bgColor: { bgColor } }}
+            _hover={{ textDecoration: 'none' }}
           >
-            <WalletCard walletData={wallet} showLink />
+            <WalletCard walletData={wallet} isLink />
           </Link>
         ))}
       </Carousel>

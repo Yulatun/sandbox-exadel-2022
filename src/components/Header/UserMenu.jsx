@@ -15,15 +15,15 @@ import i18next from 'i18next';
 
 import { deleteUser, getUser } from '@/api/User';
 import { LogOutIcon } from '@/assets';
+import { ConfirmationModal } from '@/components';
 import { logout } from '@/helpers/authorization';
 import { useCentralTheme } from '@/theme';
-
-import { DeleteConfirmationModal } from '../DeleteConfirmationModal';
 
 export const UserMenu = () => {
   const { data: dataUser } = useQuery(['user'], getUser);
 
-  const { isOpen, onOpen, onClose } = useDisclosure();
+  const deleteModal = useDisclosure();
+  const logoutModal = useDisclosure();
 
   const { hoverBgColor, popupBgColor, popupTextColor, textColor } =
     useCentralTheme();
@@ -32,7 +32,12 @@ export const UserMenu = () => {
     deleteUser(dataUser.id)
       .then(() => alert(i18next.t('delete.account.successful.message')))
       .catch((err) => console.log(err));
-    onClose();
+    deleteModal.onClose();
+    logout();
+  };
+
+  const onLogout = () => {
+    logoutModal.onClose();
     logout();
   };
 
@@ -75,7 +80,7 @@ export const UserMenu = () => {
           _hover={{
             bg: hoverBgColor
           }}
-          onClick={onOpen}
+          onClick={deleteModal.onOpen}
           icon={<DeleteIcon w={5} h={5} color={popupTextColor} />}
         >
           {i18next.t('header.userMenu.delete')}
@@ -84,18 +89,26 @@ export const UserMenu = () => {
           _hover={{
             bg: hoverBgColor
           }}
-          onClick={logout}
+          onClick={logoutModal.onOpen}
           icon={<LogOutIcon width={5} height={5} color={popupTextColor} />}
         >
           {i18next.t('header.userMenu.logout')}
         </MenuItem>
       </MenuList>
-      <DeleteConfirmationModal
+      <ConfirmationModal
         onSubmit={onDelete}
-        isOpen={isOpen}
-        onClose={onClose}
-        title={i18next.t('modal.deleteAccount.title')}
-        text={i18next.t('modal.deleteAccount.text')}
+        isOpen={deleteModal.isOpen}
+        onClose={deleteModal.onClose}
+        title={i18next.t('modal.confirmation.deleteAccount.title')}
+        text={i18next.t('modal.confirmation.deleteAccount.text')}
+        variant="danger"
+      />
+      <ConfirmationModal
+        onSubmit={onLogout}
+        isOpen={logoutModal.isOpen}
+        onClose={logoutModal.onClose}
+        title={i18next.t('modal.confirmation.logout.title')}
+        text={i18next.t('modal.confirmation.logout.text')}
       />
     </Menu>
   );

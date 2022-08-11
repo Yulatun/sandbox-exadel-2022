@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
-import { useParams } from 'react-router-dom';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { DeleteIcon } from '@chakra-ui/icons';
 import { Box, Flex, IconButton, useDisclosure, VStack } from '@chakra-ui/react';
 import i18next from 'i18next';
@@ -13,10 +12,9 @@ import {
   getIncomes
 } from '@/api/Transaction';
 import { getUser } from '@/api/User';
-import { deleteWallet } from '@/api/Wallet';
-import { getWallets } from '@/api/Wallet';
+import { deleteWallet, getWallets } from '@/api/Wallet';
 import {
-  DeleteConfirmationModal,
+  ConfirmationModal,
   ExpenseItem,
   IncomeItem,
   NotificationModal,
@@ -172,7 +170,7 @@ export const WalletView = () => {
           text={i18next.t('modal.deleteWalletDefault.text')}
         />
       ) : (
-        <DeleteConfirmationModal
+        <ConfirmationModal
           isOpen={deleteWalletModal.isOpen}
           onSubmit={deleteWalletOnSubmit}
           onClose={deleteWalletModal.onClose}
@@ -181,7 +179,7 @@ export const WalletView = () => {
         />
       )}
 
-      <DeleteConfirmationModal
+      <ConfirmationModal
         isOpen={deleteTransactionModal.isOpen}
         onSubmit={deleteTransactionOnSubmit}
         onClose={deleteTransactionModal.onClose}
