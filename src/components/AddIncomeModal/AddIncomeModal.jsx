@@ -25,7 +25,7 @@ import {
 } from '@chakra-ui/react';
 import i18next from 'i18next';
 
-import { getDefaultCategories } from '@/api/DefaultCategory';
+import { getCategories } from '@/api/Category';
 import { getWallets } from '@/api/Wallet';
 
 export const AddIncomeModal = ({ isOpen, onClose, onSubmit, userData }) => {
@@ -33,8 +33,10 @@ export const AddIncomeModal = ({ isOpen, onClose, onSubmit, userData }) => {
     ['wallets'],
     getWallets
   );
-  const { data: dataDefaultCategories, isFetched: isFetchedDefaultCategories } =
-    useQuery(['defaultCategories'], getDefaultCategories);
+  const { data: dataCategories, isFetched: isFetchedCategories } = useQuery(
+    ['categories'],
+    getCategories
+  );
 
   const {
     register,
@@ -108,9 +110,9 @@ export const AddIncomeModal = ({ isOpen, onClose, onSubmit, userData }) => {
             <FormLabel htmlFor="category">
               {i18next.t('modal.addIncome.category')}
             </FormLabel>
-            {(!!dataDefaultCategories &&
-              !!dataDefaultCategories.data &&
-              isFetchedDefaultCategories && (
+            {(!!dataCategories &&
+              !!dataCategories.data &&
+              isFetchedCategories && (
                 <Select
                   placeholder={i18next.t(
                     'modal.addIncome.category.placeholder'
@@ -121,8 +123,8 @@ export const AddIncomeModal = ({ isOpen, onClose, onSubmit, userData }) => {
                     )
                   })}
                 >
-                  {!!Object.keys(dataDefaultCategories).length &&
-                    dataDefaultCategories.data
+                  {!!Object.keys(dataCategories).length &&
+                    dataCategories.data
                       .filter((category) => category.categoryType === 'Income')
                       .map((category) => (
                         <option key={category.id} value={category.id}>
