@@ -41,7 +41,7 @@ export const Incomes = () => {
           {!!dataIncomes &&
             !!dataIncomes.data &&
             isFetchedIncomes &&
-            dataIncomes.data.map((incomeData) => (
+            dataIncomes.data.incomes.map((incomeData) => (
               <IncomeItem
                 key={incomeData.id}
                 incomeData={incomeData}
