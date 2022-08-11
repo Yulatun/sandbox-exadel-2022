@@ -25,7 +25,7 @@ export const AccordionHeadings = (props) => {
           padding="5px 8px"
           backgroundColor="transparent"
         >
-          <>{props.button}</>
+          {props.button}
           <Box
             paddingTop="4px"
             marginLeft="20px"
