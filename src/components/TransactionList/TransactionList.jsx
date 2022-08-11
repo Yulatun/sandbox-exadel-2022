@@ -35,6 +35,7 @@ export const TransactionList = ({ list }) => {
         pb="15px"
         mt="10px"
         boxShadow="2xl"
+        bg={popupBgColor}
       >
         <Box w="27%">
           <Heading as="h2" pl="60px" size="sm" color={textColor}>
@@ -67,7 +68,8 @@ export const TransactionList = ({ list }) => {
           </Heading>
         </Box>
       </HStack>
-      {list.map((transaction) => (
+
+      {list.slice(0, 10).map((transaction) => (
         <HStack
           justify="space-evenly"
           w="100%"
@@ -81,7 +83,10 @@ export const TransactionList = ({ list }) => {
             {format(new Date(transaction.dateOfTransaction), 'dd.MM.yyyy')}
           </Box>
           <Box w="15%">{transaction.categoryId}</Box>
-          <Box w="5%">{transaction.value}</Box>
+          <Box w="10%">
+            {transaction.value} {transaction.currency.symbol}
+          </Box>
+
           <Box
             w="10%"
             textOverflow="ellipsis"

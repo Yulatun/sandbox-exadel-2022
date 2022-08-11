@@ -4,6 +4,7 @@ import i18next from 'i18next';
 
 import { createIncome, getExpenses, getIncomes } from '@/api/Transaction';
 import { getUser } from '@/api/User';
+import { getWallets } from '@/api/Wallet';
 import {
   AddExpenseModal,
   AddIncomeModal,
@@ -33,6 +34,37 @@ export const Landing = () => {
     ['expenses'],
     getExpenses
   );
+
+  const { data: dataWallets, isFetched: isFetchedWallets } = useQuery(
+    ['wallets'],
+    getWallets
+  );
+
+  let allTransactions = [];
+  if (
+    !!dataIncomes &&
+    !!dataExpenses &&
+    !!dataWallets &&
+    !!dataIncomes.data &&
+    !!dataExpenses.data &&
+    dataWallets.data &&
+    isFetchedIncomes &&
+    isFetchedExpenses &&
+    isFetchedWallets
+  ) {
+    allTransactions = [...dataIncomes.data.incomes, ...dataExpenses.data];
+
+    allTransactions
+      .sort((a, b) => {
+        return new Date(b.dateOfTransaction) - new Date(a.dateOfTransaction);
+      })
+      .forEach((transaction) => {
+        let wallet = dataWallets.data.find(
+          (wallet) => wallet.id === transaction.walletId
+        );
+        transaction.currency = wallet.currency;
+      });
+  }
 
   const createIncomeOnSubmit = (data) => {
     createIncome({
@@ -94,17 +126,8 @@ export const Landing = () => {
             {i18next.t('transaction.recentTransactions')}
           </Text>
           {!isFetchedIncomes || !isFetchedExpenses ? <Preloader /> : null}
-          {!!dataIncomes &&
-            !!dataExpenses &&
-            !!dataIncomes.data &&
-            !!dataIncomes.data.incomes &&
-            !!dataExpenses.data &&
-            isFetchedIncomes &&
-            isFetchedExpenses && (
-              <TransactionList
-                list={[...dataIncomes.data.incomes, ...dataExpenses.data]}
-              />
-            )}
+
+          <TransactionList list={allTransactions} />
         </Flex>
       </Box>
     </>
