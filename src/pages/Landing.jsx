@@ -3,6 +3,7 @@ import { Box, Button, Flex, Text, useDisclosure } from '@chakra-ui/react';
 import i18next from 'i18next';
 
 import { createIncome, getExpenses, getIncomes } from '@/api/Transaction';
+import { getWallets } from '@/api/Wallet';
 import {
   AddExpenseModal,
   AddIncomeModal,
@@ -18,7 +19,6 @@ export const Landing = () => {
     id: 'b5b4edac-1eab-489b-9796-d03041e708fd',
     defaultWallet: '7cfe651f-6e02-4e14-9872-6a6a308a3981'
   };
-
   const expenseModal = useDisclosure();
   const incomeModal = useDisclosure();
   const createTransactionModal = useDisclosure();
@@ -34,6 +34,40 @@ export const Landing = () => {
     ['expenses'],
     getExpenses
   );
+
+  const { data: dataWallets, isFetched: isFetchedWallets } = useQuery(
+    ['wallets'],
+    getWallets
+  );
+
+  let allTransactions = [];
+  if (
+    !!dataIncomes &&
+    !!dataExpenses &&
+    !!dataWallets &&
+    !!dataIncomes.data &&
+    !!dataExpenses.data &&
+    dataWallets.data &&
+    isFetchedIncomes &&
+    isFetchedExpenses &&
+    isFetchedWallets
+  ) {
+    allTransactions = [...dataIncomes.data, ...dataExpenses.data];
+
+    allTransactions
+      .sort((a, b) => {
+        return new Date(b.dateOfTransaction) - new Date(a.dateOfTransaction);
+      })
+      // .slice(0, 10)
+      .forEach((transaction) => {
+        function getWalletByWalletId(walletId) {
+          return dataWallets.data.find((wallet) => wallet.id === walletId);
+        }
+        let walletId = transaction.walletId;
+        let walletById = getWalletByWalletId(walletId);
+        transaction.currency = walletById.currency;
+      });
+  }
 
   const createIncomeOnSubmit = (data) => {
     createIncome({
@@ -93,16 +127,8 @@ export const Landing = () => {
             {i18next.t('transaction.recentTransactions')}
           </Text>
           {!isFetchedIncomes || !isFetchedExpenses ? <Preloader /> : null}
-          {!!dataIncomes &&
-            !!dataExpenses &&
-            !!dataIncomes.data &&
-            !!dataExpenses.data &&
-            isFetchedIncomes &&
-            isFetchedExpenses && (
-              <TransactionList
-                list={[...dataIncomes.data, ...dataExpenses.data]}
-              />
-            )}
+
+          <TransactionList list={allTransactions} />
         </Flex>
       </Box>
     </>
