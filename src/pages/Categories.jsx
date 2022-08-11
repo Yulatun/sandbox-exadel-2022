@@ -1,4 +1,11 @@
-import { Button, Flex, Grid, GridItem, useDisclosure } from '@chakra-ui/react';
+import { AddIcon } from '@chakra-ui/icons';
+import {
+  Flex,
+  Grid,
+  GridItem,
+  IconButton,
+  useDisclosure
+} from '@chakra-ui/react';
 import i18next from 'i18next';
 
 import {
@@ -6,6 +13,7 @@ import {
   AccordionHeadings,
   AddCategoryModal
 } from '@/components';
+import { useCentralTheme } from '@/theme';
 
 import { AccordionArray } from '../components/AccordionComponent/AccordionArray';
 
@@ -22,6 +30,7 @@ function createAccordion(accordionContent) {
 export const Categories = () => {
   const expensesCategoriesModal = useDisclosure();
   const incomeCategoriesModal = useDisclosure();
+  const { textColor, popupBgColor } = useCentralTheme();
 
   return (
     <>
@@ -30,6 +39,21 @@ export const Categories = () => {
           <AccordionHeadings
             headingOne={i18next.t('expenses.categoryHeading')}
             headingTwo={i18next.t('expenses.addCategoryHeading')}
+            button={
+              <IconButton
+                onClick={expensesCategoriesModal.onOpen}
+                icon={<AddIcon />}
+                backgroundColor={popupBgColor}
+                color={textColor}
+                boxShadow="base"
+                borderRadius="50%"
+                _hover={{
+                  boxShadow: 'base',
+                  border: '2px',
+                  borderColor: textColor
+                }}
+              ></IconButton>
+            }
           />
           {AccordionArray.map(createAccordion)}
         </GridItem>
@@ -37,16 +61,24 @@ export const Categories = () => {
           <AccordionHeadings
             headingOne={i18next.t('income.categoryHeading')}
             headingTwo={i18next.t('income.addCategoryHeading')}
+            button={
+              <IconButton
+                onClick={incomeCategoriesModal.onOpen}
+                icon={<AddIcon />}
+                backgroundColor={popupBgColor}
+                color={textColor}
+                boxShadow="base"
+                borderRadius="50%"
+                _hover={{
+                  boxShadow: 'base',
+                  border: '2px',
+                  borderColor: textColor
+                }}
+              ></IconButton>
+            }
           />
           {AccordionArray.map(createAccordion)}
         </GridItem>
-
-        <Button onClick={expensesCategoriesModal.onOpen}>
-          add Expenses Category
-        </Button>
-        <Button onClick={incomeCategoriesModal.onOpen}>
-          add Income Category
-        </Button>
       </Grid>
       <Flex>
         <AddCategoryModal

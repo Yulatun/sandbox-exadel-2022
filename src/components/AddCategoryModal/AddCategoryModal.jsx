@@ -146,10 +146,10 @@ export const AddCategoryModal = ({ isOpen, onClose, categoryType }) => {
           </ModalBody>
 
           <ModalFooter>
-            <Button colorScheme="blue" mr={3} onClick={handleSubmit(onSubmit)}>
+            <Button mr={3} onClick={handleSubmit(onSubmit)}>
               {i18next.t('modal.addCategory.addButton')}
             </Button>
-            <Button onClick={onCancel}>
+            <Button onClick={onCancel} variant="secondary">
               {i18next.t('modal.addCategory.cancelButton')}
             </Button>
           </ModalFooter>

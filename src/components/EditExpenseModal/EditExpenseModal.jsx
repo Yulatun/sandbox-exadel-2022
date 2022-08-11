@@ -26,7 +26,7 @@ import {
 import { format } from 'date-fns';
 import i18next from 'i18next';
 
-import { getDefaultCategories } from '@/api/DefaultCategory';
+import { getCategories } from '@/api/Category';
 import { getWallets } from '@/api/Wallet';
 
 export const EditExpenseModal = ({
@@ -39,8 +39,10 @@ export const EditExpenseModal = ({
     ['wallets'],
     getWallets
   );
-  const { data: dataDefaultCategories, isFetched: isFetchedDefaultCategories } =
-    useQuery(['defaultCategories'], getDefaultCategories);
+  const { data: dataCategories, isFetched: isFetchedCategories } = useQuery(
+    ['categories'],
+    getCategories
+  );
 
   const {
     register,
@@ -118,9 +120,9 @@ export const EditExpenseModal = ({
             <FormLabel htmlFor="category">
               {i18next.t('modal.editExpense.category')}
             </FormLabel>
-            {(!!dataDefaultCategories &&
-              !!dataDefaultCategories.data &&
-              isFetchedDefaultCategories && (
+            {(!!dataCategories &&
+              !!dataCategories.data &&
+              isFetchedCategories && (
                 <Select
                   placeholder={i18next.t(
                     'modal.editExpense.category.placeholder'
@@ -131,8 +133,8 @@ export const EditExpenseModal = ({
                     )
                   })}
                 >
-                  {!!Object.keys(dataDefaultCategories).length &&
-                    dataDefaultCategories.data
+                  {!!Object.keys(dataCategories).length &&
+                    dataCategories.data
                       .filter((category) => category.categoryType === 'Expense')
                       .map((category) => (
                         <option key={category.id} value={category.id}>
@@ -155,17 +157,17 @@ export const EditExpenseModal = ({
 
           <FormControl mb="20px">
             <FormLabel>{i18next.t('modal.editExpense.subcategory')}</FormLabel>
-            {(!!dataDefaultCategories &&
-              !!dataDefaultCategories.data &&
-              isFetchedDefaultCategories && (
+            {(!!dataCategories &&
+              !!dataCategories.data &&
+              isFetchedCategories && (
                 <Select
                   placeholder={i18next.t(
                     'modal.editExpense.subcategory.placeholder'
                   )}
                   {...register('subcategory')}
                 >
-                  {!!Object.keys(dataDefaultCategories).length &&
-                    dataDefaultCategories.data
+                  {!!Object.keys(dataCategories).length &&
+                    dataCategories.data
                       .filter((category) => category.categoryType === 'Expense')
                       .map(
                         (category) =>
@@ -178,7 +180,7 @@ export const EditExpenseModal = ({
                       )}
                 </Select>
               )) ||
-              (!isFetchedDefaultCategories && (
+              (!isFetchedCategories && (
                 <Skeleton
                   height="40px"
                   borderRadius="5px"

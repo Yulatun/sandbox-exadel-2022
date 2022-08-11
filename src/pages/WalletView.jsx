@@ -1,7 +1,8 @@
 import { useState } from 'react';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
-import { useParams } from 'react-router-dom';
-import { Box, Flex, useDisclosure, VStack } from '@chakra-ui/react';
+import { useNavigate, useParams } from 'react-router-dom';
+import { DeleteIcon } from '@chakra-ui/icons';
+import { Box, Flex, IconButton, useDisclosure, VStack } from '@chakra-ui/react';
 import i18next from 'i18next';
 
 import {
@@ -10,11 +11,13 @@ import {
   getExpenses,
   getIncomes
 } from '@/api/Transaction';
-import { getWallets } from '@/api/Wallet';
+import { getUser } from '@/api/User';
+import { deleteWallet, getWallets } from '@/api/Wallet';
 import {
   ConfirmationModal,
   ExpenseItem,
   IncomeItem,
+  NotificationModal,
   WalletCard
 } from '@/components';
 import { useCentralTheme } from '@/theme';
@@ -24,10 +27,17 @@ export const WalletView = () => {
 
   const [chosenTransactionObj, setChosenTransactionObj] = useState({});
 
-  const deleteModal = useDisclosure();
+  const deleteWalletModal = useDisclosure();
+  const deleteTransactionModal = useDisclosure();
+  const navigate = useNavigate();
   const queryClient = useQueryClient();
 
   const { bgColor } = useCentralTheme();
+
+  const { data: dataUser, isFetched: isFetchedUser } = useQuery(
+    ['user'],
+    getUser
+  );
 
   const { data: dataWallets, isFetched: isFetchedWallets } = useQuery(
     ['wallets'],
@@ -43,6 +53,13 @@ export const WalletView = () => {
     ['expenses'],
     getExpenses
   );
+
+  const mutationWallet = useMutation(() => deleteWallet(walletId), {
+    onSuccess: () => {
+      queryClient.invalidateQueries(['wallets']);
+      navigate('/', { replace: true });
+    }
+  });
 
   const mutationIncome = useMutation(
     () => deleteIncome(chosenTransactionObj.id),
@@ -62,20 +79,29 @@ export const WalletView = () => {
     }
   );
 
-  const openOnDelete = (dataTransaction) => {
-    setChosenTransactionObj(dataTransaction);
-    deleteModal.onOpen();
+  const openWalletOnDelete = () => {
+    deleteWalletModal.onOpen();
   };
 
-  const deleteOnSubmit = () => {
+  const openTransactionOnDelete = (dataTransaction) => {
+    setChosenTransactionObj(dataTransaction);
+    deleteTransactionModal.onOpen();
+  };
+
+  const deleteWalletOnSubmit = () => {
+    mutationWallet.mutate();
+    deleteWalletModal.onClose();
+  };
+
+  const deleteTransactionOnSubmit = () => {
     if (chosenTransactionObj.transactionType === 'Income') {
       mutationIncome.mutate();
-      deleteModal.onClose();
+      deleteTransactionModal.onClose();
       return;
     }
 
     mutationExpense.mutate();
-    deleteModal.onClose();
+    deleteTransactionModal.onClose();
   };
 
   const onEdit = () => {
@@ -84,6 +110,12 @@ export const WalletView = () => {
 
   return (
     <Box bg={bgColor} px={24} py={6} mt={6}>
+      <IconButton
+        onClick={openWalletOnDelete}
+        ml="70%"
+        size="sm"
+        icon={<DeleteIcon />}
+      ></IconButton>
       <Flex mr="30%" ml="35%">
         {!!dataWallets && !!dataWallets.data && isFetchedWallets && (
           <WalletCard
@@ -112,7 +144,7 @@ export const WalletView = () => {
                   incomeData={dataTransaction}
                   onEdit={onEdit}
                   onDelete={() => {
-                    openOnDelete(dataTransaction);
+                    openTransactionOnDelete(dataTransaction);
                   }}
                 />
               ) : (
@@ -121,16 +153,36 @@ export const WalletView = () => {
                   expenseData={dataTransaction}
                   onEdit={onEdit}
                   onDelete={() => {
-                    openOnDelete(dataTransaction);
+                    openTransactionOnDelete(dataTransaction);
                   }}
                 />
               );
             })}
       </VStack>
+      {!!dataUser &&
+      !!dataUser.data &&
+      isFetchedUser &&
+      dataUser.data.defaultWallet === walletId ? (
+        <NotificationModal
+          isOpen={deleteWalletModal.isOpen}
+          onSubmit={deleteWalletOnSubmit}
+          onClose={deleteWalletModal.onClose}
+          text={i18next.t('modal.deleteWalletDefault.text')}
+        />
+      ) : (
+        <ConfirmationModal
+          isOpen={deleteWalletModal.isOpen}
+          onSubmit={deleteWalletOnSubmit}
+          onClose={deleteWalletModal.onClose}
+          title={i18next.t('modal.deleteWallet.title')}
+          text={i18next.t('modal.deleteWallet.text')}
+        />
+      )}
+
       <ConfirmationModal
-        isOpen={deleteModal.isOpen}
-        onSubmit={deleteOnSubmit}
-        onClose={deleteModal.onClose}
+        isOpen={deleteTransactionModal.isOpen}
+        onSubmit={deleteTransactionOnSubmit}
+        onClose={deleteTransactionModal.onClose}
         title={
           !!chosenTransactionObj.transactionType &&
           chosenTransactionObj.transactionType === 'Income'
