@@ -24,7 +24,7 @@ export const UserName = () => {
       !!dataUser.data &&
       !!dataUser.data.isAdmin &&
       isFetchedUser ? (
-        <Button as={Link} to="/" fontWeight="bold" size="xs" mr="auto">
+        <Button as={Link} to="/admin" fontWeight="bold" size="xs" mr="auto">
           Admin
         </Button>
       ) : null}
