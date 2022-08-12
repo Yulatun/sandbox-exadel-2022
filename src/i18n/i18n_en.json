@@ -172,5 +172,8 @@
   "transaction.title.amount": "Amount",
   "transaction.title.walletName": "Wallet name",
   "transaction.title.edit": "Edit",
-  "transaction.title.delete": "Delete"
+  "transaction.title.delete": "Delete",
+  "admin.button": "Admin",
+  "admin.welcomePage": "Welcome to Admin page!",
+  "admin.disclaimer": "You can see me only if you have an Admin role ;)"
 }

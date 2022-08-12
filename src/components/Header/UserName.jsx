@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { Button, Flex, Text } from '@chakra-ui/react';
 
 import { getUser } from '@/api/User';
+import { i18n } from '@/i18n';
 import { useCentralTheme } from '@/theme';
 
 export const UserName = () => {
@@ -25,7 +26,7 @@ export const UserName = () => {
       !!dataUser.data.isAdmin &&
       isFetchedUser ? (
         <Button as={Link} to="/admin" fontWeight="bold" size="xs" mr="auto">
-          Admin
+          {i18n.t('admin.button')}
         </Button>
       ) : null}
     </Flex>
