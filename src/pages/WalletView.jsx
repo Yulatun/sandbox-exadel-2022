@@ -1,23 +1,17 @@
-import { useState } from 'react';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
 import { useNavigate, useParams } from 'react-router-dom';
 import { DeleteIcon } from '@chakra-ui/icons';
-import { Box, Flex, IconButton, useDisclosure, VStack } from '@chakra-ui/react';
+import { Flex, IconButton, Text, useDisclosure } from '@chakra-ui/react';
 import i18next from 'i18next';
 
-import {
-  deleteExpense,
-  deleteIncome,
-  getExpenses,
-  getIncomes
-} from '@/api/Transaction';
+import { getExpenses, getIncomes } from '@/api/Transaction';
 import { getUser } from '@/api/User';
 import { deleteWallet, getWallets } from '@/api/Wallet';
 import {
   ConfirmationModal,
-  ExpenseItem,
-  IncomeItem,
   NotificationModal,
+  Preloader,
+  TransactionList,
   WalletCard
 } from '@/components';
 import { useCentralTheme } from '@/theme';
@@ -25,10 +19,7 @@ import { useCentralTheme } from '@/theme';
 export const WalletView = () => {
   const { id: walletId } = useParams();
 
-  const [chosenTransactionObj, setChosenTransactionObj] = useState({});
-
   const deleteWalletModal = useDisclosure();
-  const deleteTransactionModal = useDisclosure();
   const navigate = useNavigate();
   const queryClient = useQueryClient();
 
@@ -61,31 +52,8 @@ export const WalletView = () => {
     }
   });
 
-  const mutationIncome = useMutation(
-    () => deleteIncome(chosenTransactionObj.id),
-    {
-      onSuccess: () => {
-        queryClient.invalidateQueries(['incomes']);
-      }
-    }
-  );
-
-  const mutationExpense = useMutation(
-    () => deleteExpense(chosenTransactionObj.id),
-    {
-      onSuccess: () => {
-        queryClient.invalidateQueries(['expenses']);
-      }
-    }
-  );
-
   const openWalletOnDelete = () => {
     deleteWalletModal.onOpen();
-  };
-
-  const openTransactionOnDelete = (dataTransaction) => {
-    setChosenTransactionObj(dataTransaction);
-    deleteTransactionModal.onOpen();
   };
 
   const deleteWalletOnSubmit = () => {
@@ -93,72 +61,76 @@ export const WalletView = () => {
     deleteWalletModal.onClose();
   };
 
-  const deleteTransactionOnSubmit = () => {
-    if (chosenTransactionObj.transactionType === 'Income') {
-      mutationIncome.mutate();
-      deleteTransactionModal.onClose();
-      return;
-    }
+  const { textColor } = useCentralTheme();
 
-    mutationExpense.mutate();
-    deleteTransactionModal.onClose();
-  };
+  let allTransactions = [];
 
-  const onEdit = () => {
-    // code to edit
-  };
+  if (
+    !!dataIncomes &&
+    !!dataExpenses &&
+    !!dataWallets &&
+    !!dataIncomes.data &&
+    !!dataExpenses.data &&
+    !!dataIncomes.data.incomes &&
+    !!dataExpenses.data.expenses &&
+    !!dataWallets.data &&
+    isFetchedIncomes &&
+    isFetchedExpenses &&
+    isFetchedWallets
+  ) {
+    allTransactions = [
+      ...dataIncomes.data.incomes,
+      ...dataExpenses.data.expenses
+    ].filter((data) => data.walletId === walletId);
+
+    allTransactions.forEach((transaction) => {
+      let wallet = dataWallets.data.find(
+        (wallet) => wallet.id === transaction.walletId
+      );
+
+      transaction.currency = wallet.currency;
+    });
+  }
 
   return (
-    <Box bg={bgColor} px={24} py={6} mt={6}>
-      <IconButton
-        onClick={openWalletOnDelete}
-        ml="70%"
-        size="sm"
-        icon={<DeleteIcon />}
-      ></IconButton>
-      <Flex mr="30%" ml="35%">
-        {!!dataWallets && !!dataWallets.data && isFetchedWallets && (
-          <WalletCard
-            walletData={dataWallets.data.find(
-              (wallet) => wallet.id === walletId
-            )}
-          />
+    <>
+      <Flex
+        flexDir="column"
+        alignItems="center"
+        mt={6}
+        px={24}
+        py={6}
+        w="100%"
+        bg={bgColor}
+      >
+        <IconButton
+          onClick={openWalletOnDelete}
+          ml="70%"
+          size="sm"
+          icon={<DeleteIcon />}
+        />
+
+        <Flex justifyContent="center" mb={8} w="400px">
+          {!!dataWallets && !!dataWallets.data && isFetchedWallets && (
+            <WalletCard
+              walletData={dataWallets.data.find(
+                (wallet) => wallet.id === walletId
+              )}
+            />
+          )}
+        </Flex>
+
+        {isFetchedIncomes && isFetchedExpenses && !allTransactions.length ? (
+          <Text color={textColor} fontSize="xl">
+            {i18next.t('transaction.noData')}
+          </Text>
+        ) : (
+          <TransactionList list={allTransactions} maxH="600px" isShortView />
         )}
+
+        {!isFetchedIncomes || !isFetchedExpenses ? <Preloader /> : null}
       </Flex>
-      <VStack spacing={5} pt={5}>
-        {!!dataIncomes &&
-          !!dataExpenses &&
-          !!dataIncomes.data &&
-          !!dataExpenses.data &&
-          isFetchedIncomes &&
-          isFetchedExpenses &&
-          [...dataIncomes.data, ...dataExpenses.data]
-            .filter((data) => data.walletId === walletId)
-            .sort((transactionA, transactionB) => {
-              transactionA.dateOfTransaction - transactionB.dateOfTransaction;
-            })
-            .map((dataTransaction) => {
-              return dataTransaction.transactionType === 'Income' ? (
-                <IncomeItem
-                  key={dataTransaction.id}
-                  incomeData={dataTransaction}
-                  onEdit={onEdit}
-                  onDelete={() => {
-                    openTransactionOnDelete(dataTransaction);
-                  }}
-                />
-              ) : (
-                <ExpenseItem
-                  key={dataTransaction.id}
-                  expenseData={dataTransaction}
-                  onEdit={onEdit}
-                  onDelete={() => {
-                    openTransactionOnDelete(dataTransaction);
-                  }}
-                />
-              );
-            })}
-      </VStack>
+
       {!!dataUser &&
       !!dataUser.data &&
       isFetchedUser &&
@@ -178,24 +150,6 @@ export const WalletView = () => {
           text={i18next.t('modal.deleteWallet.text')}
         />
       )}
-
-      <ConfirmationModal
-        isOpen={deleteTransactionModal.isOpen}
-        onSubmit={deleteTransactionOnSubmit}
-        onClose={deleteTransactionModal.onClose}
-        title={
-          !!chosenTransactionObj.transactionType &&
-          chosenTransactionObj.transactionType === 'Income'
-            ? i18next.t('modal.deleteIncome.title')
-            : i18next.t('modal.deleteExpense.title')
-        }
-        text={
-          !!chosenTransactionObj.transactionType &&
-          chosenTransactionObj.transactionType === 'Income'
-            ? i18next.t('modal.deleteIncome.text')
-            : i18next.t('modal.deleteExpense.text')
-        }
-      />
-    </Box>
+    </>
   );
 };

@@ -1,5 +1,5 @@
 import { useQuery } from 'react-query';
-import { Box, Button, Flex, Text, useDisclosure } from '@chakra-ui/react';
+import { Button, Flex, Text, useDisclosure } from '@chakra-ui/react';
 import i18next from 'i18next';
 
 import { createIncome, getExpenses, getIncomes } from '@/api/Transaction';
@@ -63,12 +63,15 @@ export const Landing = () => {
       .sort((a, b) => {
         return new Date(b.dateOfTransaction) - new Date(a.dateOfTransaction);
       })
-      .forEach((transaction) => {
+      .map((transaction) => {
         let wallet = dataWallets.data.find(
           (wallet) => wallet.id === transaction.walletId
         );
+
         transaction.currency = wallet.currency;
       });
+
+    allTransactions = allTransactions.slice(0, 10);
   }
 
   const createIncomeOnSubmit = (data) => {
@@ -90,51 +93,57 @@ export const Landing = () => {
 
   return (
     <>
-      <Box w="100%" p={4}>
-        <Flex m={4} direction="column" justify="center" align="center">
-          <Flex m={4} direction="row" justify="center" align="center">
-            <Button m={4} onClick={expenseModal.onOpen}>
-              {i18next.t('button.addExpense')}
-            </Button>
-            <AddExpenseModal
-              isOpen={expenseModal.isOpen}
-              onSubmit={expenseModal.onClose}
-              onClose={expenseModal.onClose}
-            />
-            <Button m={4} onClick={incomeModal.onOpen}>
-              {i18next.t('button.addIncome')}
-            </Button>
-            {!!dataUser && !!dataUser.data && isFetchedUser && (
-              <AddIncomeModal
-                isOpen={incomeModal.isOpen}
-                onSubmit={createIncomeOnSubmit}
-                onClose={incomeModal.onClose}
-                userData={dataUser}
-              />
-            )}
-          </Flex>
-          {!incomeModal.isOpen && (
-            <NotificationModal
-              isOpen={createTransactionModal.isOpen}
-              onSubmit={createTransactionModal.onClose}
-              onClose={createTransactionModal.onClose}
-              text={i18next.t('modal.addIncome.createdMessage')}
-            />
-          )}
-          <WalletsList />
-        </Flex>
-      </Box>
+      <Flex flexDir="column" alignItems="center" w="100%" p={4}>
+        <Flex my={8} direction="row" justify="center" align="center">
+          <Button mr={8} onClick={expenseModal.onOpen}>
+            {i18next.t('button.addExpense')}
+          </Button>
 
-      <Box w="100%" p={4}>
-        <Flex direction="column" justify="center" align="center">
+          <Button onClick={incomeModal.onOpen}>
+            {i18next.t('button.addIncome')}
+          </Button>
+        </Flex>
+
+        <WalletsList />
+
+        <Text my={8} color={textColor} fontSize="xl">
+          {i18next.t('transaction.recentTransactions')}
+        </Text>
+
+        {isFetchedIncomes && isFetchedExpenses && !allTransactions.length ? (
           <Text color={textColor} fontSize="xl">
-            {i18next.t('transaction.recentTransactions')}
+            {i18next.t('transaction.noData')}
           </Text>
-          {!isFetchedIncomes || !isFetchedExpenses ? <Preloader /> : null}
+        ) : (
+          <TransactionList list={allTransactions} maxH="380px" isShortView />
+        )}
 
-          <TransactionList list={allTransactions} />
-        </Flex>
-      </Box>
+        {!isFetchedIncomes || !isFetchedExpenses ? <Preloader /> : null}
+      </Flex>
+
+      {!incomeModal.isOpen && (
+        <NotificationModal
+          isOpen={createTransactionModal.isOpen}
+          onSubmit={createTransactionModal.onClose}
+          onClose={createTransactionModal.onClose}
+          text={i18next.t('modal.addIncome.createdMessage')}
+        />
+      )}
+      {!!dataUser && !!dataUser.data && isFetchedUser && (
+        <AddExpenseModal
+          isOpen={expenseModal.isOpen}
+          onSubmit={expenseModal.onClose}
+          onClose={expenseModal.onClose}
+        />
+      )}
+      {!!dataUser && !!dataUser.data && isFetchedUser && (
+        <AddIncomeModal
+          isOpen={incomeModal.isOpen}
+          onSubmit={createIncomeOnSubmit}
+          onClose={incomeModal.onClose}
+          userData={dataUser}
+        />
+      )}
     </>
   );
 };
