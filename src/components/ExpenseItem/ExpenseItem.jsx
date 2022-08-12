@@ -70,7 +70,10 @@ export const ExpenseItem = ({ expenseData, onEdit, onDelete, isShortView }) => {
           {'transaction.category'}
         </Tooltip>
       </Box>
-      <Box w="7%">{expenseData.value}</Box>
+      <Box w="7%">
+        {expenseData.value}
+        {expenseData.currency.symbol}
+      </Box>
       {isLongDisplayVersion && renderLongVersionFragment()}
     </HStack>
   );

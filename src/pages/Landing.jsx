@@ -46,13 +46,18 @@ export const Landing = () => {
     !!dataExpenses &&
     !!dataWallets &&
     !!dataIncomes.data &&
-    !!dataExpenses.data &&
-    dataWallets.data &&
+    !!dataIncomes.data &&
+    !!dataIncomes.data.incomes &&
+    !!dataExpenses.data.expenses &&
+    !!dataWallets.data &&
     isFetchedIncomes &&
     isFetchedExpenses &&
     isFetchedWallets
   ) {
-    allTransactions = [...dataIncomes.data.incomes, ...dataExpenses.data];
+    allTransactions = [
+      ...dataIncomes.data.incomes,
+      ...dataExpenses.data.expenses
+    ];
 
     allTransactions
       .sort((a, b) => {

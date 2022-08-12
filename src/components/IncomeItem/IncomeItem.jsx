@@ -28,7 +28,10 @@ export const IncomeItem = ({ incomeData, onEdit, onDelete }) => {
       >
         <Tooltip label={incomeData.id}>{incomeData.transactionType}</Tooltip>
       </Box>
-      <Box w="10%">{incomeData.value}</Box>
+      <Box w="10%">
+        {incomeData.value}
+        {incomeData.currency.symbol}
+      </Box>
       <Box
         w="15%"
         textOverflow="ellipsis"
