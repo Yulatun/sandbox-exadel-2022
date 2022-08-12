@@ -3,6 +3,7 @@ import { Navigate } from 'react-router-dom';
 import { Center, Heading } from '@chakra-ui/react';
 
 import { getUser } from '@/api/User';
+import { Preloader } from '@/components';
 import { i18n } from '@/i18n';
 import { useCentralTheme } from '@/theme';
 
@@ -16,6 +17,7 @@ export const Admin = () => {
 
   return (
     <>
+      {!isFetchedUser ? <Preloader /> : null}
       {!!dataUser &&
       !!dataUser.data &&
       !dataUser.data.isAdmin &&
