@@ -17,7 +17,7 @@ export const Admin = () => {
 
   return (
     <>
-      {!isFetchedUser ? <Preloader /> : null}
+      {!isFetchedUser && <Preloader />}
       {!!dataUser &&
       !!dataUser.data &&
       !dataUser.data.isAdmin &&

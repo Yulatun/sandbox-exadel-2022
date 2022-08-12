@@ -47,7 +47,7 @@ export const AddIncomeModal = ({ isOpen, onClose, onSubmit, userData }) => {
     defaultWallet = {
       value: userData.defaultWallet,
       label: dataWallets.data.find(
-        (wallet) => wallet.id === userData.data.defaultWallet
+        (wallet) => wallet.id === userData.defaultWallet
       ).name
     };
     walletsOptions = dataWallets.data.map((wallet) => ({

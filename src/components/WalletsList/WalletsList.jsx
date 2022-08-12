@@ -39,7 +39,7 @@ export const WalletsList = () => {
 
       <Flex alignItems="center" justifyContent="space-between">
         <AddWalletModal />
-        {!isFetchedWallets ? <Preloader /> : null}
+        {!isFetchedWallets && <Preloader />}
         {!!dataWallets &&
           !!dataWallets.data &&
           isFetchedWallets &&
