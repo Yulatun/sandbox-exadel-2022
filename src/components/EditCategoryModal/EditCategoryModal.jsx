@@ -1,5 +1,4 @@
-import { useState } from 'react';
-import { useForm } from 'react-hook-form';
+import { Controller, useForm } from 'react-hook-form';
 import { useQuery } from 'react-query';
 import {
   Button,
@@ -35,12 +34,12 @@ export const EditCategoryModal = ({
     ['categories'],
     getCategories
   );
-  const [color, setColor] = useState(categoryData.color);
 
   const categoriesDeleteModal = useDisclosure();
   const {
     register,
     handleSubmit,
+    control,
     formState: {
       isDirty,
       errors: { name }
@@ -61,11 +60,6 @@ export const EditCategoryModal = ({
 
   const onCancel = () => {
     isDirty ? categoriesDeleteModal.onOpen() : onClose();
-  };
-
-  const submitButtonPressed = (data) => {
-    data.color = color;
-    onSubmit(data);
   };
 
   return (
@@ -135,18 +129,24 @@ export const EditCategoryModal = ({
                 <FormLabel pt="1%" w="40%">
                   {i18next.t('modal.addCategory.colorPicker')}
                 </FormLabel>
-                <ColorPicker
-                  defaultColor={color}
-                  borderRadius="50px"
-                  size="sm"
-                  onChange={setColor}
+                <Controller
+                  control={control}
+                  name="color"
+                  render={({ field }) => (
+                    <ColorPicker
+                      defaultColor={field.value}
+                      borderRadius="50px"
+                      size="sm"
+                      onChange={(color) => field.onChange(color)}
+                    />
+                  )}
                 />
               </Flex>
             </FormControl>
           </ModalBody>
 
           <ModalFooter>
-            <Button mr={3} onClick={handleSubmit(submitButtonPressed)}>
+            <Button mr={3} onClick={handleSubmit(onSubmit)}>
               {i18next.t('modal.addCategory.editButton')}
             </Button>
             <Button variant="secondary" onClick={onCancel}>
