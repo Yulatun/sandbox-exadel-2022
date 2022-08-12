@@ -18,15 +18,15 @@ import {
   ModalOverlay,
   NumberInput,
   NumberInputField,
-  Select,
-  Skeleton,
   Text,
   Textarea
 } from '@chakra-ui/react';
+import { Select } from 'chakra-react-select';
 import i18next from 'i18next';
 
 import { getCategories } from '@/api/Category';
 import { getWallets } from '@/api/Wallet';
+import { SelectControlled } from '@/components/Selector/SelectControlled';
 
 export const AddIncomeModal = ({ isOpen, onClose, onSubmit, userData }) => {
   const { data: dataWallets, isFetched: isFetchedWallets } = useQuery(
@@ -38,7 +38,33 @@ export const AddIncomeModal = ({ isOpen, onClose, onSubmit, userData }) => {
     getCategories
   );
 
+  let defaultWallet = {};
+
+  let walletsOptions = [];
+  let categoriesOptions = [];
+
+  if (!!dataWallets && !!dataWallets.data && isFetchedWallets) {
+    defaultWallet = {
+      value: userData.defaultWallet,
+      label: dataWallets.data.find(
+        (wallet) => wallet.id === userData.data.defaultWallet
+      ).name
+    };
+    walletsOptions = dataWallets.data.map((wallet) => ({
+      value: wallet.id,
+      label: wallet.name
+    }));
+  }
+
+  if (!!dataCategories && !!dataCategories.data && isFetchedCategories) {
+    categoriesOptions = dataCategories.data.map((category) => ({
+      value: category.id,
+      label: category.name
+    }));
+  }
+
   const {
+    control,
     register,
     handleSubmit,
     formState: {
@@ -46,7 +72,7 @@ export const AddIncomeModal = ({ isOpen, onClose, onSubmit, userData }) => {
     }
   } = useForm({
     defaultValues: {
-      wallet: userData.defaultWallet,
+      // wallet: userData.defaultWallet,
       date: new Date().toISOString().split('T')[0],
       isRecurring: 'recurring-no'
     }
@@ -64,27 +90,14 @@ export const AddIncomeModal = ({ isOpen, onClose, onSubmit, userData }) => {
         <ModalHeader>{i18next.t('modal.addIncome.title')}</ModalHeader>
         <ModalCloseButton />
         <ModalBody>
-          <FormControl mb="20px" isRequired>
-            <FormLabel>{i18next.t('modal.addIncome.wallet')}</FormLabel>
-            {(!!dataWallets && !!dataWallets.data && isFetchedWallets && (
-              <Select {...register('wallet')}>
-                {!!Object.keys(dataWallets).length &&
-                  dataWallets.data.map((wallet) => (
-                    <option key={wallet.id} value={wallet.id}>
-                      {wallet.name}
-                    </option>
-                  ))}
-              </Select>
-            )) || (
-              <Skeleton
-                height="40px"
-                borderRadius="5px"
-                startColor="orange.100"
-                endColor="orange.200"
-              />
-            )}
-          </FormControl>
-
+          <SelectControlled
+            nameOfSelect="wallet"
+            control={control}
+            listOfOptions={walletsOptions}
+            defaultValue={defaultWallet}
+            data={dataWallets}
+            isFetchedData={isFetchedWallets}
+          />
           <FormControl mb="20px" isRequired isInvalid={amount}>
             <FormLabel>{i18next.t('modal.addIncome.amount')}</FormLabel>
             <InputGroup>
@@ -105,45 +118,15 @@ export const AddIncomeModal = ({ isOpen, onClose, onSubmit, userData }) => {
               <Text>{amount && amount.message}</Text>
             </FormErrorMessage>
           </FormControl>
-
-          <FormControl mb="20px" isRequired isInvalid={category}>
-            <FormLabel htmlFor="category">
-              {i18next.t('modal.addIncome.category')}
-            </FormLabel>
-            {(!!dataCategories &&
-              !!dataCategories.data &&
-              isFetchedCategories && (
-                <Select
-                  placeholder={i18next.t(
-                    'modal.addIncome.category.placeholder'
-                  )}
-                  {...register('category', {
-                    required: i18next.t(
-                      'modal.addIncome.validationErrorMessage.category'
-                    )
-                  })}
-                >
-                  {!!Object.keys(dataCategories).length &&
-                    dataCategories.data
-                      .filter((category) => category.categoryType === 'Income')
-                      .map((category) => (
-                        <option key={category.id} value={category.id}>
-                          {category.name}
-                        </option>
-                      ))}
-                </Select>
-              )) || (
-              <Skeleton
-                height="40px"
-                borderRadius="5px"
-                startColor="orange.100"
-                endColor="orange.200"
-              />
-            )}
-            <FormErrorMessage>
-              <Text>{category && category.message}</Text>
-            </FormErrorMessage>
-          </FormControl>
+          <SelectControlled
+            nameOfSelect="category"
+            control={control}
+            errorData={category}
+            listOfOptions={categoriesOptions}
+            isRequiredData
+            data={dataCategories}
+            isFetchedData={isFetchedCategories}
+          />
 
           <FormControl mb="20px" isRequired>
             <FormLabel>{i18next.t('modal.addIncome.date')}</FormLabel>
@@ -155,20 +138,26 @@ export const AddIncomeModal = ({ isOpen, onClose, onSubmit, userData }) => {
 
           <FormControl mb="20px">
             <FormLabel>{i18next.t('modal.addIncome.isRecurring')}</FormLabel>
-            <Select {...register('isRecurring')}>
-              <option value="recurring-no">
-                {i18next.t('modal.addIncome.isRecurring.no')}
-              </option>
-              <option value="recurring-daily">
-                {i18next.t('modal.addIncome.isRecurring.daily')}
-              </option>
-              <option value="recurring-weekly">
-                {i18next.t('modal.addIncome.isRecurring.weekly')}
-              </option>
-              <option value="recurring-monthly">
-                {i18next.t('modal.addIncome.isRecurring.monthly')}
-              </option>
-            </Select>
+            <Select
+              options={[
+                {
+                  label: 'No (as default)',
+                  value: 'recurring-no'
+                },
+                {
+                  label: 'Daily',
+                  value: 'recurring-daily'
+                },
+                {
+                  label: 'Weekly',
+                  value: 'recurring-no'
+                },
+                {
+                  label: 'Monthly',
+                  value: 'recurring-monthly'
+                }
+              ]}
+            />
           </FormControl>
 
           <FormControl>
