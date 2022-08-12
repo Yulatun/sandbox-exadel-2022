@@ -1,5 +1,6 @@
 import { useQuery } from 'react-query';
-import { Flex, Text } from '@chakra-ui/react';
+import { Link } from 'react-router-dom';
+import { Button, Flex, Text } from '@chakra-ui/react';
 
 import { getUser } from '@/api/User';
 import { useCentralTheme } from '@/theme';
@@ -19,6 +20,14 @@ export const UserName = () => {
           {dataUser.data.fullName}
         </Text>
       )}
+      {!!dataUser &&
+      !!dataUser.data &&
+      !!dataUser.data.isAdmin &&
+      isFetchedUser ? (
+        <Button as={Link} to="/" fontWeight="bold" size="xs" mr="auto">
+          Admin
+        </Button>
+      ) : null}
     </Flex>
   );
 };
