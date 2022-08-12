@@ -1,6 +1,6 @@
-import { useState } from 'react';
+import { Fragment, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { useQuery } from 'react-query';
+import { useMutation, useQuery } from 'react-query';
 import {
   Button,
   Flex,
@@ -35,12 +35,13 @@ export const EditCategoryModal = ({
     ['categories'],
     getCategories
   );
+  const mutation = useMutation();
+  const [color, setColor] = useState('green.500');
 
   const categoriesDeleteModal = useDisclosure();
   const {
     register,
     handleSubmit,
-    watch,
     formState: {
       isDirty,
       errors: { name }
@@ -54,17 +55,11 @@ export const EditCategoryModal = ({
     }
   });
 
-  const [color, setColor] = useState(categoryData.color);
   const handleColorChange = (color) => {
-    // console.log(color);
+    console.log(`Changed ${color}`);
     setColor(color);
+    mutation.mutate({ color });
   };
-  const newColor = watch('color');
-  console.log(newColor);
-  // const onSubmit = () => {
-  //   mutation.mutate({ email, password });
-  //   reset();
-  // };
 
   const closeAllModals = () => {
     categoriesDeleteModal.onClose();
