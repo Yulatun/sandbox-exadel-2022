@@ -5,7 +5,8 @@ export const getCategories = async () => {
 };
 
 export const editCategory = async (data) => {
-  return instance.put('/api/v1/Category', data);
+  const { categoryId } = data;
+  return instance.put(`/api/v1/Category/${categoryId}`, data);
 };
 
 export const createCategory = async (data) => {
