@@ -37,7 +37,7 @@ export const AccordionComponent = (props) => {
             <Text
               as="h2"
               width="180px"
-              pl={{ base: 2, md: 8, lg: 10 }}
+              pl={{ base: 6, md: 8, lg: 12, xl: 16 }}
               overflow={{ base: 'hidden', lg: 'visible' }}
               textOverflow="ellipsis"
               whiteSpace="nowrap"
@@ -52,10 +52,9 @@ export const AccordionComponent = (props) => {
             bg={props.color}
             borderRadius="50%"
             position="absolute"
-            top={{ base: 4, lg: 3 }}
+            top={{ base: 3, md: 4, lg: 3 }}
             left={10}
-            display={{ base: 'none', md: 'initial' }}
-            ml={[0, 0, 0, 2]}
+            ml={{ base: 0, lg: 4, xl: 6 }}
           ></Button>
 
           <Button

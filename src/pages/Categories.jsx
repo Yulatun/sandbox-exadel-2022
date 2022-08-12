@@ -27,14 +27,8 @@ export const Categories = () => {
   );
 
   const editingCategory = useMutation((data) => {
-    console.log(data);
     return (
-      editCategory({
-        ...chosenCategoryData,
-        categoryId: data.categoryId,
-        name: data.name,
-        color: data.color
-      })
+      editCategory(data)
         .then(() =>
           alert(i18next.t('modal.editCategory.editedMessage.success'))
         )
