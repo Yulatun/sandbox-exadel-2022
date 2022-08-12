@@ -17,7 +17,6 @@ import {
   ModalFooter,
   ModalHeader,
   ModalOverlay,
-  Select,
   Switch,
   Text,
   useDisclosure
@@ -26,6 +25,7 @@ import i18next from 'i18next';
 
 import { getCurrencies } from '@/api/Currency';
 import { createWallet } from '@/api/Wallet';
+import { SelectControlled } from '@/components/Selector/SelectControlled';
 
 export const AddWalletModal = () => {
   const { isOpen, onClose, onOpen } = useDisclosure();
@@ -35,10 +35,19 @@ export const AddWalletModal = () => {
     getCurrencies
   );
 
+  let currencyOptions = [];
+  if (!!dataCurrency && !!dataCurrency.data && isFetchedCurrency) {
+    currencyOptions = dataCurrency.data.map((currency) => ({
+      value: currency.id,
+      label: currency.currencyCode
+    }));
+  }
+
   const {
+    control,
     register,
     handleSubmit,
-    formState: { errors }
+    formState: { errors, currency }
   } = useForm();
 
   const onSubmit = (data) => {
@@ -114,31 +123,15 @@ export const AddWalletModal = () => {
               </FormErrorMessage>
             </FormControl>
 
-            <FormControl isInvalid={errors.currency} isRequired py="3">
-              <FormLabel htmlFor="currency">
-                {i18next.t('modal.addWallet.currency')}
-              </FormLabel>
-              <Select
-                {...register('currency', {
-                  required: i18next.t(
-                    'modal.addWallet.validationErrorMessage.currency'
-                  )
-                })}
-                placeholder={i18next.t('modal.addWallet.currency.placeholder')}
-              >
-                {!!dataCurrency &&
-                  !!dataCurrency.data &&
-                  isFetchedCurrency &&
-                  dataCurrency.data.map((currency) => {
-                    return (
-                      <option key={currency.id}>{currency.currencyCode}</option>
-                    );
-                  })}
-              </Select>
-              <FormErrorMessage>
-                <Text>{errors.currency && errors.currency.message}</Text>
-              </FormErrorMessage>
-            </FormControl>
+            <SelectControlled
+              nameOfSelect="currency"
+              control={control}
+              errorData={currency}
+              isRequiredData
+              listOfOptions={currencyOptions}
+              data={dataCurrency}
+              isFetchedData={isFetchedCurrency}
+            />
 
             <FormControl py="3">
               <FormLabel htmlFor="setDefault">

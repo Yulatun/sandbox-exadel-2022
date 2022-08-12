@@ -56,6 +56,7 @@
   "modal.addExpense.validationErrorMessage.category": "Please, choose the category",
   "modal.addIncome.title": "Add income",
   "modal.addIncome.wallet": "Choose your wallet",
+  "modal.addIncome.wallet.placeholder": "Choose your wallet",
   "modal.addIncome.amount": "Amount",
   "modal.addIncome.amount.dollarSign": "$",
   "modal.addIncome.category": "Category",
@@ -174,5 +175,8 @@
   "transaction.title.amount": "Amount",
   "transaction.title.walletName": "Wallet name",
   "transaction.title.payer": "Payer",
-  "transaction.title.note": "Note"
+  "transaction.title.note": "Note",
+  "admin.button": "Admin",
+  "admin.welcomePage": "Welcome to Admin page!",
+  "admin.disclaimer": "You can see me only if you have an Admin role ;)"
 }
