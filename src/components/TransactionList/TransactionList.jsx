@@ -190,16 +190,12 @@ export const TransactionList = ({
           isOpen={deleteTransactionModal.isOpen}
           onSubmit={deleteOnSubmit}
           onClose={deleteTransactionModal.onClose}
-          title={
-            chosenTransactionData.transactionType === 'Income'
-              ? i18next.t('modal.deleteIncome.title')
-              : i18next.t('modal.deleteExpense.title')
-          }
-          text={
-            chosenTransactionData.transactionType === 'Income'
-              ? i18next.t('modal.deleteIncome.text')
-              : i18next.t('modal.deleteExpense.text')
-          }
+          title={i18next.t(
+            `modal.delete${chosenTransactionData.transactionType}.title`
+          )}
+          text={i18next.t(
+            `modal.delete${chosenTransactionData.transactionType}.text`
+          )}
         />
       )}
     </>

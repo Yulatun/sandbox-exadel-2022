@@ -6,6 +6,7 @@ import { getExpenses } from '@/api/Transaction';
 import { getWallets } from '@/api/Wallet';
 import { FiltersExpenses, Preloader, TransactionList } from '@/components';
 import { FiltersTag } from '@/components/FiltersTag';
+import { getTransactionsList } from '@/helpers/helpers';
 import { useCentralTheme } from '@/theme';
 
 export const Expenses = () => {
@@ -29,13 +30,7 @@ export const Expenses = () => {
     isFetchedExpenses &&
     isFetchedWallets
   ) {
-    allTransactions = [...dataExpenses].map((transaction) => {
-      const wallet = dataWallets.find(
-        (wallet) => wallet.id === transaction.walletId
-      );
-
-      return { ...transaction, currency: wallet.currency };
-    });
+    allTransactions = getTransactionsList(dataWallets, dataExpenses);
   }
 
   return (
@@ -65,7 +60,7 @@ export const Expenses = () => {
         <TransactionList list={allTransactions} maxH="570px" isExpensesType />
       )}
 
-      {!isFetchedExpenses ? <Preloader /> : null}
+      {!isFetchedExpenses && <Preloader />}
     </Flex>
   );
 };

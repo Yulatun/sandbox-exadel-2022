@@ -36,7 +36,7 @@ export const TransactionItem = ({
   const getSubcategoryName = () => {
     const category = getCategory();
 
-    if (category.subCategories.length) {
+    if (category?.subCategories?.length) {
       return (category.subCategories || []).find(
         (subcategory) => subcategory.id === transactionData.subCategoryId
       ).name;
@@ -80,9 +80,9 @@ export const TransactionItem = ({
               </Box>
 
               <Box mr="10px" w="25%" textAlign="center">
-                <Text>{getCategory().name}</Text>
-                {isExpensesType && !!getSubcategoryName().length && (
-                  <Text>{() => getSubcategoryName()}</Text>
+                <Text>{getCategory()?.name}</Text>
+                {isExpensesType && !!getSubcategoryName()?.length && (
+                  <Text>{getSubcategoryName()}</Text>
                 )}
               </Box>
 
@@ -93,9 +93,10 @@ export const TransactionItem = ({
               </Text>
 
               <Box mr="10px" w="15%" textAlign="center">
-                <Tooltip w="100%" label={getWallet().name}>
+                <Tooltip w="100%" label={getWallet()?.name}>
                   <Text cursor="pointer">
-                    Wallet {transactionData.currency.currencyCode}
+                    {i18next.t('transaction.value.wallet')}{' '}
+                    {transactionData.currency.currencyCode}
                   </Text>
                 </Tooltip>
               </Box>

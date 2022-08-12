@@ -13,6 +13,7 @@ import {
   TransactionList,
   WalletsList
 } from '@/components';
+import { getTransactionsList } from '@/helpers/helpers';
 import { useCentralTheme } from '@/theme';
 
 export const Landing = () => {
@@ -50,15 +51,11 @@ export const Landing = () => {
     isFetchedExpenses &&
     isFetchedWallets
   ) {
-    recentTransactions = [...dataIncomes, ...dataExpenses]
-      .slice(0, 10)
-      .map((transaction) => {
-        const wallet = dataWallets.find(
-          (wallet) => wallet.id === transaction.walletId
-        );
-
-        return { ...transaction, currency: wallet.currency };
-      });
+    recentTransactions = getTransactionsList(
+      dataWallets,
+      dataIncomes,
+      dataExpenses
+    ).slice(0, 10);
   }
 
   const createIncomeOnSubmit = (data) => {
@@ -105,7 +102,7 @@ export const Landing = () => {
           <TransactionList list={recentTransactions} maxH="380px" isShortView />
         )}
 
-        {!isFetchedIncomes || !isFetchedExpenses ? <Preloader /> : null}
+        {(!isFetchedIncomes || !isFetchedExpenses) && <Preloader />}
       </Flex>
 
       {!incomeModal.isOpen && (

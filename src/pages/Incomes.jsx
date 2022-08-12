@@ -5,6 +5,7 @@ import i18next from 'i18next';
 import { getIncomes } from '@/api/Transaction';
 import { getWallets } from '@/api/Wallet';
 import { Preloader, TransactionList } from '@/components';
+import { getTransactionsList } from '@/helpers/helpers';
 import { useCentralTheme } from '@/theme';
 
 export const Incomes = () => {
@@ -23,13 +24,7 @@ export const Incomes = () => {
   let allTransactions = [];
 
   if (!!dataWallets && !!dataIncomes && isFetchedIncomes && isFetchedWallets) {
-    allTransactions = [...dataIncomes].map((transaction) => {
-      const wallet = dataWallets.find(
-        (wallet) => wallet.id === transaction.walletId
-      );
-
-      return { ...transaction, currency: wallet.currency };
-    });
+    allTransactions = getTransactionsList(dataWallets, dataIncomes);
   }
 
   return (
@@ -49,7 +44,7 @@ export const Incomes = () => {
         <TransactionList list={allTransactions} maxH="570px" />
       )}
 
-      {!isFetchedIncomes ? <Preloader /> : null}
+      {!isFetchedIncomes && <Preloader />}
     </Flex>
   );
 };

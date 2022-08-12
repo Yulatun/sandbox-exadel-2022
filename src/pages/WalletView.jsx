@@ -14,6 +14,7 @@ import {
   TransactionList,
   WalletCard
 } from '@/components';
+import { getTransactionsList } from '@/helpers/helpers';
 import { useCentralTheme } from '@/theme';
 
 export const WalletView = () => {
@@ -71,15 +72,11 @@ export const WalletView = () => {
     isFetchedExpenses &&
     isFetchedWallets
   ) {
-    allTransactions = [...dataIncomes, ...dataExpenses]
-      .filter((data) => data.walletId === walletId)
-      .map((transaction) => {
-        const wallet = dataWallets.find(
-          (wallet) => wallet.id === transaction.walletId
-        );
-
-        return { ...transaction, currency: wallet.currency };
-      });
+    allTransactions = getTransactionsList(
+      dataWallets,
+      dataIncomes,
+      dataExpenses
+    ).filter((data) => data.walletId === walletId);
   }
 
   return (
@@ -116,7 +113,7 @@ export const WalletView = () => {
           <TransactionList list={allTransactions} maxH="550px" isShortView />
         )}
 
-        {!isFetchedIncomes || !isFetchedExpenses ? <Preloader /> : null}
+        {(!isFetchedIncomes || !isFetchedExpenses) && <Preloader />}
       </Flex>
 
       {!!dataUser && isFetchedUser && dataUser.defaultWallet === walletId ? (
