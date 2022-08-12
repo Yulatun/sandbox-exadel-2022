@@ -8,37 +8,27 @@ import { Preloader, TransactionList } from '@/components';
 import { useCentralTheme } from '@/theme';
 
 export const Incomes = () => {
-  const { data: dataIncomes, isFetched: isFetchedIncomes } = useQuery(
-    ['incomes'],
-    getIncomes
-  );
+  const {
+    data: { data: { incomes: dataIncomes } } = { data: { incomes: [] } },
+    isFetched: isFetchedIncomes
+  } = useQuery(['incomes'], getIncomes);
 
-  const { data: dataWallets, isFetched: isFetchedWallets } = useQuery(
-    ['wallets'],
-    getWallets
-  );
+  const {
+    data: { data: dataWallets } = { data: [] },
+    isFetched: isFetchedWallets
+  } = useQuery(['wallets'], getWallets);
 
   const { textColor } = useCentralTheme();
 
   let allTransactions = [];
 
-  if (
-    !!dataIncomes &&
-    !!dataWallets &&
-    !!dataIncomes.data &&
-    !!dataWallets.data &&
-    !!dataIncomes.data.incomes &&
-    isFetchedIncomes &&
-    isFetchedWallets
-  ) {
-    allTransactions = [...dataIncomes.data.incomes];
-
-    allTransactions.forEach((transaction) => {
-      let wallet = dataWallets.data.find(
+  if (!!dataWallets && !!dataIncomes && isFetchedIncomes && isFetchedWallets) {
+    allTransactions = [...dataIncomes].map((transaction) => {
+      const wallet = dataWallets.find(
         (wallet) => wallet.id === transaction.walletId
       );
 
-      transaction.currency = wallet.currency;
+      return { ...transaction, currency: wallet.currency };
     });
   }
 

@@ -25,25 +25,23 @@ export const WalletView = () => {
 
   const { bgColor } = useCentralTheme();
 
-  const { data: dataUser, isFetched: isFetchedUser } = useQuery(
-    ['user'],
-    getUser
-  );
+  const { data: { data: dataUser } = { data: [] }, isFetched: isFetchedUser } =
+    useQuery(['user'], getUser);
 
-  const { data: dataWallets, isFetched: isFetchedWallets } = useQuery(
-    ['wallets'],
-    getWallets
-  );
+  const {
+    data: { data: dataWallets } = { data: [] },
+    isFetched: isFetchedWallets
+  } = useQuery(['wallets'], getWallets);
 
-  const { data: dataIncomes, isFetched: isFetchedIncomes } = useQuery(
-    ['incomes'],
-    getIncomes
-  );
+  const {
+    data: { data: { incomes: dataIncomes } } = { data: { incomes: [] } },
+    isFetched: isFetchedIncomes
+  } = useQuery(['incomes'], getIncomes);
 
-  const { data: dataExpenses, isFetched: isFetchedExpenses } = useQuery(
-    ['expenses'],
-    getExpenses
-  );
+  const {
+    data: { data: { expenses: dataExpenses } } = { data: { expenses: [] } },
+    isFetched: isFetchedExpenses
+  } = useQuery(['expenses'], getExpenses);
 
   const mutationWallet = useMutation(() => deleteWallet(walletId), {
     onSuccess: () => {
@@ -69,27 +67,19 @@ export const WalletView = () => {
     !!dataIncomes &&
     !!dataExpenses &&
     !!dataWallets &&
-    !!dataIncomes.data &&
-    !!dataExpenses.data &&
-    !!dataIncomes.data.incomes &&
-    !!dataExpenses.data.expenses &&
-    !!dataWallets.data &&
     isFetchedIncomes &&
     isFetchedExpenses &&
     isFetchedWallets
   ) {
-    allTransactions = [
-      ...dataIncomes.data.incomes,
-      ...dataExpenses.data.expenses
-    ].filter((data) => data.walletId === walletId);
+    allTransactions = [...dataIncomes, ...dataExpenses]
+      .filter((data) => data.walletId === walletId)
+      .map((transaction) => {
+        const wallet = dataWallets.find(
+          (wallet) => wallet.id === transaction.walletId
+        );
 
-    allTransactions.forEach((transaction) => {
-      let wallet = dataWallets.data.find(
-        (wallet) => wallet.id === transaction.walletId
-      );
-
-      transaction.currency = wallet.currency;
-    });
+        return { ...transaction, currency: wallet.currency };
+      });
   }
 
   return (
@@ -111,11 +101,9 @@ export const WalletView = () => {
         />
 
         <Flex justifyContent="center" mb={8} w="400px">
-          {!!dataWallets && !!dataWallets.data && isFetchedWallets && (
+          {!!dataWallets && isFetchedWallets && (
             <WalletCard
-              walletData={dataWallets.data.find(
-                (wallet) => wallet.id === walletId
-              )}
+              walletData={dataWallets.find((wallet) => wallet.id === walletId)}
             />
           )}
         </Flex>
@@ -125,16 +113,13 @@ export const WalletView = () => {
             {i18next.t('transaction.noData')}
           </Text>
         ) : (
-          <TransactionList list={allTransactions} maxH="600px" isShortView />
+          <TransactionList list={allTransactions} maxH="550px" isShortView />
         )}
 
         {!isFetchedIncomes || !isFetchedExpenses ? <Preloader /> : null}
       </Flex>
 
-      {!!dataUser &&
-      !!dataUser.data &&
-      isFetchedUser &&
-      dataUser.data.defaultWallet === walletId ? (
+      {!!dataUser && isFetchedUser && dataUser.defaultWallet === walletId ? (
         <NotificationModal
           isOpen={deleteWalletModal.isOpen}
           onSubmit={deleteWalletOnSubmit}

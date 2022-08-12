@@ -16,47 +16,45 @@ export const TransactionItem = ({
   isExpensesType,
   isShortView
 }) => {
-  let categoryData = {};
-  let subcategoryName = '';
-  let walletData = {};
-
   const { popupExpTextColor, transactionBgColor } = useCentralTheme();
 
-  const { data: dataCategories, isFetched: isFetchedCategories } = useQuery(
-    ['categories'],
-    getCategories
-  );
+  const {
+    data: { data: dataCategories } = { data: [] },
+    isFetched: isFetchedCategories
+  } = useQuery(['categories'], getCategories);
 
-  const { data: dataWallets, isFetched: isFetchedWallets } = useQuery(
-    ['wallets'],
-    getWallets
-  );
+  const {
+    data: { data: dataWallets } = { data: [] },
+    isFetched: isFetchedWallets
+  } = useQuery(['wallets'], getWallets);
 
-  if (!!dataCategories && !!dataCategories.data && isFetchedCategories) {
-    categoryData = dataCategories.data.find(
+  const getCategory = () =>
+    (dataCategories || []).find(
       (category) => category.id === transactionData.categoryId
     );
 
-    if (categoryData.subCategories.length) {
-      subcategoryName = categoryData.subCategories.find(
-        (subcategory) => subcategory.id === transactionData.subCategoryId
-      );
-    }
-  }
+  const getSubcategoryName = () => {
+    const category = getCategory();
 
-  if (!!dataWallets && !!dataWallets.data && isFetchedWallets) {
-    walletData = dataWallets.data.find(
+    if (category.subCategories.length) {
+      return (category.subCategories || []).find(
+        (subcategory) => subcategory.id === transactionData.subCategoryId
+      ).name;
+    }
+
+    return '';
+  };
+
+  const getWallet = () =>
+    (dataWallets || []).find(
       (wallet) => wallet.id === transactionData.walletId
     );
-  }
 
   return (
     <>
       {!!dataCategories &&
-        !!dataCategories.data &&
-        isFetchedCategories &&
         !!dataWallets &&
-        !!dataWallets.data &&
+        isFetchedCategories &&
         isFetchedWallets && (
           <Flex
             alignItems="center"
@@ -82,9 +80,9 @@ export const TransactionItem = ({
               </Box>
 
               <Box mr="10px" w="25%" textAlign="center">
-                <Text>{categoryData.name}</Text>
-                {isExpensesType && !!subcategoryName.length && (
-                  <Text>{subcategoryName}</Text>
+                <Text>{getCategory().name}</Text>
+                {isExpensesType && !!getSubcategoryName().length && (
+                  <Text>{() => getSubcategoryName()}</Text>
                 )}
               </Box>
 
@@ -95,7 +93,7 @@ export const TransactionItem = ({
               </Text>
 
               <Box mr="10px" w="15%" textAlign="center">
-                <Tooltip w="100%" label={walletData.name}>
+                <Tooltip w="100%" label={getWallet().name}>
                   <Text cursor="pointer">
                     Wallet {transactionData.currency.currencyCode}
                   </Text>

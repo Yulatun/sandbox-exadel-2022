@@ -9,15 +9,15 @@ import { FiltersTag } from '@/components/FiltersTag';
 import { useCentralTheme } from '@/theme';
 
 export const Expenses = () => {
-  const { data: dataExpenses, isFetched: isFetchedExpenses } = useQuery(
-    ['expenses'],
-    getExpenses
-  );
+  const {
+    data: { data: { expenses: dataExpenses } } = { data: { expenses: [] } },
+    isFetched: isFetchedExpenses
+  } = useQuery(['expenses'], getExpenses);
 
-  const { data: dataWallets, isFetched: isFetchedWallets } = useQuery(
-    ['wallets'],
-    getWallets
-  );
+  const {
+    data: { data: dataWallets } = { data: [] },
+    isFetched: isFetchedWallets
+  } = useQuery(['wallets'], getWallets);
 
   const { textColor } = useCentralTheme();
 
@@ -26,20 +26,15 @@ export const Expenses = () => {
   if (
     !!dataExpenses &&
     !!dataWallets &&
-    !!dataExpenses.data &&
-    !!dataExpenses.data.expenses &&
-    !!dataWallets.data &&
     isFetchedExpenses &&
     isFetchedWallets
   ) {
-    allTransactions = [...dataExpenses.data.expenses];
-
-    allTransactions.forEach((transaction) => {
-      let wallet = dataWallets.data.find(
+    allTransactions = [...dataExpenses].map((transaction) => {
+      const wallet = dataWallets.find(
         (wallet) => wallet.id === transaction.walletId
       );
 
-      transaction.currency = wallet.currency;
+      return { ...transaction, currency: wallet.currency };
     });
   }
 

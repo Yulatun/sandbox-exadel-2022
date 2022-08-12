@@ -22,56 +22,43 @@ export const Landing = () => {
 
   const { textColor } = useCentralTheme();
 
-  const { data: dataUser, isFetched: isFetchedUser } = useQuery(
-    ['user'],
-    getUser
-  );
-  const { data: dataIncomes, isFetched: isFetchedIncomes } = useQuery(
-    ['incomes'],
-    getIncomes
-  );
-  const { data: dataExpenses, isFetched: isFetchedExpenses } = useQuery(
-    ['expenses'],
-    getExpenses
-  );
+  const { data: { data: dataUser } = { data: [] }, isFetched: isFetchedUser } =
+    useQuery(['user'], getUser);
 
-  const { data: dataWallets, isFetched: isFetchedWallets } = useQuery(
-    ['wallets'],
-    getWallets
-  );
+  const {
+    data: { data: { incomes: dataIncomes } } = { data: { incomes: [] } },
+    isFetched: isFetchedIncomes
+  } = useQuery(['incomes'], getIncomes);
 
-  let allTransactions = [];
+  const {
+    data: { data: { expenses: dataExpenses } } = { data: { expenses: [] } },
+    isFetched: isFetchedExpenses
+  } = useQuery(['expenses'], getExpenses);
+
+  const {
+    data: { data: dataWallets } = { data: [] },
+    isFetched: isFetchedWallets
+  } = useQuery(['wallets'], getWallets);
+
+  let recentTransactions = [];
+
   if (
     !!dataIncomes &&
     !!dataExpenses &&
     !!dataWallets &&
-    !!dataIncomes.data &&
-    !!dataIncomes.data &&
-    !!dataIncomes.data.incomes &&
-    !!dataExpenses.data.expenses &&
-    !!dataWallets.data &&
     isFetchedIncomes &&
     isFetchedExpenses &&
     isFetchedWallets
   ) {
-    allTransactions = [
-      ...dataIncomes.data.incomes,
-      ...dataExpenses.data.expenses
-    ];
-
-    allTransactions
-      .sort((a, b) => {
-        return new Date(b.dateOfTransaction) - new Date(a.dateOfTransaction);
-      })
+    recentTransactions = [...dataIncomes, ...dataExpenses]
+      .slice(0, 10)
       .map((transaction) => {
-        let wallet = dataWallets.data.find(
+        const wallet = dataWallets.find(
           (wallet) => wallet.id === transaction.walletId
         );
 
-        transaction.currency = wallet.currency;
+        return { ...transaction, currency: wallet.currency };
       });
-
-    allTransactions = allTransactions.slice(0, 10);
   }
 
   const createIncomeOnSubmit = (data) => {
@@ -110,12 +97,12 @@ export const Landing = () => {
           {i18next.t('transaction.recentTransactions')}
         </Text>
 
-        {isFetchedIncomes && isFetchedExpenses && !allTransactions.length ? (
+        {isFetchedIncomes && isFetchedExpenses && !recentTransactions.length ? (
           <Text color={textColor} fontSize="xl">
             {i18next.t('transaction.noData')}
           </Text>
         ) : (
-          <TransactionList list={allTransactions} maxH="380px" isShortView />
+          <TransactionList list={recentTransactions} maxH="380px" isShortView />
         )}
 
         {!isFetchedIncomes || !isFetchedExpenses ? <Preloader /> : null}
@@ -129,14 +116,14 @@ export const Landing = () => {
           text={i18next.t('modal.addIncome.createdMessage')}
         />
       )}
-      {!!dataUser && !!dataUser.data && isFetchedUser && (
+      {!!dataUser && isFetchedUser && (
         <AddExpenseModal
           isOpen={expenseModal.isOpen}
           onSubmit={expenseModal.onClose}
           onClose={expenseModal.onClose}
         />
       )}
-      {!!dataUser && !!dataUser.data && isFetchedUser && (
+      {!!dataUser && isFetchedUser && (
         <AddIncomeModal
           isOpen={incomeModal.isOpen}
           onSubmit={createIncomeOnSubmit}
