@@ -1,9 +1,9 @@
 import { useState } from 'react';
-import { useMutation, useQueryClient } from 'react-query';
+import { useMutation, useQuery, useQueryClient } from 'react-query';
 import { Flex, Grid, GridItem, useDisclosure } from '@chakra-ui/react';
 import i18next from 'i18next';
 
-import { editCategory } from '@/api/Category';
+import { editCategory, getCategories } from '@/api/Category';
 import {
   AccordionComponent,
   AccordionHeadings,
@@ -15,44 +15,23 @@ import { EditCategoryModal } from '../components/EditCategoryModal';
 export const Categories = () => {
   const [chosenCategoryData, setChosenCategoryData] = useState({});
 
-  const [expenseCategories, setExpenseCategories] = useState([]);
-  const [incomeCategories, setIncomeCategories] = useState([]);
-
-  console.log(setExpenseCategories());
-  console.log(setIncomeCategories());
   const expensesCategoriesModal = useDisclosure();
   const incomeCategoriesModal = useDisclosure();
   const editCategoryModal = useDisclosure();
 
   const queryClient = useQueryClient();
+  getCategories;
+  const { data: dataCategories, isFetched: isFetchedCategories } = useQuery(
+    ['categories'],
+    getCategories
+  );
 
-  // const { data: dataCategories, isFetched: isFetchedCategories } = useQuery(
-  //   ['categories'],
-  //   getCategories,
-  //   {
-  //     onSuccess: (response) => {
-  //       const { data } = response;
-  //       const expenseCategories = [];
-  //       const incomeCategories = [];
-  //       data.forEach((item) => {
-  //         const { categoryType } = item;
-  //         if (categoryType === 'Income') {
-  //           incomeCategories.push(item);
-  //         } else {
-  //           expenseCategories.push(item);
-  //         }
-  //         setExpenseCategories(expenseCategories);
-  //         setIncomeCategories(incomeCategories);
-  //       });
-  //     }
-  //   }
-  // );
-
-  const editingCategory = useMutation(
-    (data) =>
+  const editingCategory = useMutation((data) => {
+    console.log(data);
+    return (
       editCategory({
         ...chosenCategoryData,
-        categoryId: data.id,
+        categoryId: data.categoryId,
         name: data.name,
         color: data.color
       })
@@ -60,12 +39,13 @@ export const Categories = () => {
           alert(i18next.t('modal.editCategory.editedMessage.success'))
         )
         .catch((error) => console.log(error)),
-    {
-      onSuccess: () => {
-        queryClient.invalidateQueries(['categories']);
+      {
+        onSuccess: () => {
+          queryClient.invalidateQueries(['categories']);
+        }
       }
-    }
-  );
+    );
+  });
 
   const openOnEdit = (dataCategory) => {
     setChosenCategoryData(dataCategory);
@@ -91,14 +71,20 @@ export const Categories = () => {
             headingTwo={i18next.t('expenses.addCategoryHeading')}
             action={expensesCategoriesModal.onOpen}
           />
-          {expenseCategories.map((categoryData) => (
-            <AccordionComponent
-              key={categoryData.id}
-              name={categoryData.name}
-              color={categoryData.color}
-              onEdit={() => openOnEdit(categoryData)}
-            />
-          ))}
+          {!!dataCategories &&
+            !!dataCategories.data &&
+            isFetchedCategories &&
+            dataCategories.data
+              .filter((category) => category.categoryType === 'Expense')
+              .map((categoryData) => (
+                <AccordionComponent
+                  key={categoryData.id}
+                  categoryData={categoryData}
+                  name={categoryData.name}
+                  color={categoryData.color}
+                  onEdit={() => openOnEdit(categoryData)}
+                />
+              ))}
         </GridItem>
         <GridItem className="incomeCol">
           <AccordionHeadings
@@ -106,35 +92,38 @@ export const Categories = () => {
             headingTwo={i18next.t('income.addCategoryHeading')}
             action={incomeCategoriesModal.onOpen}
           />
-          {incomeCategories.map((categoryData) => (
-            <AccordionComponent
-              key={categoryData.id}
-              name={categoryData.name}
-              color={categoryData.color}
-              onEdit={() => openOnEdit(categoryData)}
-            />
-          ))}
+          {!!dataCategories &&
+            !!dataCategories.data &&
+            isFetchedCategories &&
+            dataCategories.data
+              .filter((category) => category.categoryType === 'Income')
+              .map((categoryData) => (
+                <AccordionComponent
+                  key={categoryData.id}
+                  categoryData={categoryData}
+                  name={categoryData.name}
+                  color={categoryData.color}
+                  onEdit={() => openOnEdit(categoryData)}
+                />
+              ))}
         </GridItem>
       </Grid>
-      {!!Object.keys(chosenCategoryData).length && (
-        <EditCategoryModal
-          isOpen={editCategoryModal.isOpen}
-          onSubmit={saveOnEdit}
-          onClose={() => {
-            if (confirm(i18next.t('modal.editExpense.editedMessage.cancel'))) {
-              resetOnClose();
-            }
-          }}
-          categoryData={chosenCategoryData}
-        />
-      )}
       <Flex>
-        <EditCategoryModal
-          isOpen={editCategoryModal.isOpen}
-          onSubmit={editCategoryModal.onClose}
-          onClose={editCategoryModal.onClose}
-          categoryType="Expense"
-        />
+        {!!Object.keys(chosenCategoryData).length && (
+          <EditCategoryModal
+            isOpen={editCategoryModal.isOpen}
+            onSubmit={saveOnEdit}
+            onClose={() => {
+              if (
+                confirm(i18next.t('modal.editExpense.editedMessage.cancel'))
+              ) {
+                resetOnClose();
+              }
+            }}
+            categoryType={chosenCategoryData.categoryType}
+            categoryData={chosenCategoryData}
+          />
+        )}
         <AddCategoryModal
           isOpen={expensesCategoriesModal.isOpen}
           onSubmit={expensesCategoriesModal.onClose}

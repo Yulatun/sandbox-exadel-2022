@@ -21,57 +21,51 @@ import {
 import { ColorPicker } from 'chakra-color-picker';
 import i18next from 'i18next';
 
-import { editCategory } from '@/api/Category';
-import { getDefaultCategories } from '@/api/DefaultCategory';
+import { getCategories } from '@/api/Category';
 import { DeleteConfirmationModal } from '@/components';
 
 export const EditCategoryModal = ({
   isOpen,
   onClose,
+  onSubmit,
   categoryType,
   categoryData
 }) => {
-  // const { data: dataCategories, isFetched: isFetchedCategories } = useQuery(
-  //   ['categories'],
-  //   getCategories
-  // );
-  const { data: dataDefaultCategories, isFetched: isFetchedDefaultCategories } =
-    useQuery(['defaultCategories'], getDefaultCategories);
+  const { data: dataCategories, isFetched: isFetchedCategories } = useQuery(
+    ['categories'],
+    getCategories
+  );
 
-  const { color, setColor } = useState();
   const categoriesDeleteModal = useDisclosure();
-
   const {
     register,
     handleSubmit,
-    // reset,
+    watch,
     formState: {
       isDirty,
       errors: { name }
     }
   } = useForm({
     defaultValues: {
+      categoryType: categoryData.categoryType,
+      categoryId: categoryData.id,
       name: categoryData.name,
       color: categoryData.color
     }
   });
 
+  const [color, setColor] = useState(categoryData.color);
   const handleColorChange = (color) => {
+    // console.log(color);
     setColor(color);
   };
-  const onSubmit = (data) => {
-    editCategory({
-      name: data.name,
-      categoryType: categoryType,
-      color: color
-    })
-      .then(() =>
-        alert(i18next.t('modal.addCategory.submitSuccessful.message'))
-      )
-      .catch((err) => console.log(err));
-    // reset();
-    onClose();
-  };
+  const newColor = watch('color');
+  console.log(newColor);
+  // const onSubmit = () => {
+  //   mutation.mutate({ email, password });
+  //   reset();
+  // };
+
   const closeAllModals = () => {
     categoriesDeleteModal.onClose();
     onClose();
@@ -83,7 +77,11 @@ export const EditCategoryModal = ({
 
   return (
     <>
-      <Modal isOpen={isOpen} onClose={onClose} closeOnOverlayClick={false}>
+      <Modal
+        isOpen={isOpen}
+        onClose={categoriesDeleteModal.onOpen}
+        closeOnOverlayClick={false}
+      >
         <ModalOverlay />
         <ModalContent>
           <ModalHeader>
@@ -117,8 +115,8 @@ export const EditCategoryModal = ({
                         )
                       },
                       validate: (name) =>
-                        (isFetchedDefaultCategories &&
-                          !dataDefaultCategories.data
+                        (isFetchedCategories &&
+                          !dataCategories.data
                             .filter(
                               (data) => data.categoryType === categoryType
                             )
@@ -145,20 +143,21 @@ export const EditCategoryModal = ({
                   {i18next.t('modal.addCategory.colorPicker')}
                 </FormLabel>
                 <ColorPicker
+                  defaultColor={color}
                   {...register('color')}
                   borderRadius="50px"
-                  onChange={handleColorChange}
                   size="sm"
+                  onChange={handleColorChange}
                 />
               </Flex>
             </FormControl>
           </ModalBody>
 
           <ModalFooter>
-            <Button colorScheme="blue" mr={3} onClick={handleSubmit(onSubmit)}>
-              {i18next.t('modal.addCategory.addButton')}
+            <Button mr={3} onClick={handleSubmit(onSubmit)}>
+              {i18next.t('modal.addCategory.editButton')}
             </Button>
-            <Button onClick={onCancel}>
+            <Button variant="secondary" onClick={onCancel}>
               {i18next.t('modal.addCategory.cancelButton')}
             </Button>
           </ModalFooter>
