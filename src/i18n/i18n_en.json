@@ -33,6 +33,7 @@
   "header.navigation.expenses": "Expenses",
   "header.drawer.open": "Open menu",
   "header.notificationsMenu": "Notifications menu",
+  "header.notificationsMenu.noData": "No data available",
   "header.userMenu": "User menu",
   "header.userMenu.settings": "Settings",
   "header.userMenu.help": "Help",

@@ -87,9 +87,9 @@ export const TransactionItem = ({
               </Box>
 
               <Text mr="10px" w="20%" textAlign="center">
-                {`${isExpensesType ? '-' : '+'} ${transactionData.value} ${
-                  transactionData.currency.symbol
-                }`}
+                {`${
+                  transactionData.transactionType === 'Expense' ? '-' : '+'
+                } ${transactionData.value} ${transactionData.currency.symbol}`}
               </Text>
 
               <Box mr="10px" w="15%" textAlign="center">
