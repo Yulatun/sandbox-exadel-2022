@@ -1,4 +1,3 @@
-import React from 'react';
 import { useForm } from 'react-hook-form';
 import { useMutation } from 'react-query';
 import { useQueryClient } from 'react-query';
@@ -93,7 +92,7 @@ export const LoginForm = () => {
         background={containerBgColor}
       >
         <form onSubmit={handleSubmit(onSubmit)}>
-          <FormControl isRequired>
+          <FormControl position="relative" mb="5px" pb="20px" isRequired>
             <FormLabel htmlFor="email">
               {i18next.t('login.form.email')}
             </FormLabel>
@@ -109,15 +108,20 @@ export const LoginForm = () => {
                 },
                 max: { value: 254, message: 'Cannot exceed 254 characters' }
               })}
-              // {...register('email', { required: true })}
             />
             {errors && errors.email && (
-              <FormHelperText color="red">
+              <FormHelperText
+                position="absolute"
+                bottom="0"
+                left="0"
+                color="red"
+              >
                 {errors.email.message && errors.email.message}
               </FormHelperText>
             )}
           </FormControl>
-          <FormControl isRequired>
+
+          <FormControl position="relative" mb="5px" pb="20px" isRequired>
             <FormLabel htmlFor="password">
               {i18next.t('login.form.password')}
             </FormLabel>
@@ -144,7 +148,12 @@ export const LoginForm = () => {
               </InputRightElement>
             </InputGroup>
             {errors && errors.password && (
-              <FormHelperText color="red">
+              <FormHelperText
+                position="absolute"
+                bottom="0"
+                left="0"
+                color="red"
+              >
                 {errors.password.message && errors.password.message}
               </FormHelperText>
             )}

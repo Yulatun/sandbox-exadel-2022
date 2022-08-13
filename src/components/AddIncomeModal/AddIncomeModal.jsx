@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { useQuery } from 'react-query';
 import {
@@ -52,6 +53,7 @@ export const AddIncomeModal = ({
     control,
     register,
     handleSubmit,
+    reset,
     formState: {
       errors: { amount, category }
     }
@@ -65,6 +67,19 @@ export const AddIncomeModal = ({
       }
     }
   });
+
+  const resetForm = () => {
+    reset({
+      wallet: getDefaultWalletData(userData, walletsData),
+      date: new Date().toISOString().split('T')[0],
+      isRecurring: {
+        label: 'No (as default)',
+        value: 'recurring-no'
+      }
+    });
+  };
+
+  useEffect(() => resetForm(), [!isOpen]);
 
   return (
     <>

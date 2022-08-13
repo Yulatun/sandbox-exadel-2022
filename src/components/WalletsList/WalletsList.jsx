@@ -19,7 +19,7 @@ export const WalletsList = ({ walletsData, isFetchedWallets }) => {
       as="section"
       w="full"
       maxW="container.xl"
-      p={0}
+      py={2}
       bg={sectionBgColor}
       borderRadius={35}
       shadow="lg"
