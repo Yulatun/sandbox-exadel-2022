@@ -33,6 +33,7 @@ export const Header = (isOpen) => {
       >
         <Logo />
         <ColorModeToggle />
+
         <Box
           display={{ base: isOpen ? 'none' : 'block', lg: 'block' }}
           flexBasis={{ base: '100%', md: 'auto' }}
@@ -41,7 +42,9 @@ export const Header = (isOpen) => {
         >
           <Navbar />
         </Box>
+
         <NotificationsMenu />
+
         <Box
           display={{ base: isOpen ? 'none' : 'block', lg: 'block' }}
           flexBasis={{ base: '100%', md: 'auto' }}
@@ -50,6 +53,7 @@ export const Header = (isOpen) => {
         >
           <UserName />
         </Box>
+
         <UserMenu />
         <NavDrawer />
       </Flex>
