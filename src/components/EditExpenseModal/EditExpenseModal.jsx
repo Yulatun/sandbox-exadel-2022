@@ -29,7 +29,7 @@ import i18next from 'i18next';
 import { getCategories } from '@/api/Category';
 import { getPayers } from '@/api/User';
 import { getWallets } from '@/api/Wallet';
-import { SelectControlled } from '@/components/Selector/SelectControlled';
+import { SelectControlled } from '@/components/SelectControlled/SelectControlled';
 
 export const EditExpenseModal = ({
   isOpen,

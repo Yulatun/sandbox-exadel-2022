@@ -1,4 +1,4 @@
-import { useQuery } from 'react-query';
+import { useMutation, useQuery, useQueryClient } from 'react-query';
 import { Button, Flex, Text, useDisclosure } from '@chakra-ui/react';
 import i18next from 'i18next';
 
@@ -20,6 +20,7 @@ export const Landing = () => {
   const expenseModal = useDisclosure();
   const incomeModal = useDisclosure();
   const createTransactionModal = useDisclosure();
+  const queryClient = useQueryClient();
 
   const { textColor } = useCentralTheme();
 
@@ -58,20 +59,28 @@ export const Landing = () => {
     ).slice(0, 10);
   }
 
-  const createIncomeOnSubmit = (data) => {
-    createIncome({
-      walletId: data.wallet,
-      categoryId: data.category,
-      dateOfTransaction: new Date(
-        `${data.date}T${new Date().toISOString().split('T')[1]}`
-      ),
-      value: Number(data.amount),
-      description: data.note
-    })
-      .then(() => {
+  const mutationCreateIncome = useMutation(
+    (data) =>
+      createIncome({
+        walletId: data.wallet?.value,
+        categoryId: data.category?.value,
+        dateOfTransaction: new Date(
+          `${data.date}T${new Date().toISOString().split('T')[1]}`
+        ),
+        value: Number(data.amount),
+        description: data.note
+      }),
+    {
+      onSuccess: () => {
         createTransactionModal.onOpen();
-      })
-      .catch((err) => console.log(err));
+        queryClient.invalidateQueries(['wallets']);
+        queryClient.invalidateQueries(['incomes']);
+      }
+    }
+  );
+
+  const createIncomeOnSubmit = (data) => {
+    mutationCreateIncome.mutate(data);
     incomeModal.onClose();
   };
 
@@ -88,7 +97,10 @@ export const Landing = () => {
           </Button>
         </Flex>
 
-        <WalletsList />
+        <WalletsList
+          walletsData={dataWallets}
+          isFetchedWallets={isFetchedWallets}
+        />
 
         <Text my={8} color={textColor} fontSize="xl">
           {i18next.t('transaction.recentTransactions')}
@@ -120,12 +132,13 @@ export const Landing = () => {
           onClose={expenseModal.onClose}
         />
       )}
-      {!!dataUser && isFetchedUser && (
+      {!!dataUser && !!dataWallets && isFetchedUser && isFetchedWallets && (
         <AddIncomeModal
           isOpen={incomeModal.isOpen}
           onSubmit={createIncomeOnSubmit}
           onClose={incomeModal.onClose}
           userData={dataUser}
+          walletsData={dataWallets}
         />
       )}
     </>
