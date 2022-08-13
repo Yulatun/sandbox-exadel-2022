@@ -2,8 +2,13 @@ import { useMutation, useQuery, useQueryClient } from 'react-query';
 import { Button, Flex, Text, useDisclosure } from '@chakra-ui/react';
 import i18next from 'i18next';
 
-import { createIncome, getExpenses, getIncomes } from '@/api/Transaction';
-import { getUser } from '@/api/User';
+import {
+  createExpense,
+  createIncome,
+  getExpenses,
+  getIncomes
+} from '@/api/Transaction';
+import { getPayers, getUser } from '@/api/User';
 import { getWallets } from '@/api/Wallet';
 import {
   AddExpenseModal,
@@ -19,7 +24,8 @@ import { useCentralTheme } from '@/theme';
 export const Landing = () => {
   const expenseModal = useDisclosure();
   const incomeModal = useDisclosure();
-  const createTransactionModal = useDisclosure();
+  const createExpenseModal = useDisclosure();
+  const createIncomeModal = useDisclosure();
   const queryClient = useQueryClient();
 
   const { textColor } = useCentralTheme();
@@ -42,6 +48,11 @@ export const Landing = () => {
     isFetched: isFetchedWallets
   } = useQuery(['wallets'], getWallets);
 
+  const {
+    data: { data: dataPayers } = { data: [] },
+    isFetched: isFetchedPayers
+  } = useQuery(['payers'], getPayers);
+
   let recentTransactions = [];
 
   if (
@@ -59,6 +70,29 @@ export const Landing = () => {
     ).slice(0, 10);
   }
 
+  const mutationCreateExpense = useMutation(
+    (data) =>
+      createExpense({
+        walletId: data.wallet?.value,
+        categoryId: data.category?.value,
+        subCategoryId:
+          data.subcategory?.value || '00000000-0000-0000-0000-000000000000',
+        payer: data.payer?.value,
+        dateOfTransaction: new Date(
+          `${data.date}T${new Date().toISOString().split('T')[1]}`
+        ),
+        value: Number(data.amount),
+        description: data.note
+      }),
+    {
+      onSuccess: () => {
+        createExpenseModal.onOpen();
+        queryClient.invalidateQueries(['wallets']);
+        queryClient.invalidateQueries(['expenses']);
+      }
+    }
+  );
+
   const mutationCreateIncome = useMutation(
     (data) =>
       createIncome({
@@ -72,12 +106,17 @@ export const Landing = () => {
       }),
     {
       onSuccess: () => {
-        createTransactionModal.onOpen();
+        createIncomeModal.onOpen();
         queryClient.invalidateQueries(['wallets']);
         queryClient.invalidateQueries(['incomes']);
       }
     }
   );
+
+  const createExpenseOnSubmit = (data) => {
+    mutationCreateExpense.mutate(data);
+    expenseModal.onClose();
+  };
 
   const createIncomeOnSubmit = (data) => {
     mutationCreateIncome.mutate(data);
@@ -117,21 +156,37 @@ export const Landing = () => {
         {(!isFetchedIncomes || !isFetchedExpenses) && <Preloader />}
       </Flex>
 
+      {!expenseModal.isOpen && (
+        <NotificationModal
+          isOpen={createExpenseModal.isOpen}
+          onSubmit={createExpenseModal.onClose}
+          onClose={createExpenseModal.onClose}
+          text={i18next.t('modal.addExpense.createdMessage')}
+        />
+      )}
       {!incomeModal.isOpen && (
         <NotificationModal
-          isOpen={createTransactionModal.isOpen}
-          onSubmit={createTransactionModal.onClose}
-          onClose={createTransactionModal.onClose}
+          isOpen={createIncomeModal.isOpen}
+          onSubmit={createIncomeModal.onClose}
+          onClose={createIncomeModal.onClose}
           text={i18next.t('modal.addIncome.createdMessage')}
         />
       )}
-      {!!dataUser && isFetchedUser && (
-        <AddExpenseModal
-          isOpen={expenseModal.isOpen}
-          onSubmit={expenseModal.onClose}
-          onClose={expenseModal.onClose}
-        />
-      )}
+      {!!dataUser &&
+        !!dataWallets &&
+        !!dataPayers &&
+        isFetchedUser &&
+        isFetchedWallets &&
+        isFetchedPayers && (
+          <AddExpenseModal
+            isOpen={expenseModal.isOpen}
+            onSubmit={createExpenseOnSubmit}
+            onClose={expenseModal.onClose}
+            userData={dataUser}
+            walletsData={dataWallets}
+            payersData={dataPayers}
+          />
+        )}
       {!!dataUser && !!dataWallets && isFetchedUser && isFetchedWallets && (
         <AddIncomeModal
           isOpen={incomeModal.isOpen}
