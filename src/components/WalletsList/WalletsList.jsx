@@ -1,9 +1,7 @@
-import { useQuery } from 'react-query';
 import { Link as RouterLink } from 'react-router-dom';
 import { Box, Flex, Heading, Link, Text, VStack } from '@chakra-ui/react';
 import i18next from 'i18next';
 
-import { getWallets } from '@/api/Wallet';
 import { PiggyBankIcon } from '@/assets';
 import {
   AddWalletModal,
@@ -13,12 +11,7 @@ import {
 } from '@/components';
 import { useCentralTheme } from '@/theme';
 
-export const WalletsList = () => {
-  const { data: dataWallets, isFetched: isFetchedWallets } = useQuery(
-    ['wallet'],
-    getWallets
-  );
-
+export const WalletsList = ({ walletsData, isFetchedWallets }) => {
   const { popupTextColor, textColor, sectionBgColor } = useCentralTheme();
 
   return (
@@ -40,14 +33,13 @@ export const WalletsList = () => {
       <Flex alignItems="center" justifyContent="space-between">
         <AddWalletModal />
         {!isFetchedWallets && <Preloader />}
-        {!!dataWallets &&
-          !!dataWallets.data &&
+        {!!walletsData &&
           isFetchedWallets &&
-          (dataWallets.data.length > 3 ? (
-            <WalletCarousel walletsData={dataWallets.data} />
-          ) : dataWallets.data.length === 1 ? (
+          (walletsData.length > 3 ? (
+            <WalletCarousel walletsData={walletsData} />
+          ) : walletsData.length === 1 ? (
             <Flex justifyContent="center" w="40%">
-              {dataWallets.data.map((wallet) => (
+              {walletsData.map((wallet) => (
                 <Link
                   key={wallet.id}
                   as={RouterLink}
@@ -62,7 +54,7 @@ export const WalletsList = () => {
             </Flex>
           ) : (
             <Flex justifyContent="center" w="70%">
-              {dataWallets.data.map((wallet) => (
+              {walletsData.map((wallet) => (
                 <Link
                   key={wallet.id}
                   as={RouterLink}

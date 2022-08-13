@@ -29,7 +29,7 @@ import { getCategories } from '@/api/Category';
 import { getPayers } from '@/api/User';
 import { getWallets } from '@/api/Wallet';
 import { AddPayerModal } from '@/components';
-import { SelectControlled } from '@/components/Selector/SelectControlled';
+import { SelectControlled } from '@/components/SelectControlled/SelectControlled';
 
 export const AddExpenseModal = ({ isOpen, onClose, onSubmit }) => {
   const { data: dataWallets, isFetched: isFetchedWallets } = useQuery(

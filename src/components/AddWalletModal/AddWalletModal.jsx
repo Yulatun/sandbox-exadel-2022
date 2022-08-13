@@ -25,7 +25,7 @@ import i18next from 'i18next';
 
 import { getCurrencies } from '@/api/Currency';
 import { createWallet } from '@/api/Wallet';
-import { SelectControlled } from '@/components/Selector/SelectControlled';
+import { SelectControlled } from '@/components/SelectControlled/SelectControlled';
 
 export const AddWalletModal = () => {
   const { isOpen, onClose, onOpen } = useDisclosure();
