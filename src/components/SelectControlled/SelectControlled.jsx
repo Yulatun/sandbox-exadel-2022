@@ -18,8 +18,8 @@ export const SelectControlled = ({
   errorData,
   listOfOptions,
   isRequiredData = false,
+  isDisabled = false,
   data = {},
-  isFetchedData = true,
   modalOnOpen
 }) => {
   return (
@@ -43,7 +43,7 @@ export const SelectControlled = ({
             <FormLabel htmlFor={nameOfSelect}>
               {getSelectFieldsData(nameOfSelect).label}
             </FormLabel>
-            {(!!data && isFetchedData && (
+            {(!!data && (
               <Select
                 name={name}
                 value={value}
@@ -52,6 +52,7 @@ export const SelectControlled = ({
                 onBlur={onBlur}
                 options={listOfOptions}
                 isSearchable={true}
+                isDisabled={isDisabled}
                 selectedOptionStyle="check"
                 hideSelectedOptions={false}
                 placeholder={getSelectFieldsData(nameOfSelect).placeholderData}
@@ -70,7 +71,9 @@ export const SelectControlled = ({
               </FormErrorMessage>
             )}
 
-            {(name === 'payer' || name === 'category') && (
+            {(name === 'payer' ||
+              name === 'category' ||
+              name === 'subcategory') && (
               <Text mt={1} fontSize="xs">
                 {getSelectFieldsData(nameOfSelect).newDataQuestion}
                 <Link onClick={modalOnOpen} textColor="blue.500" ml={3}>

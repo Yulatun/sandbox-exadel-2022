@@ -13,6 +13,7 @@ export { Header } from './Header';
 export { LoginForm } from './LoginForm';
 export { NotificationModal } from './NotificationModal';
 export { Preloader } from './Preloader';
+export { SelectControlled } from './SelectControlled';
 export { TransactionItem } from './TransactionItem';
 export { TransactionList } from './TransactionList';
 export { WalletCard } from './WalletCard';

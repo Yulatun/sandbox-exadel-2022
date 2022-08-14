@@ -101,7 +101,6 @@ export const AddIncomeModal = ({
                 listOfOptions={getWalletsOptions(walletsData)}
                 isRequiredData
                 data={walletsData}
-                isFetchedData={walletsData}
               />
 
               <FormControl mb="20px" isRequired isInvalid={amount}>
@@ -129,10 +128,9 @@ export const AddIncomeModal = ({
                 nameOfSelect="category"
                 control={control}
                 errorData={category}
-                listOfOptions={getCategoriesOptions(dataCategories)}
+                listOfOptions={getCategoriesOptions(dataCategories, 'Income')}
                 isRequiredData
                 data={dataCategories}
-                isFetchedData={isFetchedCategories}
                 modalOnOpen={categoryModal.onOpen}
               />
 
@@ -184,10 +182,10 @@ export const AddIncomeModal = ({
           </ModalContent>
         </Modal>
       )}
+
       {categoryModal.isOpen && (
         <AddCategoryModal
           isOpen={categoryModal.isOpen}
-          onSubmit={categoryModal.onClose}
           onClose={categoryModal.onClose}
           categoryType={'Income'}
         />

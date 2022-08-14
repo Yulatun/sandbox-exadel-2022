@@ -9,6 +9,14 @@ export const getDefaultWalletData = (userData, dataWallets) => {
   };
 };
 
+export const getDefaultPayerData = (userData, dataPayers) => {
+  // Need to change logic after backend add 'defaultPayer'
+  return {
+    value: dataPayers[0],
+    label: dataPayers[0]
+  };
+};
+
 export const getWalletsOptions = (dataWallets) => {
   return (dataWallets || []).map((wallet) => ({
     value: wallet.id,
@@ -16,10 +24,28 @@ export const getWalletsOptions = (dataWallets) => {
   }));
 };
 
-export const getCategoriesOptions = (dataCategories) => {
-  return (dataCategories || []).map((category) => ({
-    value: category.id,
-    label: category.name
+export const getCategoriesOptions = (dataCategories, typeOfTransaction) => {
+  return (dataCategories || [])
+    .filter((category) => category.categoryType === typeOfTransaction)
+    .map((category) => ({
+      value: category.id,
+      label: category.name
+    }));
+};
+
+export const getSubcategoriesOptions = (dataCategories, chosenCategory) => {
+  return (dataCategories || [])
+    .find((category) => category.id === chosenCategory?.value)
+    ?.subCategories?.map((subcategory) => ({
+      value: subcategory.id,
+      label: subcategory.name
+    }));
+};
+
+export const getPayersOptions = (dataPayers) => {
+  return (dataPayers || []).map((payer) => ({
+    value: payer,
+    label: payer
   }));
 };
 
@@ -50,15 +76,20 @@ export const getSelectFieldsData = (nameOfSelect) => {
       addNewData = i18next.t('modal.addTransaction.addCategory');
       break;
 
+    case 'subcategory':
+      label = i18next.t('modal.addExpense.subcategory');
+      placeholderData = i18next.t('modal.addExpense.subcategory.placeholder');
+      newDataQuestion = i18next.t(
+        'modal.addTransaction.addSubcategoryQuestion'
+      );
+      addNewData = i18next.t('modal.addTransaction.addSubcategory');
+      break;
+
     case 'payer':
       label = i18next.t('modal.addExpense.payer');
       placeholderData = i18next.t('modal.addExpense.payer.placeholder');
       newDataQuestion = i18next.t('modal.addExpense.addPayerQuestion');
       addNewData = i18next.t('modal.addExpense.addPayer');
-      break;
-
-    case 'subcategory':
-      placeholderData = i18next.t('modal.addExpense.subcategory.placeholder');
       break;
 
     case 'isRecurring':
