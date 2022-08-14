@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { useQuery } from 'react-query';
 import {
@@ -41,6 +42,8 @@ export const EditCategoryModal = ({
     register,
     handleSubmit,
     control,
+    reset,
+    isDirty,
     formState: {
       errors: { name }
     }
@@ -52,6 +55,15 @@ export const EditCategoryModal = ({
       color: categoryData.color
     }
   });
+  const resetForm = () => {
+    reset({
+      categoryType: categoryData.categoryType,
+      categoryId: categoryData.id,
+      name: categoryData.name,
+      color: categoryData.color
+    });
+  };
+  useEffect(() => resetForm(), [!isOpen]);
 
   const closeAllModals = () => {
     categoriesDeleteModal.onClose();
@@ -59,8 +71,8 @@ export const EditCategoryModal = ({
   };
   //validation does not work, because the form already has default fields, and when compared in isDirty, it considers that everything has been changed
   const onCancel = () => {
-    //isDirty ? categoriesDeleteModal.onOpen() : onClose();
-    onClose();
+    isDirty ? categoriesDeleteModal.onOpen() : onClose();
+    // onClose();
   };
 
   return (
