@@ -145,7 +145,7 @@ export const WalletView = () => {
       {!!dataUser && isFetchedUser && dataUser.defaultWallet === walletId ? (
         <NotificationModal
           isOpen={deleteWalletModal.isOpen}
-          onSubmit={deleteWalletOnSubmit}
+          onSubmit={deleteWalletModal.onClose}
           onClose={deleteWalletModal.onClose}
           text={i18next.t('modal.deleteWalletDefault.text')}
         />
