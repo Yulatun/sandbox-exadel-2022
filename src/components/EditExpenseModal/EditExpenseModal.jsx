@@ -1,5 +1,5 @@
 import { useForm } from 'react-hook-form';
-import { useQuery } from 'react-query';
+import { useQueryClient } from 'react-query';
 import {
   Button,
   FormControl,
@@ -18,196 +18,175 @@ import {
   ModalOverlay,
   NumberInput,
   NumberInputField,
-  Select,
-  Skeleton,
   Text,
-  Textarea
+  Textarea,
+  useDisclosure
 } from '@chakra-ui/react';
 import { format } from 'date-fns';
 import i18next from 'i18next';
 
-import { getCategories } from '@/api/Category';
-import { getPayers } from '@/api/User';
-import { getWallets } from '@/api/Wallet';
-import { SelectControlled } from '@/components/SelectControlled/SelectControlled';
+import {
+  getCategoriesOptions,
+  getChosenCategoryData,
+  getChosenPayerData,
+  getChosenSubcategoryData,
+  getChosenWalletData,
+  getPayersOptions,
+  getSubcategoriesOptions,
+  getWalletsOptions
+} from '@/helpers/selectHelpers';
+
+import { AddCategoryModal } from '../AddCategoryModal';
+import { AddPayerModal } from '../AddPayerModal';
+import { SelectControlled } from '../SelectControlled';
 
 export const EditExpenseModal = ({
   isOpen,
   onClose,
   onSubmit,
+  walletsData,
+  categoriesData,
+  payersData,
   expenseData
 }) => {
-  const { data: dataWallets, isFetched: isFetchedWallets } = useQuery(
-    ['wallets'],
-    getWallets
-  );
-  const { data: dataCategories, isFetched: isFetchedCategories } = useQuery(
-    ['categories'],
-    getCategories
-  );
+  const categoryModal = useDisclosure();
+  const payerModal = useDisclosure();
 
-  const { data, isFetched } = useQuery(['payers'], getPayers);
-  let categoriesOptions = [];
+  const queryClient = useQueryClient();
 
-  let walletOptions = [];
-  if (!!dataWallets && !!dataWallets.data && isFetchedWallets)
-    walletOptions =
-      !!Object.keys(dataWallets).length &&
-      dataWallets.data.map((wallet) => ({
-        label: wallet.name,
-        value: wallet.id
-      }));
-
-  if (!!dataCategories && !!dataCategories.data && isFetchedCategories) {
-    categoriesOptions = dataCategories.data.map((category) => ({
-      value: category.id,
-      label: category.name
-    }));
-  }
-
-  let PayerOptions = [];
-  if (isFetched && data.data) {
-    PayerOptions = data.data.map((payer) => ({
-      value: payer,
-      label: payer
-    }));
-  }
   const {
     control,
     register,
     handleSubmit,
+    setValue,
+    watch,
     formState: {
       errors: { amount, category }
     }
   } = useForm({
     defaultValues: {
-      wallet: expenseData.walletId,
+      wallet: getChosenWalletData(expenseData, walletsData),
       amount: expenseData.value,
-      category: expenseData.categoryId,
-      subcategory: '',
-      payer: expenseData.payer,
+      category: getChosenCategoryData(expenseData, categoriesData),
+      subcategory: getChosenSubcategoryData(expenseData, categoriesData),
+      payer: getChosenPayerData(expenseData, payersData),
       date: format(new Date(expenseData.dateOfTransaction), 'yyyy-MM-dd'),
       note: expenseData.description
     }
   });
 
+  const setNewPayer = (newPayer) => {
+    queryClient.invalidateQueries(['payers']).then(() => {
+      setValue('payer', { value: newPayer.name, label: newPayer.name });
+    });
+    payerModal.onClose();
+  };
+
   return (
-    <Modal
-      size="2xl"
-      closeOnOverlayClick={false}
-      isOpen={isOpen}
-      onClose={onClose}
-    >
-      <ModalOverlay />
-      <ModalContent>
-        <ModalHeader>{i18next.t('modal.editExpense.title')}</ModalHeader>
-        <ModalCloseButton />
-        <ModalBody>
-          <SelectControlled
-            nameOfSelect="wallet"
-            control={control}
-            listOfOptions={walletOptions}
-            data={dataWallets}
-            isFetchedData={isFetchedWallets}
-          />
+    <>
+      <Modal
+        size="2xl"
+        closeOnOverlayClick={false}
+        isOpen={isOpen}
+        onClose={onClose}
+      >
+        <ModalOverlay />
+        <ModalContent>
+          <ModalHeader>{i18next.t('modal.editExpense.title')}</ModalHeader>
+          <ModalCloseButton />
+          <ModalBody>
+            <SelectControlled
+              nameOfSelect="wallet"
+              control={control}
+              listOfOptions={getWalletsOptions(walletsData)}
+              isRequiredData
+              data={walletsData}
+            />
 
-          <FormControl mb="20px" isRequired isInvalid={amount}>
-            <FormLabel>{i18next.t('modal.editExpense.amount')}</FormLabel>
-            <InputGroup>
-              <NumberInput w="100%" precision={2}>
-                <NumberInputField
-                  {...register('amount', {
-                    required: i18next.t(
-                      'modal.editExpense.validationErrorMessage.amount'
-                    )
-                  })}
-                />
-              </NumberInput>
-              <InputRightAddon>
-                {i18next.t('modal.editExpense.amount.dollarSign')}
-              </InputRightAddon>
-            </InputGroup>
-            <FormErrorMessage>
-              <Text>{amount && amount.message}</Text>
-            </FormErrorMessage>
-          </FormControl>
+            <FormControl mb="20px" isRequired isInvalid={amount}>
+              <FormLabel>{i18next.t('modal.editExpense.amount')}</FormLabel>
+              <InputGroup>
+                <NumberInput w="100%" precision={2}>
+                  <NumberInputField
+                    {...register('amount', {
+                      required: i18next.t(
+                        'modal.editExpense.validationErrorMessage.amount'
+                      )
+                    })}
+                  />
+                </NumberInput>
+                <InputRightAddon>
+                  {i18next.t('modal.editExpense.amount.dollarSign')}
+                </InputRightAddon>
+              </InputGroup>
+              <FormErrorMessage>
+                <Text>{amount && amount.message}</Text>
+              </FormErrorMessage>
+            </FormControl>
 
-          <SelectControlled
-            nameOfSelect="category"
-            control={control}
-            errorData={category}
-            listOfOptions={categoriesOptions}
-            isRequiredData
-            data={dataCategories}
-            isFetchedData={isFetchedCategories}
-          />
+            <SelectControlled
+              nameOfSelect="category"
+              control={control}
+              errorData={category}
+              listOfOptions={getCategoriesOptions(categoriesData, 'Expense')}
+              isRequiredData
+              data={categoriesData}
+              modalOnOpen={categoryModal.onOpen}
+            />
 
-          <FormControl mb="20px">
-            <FormLabel>{i18next.t('modal.editExpense.subcategory')}</FormLabel>
-            {(!!dataCategories &&
-              !!dataCategories.data &&
-              isFetchedCategories && (
-                <Select
-                  placeholder={i18next.t(
-                    'modal.editExpense.subcategory.placeholder'
-                  )}
-                  {...register('subcategory')}
-                >
-                  {!!Object.keys(dataCategories).length &&
-                    dataCategories.data
-                      .filter((category) => category.categoryType === 'Expense')
-                      .map(
-                        (category) =>
-                          !!category.subCategories.length &&
-                          category.subCategories.map((subcategory) => (
-                            <option key={subcategory.id} value={subcategory.id}>
-                              {subcategory.name}
-                            </option>
-                          ))
-                      )}
-                </Select>
-              )) ||
-              (!isFetchedCategories && (
-                <Skeleton
-                  height="40px"
-                  borderRadius="5px"
-                  startColor="orange.100"
-                  endColor="orange.200"
-                />
-              ))}
-          </FormControl>
+            <SelectControlled
+              nameOfSelect="subcategory"
+              control={control}
+              listOfOptions={
+                !!watch('category') &&
+                getSubcategoriesOptions(categoriesData, watch('category'))
+              }
+              data={categoriesData}
+            />
 
-          <SelectControlled
-            nameOfSelect="payer"
-            control={control}
-            listOfOptions={PayerOptions}
-            data={data}
-            isFetchedData={isFetched}
-          />
+            <SelectControlled
+              nameOfSelect="payer"
+              control={control}
+              listOfOptions={getPayersOptions(payersData)}
+              data={payersData}
+              modalOnOpen={payerModal.onOpen}
+            />
 
-          <FormControl mb="20px" isRequired>
-            <FormLabel>{i18next.t('modal.editExpense.date')}</FormLabel>
-            <Input type="date" {...register('date')} />
-            <FormHelperText>
-              {i18next.t('modal.editExpense.date.helperText')}
-            </FormHelperText>
-          </FormControl>
+            <FormControl mb="20px" isRequired>
+              <FormLabel>{i18next.t('modal.editExpense.date')}</FormLabel>
+              <Input type="date" {...register('date')} />
+              <FormHelperText>
+                {i18next.t('modal.editExpense.date.helperText')}
+              </FormHelperText>
+            </FormControl>
 
-          <FormControl>
-            <FormLabel>{i18next.t('modal.editExpense.note')}</FormLabel>
-            <Textarea rows={4} {...register('note')} />
-          </FormControl>
-        </ModalBody>
+            <FormControl>
+              <FormLabel>{i18next.t('modal.editExpense.note')}</FormLabel>
+              <Textarea rows={4} {...register('note')} />
+            </FormControl>
+          </ModalBody>
 
-        <ModalFooter>
-          <Button mr="20px" type="submit" onClick={handleSubmit(onSubmit)}>
-            {i18next.t('button.submit')}
-          </Button>
-          <Button variant="secondary" onClick={onClose}>
-            {i18next.t('button.cancel')}
-          </Button>
-        </ModalFooter>
-      </ModalContent>
-    </Modal>
+          <ModalFooter>
+            <Button mr="20px" onClick={handleSubmit(onSubmit)}>
+              {i18next.t('button.submit')}
+            </Button>
+            <Button variant="secondary" onClick={onClose}>
+              {i18next.t('button.cancel')}
+            </Button>
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
+
+      <AddCategoryModal
+        isOpen={categoryModal.isOpen}
+        onClose={categoryModal.onClose}
+        categoryType={'Expense'}
+      />
+      <AddPayerModal
+        isOpen={payerModal.isOpen}
+        onClose={payerModal.onClose}
+        setNewPayer={setNewPayer}
+      />
+    </>
   );
 };

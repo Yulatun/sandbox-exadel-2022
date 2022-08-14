@@ -8,17 +8,23 @@ import { useCentralTheme } from '@/theme';
 
 import { ConfirmationModal } from '../ConfirmationModal';
 import { EditExpenseModal } from '../EditExpenseModal';
+import { NotificationModal } from '../NotificationModal';
 import { TransactionItem } from '../TransactionItem';
 
 export const TransactionList = ({
   list,
   maxH,
   isExpensesType = false,
-  isShortView = false
+  isShortView = false,
+  walletsData,
+  categoriesData,
+  payersData = null
 }) => {
   const [chosenTransactionData, setChosenTransactionData] = useState({});
 
   const editExpenseModal = useDisclosure();
+  const editExpenseModalSuccess = useDisclosure();
+  const editExpenseModalCancel = useDisclosure();
   const deleteTransactionModal = useDisclosure();
 
   const queryClient = useQueryClient();
@@ -32,17 +38,19 @@ export const TransactionList = ({
     (data) =>
       editExpense({
         ...chosenTransactionData,
-        walletId: data.wallet,
-        categoryId: data.category,
-        payer: data.payer,
-        dateOfTransaction: new Date(data.date),
+        walletId: data.wallet?.value,
+        categoryId: data.category?.value,
+        payer: data.payer?.value,
+        dateOfTransaction: new Date(
+          `${data.date}T${new Date().toISOString().split('T')[1]}`
+        ),
         value: Number(data.amount),
         description: data.note
-      })
-        .then(() => alert(i18next.t('modal.editExpense.editedMessage.success')))
-        .catch((error) => console.log(error)),
+      }),
     {
       onSuccess: () => {
+        editExpenseModalSuccess.onOpen();
+        queryClient.invalidateQueries(['wallets']);
         queryClient.invalidateQueries(['expenses']);
       }
     }
@@ -52,6 +60,7 @@ export const TransactionList = ({
     () => deleteIncome(chosenTransactionData.id),
     {
       onSuccess: () => {
+        queryClient.invalidateQueries(['wallets']);
         queryClient.invalidateQueries(['incomes']);
       }
     }
@@ -61,6 +70,7 @@ export const TransactionList = ({
     () => deleteExpense(chosenTransactionData.id),
     {
       onSuccess: () => {
+        queryClient.invalidateQueries(['wallets']);
         queryClient.invalidateQueries(['expenses']);
       }
     }
@@ -101,8 +111,9 @@ export const TransactionList = ({
     deletingExpense.mutate();
   };
 
-  const resetOnClose = () => {
+  const resetEditingOnSubmit = () => {
     setChosenTransactionData({});
+    editExpenseModalCancel.onClose();
     editExpenseModal.onClose();
   };
 
@@ -176,15 +187,34 @@ export const TransactionList = ({
       {!!Object.keys(chosenTransactionData).length && (
         <EditExpenseModal
           isOpen={editExpenseModal.isOpen}
+          onClose={editExpenseModalCancel.onOpen}
           onSubmit={editOnSubmit}
-          onClose={() => {
-            if (confirm(i18next.t('modal.editExpense.editedMessage.cancel'))) {
-              resetOnClose();
-            }
-          }}
+          walletsData={walletsData}
+          categoriesData={categoriesData}
+          payersData={payersData}
           expenseData={chosenTransactionData}
         />
       )}
+      {!editExpenseModal.isOpen && (
+        <NotificationModal
+          isOpen={editExpenseModalSuccess.isOpen}
+          onSubmit={editExpenseModalSuccess.onClose}
+          onClose={editExpenseModalSuccess.onClose}
+          text={i18next.t('modal.editExpense.editedMessage.success')}
+        />
+      )}
+      <ConfirmationModal
+        isOpen={editExpenseModalCancel.isOpen}
+        onSubmit={resetEditingOnSubmit}
+        onClose={editExpenseModalCancel.onClose}
+        title={i18next.t(
+          `modal.edit${chosenTransactionData.transactionType}.editedMessage.cancel.title`
+        )}
+        text={i18next.t(
+          `modal.edit${chosenTransactionData.transactionType}.editedMessage.cancel.text`
+        )}
+      />
+
       {!!Object.keys(chosenTransactionData).length && (
         <ConfirmationModal
           isOpen={deleteTransactionModal.isOpen}

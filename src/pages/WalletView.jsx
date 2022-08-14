@@ -4,8 +4,9 @@ import { DeleteIcon } from '@chakra-ui/icons';
 import { Flex, IconButton, Text, useDisclosure } from '@chakra-ui/react';
 import i18next from 'i18next';
 
+import { getCategories } from '@/api/Category';
 import { getExpenses, getIncomes } from '@/api/Transaction';
-import { getUser } from '@/api/User';
+import { getPayers, getUser } from '@/api/User';
 import { deleteWallet, getWallets } from '@/api/Wallet';
 import {
   ConfirmationModal,
@@ -43,6 +44,16 @@ export const WalletView = () => {
     data: { data: { expenses: dataExpenses } } = { data: { expenses: [] } },
     isFetched: isFetchedExpenses
   } = useQuery(['expenses'], getExpenses);
+
+  const {
+    data: { data: dataCategories } = { data: [] },
+    isFetched: isFetchedCategories
+  } = useQuery(['categories'], getCategories);
+
+  const {
+    data: { data: dataPayers } = { data: [] },
+    isFetched: isFetchedPayers
+  } = useQuery(['payers'], getPayers);
 
   const mutationWallet = useMutation(() => deleteWallet(walletId), {
     onSuccess: () => {
@@ -105,12 +116,27 @@ export const WalletView = () => {
           )}
         </Flex>
 
-        {isFetchedIncomes && isFetchedExpenses && !allTransactions.length ? (
+        {!!dataWallets &&
+        !!dataCategories &&
+        !!dataPayers &&
+        isFetchedIncomes &&
+        isFetchedExpenses &&
+        isFetchedWallets &&
+        isFetchedCategories &&
+        isFetchedPayers &&
+        !allTransactions.length ? (
           <Text color={textColor} fontSize="xl">
             {i18next.t('transaction.noData')}
           </Text>
         ) : (
-          <TransactionList list={allTransactions} maxH="550px" isShortView />
+          <TransactionList
+            list={allTransactions}
+            maxH="550px"
+            isShortView
+            walletsData={dataWallets}
+            categoriesData={dataCategories}
+            payersData={dataPayers}
+          />
         )}
 
         {(!isFetchedIncomes || !isFetchedExpenses) && <Preloader />}
