@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
-import { Flex, Grid, GridItem, useDisclosure } from '@chakra-ui/react';
+import { Box, Flex, Grid, GridItem, useDisclosure } from '@chakra-ui/react';
 import i18next from 'i18next';
 
 import { editCategory, getCategories } from '@/api/Category';
@@ -66,20 +66,22 @@ export const Categories = () => {
             headingTwo={i18next.t('expenses.addCategoryHeading')}
             action={expensesCategoriesModal.onOpen}
           />
-          {!!dataCategories &&
-            !!dataCategories.data &&
-            isFetchedCategories &&
-            dataCategories.data
-              .filter((category) => category.categoryType === 'Expense')
-              .map((categoryData) => (
-                <AccordionComponent
-                  key={categoryData.id}
-                  categoryData={categoryData}
-                  name={categoryData.name}
-                  color={categoryData.color}
-                  onEdit={() => openOnEdit(categoryData)}
-                />
-              ))}
+          <Box maxH="580px" overflowY="scroll">
+            {!!dataCategories &&
+              !!dataCategories.data &&
+              isFetchedCategories &&
+              dataCategories.data
+                .filter((category) => category.categoryType === 'Expense')
+                .map((categoryData) => (
+                  <AccordionComponent
+                    key={categoryData.id}
+                    categoryData={categoryData}
+                    name={categoryData.name}
+                    color={categoryData.color}
+                    onEdit={() => openOnEdit(categoryData)}
+                  />
+                ))}
+          </Box>
         </GridItem>
         <GridItem className="incomeCol">
           <AccordionHeadings
@@ -87,20 +89,22 @@ export const Categories = () => {
             headingTwo={i18next.t('income.addCategoryHeading')}
             action={incomeCategoriesModal.onOpen}
           />
-          {!!dataCategories &&
-            !!dataCategories.data &&
-            isFetchedCategories &&
-            dataCategories.data
-              .filter((category) => category.categoryType === 'Income')
-              .map((categoryData) => (
-                <AccordionComponent
-                  key={categoryData.id}
-                  categoryData={categoryData}
-                  name={categoryData.name}
-                  color={categoryData.color}
-                  onEdit={() => openOnEdit(categoryData)}
-                />
-              ))}
+          <Box maxH="580px" overflowY="scroll" mb={8}>
+            {!!dataCategories &&
+              !!dataCategories.data &&
+              isFetchedCategories &&
+              dataCategories.data
+                .filter((category) => category.categoryType === 'Income')
+                .map((categoryData) => (
+                  <AccordionComponent
+                    key={categoryData.id}
+                    categoryData={categoryData}
+                    name={categoryData.name}
+                    color={categoryData.color}
+                    onEdit={() => openOnEdit(categoryData)}
+                  />
+                ))}
+          </Box>
         </GridItem>
       </Grid>
       <Flex>
