@@ -19,18 +19,6 @@ import {
 } from '@/components';
 import { useCentralTheme } from '@/theme';
 
-import { AccordionArray } from '../components/AccordionComponent/AccordionArray';
-
-function createAccordion(accordionContent) {
-  return (
-    <AccordionComponent
-      key={accordionContent.id}
-      title={accordionContent.title}
-      content={accordionContent.content}
-    />
-  );
-}
-
 function createAccordion1(accordionContent) {
   let subCategories = accordionContent.subCategories[0]?.name;
   return (
@@ -56,6 +44,30 @@ export const Categories = () => {
     console.log('catData:', categoryData?.data);
   }, [categoryData]);
 
+  for (let i = 0; i < dataArray?.length; i++) {
+    var expenses = dataArray[i].categoryType === 'Expense';
+    if (isFetchedCategory && expenses) {
+      var expenseCol = dataArray
+        .filter((x) => {
+          return x?.categoryType === 'Expense';
+        })
+        .map(createAccordion1);
+    }
+  }
+
+  for (let i = 0; i < dataArray?.length; i++) {
+    var incomes = dataArray[i].categoryType === 'Income';
+    if (isFetchedCategory && incomes) {
+      var incomeCol = dataArray
+        .filter((x) => {
+          return x?.categoryType === 'Income';
+        })
+        .map(createAccordion1);
+    }
+  }
+
+  console.log(expenses);
+
   return (
     <>
       <Grid templateColumns="repeat(2, 1fr)" height="100vh" mt={8}>
@@ -79,7 +91,7 @@ export const Categories = () => {
               ></IconButton>
             }
           />
-          {isFetchedCategory ? dataArray?.map(createAccordion1) : <Preloader />}
+          {isFetchedCategory ? expenseCol : <Preloader />}
         </GridItem>
         <GridItem className="incomeCol">
           <AccordionHeadings
@@ -101,7 +113,7 @@ export const Categories = () => {
               ></IconButton>
             }
           />
-          {AccordionArray.map(createAccordion)}
+          {isFetchedCategory ? incomeCol : <Preloader />}
         </GridItem>
       </Grid>
       <Flex>
