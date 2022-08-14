@@ -7,7 +7,6 @@ import {
   AccordionPanel,
   Button,
   HStack,
-  Spacer,
   Text
 } from '@chakra-ui/react';
 
@@ -18,7 +17,7 @@ export const AccordionComponent = (props) => {
 
   return (
     <>
-      <Accordion allowToggle="true" margin={5}>
+      <Accordion allowToggle="true" margin={4} width="auto">
         <AccordionItem
           border="1px transparent"
           borderRadius={8}
@@ -26,27 +25,36 @@ export const AccordionComponent = (props) => {
           position="relative"
           boxShadow="sm"
         >
-          <Text as="h2">
-            <AccordionButton>
-              <AccordionIcon
-                height={{ base: 8, md: 10 }}
-                width={{ base: 8, md: 10 }}
-              />
-              <Text as="span" px={{ base: 2, md: 14 }}>
-                {props.title}
-              </Text>
-            </AccordionButton>
-          </Text>
-
+          <AccordionButton
+            py={{ base: '8px', md: '12px' }}
+            pl={{ base: '8px', lg: '16px' }}
+            pr={{ base: '8px', lg: '16px' }}
+          >
+            <AccordionIcon
+              height={{ base: 8, md: 8 }}
+              width={{ base: 8, md: 8 }}
+            />
+            <Text
+              as="h2"
+              width="180px"
+              pl={{ base: 8, lg: 12, xl: 16 }}
+              overflow={{ base: 'hidden', lg: 'visible' }}
+              textOverflow="ellipsis"
+              whiteSpace="nowrap"
+              textAlign="left"
+            >
+              {props.name}
+            </Text>
+          </AccordionButton>
           <Button
-            size="sm"
+            size={{ base: 'xs', lg: 'sm' }}
             className="colorPallette"
-            bg="gray"
+            bg={props.color}
             borderRadius="50%"
             position="absolute"
-            top={3}
-            left={16}
-            display={{ base: 'none', md: 'initial' }}
+            top={{ base: 3, md: 4, lg: 3 }}
+            left={10}
+            ml={{ base: 0, lg: 4, xl: 6 }}
           ></Button>
 
           <Button
@@ -54,7 +62,8 @@ export const AccordionComponent = (props) => {
             size={{ base: 'sm', md: 'md' }}
             w={{ base: 8, md: 10 }}
             top={2}
-            right={{ base: 14, md: 16, lg: 20 }}
+            right={{ base: 14, md: 14 }}
+            onClick={props.onEdit}
           >
             <EditIcon />
           </Button>
@@ -64,7 +73,7 @@ export const AccordionComponent = (props) => {
             size={{ base: 'sm', md: 'md' }}
             w={{ base: 8, md: 10 }}
             top={2}
-            right={4}
+            right={2}
             variant="danger"
           >
             <DeleteIcon />
@@ -72,15 +81,7 @@ export const AccordionComponent = (props) => {
 
           <AccordionPanel p={4}>
             <HStack>
-              <Text px={2}>{props.content}</Text>
-              <Spacer />
-              <Button
-                size="sm"
-                className="colorPallette"
-                bg="gray"
-                borderRadius="50%"
-                display={{ base: 'initial', md: 'none' }}
-              ></Button>
+              <Text px={2}>{props.name}</Text>
             </HStack>
           </AccordionPanel>
         </AccordionItem>

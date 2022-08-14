@@ -6,6 +6,7 @@ export { AddIncomeModal } from './AddIncomeModal';
 export { AddPayerModal } from './AddPayerModal';
 export { AddWalletModal } from './AddWalletModal';
 export { ConfirmationModal } from './ConfirmationModal';
+export { EditCategoryModal } from './EditCategoryModal';
 export { ErrorBoundary } from './ErrorBoundary';
 export { FiltersExpenses } from './FiltersExpenses';
 export { Footer } from './Footer';
