@@ -183,13 +183,11 @@ export const AddIncomeModal = ({
         </Modal>
       )}
 
-      {categoryModal.isOpen && (
-        <AddCategoryModal
-          isOpen={categoryModal.isOpen}
-          onClose={categoryModal.onClose}
-          categoryType={'Income'}
-        />
-      )}
+      <AddCategoryModal
+        isOpen={categoryModal.isOpen}
+        onClose={categoryModal.onClose}
+        categoryType={'Income'}
+      />
     </>
   );
 };

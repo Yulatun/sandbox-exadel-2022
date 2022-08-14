@@ -189,16 +189,12 @@ export const AddExpenseModal = ({
         </Modal>
       )}
 
-      {categoryModal.isOpen && (
-        <AddCategoryModal
-          isOpen={categoryModal.isOpen}
-          onClose={categoryModal.onClose}
-          categoryType={'Expense'}
-        />
-      )}
-      {payerModal.isOpen && (
-        <AddPayerModal isOpen={payerModal.isOpen} onClose={setNewPayer} />
-      )}
+      <AddCategoryModal
+        isOpen={categoryModal.isOpen}
+        onClose={categoryModal.onClose}
+        categoryType={'Expense'}
+      />
+      <AddPayerModal isOpen={payerModal.isOpen} onClose={setNewPayer} />
     </>
   );
 };

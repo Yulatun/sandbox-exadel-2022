@@ -17,6 +17,13 @@ export const getDefaultPayerData = (userData, dataPayers) => {
   };
 };
 
+export const getCurrenciesOptions = (dataCurrencies) => {
+  return (dataCurrencies || []).map((currency) => ({
+    value: currency.id,
+    label: currency.currencyCode
+  }));
+};
+
 export const getWalletsOptions = (dataWallets) => {
   return (dataWallets || []).map((wallet) => ({
     value: wallet.id,
