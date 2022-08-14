@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useQuery } from 'react-query';
 import {
@@ -68,11 +68,16 @@ export const AddCategoryModal = ({ isOpen, onClose, categoryType }) => {
     isDirty ? categoriesDeleteModal.onOpen() : onClose();
   };
 
+  const resetForm = () => {
+    reset({ name: '' });
+  };
+  useEffect(() => resetForm(), [!isOpen]);
+
   return (
     <>
       <Modal
         isOpen={isOpen}
-        onClose={categoriesDeleteModal.onOpen}
+        onClose={onCancel}
         bg="red"
         closeOnOverlayClick={false}
       >

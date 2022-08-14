@@ -82,15 +82,6 @@ export const AccordionComponent = (props) => {
           <AccordionPanel p={4}>
             <HStack>
               <Text px={2}>{props.name}</Text>
-              {/* ----------Subcategories--------------
-              <Spacer />
-              <Button
-                size="sm"
-                className="colorPallette"
-                bg={props.color}
-                borderRadius="50%"
-                display={{ base: 'initial', md: 'none' }}
-              ></Button> */}
             </HStack>
           </AccordionPanel>
         </AccordionItem>

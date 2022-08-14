@@ -36,15 +36,15 @@ export const EditCategoryModal = ({
     getCategories
   );
 
-  const categoriesDeleteModal = useDisclosure();
+  const confirmationModal = useDisclosure();
 
   const {
     register,
     handleSubmit,
     control,
     reset,
-    isDirty,
     formState: {
+      isDirty,
       errors: { name }
     }
   } = useForm({
@@ -55,6 +55,16 @@ export const EditCategoryModal = ({
       color: categoryData.color
     }
   });
+
+  const closeAllModals = () => {
+    confirmationModal.onClose();
+    onClose();
+  };
+
+  const onCancel = () => {
+    isDirty ? confirmationModal.onOpen() : onClose();
+  };
+
   const resetForm = () => {
     reset({
       categoryType: categoryData.categoryType,
@@ -65,23 +75,9 @@ export const EditCategoryModal = ({
   };
   useEffect(() => resetForm(), [!isOpen]);
 
-  const closeAllModals = () => {
-    categoriesDeleteModal.onClose();
-    onClose();
-  };
-  //validation does not work, because the form already has default fields, and when compared in isDirty, it considers that everything has been changed
-  const onCancel = () => {
-    isDirty ? categoriesDeleteModal.onOpen() : onClose();
-    // onClose();
-  };
-
   return (
     <>
-      <Modal
-        isOpen={isOpen}
-        onClose={categoriesDeleteModal.onOpen}
-        closeOnOverlayClick={false}
-      >
+      <Modal isOpen={isOpen} onClose={onCancel} closeOnOverlayClick={false}>
         <ModalOverlay />
         <ModalContent>
           <ModalHeader>
@@ -170,8 +166,8 @@ export const EditCategoryModal = ({
         </ModalContent>
       </Modal>
       <ConfirmationModal
-        isOpen={categoriesDeleteModal.isOpen}
-        onClose={categoriesDeleteModal.onClose}
+        isOpen={confirmationModal.isOpen}
+        onClose={confirmationModal.onClose}
         onSubmit={closeAllModals}
         text={i18next.t('modal.deleteCategory.text')}
       />
