@@ -1,79 +1,37 @@
-import { useState } from 'react';
-import { useMutation, useQuery, useQueryClient } from 'react-query';
-import { Box, Flex, HStack, useDisclosure, VStack } from '@chakra-ui/react';
+import { useQuery } from 'react-query';
+import { Box, Flex, HStack, Text } from '@chakra-ui/react';
 import i18next from 'i18next';
 
-import { deleteExpense, editExpense, getExpenses } from '@/api/Transaction';
-import { ConfirmationModal, ExpenseItem, FiltersExpenses } from '@/components';
-import { EditExpenseModal } from '@/components/EditExpenseModal';
+import { getExpenses } from '@/api/Transaction';
+import { getWallets } from '@/api/Wallet';
+import { FiltersExpenses, Preloader, TransactionList } from '@/components';
 import { FiltersTag } from '@/components/FiltersTag';
+import { getTransactionsList } from '@/helpers/helpers';
+import { useCentralTheme } from '@/theme';
 
 export const Expenses = () => {
-  const [chosenExpenseData, setChosenExpenseData] = useState({});
+  const {
+    data: { data: { expenses: dataExpenses } } = { data: { expenses: [] } },
+    isFetched: isFetchedExpenses
+  } = useQuery(['expenses'], getExpenses);
 
-  const editExpenseModal = useDisclosure();
-  const deleteExpenseModal = useDisclosure();
+  const {
+    data: { data: dataWallets } = { data: [] },
+    isFetched: isFetchedWallets
+  } = useQuery(['wallets'], getWallets);
 
-  const queryClient = useQueryClient();
+  const { textColor } = useCentralTheme();
 
-  const { data: dataExpenses, isFetched: isFetchedExpenses } = useQuery(
-    ['expenses'],
-    getExpenses
-  );
+  let allTransactions = [];
 
-  const editingExpense = useMutation(
-    (data) =>
-      editExpense({
-        ...chosenExpenseData,
-        walletId: data.wallet,
-        categoryId: data.category,
-        payer: data.payer,
-        dateOfTransaction: new Date(data.date),
-        value: Number(data.amount),
-        description: data.note
-      })
-        .then(() => alert(i18next.t('modal.editExpense.editedMessage.success')))
-        .catch((error) => console.log(error)),
-    {
-      onSuccess: () => {
-        queryClient.invalidateQueries(['expenses']);
-      }
-    }
-  );
-
-  const deletingTransaction = useMutation(
-    () => deleteExpense(chosenExpenseData.id),
-    {
-      onSuccess: () => {
-        queryClient.invalidateQueries(['expenses']);
-      }
-    }
-  );
-
-  const openOnEdit = (dataTransaction) => {
-    setChosenExpenseData(dataTransaction);
-    editExpenseModal.onOpen();
-  };
-
-  const openOnDelete = (dataTransaction) => {
-    setChosenExpenseData(dataTransaction);
-    deleteExpenseModal.onOpen();
-  };
-
-  const saveOnEdit = (data) => {
-    editingExpense.mutate(data);
-    editExpenseModal.onClose();
-  };
-
-  const saveOnDelete = () => {
-    deletingTransaction.mutate();
-    deleteExpenseModal.onClose();
-  };
-
-  const resetOnClose = () => {
-    setChosenExpenseData({});
-    editExpenseModal.onClose();
-  };
+  if (
+    !!dataExpenses &&
+    !!dataWallets &&
+    isFetchedExpenses &&
+    isFetchedWallets
+  ) {
+    allTransactions = getTransactionsList(dataWallets, dataExpenses);
+  }
 
   return (
     <Flex
@@ -88,47 +46,21 @@ export const Expenses = () => {
         <FiltersExpenses />
       </Box>
 
-      <HStack spacing={4} w="100%">
+      <HStack spacing={4} mb="50px" w="100%">
         {['Food', 'Beauty', 'Utilities'].map((name) => (
           <FiltersTag key={name} text={name} />
         ))}
       </HStack>
 
-      <VStack spacing={5} pt={5} w="100%">
-        {!!dataExpenses &&
-          !!dataExpenses.data &&
-          isFetchedExpenses &&
-          dataExpenses.data.map((expenseData) => (
-            <ExpenseItem
-              key={expenseData.id}
-              expenseData={expenseData}
-              onEdit={() => openOnEdit(expenseData)}
-              onDelete={() => openOnDelete(expenseData)}
-            />
-          ))}
-      </VStack>
+      {isFetchedExpenses && !allTransactions.length ? (
+        <Text color={textColor} fontSize="xl">
+          {i18next.t('transaction.noData')}
+        </Text>
+      ) : (
+        <TransactionList list={allTransactions} maxH="570px" isExpensesType />
+      )}
 
-      {!!Object.keys(chosenExpenseData).length && (
-        <EditExpenseModal
-          isOpen={editExpenseModal.isOpen}
-          onSubmit={saveOnEdit}
-          onClose={() => {
-            if (confirm(i18next.t('modal.editExpense.editedMessage.cancel'))) {
-              resetOnClose();
-            }
-          }}
-          expenseData={chosenExpenseData}
-        />
-      )}
-      {!!Object.keys(chosenExpenseData).length && (
-        <ConfirmationModal
-          isOpen={deleteExpenseModal.isOpen}
-          onSubmit={saveOnDelete}
-          onClose={deleteExpenseModal.onClose}
-          title={i18next.t('modal.deleteExpense.title')}
-          text={i18next.t('modal.deleteExpense.text')}
-        />
-      )}
+      {!isFetchedExpenses && <Preloader />}
     </Flex>
   );
 };

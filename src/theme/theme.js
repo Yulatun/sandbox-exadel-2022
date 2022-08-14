@@ -60,6 +60,9 @@ export const useCentralTheme = () => {
   let sectionBgColor = useColorModeValue(orange200, teal700);
   let notificationUnreadBgColor = useColorModeValue(orange200, teal700);
   let notificationReadBgColor = useColorModeValue(orange50, teal900);
+  let transactionTitleBgColor = useColorModeValue(orange200, teal700);
+  let transactionBgColor = useColorModeValue(orange50, teal800);
+
   return {
     bgColor,
     textColor,
@@ -75,7 +78,9 @@ export const useCentralTheme = () => {
     badgeBgColor,
     sectionBgColor,
     notificationUnreadBgColor,
-    notificationReadBgColor
+    notificationReadBgColor,
+    transactionTitleBgColor,
+    transactionBgColor
   };
 };
 

@@ -1,66 +1,50 @@
-import { useState } from 'react';
-import { useMutation, useQuery, useQueryClient } from 'react-query';
-import { Box, Flex, useDisclosure, VStack } from '@chakra-ui/react';
+import { useQuery } from 'react-query';
+import { Flex, Text } from '@chakra-ui/react';
 import i18next from 'i18next';
 
-import { deleteIncome, getIncomes } from '@/api/Transaction';
-import { ConfirmationModal, IncomeItem, Preloader } from '@/components';
+import { getIncomes } from '@/api/Transaction';
+import { getWallets } from '@/api/Wallet';
+import { Preloader, TransactionList } from '@/components';
+import { getTransactionsList } from '@/helpers/helpers';
 import { useCentralTheme } from '@/theme';
 
 export const Incomes = () => {
-  const [chosenIncomeId, setChosenIncomeId] = useState();
-  const { bgColor } = useCentralTheme();
+  const {
+    data: { data: { incomes: dataIncomes } } = { data: { incomes: [] } },
+    isFetched: isFetchedIncomes
+  } = useQuery(['incomes'], getIncomes);
 
-  const deleteModal = useDisclosure();
-  const queryClient = useQueryClient();
+  const {
+    data: { data: dataWallets } = { data: [] },
+    isFetched: isFetchedWallets
+  } = useQuery(['wallets'], getWallets);
 
-  const { data: dataIncomes, isFetched: isFetchedIncomes } = useQuery(
-    ['incomes'],
-    getIncomes
-  );
+  const { textColor } = useCentralTheme();
 
-  const mutationTransaction = useMutation(() => deleteIncome(chosenIncomeId), {
-    onSuccess: () => {
-      queryClient.invalidateQueries(['incomes']);
-    }
-  });
+  let allTransactions = [];
 
-  const onDelete = () => {
-    mutationTransaction.mutate();
-    deleteModal.onClose();
-  };
-  const onEdit = () => {
-    // code to edit
-  };
+  if (!!dataWallets && !!dataIncomes && isFetchedIncomes && isFetchedWallets) {
+    allTransactions = getTransactionsList(dataWallets, dataIncomes);
+  }
 
   return (
-    <Box bg={bgColor} w="100%" mt={6}>
-      <Flex bg={bgColor} direction="column" justify="center" align="center">
-        <VStack w="80%" pt={5} spacing={5} align="stretch" justify="center">
-          {!isFetchedIncomes ? <Preloader /> : null}
-          {!!dataIncomes &&
-            !!dataIncomes.data &&
-            isFetchedIncomes &&
-            dataIncomes.data.incomes.map((incomeData) => (
-              <IncomeItem
-                key={incomeData.id}
-                incomeData={incomeData}
-                onEdit={onEdit}
-                onDelete={() => {
-                  setChosenIncomeId(incomeData.id);
-                  deleteModal.onOpen();
-                }}
-              />
-            ))}
-        </VStack>
-        <ConfirmationModal
-          isOpen={deleteModal.isOpen}
-          onSubmit={onDelete}
-          onClose={deleteModal.onClose}
-          title={i18next.t('modal.deleteIncome.title')}
-          text={i18next.t('modal.deleteIncome.text')}
-        />
-      </Flex>
-    </Box>
+    <Flex
+      flexDir="column"
+      alignItems="center"
+      justifyContent="flex-start"
+      py={8}
+      px={4}
+      w="100%"
+    >
+      {isFetchedIncomes && !allTransactions.length ? (
+        <Text color={textColor} fontSize="xl">
+          {i18next.t('transaction.noData')}
+        </Text>
+      ) : (
+        <TransactionList list={allTransactions} maxH="570px" />
+      )}
+
+      {!isFetchedIncomes && <Preloader />}
+    </Flex>
   );
 };

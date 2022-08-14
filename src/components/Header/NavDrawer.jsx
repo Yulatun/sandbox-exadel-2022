@@ -64,7 +64,13 @@ export const NavDrawer = () => {
             right={10}
             color={textColor}
           />
-          <DrawerHeader pt="30px" minH="100px" pl={6} bg={bgColor}>
+          <DrawerHeader
+            pt="30px"
+            minH="100px"
+            pl={6}
+            bg={bgColor}
+            onClick={onClose}
+          >
             <UserName />
           </DrawerHeader>
           <DrawerBody bg={popupBgColor}>

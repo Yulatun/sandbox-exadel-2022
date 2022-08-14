@@ -27,7 +27,9 @@ import { format } from 'date-fns';
 import i18next from 'i18next';
 
 import { getCategories } from '@/api/Category';
+import { getPayers } from '@/api/User';
 import { getWallets } from '@/api/Wallet';
+import { SelectControlled } from '@/components/SelectControlled/SelectControlled';
 
 export const EditExpenseModal = ({
   isOpen,
@@ -44,7 +46,34 @@ export const EditExpenseModal = ({
     getCategories
   );
 
+  const { data, isFetched } = useQuery(['payers'], getPayers);
+  let categoriesOptions = [];
+
+  let walletOptions = [];
+  if (!!dataWallets && !!dataWallets.data && isFetchedWallets)
+    walletOptions =
+      !!Object.keys(dataWallets).length &&
+      dataWallets.data.map((wallet) => ({
+        label: wallet.name,
+        value: wallet.id
+      }));
+
+  if (!!dataCategories && !!dataCategories.data && isFetchedCategories) {
+    categoriesOptions = dataCategories.data.map((category) => ({
+      value: category.id,
+      label: category.name
+    }));
+  }
+
+  let PayerOptions = [];
+  if (isFetched && data.data) {
+    PayerOptions = data.data.map((payer) => ({
+      value: payer,
+      label: payer
+    }));
+  }
   const {
+    control,
     register,
     handleSubmit,
     formState: {
@@ -74,26 +103,13 @@ export const EditExpenseModal = ({
         <ModalHeader>{i18next.t('modal.editExpense.title')}</ModalHeader>
         <ModalCloseButton />
         <ModalBody>
-          <FormControl mb="20px" isRequired>
-            <FormLabel>{i18next.t('modal.editExpense.wallet')}</FormLabel>
-            {(!!dataWallets && !!dataWallets.data && isFetchedWallets && (
-              <Select {...register('wallet')}>
-                {!!Object.keys(dataWallets).length &&
-                  dataWallets.data.map((wallet) => (
-                    <option key={wallet.id} value={wallet.id}>
-                      {wallet.name}
-                    </option>
-                  ))}
-              </Select>
-            )) || (
-              <Skeleton
-                height="40px"
-                borderRadius="5px"
-                startColor="orange.100"
-                endColor="orange.200"
-              />
-            )}
-          </FormControl>
+          <SelectControlled
+            nameOfSelect="wallet"
+            control={control}
+            listOfOptions={walletOptions}
+            data={dataWallets}
+            isFetchedData={isFetchedWallets}
+          />
 
           <FormControl mb="20px" isRequired isInvalid={amount}>
             <FormLabel>{i18next.t('modal.editExpense.amount')}</FormLabel>
@@ -116,44 +132,15 @@ export const EditExpenseModal = ({
             </FormErrorMessage>
           </FormControl>
 
-          <FormControl mb="20px" isRequired isInvalid={category}>
-            <FormLabel htmlFor="category">
-              {i18next.t('modal.editExpense.category')}
-            </FormLabel>
-            {(!!dataCategories &&
-              !!dataCategories.data &&
-              isFetchedCategories && (
-                <Select
-                  placeholder={i18next.t(
-                    'modal.editExpense.category.placeholder'
-                  )}
-                  {...register('category', {
-                    required: i18next.t(
-                      'modal.editExpense.validationErrorMessage.category'
-                    )
-                  })}
-                >
-                  {!!Object.keys(dataCategories).length &&
-                    dataCategories.data
-                      .filter((category) => category.categoryType === 'Expense')
-                      .map((category) => (
-                        <option key={category.id} value={category.id}>
-                          {category.name}
-                        </option>
-                      ))}
-                </Select>
-              )) || (
-              <Skeleton
-                height="40px"
-                borderRadius="5px"
-                startColor="orange.100"
-                endColor="orange.200"
-              />
-            )}
-            <FormErrorMessage>
-              <Text>{category && category.message}</Text>
-            </FormErrorMessage>
-          </FormControl>
+          <SelectControlled
+            nameOfSelect="category"
+            control={control}
+            errorData={category}
+            listOfOptions={categoriesOptions}
+            isRequiredData
+            data={dataCategories}
+            isFetchedData={isFetchedCategories}
+          />
 
           <FormControl mb="20px">
             <FormLabel>{i18next.t('modal.editExpense.subcategory')}</FormLabel>
@@ -190,18 +177,13 @@ export const EditExpenseModal = ({
               ))}
           </FormControl>
 
-          <FormControl mb="20px">
-            <FormLabel>{i18next.t('modal.editExpense.payer')}</FormLabel>
-            <Select
-              placeholder={i18next.t('modal.editExpense.payer.placeholder')}
-              {...register('payer')}
-            >
-              <option value="payer-default">Me</option>
-              <option value="payer-2">New payer</option>
-              <option value="payer-3">New payer</option>
-              <option value="payer-4">New payer</option>
-            </Select>
-          </FormControl>
+          <SelectControlled
+            nameOfSelect="payer"
+            control={control}
+            listOfOptions={PayerOptions}
+            data={data}
+            isFetchedData={isFetched}
+          />
 
           <FormControl mb="20px" isRequired>
             <FormLabel>{i18next.t('modal.editExpense.date')}</FormLabel>

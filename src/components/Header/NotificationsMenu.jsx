@@ -8,6 +8,8 @@ import {
   MenuButton,
   MenuItem,
   MenuList,
+  SkeletonCircle,
+  Text,
   useDisclosure
 } from '@chakra-ui/react';
 import i18next from 'i18next';
@@ -24,8 +26,10 @@ export const NotificationsMenu = () => {
 
   const readNotificationModal = useDisclosure();
 
-  const { data: dataNotifications, isFetched: isFetchedNotifications } =
-    useQuery(['notifications'], getNotifications);
+  const {
+    data: { data: dataNotifications } = { data: [] },
+    isFetched: isFetchedNotifications
+  } = useQuery(['notifications'], getNotifications);
 
   const editingNotification = useMutation(
     (data) => readNotification(data.id).catch((error) => console.log(error)),
@@ -61,67 +65,65 @@ export const NotificationsMenu = () => {
 
   return (
     <Menu closeOnSelect={false}>
-      {!!dataNotifications &&
-        !!dataNotifications.data &&
-        isFetchedNotifications && (
-          <>
-            <MenuButton
-              pos="relative"
-              mr={['14px', '14px', '14px', '0px']}
-              w="50px"
-              h="50px"
-              border="2px"
-              borderColor="transparent"
-              borderRadius="50%"
-              aria-label={i18next.t('header.btn.notifications')}
-              color={textColor}
-              outline="none"
-              _active={{ bg: 'transparent' }}
-              _hover={{
-                border: '2px',
-                borderColor: textColor
-              }}
-            >
-              <BellIcon w="30px" h="30px" />
-              {!!dataNotifications.data.filter(
-                (notification) => !notification.isRead
-              ).length && (
-                <Flex
-                  pos="absolute"
-                  top="5px"
-                  right="4px"
-                  zIndex="1"
-                  alignItems="center"
-                  justifyContent="center"
-                  px={1}
-                  minW="18px"
-                  h="18px"
-                  borderRadius="50%"
-                  fontSize="14px"
-                  fontWeight="bold"
-                  color="white"
-                  bgColor="red"
-                >
-                  <span>
-                    {
-                      dataNotifications.data.filter(
-                        (notification) => !notification.isRead
-                      ).length
-                    }
-                  </span>
-                </Flex>
-              )}
-            </MenuButton>
+      {!!dataNotifications && isFetchedNotifications && (
+        <>
+          <MenuButton
+            pos="relative"
+            mr={['14px', '14px', '14px', '0px']}
+            w="50px"
+            h="50px"
+            border="2px"
+            borderColor="transparent"
+            borderRadius="50%"
+            aria-label={i18next.t('header.btn.notifications')}
+            color={textColor}
+            outline="none"
+            _active={{ bg: 'transparent' }}
+            _hover={{
+              border: '2px',
+              borderColor: textColor
+            }}
+          >
+            <BellIcon w="30px" h="30px" />
+            {!!dataNotifications.filter((notification) => !notification.isRead)
+              .length && (
+              <Flex
+                pos="absolute"
+                top="5px"
+                right="4px"
+                zIndex="1"
+                alignItems="center"
+                justifyContent="center"
+                px={1}
+                minW="18px"
+                h="18px"
+                borderRadius="50%"
+                fontSize="14px"
+                fontWeight="bold"
+                color="white"
+                bgColor="red"
+              >
+                <span>
+                  {
+                    dataNotifications.filter(
+                      (notification) => !notification.isRead
+                    ).length
+                  }
+                </span>
+              </Flex>
+            )}
+          </MenuButton>
 
-            <MenuList
-              maxWidth="450px"
-              maxH="250px"
-              overflowY="scroll"
-              bg={popupBgColor}
-              color={popupTextColor}
-              fontWeight="bold"
-            >
-              {dataNotifications.data
+          <MenuList
+            maxWidth="450px"
+            maxH="250px"
+            overflowY="scroll"
+            bg={popupBgColor}
+            color={popupTextColor}
+            fontWeight="bold"
+          >
+            {dataNotifications.length ? (
+              dataNotifications
                 .slice()
                 .reverse()
                 .map((notification, i) => {
@@ -164,10 +166,22 @@ export const NotificationsMenu = () => {
                       </MenuItem>
                     );
                   }
-                })}
-            </MenuList>
-          </>
-        )}
+                })
+            ) : (
+              <MenuItem px="35px" minH="60px">
+                <Text>{i18next.t('header.notificationsMenu.noData')}</Text>
+              </MenuItem>
+            )}
+          </MenuList>
+        </>
+      )}
+      {!isFetchedNotifications && (
+        <SkeletonCircle
+          size="12"
+          startColor="orange.100"
+          endColor="orange.200"
+        />
+      )}
       {!!Object.keys(chosenNotificationData).length &&
         chosenNotificationData.description.length > 120 && (
           <NotificationModal

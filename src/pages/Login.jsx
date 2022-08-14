@@ -1,4 +1,4 @@
-import { Flex } from '@chakra-ui/react';
+import { Box, Flex } from '@chakra-ui/react';
 
 import { LoginForm } from '@/components';
 import { useCentralTheme } from '@/theme';
@@ -9,17 +9,18 @@ export const Login = () => {
 
   return (
     <Flex
-      bg={bgColor}
-      w="100%"
-      justify="center"
-      p="100px"
-      alignItems="center"
+      as="main"
       flexDirection="column"
+      alignItems="center"
+      justifyContent="center"
+      w="100%"
+      h="100%"
+      bg={bgColor}
     >
-      <main>
+      <Box>
         <ColorModeToggle />
         <LoginForm />
-      </main>
+      </Box>
     </Flex>
   );
 };

@@ -1,5 +1,5 @@
-import { useQuery } from 'react-query';
-import { Box, Button, Flex, Text, useDisclosure } from '@chakra-ui/react';
+import { useMutation, useQuery, useQueryClient } from 'react-query';
+import { Button, Flex, Text, useDisclosure } from '@chakra-ui/react';
 import i18next from 'i18next';
 
 import { createIncome, getExpenses, getIncomes } from '@/api/Transaction';
@@ -13,123 +13,134 @@ import {
   TransactionList,
   WalletsList
 } from '@/components';
+import { getTransactionsList } from '@/helpers/helpers';
 import { useCentralTheme } from '@/theme';
 
 export const Landing = () => {
   const expenseModal = useDisclosure();
   const incomeModal = useDisclosure();
   const createTransactionModal = useDisclosure();
+  const queryClient = useQueryClient();
 
   const { textColor } = useCentralTheme();
 
-  const { data: dataUser, isFetched: isFetchedUser } = useQuery(
-    ['user'],
-    getUser
-  );
-  const { data: dataIncomes, isFetched: isFetchedIncomes } = useQuery(
-    ['incomes'],
-    getIncomes
-  );
-  const { data: dataExpenses, isFetched: isFetchedExpenses } = useQuery(
-    ['expenses'],
-    getExpenses
-  );
+  const { data: { data: dataUser } = { data: [] }, isFetched: isFetchedUser } =
+    useQuery(['user'], getUser);
 
-  const { data: dataWallets, isFetched: isFetchedWallets } = useQuery(
-    ['wallets'],
-    getWallets
-  );
+  const {
+    data: { data: { incomes: dataIncomes } } = { data: { incomes: [] } },
+    isFetched: isFetchedIncomes
+  } = useQuery(['incomes'], getIncomes);
 
-  let allTransactions = [];
+  const {
+    data: { data: { expenses: dataExpenses } } = { data: { expenses: [] } },
+    isFetched: isFetchedExpenses
+  } = useQuery(['expenses'], getExpenses);
+
+  const {
+    data: { data: dataWallets } = { data: [] },
+    isFetched: isFetchedWallets
+  } = useQuery(['wallets'], getWallets);
+
+  let recentTransactions = [];
+
   if (
     !!dataIncomes &&
     !!dataExpenses &&
     !!dataWallets &&
-    !!dataIncomes.data &&
-    !!dataExpenses.data &&
-    dataWallets.data &&
     isFetchedIncomes &&
     isFetchedExpenses &&
     isFetchedWallets
   ) {
-    allTransactions = [...dataIncomes.data.incomes, ...dataExpenses.data];
-
-    allTransactions
-      .sort((a, b) => {
-        return new Date(b.dateOfTransaction) - new Date(a.dateOfTransaction);
-      })
-      .forEach((transaction) => {
-        let wallet = dataWallets.data.find(
-          (wallet) => wallet.id === transaction.walletId
-        );
-        transaction.currency = wallet.currency;
-      });
+    recentTransactions = getTransactionsList(
+      dataWallets,
+      dataIncomes,
+      dataExpenses
+    ).slice(0, 10);
   }
 
-  const createIncomeOnSubmit = (data) => {
-    createIncome({
-      walletId: data.wallet,
-      categoryId: data.category,
-      dateOfTransaction: new Date(
-        `${data.date}T${new Date().toISOString().split('T')[1]}`
-      ),
-      value: Number(data.amount),
-      description: data.note
-    })
-      .then(() => {
+  const mutationCreateIncome = useMutation(
+    (data) =>
+      createIncome({
+        walletId: data.wallet?.value,
+        categoryId: data.category?.value,
+        dateOfTransaction: new Date(
+          `${data.date}T${new Date().toISOString().split('T')[1]}`
+        ),
+        value: Number(data.amount),
+        description: data.note
+      }),
+    {
+      onSuccess: () => {
         createTransactionModal.onOpen();
-      })
-      .catch((err) => console.log(err));
+        queryClient.invalidateQueries(['wallets']);
+        queryClient.invalidateQueries(['incomes']);
+      }
+    }
+  );
+
+  const createIncomeOnSubmit = (data) => {
+    mutationCreateIncome.mutate(data);
     incomeModal.onClose();
   };
 
   return (
     <>
-      <Box w="100%" p={4}>
-        <Flex m={4} direction="column" justify="center" align="center">
-          <Flex m={4} direction="row" justify="center" align="center">
-            <Button m={4} onClick={expenseModal.onOpen}>
-              {i18next.t('button.addExpense')}
-            </Button>
-            <AddExpenseModal
-              isOpen={expenseModal.isOpen}
-              onSubmit={expenseModal.onClose}
-              onClose={expenseModal.onClose}
-            />
-            <Button m={4} onClick={incomeModal.onOpen}>
-              {i18next.t('button.addIncome')}
-            </Button>
-            {!!dataUser && !!dataUser.data && isFetchedUser && (
-              <AddIncomeModal
-                isOpen={incomeModal.isOpen}
-                onSubmit={createIncomeOnSubmit}
-                onClose={incomeModal.onClose}
-                userData={dataUser}
-              />
-            )}
-          </Flex>
-          {!incomeModal.isOpen && (
-            <NotificationModal
-              isOpen={createTransactionModal.isOpen}
-              onSubmit={createTransactionModal.onClose}
-              onClose={createTransactionModal.onClose}
-              text={i18next.t('modal.addIncome.createdMessage')}
-            />
-          )}
-          <WalletsList />
-        </Flex>
-      </Box>
+      <Flex flexDir="column" alignItems="center" w="100%" p={4}>
+        <Flex my={8} direction="row" justify="center" align="center">
+          <Button mr={8} onClick={expenseModal.onOpen}>
+            {i18next.t('button.addExpense')}
+          </Button>
 
-      <Box w="100%" p={4}>
-        <Flex direction="column" justify="center" align="center">
+          <Button onClick={incomeModal.onOpen}>
+            {i18next.t('button.addIncome')}
+          </Button>
+        </Flex>
+
+        <WalletsList
+          walletsData={dataWallets}
+          isFetchedWallets={isFetchedWallets}
+        />
+
+        <Text my={8} color={textColor} fontSize="xl">
+          {i18next.t('transaction.recentTransactions')}
+        </Text>
+
+        {isFetchedIncomes && isFetchedExpenses && !recentTransactions.length ? (
           <Text color={textColor} fontSize="xl">
-            {i18next.t('transaction.recentTransactions')}
+            {i18next.t('transaction.noData')}
           </Text>
-          {!isFetchedIncomes || !isFetchedExpenses ? <Preloader /> : null}
+        ) : (
+          <TransactionList list={recentTransactions} maxH="380px" isShortView />
+        )}
 
-          <TransactionList list={allTransactions} />
-        </Flex>
-      </Box>
+        {(!isFetchedIncomes || !isFetchedExpenses) && <Preloader />}
+      </Flex>
+
+      {!incomeModal.isOpen && (
+        <NotificationModal
+          isOpen={createTransactionModal.isOpen}
+          onSubmit={createTransactionModal.onClose}
+          onClose={createTransactionModal.onClose}
+          text={i18next.t('modal.addIncome.createdMessage')}
+        />
+      )}
+      {!!dataUser && isFetchedUser && (
+        <AddExpenseModal
+          isOpen={expenseModal.isOpen}
+          onSubmit={expenseModal.onClose}
+          onClose={expenseModal.onClose}
+        />
+      )}
+      {!!dataUser && !!dataWallets && isFetchedUser && isFetchedWallets && (
+        <AddIncomeModal
+          isOpen={incomeModal.isOpen}
+          onSubmit={createIncomeOnSubmit}
+          onClose={incomeModal.onClose}
+          userData={dataUser}
+          walletsData={dataWallets}
+        />
+      )}
     </>
   );
 };
