@@ -1,5 +1,4 @@
 import { useForm } from 'react-hook-form';
-import { useQueryClient } from 'react-query';
 import {
   Button,
   FormControl,
@@ -28,60 +27,41 @@ import i18next from 'i18next';
 import {
   getCategoriesOptions,
   getChosenCategoryData,
-  getChosenPayerData,
-  getChosenSubcategoryData,
   getChosenWalletData,
-  getPayersOptions,
-  getSubcategoriesOptions,
   getWalletCurrencyData,
   getWalletsOptions
 } from '@/helpers/selectHelpers';
 
 import { AddCategoryModal } from '../AddCategoryModal';
-import { AddPayerModal } from '../AddPayerModal';
 import { SelectControlled } from '../SelectControlled';
 
-export const EditExpenseModal = ({
+export const EditIncomeModal = ({
   isOpen,
   onClose,
   onSubmit,
   walletsData,
   categoriesData,
-  payersData,
-  expenseData
+  incomeData
 }) => {
   const categoryModal = useDisclosure();
-  const payerModal = useDisclosure();
-
-  const queryClient = useQueryClient();
 
   const {
     control,
     register,
     handleSubmit,
-    setValue,
     watch,
     formState: {
       errors: { amount, category }
     }
   } = useForm({
     defaultValues: {
-      wallet: getChosenWalletData(expenseData, walletsData),
-      amount: expenseData.value,
-      category: getChosenCategoryData(expenseData, categoriesData),
-      subcategory: getChosenSubcategoryData(expenseData, categoriesData),
-      payer: getChosenPayerData(expenseData, payersData),
-      date: format(new Date(expenseData.dateOfTransaction), 'yyyy-MM-dd'),
-      note: expenseData.description
+      wallet: getChosenWalletData(incomeData, walletsData),
+      amount: incomeData.value,
+      category: getChosenCategoryData(incomeData, categoriesData),
+      date: format(new Date(incomeData.dateOfTransaction), 'yyyy-MM-dd'),
+      note: incomeData.description
     }
   });
-
-  const setNewPayer = (newPayer) => {
-    queryClient.invalidateQueries(['payers']).then(() => {
-      setValue('payer', { value: newPayer.name, label: newPayer.name });
-    });
-    payerModal.onClose();
-  };
 
   return (
     <>
@@ -93,7 +73,7 @@ export const EditExpenseModal = ({
       >
         <ModalOverlay />
         <ModalContent>
-          <ModalHeader>{i18next.t('modal.editExpense.title')}</ModalHeader>
+          <ModalHeader>{i18next.t('modal.editIncome.title')}</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
             <SelectControlled
@@ -105,13 +85,13 @@ export const EditExpenseModal = ({
             />
 
             <FormControl mb="20px" isRequired isInvalid={amount}>
-              <FormLabel>{i18next.t('modal.editExpense.amount')}</FormLabel>
+              <FormLabel>{i18next.t('modal.editIncome.amount')}</FormLabel>
               <InputGroup>
                 <NumberInput w="100%" precision={2}>
                   <NumberInputField
                     {...register('amount', {
                       required: i18next.t(
-                        'modal.editExpense.validationErrorMessage.amount'
+                        'modal.editIncome.validationErrorMessage.amount'
                       )
                     })}
                   />
@@ -130,40 +110,22 @@ export const EditExpenseModal = ({
               nameOfSelect="category"
               control={control}
               errorData={category}
-              listOfOptions={getCategoriesOptions(categoriesData, 'Expense')}
+              listOfOptions={getCategoriesOptions(categoriesData, 'Income')}
               isRequiredData
               data={categoriesData}
               modalOnOpen={categoryModal.onOpen}
             />
 
-            <SelectControlled
-              nameOfSelect="subcategory"
-              control={control}
-              listOfOptions={
-                !!watch('category') &&
-                getSubcategoriesOptions(categoriesData, watch('category'))
-              }
-              data={categoriesData}
-            />
-
-            <SelectControlled
-              nameOfSelect="payer"
-              control={control}
-              listOfOptions={getPayersOptions(payersData)}
-              data={payersData}
-              modalOnOpen={payerModal.onOpen}
-            />
-
             <FormControl mb="20px" isRequired>
-              <FormLabel>{i18next.t('modal.editExpense.date')}</FormLabel>
+              <FormLabel>{i18next.t('modal.editIncome.date')}</FormLabel>
               <Input type="date" {...register('date')} />
               <FormHelperText>
-                {i18next.t('modal.editExpense.date.helperText')}
+                {i18next.t('modal.editIncome.date.helperText')}
               </FormHelperText>
             </FormControl>
 
             <FormControl>
-              <FormLabel>{i18next.t('modal.editExpense.note')}</FormLabel>
+              <FormLabel>{i18next.t('modal.editIncome.note')}</FormLabel>
               <Textarea rows={4} {...register('note')} />
             </FormControl>
           </ModalBody>
@@ -182,12 +144,7 @@ export const EditExpenseModal = ({
       <AddCategoryModal
         isOpen={categoryModal.isOpen}
         onClose={categoryModal.onClose}
-        categoryType={'Expense'}
-      />
-      <AddPayerModal
-        isOpen={payerModal.isOpen}
-        onClose={payerModal.onClose}
-        setNewPayer={setNewPayer}
+        categoryType={'Income'}
       />
     </>
   );

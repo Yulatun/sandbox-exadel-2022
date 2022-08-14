@@ -17,6 +17,67 @@ export const getDefaultPayerData = (userData, dataPayers) => {
   };
 };
 
+export const getWalletCurrencyData = (chosenWallet, dataWallets) => {
+  const chosenWalletData = (dataWallets || []).find(
+    (wallet) => wallet.id === chosenWallet?.value
+  );
+
+  return chosenWalletData?.currency;
+};
+
+export const getChosenWalletData = (chosenTransaction, dataWallets) => {
+  const chosenWalletData = (dataWallets || []).find(
+    (wallet) => wallet.id === chosenTransaction.walletId
+  );
+
+  return {
+    value: chosenWalletData?.id,
+    label: chosenWalletData?.name
+  };
+};
+
+export const getChosenCategoryData = (chosenTransaction, dataCategories) => {
+  const chosenCategoryData = (dataCategories || []).find(
+    (category) => category.id === chosenTransaction.categoryId
+  );
+
+  return {
+    value: chosenCategoryData?.id,
+    label: chosenCategoryData?.name
+  };
+};
+
+export const getChosenSubcategoryData = (chosenTransaction, dataCategories) => {
+  const chosenSubcategoryData = (dataCategories || [])
+    .find((category) => category.id === chosenTransaction.categoryId)
+    ?.subCategories?.find(
+      (subcategory) => subcategory.id === chosenTransaction.subCategoryId
+    );
+
+  return {
+    value: chosenSubcategoryData?.id,
+    label: chosenSubcategoryData?.name
+  };
+};
+
+export const getChosenPayerData = (chosenTransaction, dataPayers) => {
+  const chosenPayerData = (dataPayers || []).find(
+    (payer) => payer === chosenTransaction.payer
+  );
+
+  return {
+    value: chosenPayerData,
+    label: chosenPayerData
+  };
+};
+
+export const getCurrenciesOptions = (dataCurrencies) => {
+  return (dataCurrencies || []).map((currency) => ({
+    value: currency.id,
+    label: currency.currencyCode
+  }));
+};
+
 export const getWalletsOptions = (dataWallets) => {
   return (dataWallets || []).map((wallet) => ({
     value: wallet.id,

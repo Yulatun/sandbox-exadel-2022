@@ -2,6 +2,7 @@ import { useMutation, useQuery, useQueryClient } from 'react-query';
 import { Button, Flex, Text, useDisclosure } from '@chakra-ui/react';
 import i18next from 'i18next';
 
+import { getCategories } from '@/api/Category';
 import {
   createExpense,
   createIncome,
@@ -47,6 +48,11 @@ export const Landing = () => {
     data: { data: dataWallets } = { data: [] },
     isFetched: isFetchedWallets
   } = useQuery(['wallets'], getWallets);
+
+  const {
+    data: { data: dataCategories } = { data: [] },
+    isFetched: isFetchedCategories
+  } = useQuery(['categories'], getCategories);
 
   const {
     data: { data: dataPayers } = { data: [] },
@@ -145,12 +151,27 @@ export const Landing = () => {
           {i18next.t('transaction.recentTransactions')}
         </Text>
 
-        {isFetchedIncomes && isFetchedExpenses && !recentTransactions.length ? (
+        {!!dataWallets &&
+        !!dataCategories &&
+        !!dataPayers &&
+        isFetchedIncomes &&
+        isFetchedExpenses &&
+        isFetchedWallets &&
+        isFetchedCategories &&
+        isFetchedPayers &&
+        !recentTransactions.length ? (
           <Text color={textColor} fontSize="xl">
             {i18next.t('transaction.noData')}
           </Text>
         ) : (
-          <TransactionList list={recentTransactions} maxH="380px" isShortView />
+          <TransactionList
+            list={recentTransactions}
+            maxH="380px"
+            isShortView
+            walletsData={dataWallets}
+            categoriesData={dataCategories}
+            payersData={dataPayers}
+          />
         )}
 
         {(!isFetchedIncomes || !isFetchedExpenses) && <Preloader />}

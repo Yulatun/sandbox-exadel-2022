@@ -18,7 +18,6 @@ import {
   ModalOverlay,
   NumberInput,
   NumberInputField,
-  Stack,
   Text,
   Textarea,
   useDisclosure
@@ -33,6 +32,7 @@ import {
   getDefaultWalletData,
   getPayersOptions,
   getSubcategoriesOptions,
+  getWalletCurrencyData,
   getWalletsOptions
 } from '@/helpers/selectHelpers';
 
@@ -127,7 +127,9 @@ export const AddExpenseModal = ({
                     />
                   </NumberInput>
                   <InputRightAddon>
-                    {i18next.t('modal.addExpense.amount.dollarSign')}
+                    {!!watch('wallet') &&
+                      getWalletCurrencyData(watch('wallet'), walletsData)
+                        ?.symbol}
                   </InputRightAddon>
                 </InputGroup>
                 <FormErrorMessage>
@@ -176,29 +178,27 @@ export const AddExpenseModal = ({
             </ModalBody>
 
             <ModalFooter>
-              <Stack direction="row" spacing={5}>
-                <Button type="submit" onClick={handleSubmit(onSubmit)}>
-                  {i18next.t('modal.addExpense.button.add')}
-                </Button>
-                <Button variant="secondary" mr="20px" onClick={onClose} invert>
-                  {i18next.t('modal.addExpense.button.cancel')}
-                </Button>
-              </Stack>
+              <Button mr="20px" onClick={handleSubmit(onSubmit)}>
+                {i18next.t('button.submit')}
+              </Button>
+              <Button variant="secondary" onClick={onClose}>
+                {i18next.t('button.cancel')}
+              </Button>
             </ModalFooter>
           </ModalContent>
         </Modal>
       )}
 
-      {categoryModal.isOpen && (
-        <AddCategoryModal
-          isOpen={categoryModal.isOpen}
-          onClose={categoryModal.onClose}
-          categoryType={'Expense'}
-        />
-      )}
-      {payerModal.isOpen && (
-        <AddPayerModal isOpen={payerModal.isOpen} onClose={setNewPayer} />
-      )}
+      <AddCategoryModal
+        isOpen={categoryModal.isOpen}
+        onClose={categoryModal.onClose}
+        categoryType={'Expense'}
+      />
+      <AddPayerModal
+        isOpen={payerModal.isOpen}
+        onClose={payerModal.onClose}
+        setNewPayer={setNewPayer}
+      />
     </>
   );
 };

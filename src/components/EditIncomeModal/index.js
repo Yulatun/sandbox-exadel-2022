@@ -1,0 +1,1 @@
+export { EditIncomeModal } from './EditIncomeModal';
