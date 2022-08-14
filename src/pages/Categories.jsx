@@ -1,3 +1,5 @@
+import { useEffect } from 'react';
+import { useQuery } from 'react-query';
 import { AddIcon } from '@chakra-ui/icons';
 import {
   Flex,
@@ -8,6 +10,8 @@ import {
 } from '@chakra-ui/react';
 import i18next from 'i18next';
 
+import { getCategories } from '@/api/Category';
+import { Preloader } from '@/components';
 import {
   AccordionComponent,
   AccordionHeadings,
@@ -27,15 +31,35 @@ function createAccordion(accordionContent) {
   );
 }
 
+function createAccordion1(accordionContent) {
+  let subCategories = accordionContent.subCategories[0]?.name;
+  return (
+    <AccordionComponent
+      key={accordionContent.id}
+      title={accordionContent.name}
+      content={subCategories}
+    />
+  );
+}
+
 export const Categories = () => {
   const expensesCategoriesModal = useDisclosure();
   const incomeCategoriesModal = useDisclosure();
   const { textColor, popupBgColor } = useCentralTheme();
 
+  const { data: categoryData, isFetched: isFetchedCategory } = useQuery(
+    ['category'],
+    getCategories
+  );
+  let dataArray = categoryData?.data;
+  useEffect(() => {
+    console.log('catData:', categoryData?.data);
+  }, [categoryData]);
+
   return (
     <>
       <Grid templateColumns="repeat(2, 1fr)" height="100vh" mt={8}>
-        <GridItem className="expenseCol">
+        <GridItem className="expenseCol" height="10px" overflow="visible">
           <AccordionHeadings
             headingOne={i18next.t('expenses.categoryHeading')}
             headingTwo={i18next.t('expenses.addCategoryHeading')}
@@ -55,7 +79,7 @@ export const Categories = () => {
               ></IconButton>
             }
           />
-          {AccordionArray.map(createAccordion)}
+          {isFetchedCategory ? dataArray?.map(createAccordion1) : <Preloader />}
         </GridItem>
         <GridItem className="incomeCol">
           <AccordionHeadings
