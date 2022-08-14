@@ -3,11 +3,17 @@ import { useMutation, useQueryClient } from 'react-query';
 import { Box, Flex, Heading, useDisclosure, VStack } from '@chakra-ui/react';
 import i18next from 'i18next';
 
-import { deleteExpense, deleteIncome, editExpense } from '@/api/Transaction';
+import {
+  deleteExpense,
+  deleteIncome,
+  editExpense,
+  editIncome
+} from '@/api/Transaction';
 import { useCentralTheme } from '@/theme';
 
 import { ConfirmationModal } from '../ConfirmationModal';
 import { EditExpenseModal } from '../EditExpenseModal';
+import { EditIncomeModal } from '../EditIncomeModal';
 import { NotificationModal } from '../NotificationModal';
 import { TransactionItem } from '../TransactionItem';
 
@@ -22,9 +28,10 @@ export const TransactionList = ({
 }) => {
   const [chosenTransactionData, setChosenTransactionData] = useState({});
 
+  const editIncomeModal = useDisclosure();
   const editExpenseModal = useDisclosure();
-  const editExpenseModalSuccess = useDisclosure();
-  const editExpenseModalCancel = useDisclosure();
+  const editTransactionModalSuccess = useDisclosure();
+  const editTransactionModalCancel = useDisclosure();
   const deleteTransactionModal = useDisclosure();
 
   const queryClient = useQueryClient();
@@ -34,12 +41,34 @@ export const TransactionList = ({
   const sortTransactionsByDate = (a, b) =>
     new Date(b.dateOfTransaction) - new Date(a.dateOfTransaction);
 
+  const editingIncome = useMutation(
+    (data) =>
+      editIncome({
+        ...chosenTransactionData,
+        walletId: data.wallet?.value,
+        categoryId: data.category?.value,
+        dateOfTransaction: new Date(
+          `${data.date}T${new Date().toISOString().split('T')[1]}`
+        ),
+        value: Number(data.amount),
+        description: data.note
+      }),
+    {
+      onSuccess: () => {
+        editTransactionModalSuccess.onOpen();
+        queryClient.invalidateQueries(['wallets']);
+        queryClient.invalidateQueries(['incomes']);
+      }
+    }
+  );
+
   const editingExpense = useMutation(
     (data) =>
       editExpense({
         ...chosenTransactionData,
         walletId: data.wallet?.value,
         categoryId: data.category?.value,
+        subCategoryId: data.subcategory?.value,
         payer: data.payer?.value,
         dateOfTransaction: new Date(
           `${data.date}T${new Date().toISOString().split('T')[1]}`
@@ -49,7 +78,7 @@ export const TransactionList = ({
       }),
     {
       onSuccess: () => {
-        editExpenseModalSuccess.onOpen();
+        editTransactionModalSuccess.onOpen();
         queryClient.invalidateQueries(['wallets']);
         queryClient.invalidateQueries(['expenses']);
       }
@@ -80,6 +109,7 @@ export const TransactionList = ({
     setChosenTransactionData(dataTransaction);
 
     if (dataTransaction.transactionType === 'Income') {
+      editIncomeModal.onOpen();
       return;
     }
 
@@ -92,7 +122,9 @@ export const TransactionList = ({
   };
 
   const editOnSubmit = (data) => {
-    if (data.transactionType === 'Income') {
+    if (chosenTransactionData.transactionType === 'Income') {
+      editIncomeModal.onClose();
+      editingIncome.mutate(data);
       return;
     }
 
@@ -113,7 +145,8 @@ export const TransactionList = ({
 
   const resetEditingOnSubmit = () => {
     setChosenTransactionData({});
-    editExpenseModalCancel.onClose();
+    editTransactionModalCancel.onClose();
+    editIncomeModal.onClose();
     editExpenseModal.onClose();
   };
 
@@ -185,9 +218,19 @@ export const TransactionList = ({
       </VStack>
 
       {!!Object.keys(chosenTransactionData).length && (
+        <EditIncomeModal
+          isOpen={editIncomeModal.isOpen}
+          onClose={editTransactionModalCancel.onOpen}
+          onSubmit={editOnSubmit}
+          walletsData={walletsData}
+          categoriesData={categoriesData}
+          incomeData={chosenTransactionData}
+        />
+      )}
+      {!!Object.keys(chosenTransactionData).length && (
         <EditExpenseModal
           isOpen={editExpenseModal.isOpen}
-          onClose={editExpenseModalCancel.onOpen}
+          onClose={editTransactionModalCancel.onOpen}
           onSubmit={editOnSubmit}
           walletsData={walletsData}
           categoriesData={categoriesData}
@@ -195,18 +238,20 @@ export const TransactionList = ({
           expenseData={chosenTransactionData}
         />
       )}
-      {!editExpenseModal.isOpen && (
+      {(!editIncomeModal.isOpen || !editExpenseModal.isOpen) && (
         <NotificationModal
-          isOpen={editExpenseModalSuccess.isOpen}
-          onSubmit={editExpenseModalSuccess.onClose}
-          onClose={editExpenseModalSuccess.onClose}
-          text={i18next.t('modal.editExpense.editedMessage.success')}
+          isOpen={editTransactionModalSuccess.isOpen}
+          onSubmit={editTransactionModalSuccess.onClose}
+          onClose={editTransactionModalSuccess.onClose}
+          text={i18next.t(
+            `modal.edit${chosenTransactionData.transactionType}.editedMessage.success`
+          )}
         />
       )}
       <ConfirmationModal
-        isOpen={editExpenseModalCancel.isOpen}
+        isOpen={editTransactionModalCancel.isOpen}
         onSubmit={resetEditingOnSubmit}
-        onClose={editExpenseModalCancel.onClose}
+        onClose={editTransactionModalCancel.onClose}
         title={i18next.t(
           `modal.edit${chosenTransactionData.transactionType}.editedMessage.cancel.title`
         )}
