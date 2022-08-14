@@ -28,6 +28,7 @@ import {
   getCategoriesOptions,
   getChosenCategoryData,
   getChosenWalletData,
+  getWalletCurrencyData,
   getWalletsOptions
 } from '@/helpers/selectHelpers';
 
@@ -48,6 +49,7 @@ export const EditIncomeModal = ({
     control,
     register,
     handleSubmit,
+    watch,
     formState: {
       errors: { amount, category }
     }
@@ -95,7 +97,8 @@ export const EditIncomeModal = ({
                   />
                 </NumberInput>
                 <InputRightAddon>
-                  {i18next.t('modal.editIncome.amount.dollarSign')}
+                  {!!watch('wallet') &&
+                    getWalletCurrencyData(watch('wallet'), walletsData)?.symbol}
                 </InputRightAddon>
               </InputGroup>
               <FormErrorMessage>

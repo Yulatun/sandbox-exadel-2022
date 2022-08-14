@@ -33,6 +33,7 @@ import {
   getChosenWalletData,
   getPayersOptions,
   getSubcategoriesOptions,
+  getWalletCurrencyData,
   getWalletsOptions
 } from '@/helpers/selectHelpers';
 
@@ -116,7 +117,8 @@ export const EditExpenseModal = ({
                   />
                 </NumberInput>
                 <InputRightAddon>
-                  {i18next.t('modal.editExpense.amount.dollarSign')}
+                  {!!watch('wallet') &&
+                    getWalletCurrencyData(watch('wallet'), walletsData)?.symbol}
                 </InputRightAddon>
               </InputGroup>
               <FormErrorMessage>

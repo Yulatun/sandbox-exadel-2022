@@ -17,6 +17,14 @@ export const getDefaultPayerData = (userData, dataPayers) => {
   };
 };
 
+export const getWalletCurrencyData = (chosenWallet, dataWallets) => {
+  const chosenWalletData = (dataWallets || []).find(
+    (wallet) => wallet.id === chosenWallet?.value
+  );
+
+  return chosenWalletData?.currency;
+};
+
 export const getChosenWalletData = (chosenTransaction, dataWallets) => {
   const chosenWalletData = (dataWallets || []).find(
     (wallet) => wallet.id === chosenTransaction.walletId
