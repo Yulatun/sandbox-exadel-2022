@@ -62,11 +62,7 @@ export const AddIncomeModal = ({
   } = useForm({
     defaultValues: {
       wallet: getDefaultWalletData(userData, walletsData),
-      date: new Date().toISOString().split('T')[0],
-      isRecurring: {
-        label: 'No (as default)',
-        value: 'recurring-no'
-      }
+      date: new Date().toISOString().split('T')[0]
     }
   });
 
@@ -145,29 +141,6 @@ export const AddIncomeModal = ({
                   {i18next.t('modal.addIncome.date.helperText')}
                 </FormHelperText>
               </FormControl>
-
-              <SelectControlled
-                nameOfSelect="isRecurring"
-                control={control}
-                listOfOptions={[
-                  {
-                    label: 'No (as default)',
-                    value: 'recurring-no'
-                  },
-                  {
-                    label: 'Daily',
-                    value: 'recurring-daily'
-                  },
-                  {
-                    label: 'Weekly',
-                    value: 'recurring-no'
-                  },
-                  {
-                    label: 'Monthly',
-                    value: 'recurring-monthly'
-                  }
-                ]}
-              />
 
               <FormControl>
                 <FormLabel>{i18next.t('modal.addIncome.note')}</FormLabel>
