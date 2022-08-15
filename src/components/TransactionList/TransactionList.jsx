@@ -226,7 +226,9 @@ export const TransactionList = ({
         ))}
         {hasNextPage ? (
           <Flex justify="flex-end" w="100%">
-            <Link onClick={onShowMore}>Show more</Link>
+            <Link onClick={onShowMore}>
+              {i18next.t('add.moreTransactions.pagination')}
+            </Link>
           </Flex>
         ) : null}
       </VStack>
