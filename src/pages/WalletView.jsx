@@ -111,10 +111,13 @@ export const WalletView = () => {
   };
 
   const updateWalletOnEdit = (data) => {
-    // if (isFetchedTransactions && chosenWallet.currency.currencyCode !== data.currency && dataTransactions.data.length) {
-    //   toast({title: i18next.t("modal.editWallet.editedCurrency.cancel")})
-    //   return
-    // }
+    if (
+      chosenWallet.currency.currencyCode !== data.currency &&
+      allTransactions.length
+    ) {
+      toast({ title: i18next.t('modal.editWallet.editedCurrency.cancel') });
+      return;
+    }
     if (dataUser.defaultWallet === walletId && !data.setDefault) {
       toast({
         title: i18next.t(
