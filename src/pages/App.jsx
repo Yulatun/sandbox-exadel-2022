@@ -5,6 +5,7 @@ import { AppLayout } from '@/components/Layout';
 import { PrivateRoute } from '@/components/Routes/PrivateRoute';
 import { PublicRoute } from '@/components/Routes/PublicRoute';
 
+import { Admin } from './Admin';
 import { Categories } from './Categories';
 import { Expenses } from './Expenses';
 import { Fallback } from './Fallback';
@@ -38,6 +39,7 @@ export const App = () => {
             }
           >
             <Route path="/" element={<Landing />} />
+            <Route path="/admin" element={<Admin />} />
             <Route path="/incomes" element={<Incomes />} />
             <Route path="/categories" element={<Categories />} />
 

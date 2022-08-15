@@ -1,1 +1,0 @@
-export { IncomeItem } from './IncomeItem';

@@ -22,12 +22,7 @@ const ColorModeToggle = () => {
       }}
       _active={{ bg: 'transparent' }}
       variant="outline"
-      outline="none"
-      aria-label={
-        colorMode === 'light'
-          ? i18next.t('header.btn.theme.dark')
-          : i18next.t('header.btn.theme.light')
-      }
+      aria-label={i18next.t(`header.btn.theme.${colorMode}`)}
       icon={
         colorMode === 'light' ? (
           <MoonIcon w="25px" h="25px" />

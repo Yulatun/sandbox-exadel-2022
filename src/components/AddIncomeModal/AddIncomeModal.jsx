@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { useQuery } from 'react-query';
 import {
@@ -18,174 +19,152 @@ import {
   ModalOverlay,
   NumberInput,
   NumberInputField,
-  Select,
-  Skeleton,
   Text,
-  Textarea
+  Textarea,
+  useDisclosure
 } from '@chakra-ui/react';
 import i18next from 'i18next';
 
 import { getCategories } from '@/api/Category';
-import { getWallets } from '@/api/Wallet';
+import {
+  getCategoriesOptions,
+  getDefaultWalletData,
+  getWalletCurrencyData,
+  getWalletsOptions
+} from '@/helpers/selectHelpers';
 
-export const AddIncomeModal = ({ isOpen, onClose, onSubmit, userData }) => {
-  const { data: dataWallets, isFetched: isFetchedWallets } = useQuery(
-    ['wallets'],
-    getWallets
-  );
-  const { data: dataCategories, isFetched: isFetchedCategories } = useQuery(
-    ['categories'],
-    getCategories
-  );
+import { AddCategoryModal } from '../AddCategoryModal';
+import { SelectControlled } from '../SelectControlled';
+
+export const AddIncomeModal = ({
+  isOpen,
+  onClose,
+  onSubmit,
+  userData,
+  walletsData
+}) => {
+  const categoryModal = useDisclosure();
 
   const {
+    data: { data: dataCategories } = { data: [] },
+    isFetched: isFetchedCategories
+  } = useQuery(['categories'], getCategories);
+
+  const {
+    control,
     register,
     handleSubmit,
+    reset,
+    watch,
     formState: {
       errors: { amount, category }
     }
   } = useForm({
     defaultValues: {
-      wallet: userData.defaultWallet,
-      date: new Date().toISOString().split('T')[0],
-      isRecurring: 'recurring-no'
+      wallet: getDefaultWalletData(userData, walletsData),
+      date: new Date().toISOString().split('T')[0]
     }
   });
 
+  const resetForm = () => {
+    reset({
+      wallet: getDefaultWalletData(userData, walletsData),
+      date: new Date().toISOString().split('T')[0],
+      isRecurring: {
+        label: 'No (as default)',
+        value: 'recurring-no'
+      }
+    });
+  };
+
+  useEffect(() => resetForm(), [!isOpen]);
+
   return (
-    <Modal
-      size="2xl"
-      closeOnOverlayClick={false}
-      isOpen={isOpen}
-      onClose={onClose}
-    >
-      <ModalOverlay />
-      <ModalContent>
-        <ModalHeader>{i18next.t('modal.addIncome.title')}</ModalHeader>
-        <ModalCloseButton />
-        <ModalBody>
-          <FormControl mb="20px" isRequired>
-            <FormLabel>{i18next.t('modal.addIncome.wallet')}</FormLabel>
-            {(!!dataWallets && !!dataWallets.data && isFetchedWallets && (
-              <Select {...register('wallet')}>
-                {!!Object.keys(dataWallets).length &&
-                  dataWallets.data.map((wallet) => (
-                    <option key={wallet.id} value={wallet.id}>
-                      {wallet.name}
-                    </option>
-                  ))}
-              </Select>
-            )) || (
-              <Skeleton
-                height="40px"
-                borderRadius="5px"
-                startColor="orange.100"
-                endColor="orange.200"
+    <>
+      {!!dataCategories && isFetchedCategories && (
+        <Modal
+          size="2xl"
+          closeOnOverlayClick={false}
+          isOpen={isOpen}
+          onClose={onClose}
+        >
+          <ModalOverlay />
+          <ModalContent>
+            <ModalHeader>{i18next.t('modal.addIncome.title')}</ModalHeader>
+            <ModalCloseButton />
+            <ModalBody>
+              <SelectControlled
+                nameOfSelect="wallet"
+                control={control}
+                listOfOptions={getWalletsOptions(walletsData)}
+                isRequiredData
+                data={walletsData}
               />
-            )}
-          </FormControl>
 
-          <FormControl mb="20px" isRequired isInvalid={amount}>
-            <FormLabel>{i18next.t('modal.addIncome.amount')}</FormLabel>
-            <InputGroup>
-              <NumberInput w="100%" precision={2}>
-                <NumberInputField
-                  {...register('amount', {
-                    required: i18next.t(
-                      'modal.addIncome.validationErrorMessage.amount'
-                    )
-                  })}
-                />
-              </NumberInput>
-              <InputRightAddon>
-                {i18next.t('modal.addIncome.amount.dollarSign')}
-              </InputRightAddon>
-            </InputGroup>
-            <FormErrorMessage>
-              <Text>{amount && amount.message}</Text>
-            </FormErrorMessage>
-          </FormControl>
+              <FormControl mb="20px" isRequired isInvalid={amount}>
+                <FormLabel>{i18next.t('modal.addIncome.amount')}</FormLabel>
+                <InputGroup>
+                  <NumberInput w="100%" precision={2}>
+                    <NumberInputField
+                      {...register('amount', {
+                        required: i18next.t(
+                          'modal.addIncome.validationErrorMessage.amount'
+                        )
+                      })}
+                    />
+                  </NumberInput>
+                  <InputRightAddon>
+                    {!!watch('wallet') &&
+                      getWalletCurrencyData(watch('wallet'), walletsData)
+                        ?.symbol}
+                  </InputRightAddon>
+                </InputGroup>
+                <FormErrorMessage>
+                  <Text>{amount && amount.message}</Text>
+                </FormErrorMessage>
+              </FormControl>
 
-          <FormControl mb="20px" isRequired isInvalid={category}>
-            <FormLabel htmlFor="category">
-              {i18next.t('modal.addIncome.category')}
-            </FormLabel>
-            {(!!dataCategories &&
-              !!dataCategories.data &&
-              isFetchedCategories && (
-                <Select
-                  placeholder={i18next.t(
-                    'modal.addIncome.category.placeholder'
-                  )}
-                  {...register('category', {
-                    required: i18next.t(
-                      'modal.addIncome.validationErrorMessage.category'
-                    )
-                  })}
-                >
-                  {!!Object.keys(dataCategories).length &&
-                    dataCategories.data
-                      .filter((category) => category.categoryType === 'Income')
-                      .map((category) => (
-                        <option key={category.id} value={category.id}>
-                          {category.name}
-                        </option>
-                      ))}
-                </Select>
-              )) || (
-              <Skeleton
-                height="40px"
-                borderRadius="5px"
-                startColor="orange.100"
-                endColor="orange.200"
+              <SelectControlled
+                nameOfSelect="category"
+                control={control}
+                errorData={category}
+                listOfOptions={getCategoriesOptions(dataCategories, 'Income')}
+                isRequiredData
+                data={dataCategories}
+                modalOnOpen={categoryModal.onOpen}
               />
-            )}
-            <FormErrorMessage>
-              <Text>{category && category.message}</Text>
-            </FormErrorMessage>
-          </FormControl>
 
-          <FormControl mb="20px" isRequired>
-            <FormLabel>{i18next.t('modal.addIncome.date')}</FormLabel>
-            <Input type="date" {...register('date')} />
-            <FormHelperText>
-              {i18next.t('modal.addIncome.date.helperText')}
-            </FormHelperText>
-          </FormControl>
+              <FormControl mb="20px" isRequired>
+                <FormLabel>{i18next.t('modal.addIncome.date')}</FormLabel>
+                <Input type="date" {...register('date')} />
+                <FormHelperText>
+                  {i18next.t('modal.addIncome.date.helperText')}
+                </FormHelperText>
+              </FormControl>
 
-          <FormControl mb="20px">
-            <FormLabel>{i18next.t('modal.addIncome.isRecurring')}</FormLabel>
-            <Select {...register('isRecurring')}>
-              <option value="recurring-no">
-                {i18next.t('modal.addIncome.isRecurring.no')}
-              </option>
-              <option value="recurring-daily">
-                {i18next.t('modal.addIncome.isRecurring.daily')}
-              </option>
-              <option value="recurring-weekly">
-                {i18next.t('modal.addIncome.isRecurring.weekly')}
-              </option>
-              <option value="recurring-monthly">
-                {i18next.t('modal.addIncome.isRecurring.monthly')}
-              </option>
-            </Select>
-          </FormControl>
+              <FormControl>
+                <FormLabel>{i18next.t('modal.addIncome.note')}</FormLabel>
+                <Textarea rows={4} {...register('note')} />
+              </FormControl>
+            </ModalBody>
 
-          <FormControl>
-            <FormLabel>{i18next.t('modal.addIncome.note')}</FormLabel>
-            <Textarea rows={4} {...register('note')} />
-          </FormControl>
-        </ModalBody>
+            <ModalFooter>
+              <Button mr="20px" onClick={handleSubmit(onSubmit)}>
+                {i18next.t('button.submit')}
+              </Button>
+              <Button variant="secondary" onClick={onClose}>
+                {i18next.t('button.cancel')}
+              </Button>
+            </ModalFooter>
+          </ModalContent>
+        </Modal>
+      )}
 
-        <ModalFooter>
-          <Button mr="20px" onClick={handleSubmit(onSubmit)}>
-            {i18next.t('button.submit')}
-          </Button>
-          <Button variant="secondary" onClick={onClose}>
-            {i18next.t('button.cancel')}
-          </Button>
-        </ModalFooter>
-      </ModalContent>
-    </Modal>
+      <AddCategoryModal
+        isOpen={categoryModal.isOpen}
+        onClose={categoryModal.onClose}
+        categoryType={'Income'}
+      />
+    </>
   );
 };

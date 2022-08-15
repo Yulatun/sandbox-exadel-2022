@@ -1,66 +1,84 @@
-import { useState } from 'react';
-import { useMutation, useQuery, useQueryClient } from 'react-query';
-import { Box, Flex, useDisclosure, VStack } from '@chakra-ui/react';
+import { useInfiniteQuery, useQuery } from 'react-query';
+import { Flex, Text } from '@chakra-ui/react';
 import i18next from 'i18next';
 
-import { deleteIncome, getIncomes } from '@/api/Transaction';
-import { ConfirmationModal, IncomeItem, Preloader } from '@/components';
+import { getCategories } from '@/api/Category';
+import { getIncomes } from '@/api/Transaction';
+import { getWallets } from '@/api/Wallet';
+import { Preloader, TransactionList } from '@/components';
+import { getTransactionsList } from '@/helpers/helpers';
 import { useCentralTheme } from '@/theme';
 
 export const Incomes = () => {
-  const [chosenIncomeId, setChosenIncomeId] = useState();
-  const { bgColor } = useCentralTheme();
-
-  const deleteModal = useDisclosure();
-  const queryClient = useQueryClient();
-
-  const { data: dataIncomes, isFetched: isFetchedIncomes } = useQuery(
-    ['incomes'],
-    getIncomes
-  );
-
-  const mutationTransaction = useMutation(() => deleteIncome(chosenIncomeId), {
-    onSuccess: () => {
-      queryClient.invalidateQueries(['incomes']);
+  const {
+    data: incomesPages = { pages: [] },
+    isLoading,
+    isFetched: isFetchedIncomes,
+    fetchNextPage,
+    hasNextPage
+  } = useInfiniteQuery(['incomesPagination'], getIncomes, {
+    getNextPageParam: (lastPage) => {
+      return lastPage.data.pageInfo.pageNumber !==
+        lastPage.data.pageInfo.totalPages
+        ? lastPage.data.pageInfo.pageNumber + 1
+        : undefined;
     }
   });
 
-  const onDelete = () => {
-    mutationTransaction.mutate();
-    deleteModal.onClose();
-  };
-  const onEdit = () => {
-    // code to edit
-  };
+  const dataIncomes = incomesPages.pages.reduce(
+    (result, page) => [...result, ...page.data.incomes],
+    []
+  );
 
+  const {
+    data: { data: dataWallets } = { data: [] },
+    isFetched: isFetchedWallets
+  } = useQuery(['wallets'], getWallets);
+
+  const {
+    data: { data: dataCategories } = { data: [] },
+    isFetched: isFetchedCategories
+  } = useQuery(['categories'], getCategories);
+
+  const { textColor } = useCentralTheme();
+
+  let allTransactions = [];
+
+  if (!!dataWallets && !!dataIncomes && isFetchedIncomes && isFetchedWallets) {
+    allTransactions = getTransactionsList(dataWallets, dataIncomes);
+  }
+
+  if (isLoading) {
+    return <Preloader />;
+  }
   return (
-    <Box bg={bgColor} w="100%" mt={6}>
-      <Flex bg={bgColor} direction="column" justify="center" align="center">
-        <VStack w="80%" pt={5} spacing={5} align="stretch" justify="center">
-          {!isFetchedIncomes ? <Preloader /> : null}
-          {!!dataIncomes &&
-            !!dataIncomes.data &&
-            isFetchedIncomes &&
-            dataIncomes.data.incomes.map((incomeData) => (
-              <IncomeItem
-                key={incomeData.id}
-                incomeData={incomeData}
-                onEdit={onEdit}
-                onDelete={() => {
-                  setChosenIncomeId(incomeData.id);
-                  deleteModal.onOpen();
-                }}
-              />
-            ))}
-        </VStack>
-        <ConfirmationModal
-          isOpen={deleteModal.isOpen}
-          onSubmit={onDelete}
-          onClose={deleteModal.onClose}
-          title={i18next.t('modal.deleteIncome.title')}
-          text={i18next.t('modal.deleteIncome.text')}
+    <Flex
+      flexDir="column"
+      alignItems="center"
+      justifyContent="flex-start"
+      py={8}
+      px={4}
+      w="100%"
+    >
+      {!!dataWallets &&
+      !!dataCategories &&
+      isFetchedIncomes &&
+      isFetchedWallets &&
+      isFetchedCategories &&
+      !allTransactions.length ? (
+        <Text color={textColor} fontSize="xl">
+          {i18next.t('transaction.noData')}
+        </Text>
+      ) : (
+        <TransactionList
+          list={allTransactions}
+          onShowMore={fetchNextPage}
+          hasNextPage={hasNextPage}
+          walletsData={dataWallets}
+          categoriesData={dataCategories}
+          maxH="570px"
         />
-      </Flex>
-    </Box>
+      )}
+    </Flex>
   );
 };
