@@ -16,7 +16,7 @@ export const Incomes = () => {
     isFetched: isFetchedIncomes,
     fetchNextPage,
     hasNextPage
-  } = useInfiniteQuery(['incomes'], getIncomes, {
+  } = useInfiniteQuery(['incomesPagination'], getIncomes, {
     getNextPageParam: (lastPage) => {
       return lastPage.data.pageInfo.pageNumber !==
         lastPage.data.pageInfo.totalPages
