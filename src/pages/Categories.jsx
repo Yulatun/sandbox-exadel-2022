@@ -2,6 +2,7 @@ import { useEffect } from 'react';
 import { useQuery } from 'react-query';
 import { AddIcon } from '@chakra-ui/icons';
 import {
+  Box,
   Flex,
   Grid,
   GridItem,
@@ -19,7 +20,7 @@ import {
 } from '@/components';
 import { useCentralTheme } from '@/theme';
 
-function createAccordion1(accordionContent) {
+function createAccordion(accordionContent) {
   let subCategories = accordionContent.subCategories[0]?.name;
   return (
     <AccordionComponent
@@ -44,34 +45,22 @@ export const Categories = () => {
     console.log('catData:', categoryData?.data);
   }, [categoryData]);
 
-  for (let i = 0; i < dataArray?.length; i++) {
-    var expenses = dataArray[i].categoryType === 'Expense';
-    if (isFetchedCategory && expenses) {
-      var expenseCol = dataArray
-        .filter((x) => {
-          return x?.categoryType === 'Expense';
-        })
-        .map(createAccordion1);
-    }
-  }
+  const expenseCol = dataArray
+    ?.filter((x) => {
+      return x?.categoryType === 'Expense';
+    })
+    ?.map(createAccordion);
 
-  for (let i = 0; i < dataArray?.length; i++) {
-    var incomes = dataArray[i].categoryType === 'Income';
-    if (isFetchedCategory && incomes) {
-      var incomeCol = dataArray
-        .filter((x) => {
-          return x?.categoryType === 'Income';
-        })
-        .map(createAccordion1);
-    }
-  }
-
-  console.log(expenses);
+  const incomeCol = dataArray
+    ?.filter((x) => {
+      return x?.categoryType === 'Income';
+    })
+    ?.map(createAccordion);
 
   return (
     <>
-      <Grid templateColumns="repeat(2, 1fr)" height="100vh" mt={8}>
-        <GridItem className="expenseCol" height="10px" overflow="visible">
+      <Grid templateColumns="repeat(2, 1fr)" height="80vh" mt={8}>
+        <GridItem className="expenseCol">
           <AccordionHeadings
             headingOne={i18next.t('expenses.categoryHeading')}
             headingTwo={i18next.t('expenses.addCategoryHeading')}
@@ -91,7 +80,25 @@ export const Categories = () => {
               ></IconButton>
             }
           />
-          {isFetchedCategory ? expenseCol : <Preloader />}
+          <Box
+            height="300px"
+            overflowY="scroll"
+            sx={{
+              '::-webkit-scrollbar-track': {
+                background: 'orange.400',
+                borderRadius: '3px'
+              },
+              '::-webkit-scrollbar-thumb': {
+                background: 'teal.700',
+                borderRadius: '3px'
+              },
+              '::-webkit-scrollbar': {
+                width: '3px'
+              }
+            }}
+          >
+            {isFetchedCategory ? expenseCol : <Preloader />}
+          </Box>
         </GridItem>
         <GridItem className="incomeCol">
           <AccordionHeadings
@@ -113,7 +120,25 @@ export const Categories = () => {
               ></IconButton>
             }
           />
-          {isFetchedCategory ? incomeCol : <Preloader />}
+          <Box
+            height="300px"
+            overflowY="scroll"
+            sx={{
+              '::-webkit-scrollbar-track': {
+                background: 'orange.400',
+                borderRadius: '3px'
+              },
+              '::-webkit-scrollbar-thumb': {
+                background: 'teal.700',
+                borderRadius: '3px'
+              },
+              '::-webkit-scrollbar': {
+                width: '3px'
+              }
+            }}
+          >
+            {isFetchedCategory ? incomeCol : <Preloader />}
+          </Box>
         </GridItem>
       </Grid>
       <Flex>
