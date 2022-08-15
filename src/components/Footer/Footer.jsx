@@ -6,21 +6,17 @@ export const Footer = () => {
 
   return (
     <Flex
-      position="absolute"
-      width="100%"
+      as="footer"
+      justifyContent="center"
       textAlign="center"
-      bottom="0"
-      height="10vh"
+      mt="20px"
+      w="100%"
+      minH="100px"
       boxShadow="lg"
-      justify="center"
-      marginTop="20px"
-      zIndex="-1"
     >
-      <footer>
-        <Text color="#ccb" fontSize="xl">
-          {i18next.t('footer.message')} {currentYear}
-        </Text>
-      </footer>
+      <Text color="#ccb" fontSize="xl">
+        {i18next.t('footer.message')} {currentYear}
+      </Text>
     </Flex>
   );
 };
