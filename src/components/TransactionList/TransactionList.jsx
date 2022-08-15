@@ -1,6 +1,13 @@
 import { useState } from 'react';
 import { useMutation, useQueryClient } from 'react-query';
-import { Box, Flex, Heading, useDisclosure, VStack } from '@chakra-ui/react';
+import {
+  Box,
+  Flex,
+  Heading,
+  Link,
+  useDisclosure,
+  VStack
+} from '@chakra-ui/react';
 import i18next from 'i18next';
 
 import {
@@ -22,6 +29,8 @@ export const TransactionList = ({
   maxH,
   isExpensesType = false,
   isShortView = false,
+  onShowMore,
+  hasNextPage,
   walletsData,
   categoriesData,
   payersData = null
@@ -215,6 +224,13 @@ export const TransactionList = ({
             isShortView={isShortView}
           />
         ))}
+        {hasNextPage ? (
+          <Flex justify="flex-end" w="100%">
+            <Link onClick={onShowMore}>
+              {i18next.t('add.moreTransactions.pagination')}
+            </Link>
+          </Flex>
+        ) : null}
       </VStack>
 
       {!!Object.keys(chosenTransactionData).length && (

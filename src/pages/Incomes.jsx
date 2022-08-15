@@ -1,4 +1,4 @@
-import { useQuery } from 'react-query';
+import { useInfiniteQuery, useQuery } from 'react-query';
 import { Flex, Text } from '@chakra-ui/react';
 import i18next from 'i18next';
 
@@ -11,9 +11,24 @@ import { useCentralTheme } from '@/theme';
 
 export const Incomes = () => {
   const {
-    data: { data: { incomes: dataIncomes } } = { data: { incomes: [] } },
-    isFetched: isFetchedIncomes
-  } = useQuery(['incomes'], getIncomes);
+    data: incomesPages = { pages: [] },
+    isLoading,
+    isFetched: isFetchedIncomes,
+    fetchNextPage,
+    hasNextPage
+  } = useInfiniteQuery(['incomesPagination'], getIncomes, {
+    getNextPageParam: (lastPage) => {
+      return lastPage.data.pageInfo.pageNumber !==
+        lastPage.data.pageInfo.totalPages
+        ? lastPage.data.pageInfo.pageNumber + 1
+        : undefined;
+    }
+  });
+
+  const dataIncomes = incomesPages.pages.reduce(
+    (result, page) => [...result, ...page.data.incomes],
+    []
+  );
 
   const {
     data: { data: dataWallets } = { data: [] },
@@ -33,6 +48,9 @@ export const Incomes = () => {
     allTransactions = getTransactionsList(dataWallets, dataIncomes);
   }
 
+  if (isLoading) {
+    return <Preloader />;
+  }
   return (
     <Flex
       flexDir="column"
@@ -54,13 +72,13 @@ export const Incomes = () => {
       ) : (
         <TransactionList
           list={allTransactions}
-          maxH="570px"
+          onShowMore={fetchNextPage}
+          hasNextPage={hasNextPage}
           walletsData={dataWallets}
           categoriesData={dataCategories}
+          maxH="570px"
         />
       )}
-
-      {!isFetchedIncomes && <Preloader />}
     </Flex>
   );
 };
