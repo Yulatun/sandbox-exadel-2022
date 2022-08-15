@@ -5,7 +5,6 @@ import {
   Button,
   FormControl,
   FormErrorMessage,
-  FormHelperText,
   FormLabel,
   Input,
   Modal,
@@ -22,15 +21,20 @@ import {
 import i18next from 'i18next';
 
 import { getCurrencies } from '@/api/Currency';
+import { getUser } from '@/api/User';
 import { createWallet } from '@/api/Wallet';
+import { ConfirmationModal, NotificationModal } from '@/components';
 import { getCurrenciesOptions } from '@/helpers/selectHelpers';
 
-import { NotificationModal } from '../NotificationModal';
 import { SelectControlled } from '../SelectControlled';
 
 export const AddWalletModal = ({ isOpen, onClose }) => {
   const createWalletModal = useDisclosure();
+  const setDefaulttModal = useDisclosure();
   const queryClient = useQueryClient();
+
+  const { data: { data: dataUser } = { data: [] }, isFetched: isFetchedUser } =
+    useQuery(['user'], getUser);
 
   const {
     data: { data: dataCurrencies } = { data: [] },
@@ -44,6 +48,15 @@ export const AddWalletModal = ({ isOpen, onClose }) => {
     handleSubmit,
     formState: { errors, currency }
   } = useForm();
+
+  const openSetDefaultModal = () => {
+    setDefaulttModal.onOpen();
+  };
+
+  const setDefaultModalOnSubmit = () => {
+    // data.setDefault = true;
+    setDefaulttModal.onClose();
+  };
 
   const mutationCreateWallet = useMutation(
     (data) =>
@@ -120,10 +133,11 @@ export const AddWalletModal = ({ isOpen, onClose }) => {
                 <FormLabel htmlFor="setDefault">
                   {i18next.t('modal.addWallet.setDefault')}
                 </FormLabel>
-                <Switch {...register('setDefault')} size="lg" />
-                <FormHelperText>
-                  {i18next.t('modal.addWallet.setDefault.helperText')}
-                </FormHelperText>
+                <Switch
+                  onChange={openSetDefaultModal}
+                  {...register('setDefault')}
+                  size="lg"
+                />
               </FormControl>
             </ModalBody>
 
@@ -146,6 +160,17 @@ export const AddWalletModal = ({ isOpen, onClose }) => {
           text={i18next.t('wallet.createdMessage')}
         />
       )}
+      {!!dataUser &&
+        isFetchedUser &&
+        dataUser.defaultWallet(
+          <ConfirmationModal
+            isOpen={setDefaulttModal.isOpen}
+            onSubmit={setDefaultModalOnSubmit}
+            onClose={setDefaulttModal.onClose}
+            title={i18next.t('modal.addWallet.setDefault')}
+            text={i18next.t('modal.addWallet.setDefault.helperText')}
+          />
+        )}
     </>
   );
 };
