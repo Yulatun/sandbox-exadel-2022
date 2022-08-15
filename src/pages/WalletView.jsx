@@ -12,6 +12,7 @@ import {
 import i18next from 'i18next';
 
 import { getCategories } from '@/api/Category';
+import { getCurrencies } from '@/api/Currency';
 import { getExpenses, getIncomes } from '@/api/Transaction';
 import { getPayers, getUser } from '@/api/User';
 import { deleteWallet, editWallet, getWallets } from '@/api/Wallet';
@@ -38,7 +39,7 @@ export const WalletView = () => {
   const queryClient = useQueryClient();
 
   const { toast } = createStandaloneToast();
-  const { bgColor } = useCentralTheme();
+  const { bgColor, textColor } = useCentralTheme();
 
   const { data: { data: dataUser } = { data: [] }, isFetched: isFetchedUser } =
     useQuery(['user'], getUser);
@@ -68,12 +69,22 @@ export const WalletView = () => {
     isFetched: isFetchedPayers
   } = useQuery(['payers'], getPayers);
 
+  const { data: dataCurrency, isFetched: isFetchedCurrency } = useQuery(
+    ['currency'],
+    getCurrencies
+  );
+
+  const setCurrentId = (currencyCode) =>
+    isFetchedCurrency &&
+    dataCurrency.data.find((currency) => currency.currencyCode === currencyCode)
+      .id;
+
   const editMutationWallet = useMutation(
     (data) =>
       editWallet(data.setDefault, {
         ...chosenWallet,
         name: data.name,
-        currencyId: data.currencyId,
+        currencyId: setCurrentId(data.currency),
         dateOfChange: new Date().toJSON()
       }).catch((error) => toast({ title: error.message, status: 'error' })),
     {
@@ -130,8 +141,6 @@ export const WalletView = () => {
     setChosenWallet({});
     editWalletModal.onClose();
   };
-
-  const { textColor } = useCentralTheme();
 
   const currentWallet =
     isFetchedWallets && dataWallets.find((wallet) => wallet.id === walletId);

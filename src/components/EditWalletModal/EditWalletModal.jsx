@@ -1,4 +1,3 @@
-import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { useQuery } from 'react-query';
 import {
@@ -41,26 +40,12 @@ export const EditWalletModal = ({ isOpen, onSubmit, onClose, walletData }) => {
   const {
     register,
     handleSubmit,
-    setValue,
-    getValues,
-    formState: { errors, isSubmitting }
+    formState: { errors }
   } = useForm({
     defaultValues: {
       name: walletData.name,
       currency: walletData.currency.currencyCode,
       setDefault: defaultWallet
-    }
-  });
-
-  const currencyId =
-    isFetchedCurrency &&
-    dataCurrency.data.find(
-      (currency) => currency.currencyCode == getValues('currency')
-    ).id;
-
-  useEffect(() => {
-    if (isSubmitting) {
-      setValue('currencyId', currencyId);
     }
   });
 
@@ -134,10 +119,6 @@ export const EditWalletModal = ({ isOpen, onSubmit, onClose, walletData }) => {
             <FormHelperText>
               {i18next.t('modal.addWallet.setDefault.helperText')}
             </FormHelperText>
-          </FormControl>
-
-          <FormControl>
-            <Input {...register('currencyId')} hidden></Input>
           </FormControl>
         </ModalBody>
         <ModalFooter>
