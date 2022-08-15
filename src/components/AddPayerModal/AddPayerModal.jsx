@@ -19,7 +19,7 @@ import i18next from 'i18next';
 
 import { createPayer, getPayers } from '@/api/User';
 
-export const AddPayerModal = ({ isOpen, onClose }) => {
+export const AddPayerModal = ({ isOpen, onClose, setNewPayer }) => {
   const {
     register,
     handleSubmit,
@@ -34,6 +34,7 @@ export const AddPayerModal = ({ isOpen, onClose }) => {
       reset();
       onClose(data);
     });
+    setNewPayer(data);
   };
 
   const { data, isFetched } = useQuery(['payers'], getPayers);

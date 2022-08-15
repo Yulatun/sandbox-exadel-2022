@@ -8,6 +8,10 @@ export const createIncome = async (data) => {
   return instance.post('/api/v1/Transaction/Income', data);
 };
 
+export const editIncome = async (data) => {
+  return instance.put('/api/v1/Transaction/Income', data);
+};
+
 export const deleteIncome = async (dataId) => {
   return instance.delete(`/api/v1/Transaction/Income?incomeId=${dataId}`);
 };

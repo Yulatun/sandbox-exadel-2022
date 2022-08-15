@@ -2,6 +2,7 @@ import { useInfiniteQuery, useQuery } from 'react-query';
 import { Flex, Text } from '@chakra-ui/react';
 import i18next from 'i18next';
 
+import { getCategories } from '@/api/Category';
 import { getIncomes } from '@/api/Transaction';
 import { getWallets } from '@/api/Wallet';
 import { Preloader, TransactionList } from '@/components';
@@ -23,7 +24,6 @@ export const Incomes = () => {
         : undefined;
     }
   });
-  console.log(incomesPages);
 
   const dataIncomes = incomesPages.pages.reduce(
     (result, page) => [...result, ...page.data.incomes],
@@ -34,6 +34,11 @@ export const Incomes = () => {
     data: { data: dataWallets } = { data: [] },
     isFetched: isFetchedWallets
   } = useQuery(['wallets'], getWallets);
+
+  const {
+    data: { data: dataCategories } = { data: [] },
+    isFetched: isFetchedCategories
+  } = useQuery(['categories'], getCategories);
 
   const { textColor } = useCentralTheme();
 
@@ -55,7 +60,12 @@ export const Incomes = () => {
       px={4}
       w="100%"
     >
-      {isFetchedIncomes && !allTransactions.length ? (
+      {!!dataWallets &&
+      !!dataCategories &&
+      isFetchedIncomes &&
+      isFetchedWallets &&
+      isFetchedCategories &&
+      !allTransactions.length ? (
         <Text color={textColor} fontSize="xl">
           {i18next.t('transaction.noData')}
         </Text>
@@ -64,6 +74,8 @@ export const Incomes = () => {
           list={allTransactions}
           onShowMore={fetchNextPage}
           hasNextPage={hasNextPage}
+          walletsData={dataWallets}
+          categoriesData={dataCategories}
           maxH="570px"
         />
       )}

@@ -89,14 +89,16 @@ export const TransactionItem = ({
               <Text mr="10px" w="20%" textAlign="center">
                 {`${
                   transactionData.transactionType === 'Expense' ? '-' : '+'
-                } ${transactionData.value} ${transactionData.currency.symbol}`}
+                } ${transactionData.value} ${
+                  transactionData.currency?.symbol || ''
+                }`}
               </Text>
 
               <Box mr="10px" w="15%" textAlign="center">
                 <Tooltip w="100%" label={getWallet()?.name}>
                   <Text cursor="pointer">
                     {i18next.t('transaction.value.wallet')}{' '}
-                    {transactionData.currency.currencyCode}
+                    {transactionData.currency?.currencyCode || ''}
                   </Text>
                 </Tooltip>
               </Box>

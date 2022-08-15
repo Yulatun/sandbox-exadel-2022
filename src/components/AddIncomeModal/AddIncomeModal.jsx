@@ -29,6 +29,7 @@ import { getCategories } from '@/api/Category';
 import {
   getCategoriesOptions,
   getDefaultWalletData,
+  getWalletCurrencyData,
   getWalletsOptions
 } from '@/helpers/selectHelpers';
 
@@ -54,6 +55,7 @@ export const AddIncomeModal = ({
     register,
     handleSubmit,
     reset,
+    watch,
     formState: {
       errors: { amount, category }
     }
@@ -116,7 +118,9 @@ export const AddIncomeModal = ({
                     />
                   </NumberInput>
                   <InputRightAddon>
-                    {i18next.t('modal.addIncome.amount.dollarSign')}
+                    {!!watch('wallet') &&
+                      getWalletCurrencyData(watch('wallet'), walletsData)
+                        ?.symbol}
                   </InputRightAddon>
                 </InputGroup>
                 <FormErrorMessage>
@@ -183,13 +187,11 @@ export const AddIncomeModal = ({
         </Modal>
       )}
 
-      {categoryModal.isOpen && (
-        <AddCategoryModal
-          isOpen={categoryModal.isOpen}
-          onClose={categoryModal.onClose}
-          categoryType={'Income'}
-        />
-      )}
+      <AddCategoryModal
+        isOpen={categoryModal.isOpen}
+        onClose={categoryModal.onClose}
+        categoryType={'Income'}
+      />
     </>
   );
 };
