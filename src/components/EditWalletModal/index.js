@@ -1,0 +1,1 @@
+export { EditWalletModal } from './EditWalletModal';
