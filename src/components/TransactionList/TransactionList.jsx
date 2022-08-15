@@ -1,6 +1,13 @@
 import { useState } from 'react';
 import { useMutation, useQueryClient } from 'react-query';
-import { Box, Flex, Heading, useDisclosure, VStack } from '@chakra-ui/react';
+import {
+  Box,
+  Flex,
+  Heading,
+  Link,
+  useDisclosure,
+  VStack
+} from '@chakra-ui/react';
 import i18next from 'i18next';
 
 import { deleteExpense, deleteIncome, editExpense } from '@/api/Transaction';
@@ -14,7 +21,9 @@ export const TransactionList = ({
   list,
   maxH,
   isExpensesType = false,
-  isShortView = false
+  isShortView = false,
+  onShowMore,
+  hasNextPage
 }) => {
   const [chosenTransactionData, setChosenTransactionData] = useState({});
 
@@ -171,6 +180,11 @@ export const TransactionList = ({
             isShortView={isShortView}
           />
         ))}
+        {hasNextPage ? (
+          <Flex justify="flex-end" w="100%">
+            <Link onClick={onShowMore}>Show more</Link>
+          </Flex>
+        ) : null}
       </VStack>
 
       {!!Object.keys(chosenTransactionData).length && (
