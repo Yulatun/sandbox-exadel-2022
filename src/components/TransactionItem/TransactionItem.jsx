@@ -39,7 +39,7 @@ export const TransactionItem = ({
     if (category?.subCategories?.length) {
       return (category.subCategories || []).find(
         (subcategory) => subcategory.id === transactionData.subCategoryId
-      ).name;
+      )?.name;
     }
 
     return '';
@@ -116,7 +116,7 @@ export const TransactionItem = ({
                       w="100%"
                       label={
                         transactionData.description.length
-                          ? transactionData.description.length
+                          ? transactionData.description
                           : i18next.t('transaction.tooltip.note')
                       }
                     >
