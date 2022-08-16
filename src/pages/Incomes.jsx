@@ -1,15 +1,24 @@
-import { useInfiniteQuery, useQuery } from 'react-query';
-import { Flex, Text } from '@chakra-ui/react';
+import {
+  useInfiniteQuery,
+  useMutation,
+  useQuery,
+  useQueryClient
+} from 'react-query';
+import { Button, Flex, Text, useDisclosure } from '@chakra-ui/react';
 import i18next from 'i18next';
 
 import { getCategories } from '@/api/Category';
-import { getIncomes } from '@/api/Transaction';
+import { createIncome, getIncomes } from '@/api/Transaction';
+import { getUser } from '@/api/User';
 import { getWallets } from '@/api/Wallet';
-import { Preloader, TransactionList } from '@/components';
+import { AddIncomeModal, Preloader, TransactionList } from '@/components';
 import { getTransactionsList } from '@/helpers/helpers';
 import { useCentralTheme } from '@/theme';
 
 export const Incomes = () => {
+  const expenseModal = useDisclosure();
+  const queryClient = useQueryClient();
+  const createIncomeModal = useDisclosure();
   const {
     data: incomesPages = { pages: [] },
     isLoading,
@@ -40,7 +49,33 @@ export const Incomes = () => {
     isFetched: isFetchedCategories
   } = useQuery(['categories'], getCategories);
 
+  const { data: { data: dataUser } = { data: [] }, isFetched: isFetchedUser } =
+    useQuery(['user'], getUser);
+
   const { textColor } = useCentralTheme();
+  const mutationCreateExpense = useMutation(
+    (data) =>
+      createIncome({
+        walletId: data.wallet?.value,
+        categoryId: data.category?.value,
+        dateOfTransaction: new Date(
+          `${data.date}T${new Date().toISOString().split('T')[1]}`
+        ),
+        value: Number(data.amount),
+        description: data.note
+      }),
+    {
+      onSuccess: () => {
+        createIncomeModal.onOpen();
+        queryClient.invalidateQueries(['wallets']);
+        queryClient.invalidateQueries(['incomeP']);
+      }
+    }
+  );
+  const createExpenseOnSubmit = (data) => {
+    mutationCreateExpense.mutate(data);
+    expenseModal.onClose();
+  };
 
   let allTransactions = [];
 
@@ -60,6 +95,11 @@ export const Incomes = () => {
       px={4}
       w="100%"
     >
+      <Flex justify="flex-end" w="100%">
+        <Button w="50%" mb={5} onClick={expenseModal.onOpen}>
+          {i18next.t('button.addIncome')}
+        </Button>
+      </Flex>
       {!!dataWallets &&
       !!dataCategories &&
       isFetchedIncomes &&
@@ -77,6 +117,17 @@ export const Incomes = () => {
           walletsData={dataWallets}
           categoriesData={dataCategories}
           maxH="570px"
+        />
+      )}
+
+      {!isFetchedIncomes && <Preloader />}
+      {!!dataUser && !!dataWallets && isFetchedUser && isFetchedWallets && (
+        <AddIncomeModal
+          isOpen={expenseModal.isOpen}
+          onSubmit={createExpenseOnSubmit}
+          onClose={expenseModal.onClose}
+          userData={dataUser}
+          walletsData={dataWallets}
         />
       )}
     </Flex>
