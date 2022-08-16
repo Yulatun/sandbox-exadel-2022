@@ -40,7 +40,7 @@ export const EditWalletModal = ({ isOpen, onSubmit, onClose, walletData }) => {
   const {
     register,
     handleSubmit,
-    formState: { errors }
+    formState: { errors, isDirty }
   } = useForm({
     defaultValues: {
       name: walletData.name,
@@ -48,6 +48,8 @@ export const EditWalletModal = ({ isOpen, onSubmit, onClose, walletData }) => {
       setDefault: defaultWallet
     }
   });
+
+  const onSubmitting = isDirty ? onSubmit : onClose;
 
   return (
     <Modal closeOnOverlayClick={false} isOpen={isOpen} onClose={onClose}>
@@ -122,7 +124,7 @@ export const EditWalletModal = ({ isOpen, onSubmit, onClose, walletData }) => {
           </FormControl>
         </ModalBody>
         <ModalFooter>
-          <Button onClick={handleSubmit(onSubmit)} mr={3}>
+          <Button onClick={handleSubmit(onSubmitting)} mr={3}>
             {i18next.t('button.submit')}
           </Button>
           <Button onClick={onClose} variant="secondary">

@@ -128,7 +128,7 @@ export const WalletView = () => {
       return;
     }
     editMutationWallet.mutate(data);
-    editWalletModal.onClose();
+    resetEditOnClose();
     toast({
       title: i18next.t('modal.editWallet.editedWallet.success'),
       status: 'success'
