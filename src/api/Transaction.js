@@ -16,8 +16,8 @@ export const deleteIncome = async (dataId) => {
   return instance.delete(`/api/v1/Transaction/Income?incomeId=${dataId}`);
 };
 
-export const getExpenses = async () => {
-  return instance.get('/api/v1/Transaction/Expense');
+export const getExpenses = async ({ pageParam = 1 }) => {
+  return instance.get(`/api/v1/Transaction/Expense?PageNumber=${pageParam}`);
 };
 
 export const createExpense = async (data) => {
