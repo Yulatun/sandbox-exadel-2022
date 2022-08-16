@@ -1,15 +1,24 @@
+import { useState } from 'react';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
 import { useNavigate, useParams } from 'react-router-dom';
-import { DeleteIcon } from '@chakra-ui/icons';
-import { Flex, IconButton, Text, useDisclosure } from '@chakra-ui/react';
+import { DeleteIcon, EditIcon } from '@chakra-ui/icons';
+import {
+  createStandaloneToast,
+  Flex,
+  IconButton,
+  Text,
+  useDisclosure
+} from '@chakra-ui/react';
 import i18next from 'i18next';
 
 import { getCategories } from '@/api/Category';
+import { getCurrencies } from '@/api/Currency';
 import { getExpenses, getIncomes } from '@/api/Transaction';
 import { getPayers, getUser } from '@/api/User';
-import { deleteWallet, getWallets } from '@/api/Wallet';
+import { deleteWallet, editWallet, getWallets } from '@/api/Wallet';
 import {
   ConfirmationModal,
+  EditWalletModal,
   NotificationModal,
   Preloader,
   TransactionList,
@@ -21,11 +30,16 @@ import { useCentralTheme } from '@/theme';
 export const WalletView = () => {
   const { id: walletId } = useParams();
 
+  const [chosenWallet, setChosenWallet] = useState({});
+
+  const editWalletModal = useDisclosure();
   const deleteWalletModal = useDisclosure();
+
   const navigate = useNavigate();
   const queryClient = useQueryClient();
 
-  const { bgColor } = useCentralTheme();
+  const { toast } = createStandaloneToast();
+  const { bgColor, textColor } = useCentralTheme();
 
   const { data: { data: dataUser } = { data: [] }, isFetched: isFetchedUser } =
     useQuery(['user'], getUser);
@@ -55,6 +69,31 @@ export const WalletView = () => {
     isFetched: isFetchedPayers
   } = useQuery(['payers'], getPayers);
 
+  const { data: dataCurrency, isFetched: isFetchedCurrency } = useQuery(
+    ['currency'],
+    getCurrencies
+  );
+
+  const setCurrentId = (currencyCode) =>
+    isFetchedCurrency &&
+    dataCurrency.data.find((currency) => currency.currencyCode === currencyCode)
+      .id;
+
+  const editMutationWallet = useMutation(
+    (data) =>
+      editWallet(data.setDefault, {
+        ...chosenWallet,
+        name: data.name,
+        currencyId: setCurrentId(data.currency),
+        dateOfChange: new Date().toJSON()
+      }).catch((error) => toast({ title: error.message, status: 'error' })),
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries(['wallets']);
+      }
+    }
+  );
+
   const mutationWallet = useMutation(() => deleteWallet(walletId), {
     onSuccess: () => {
       queryClient.invalidateQueries(['wallets']);
@@ -62,8 +101,38 @@ export const WalletView = () => {
     }
   });
 
+  const openWalletOnEdit = (dataWallet) => {
+    setChosenWallet(dataWallet);
+    editWalletModal.onOpen();
+  };
+
   const openWalletOnDelete = () => {
     deleteWalletModal.onOpen();
+  };
+
+  const updateWalletOnEdit = (data) => {
+    if (
+      chosenWallet.currency.currencyCode !== data.currency &&
+      allTransactions.length
+    ) {
+      toast({ title: i18next.t('modal.editWallet.editedCurrency.cancel') });
+      return;
+    }
+    if (dataUser.defaultWallet === walletId && !data.setDefault) {
+      toast({
+        title: i18next.t(
+          'modal.editWallet.editedMessage.nonDefaultWallet.cancel'
+        )
+      });
+      resetEditOnClose();
+      return;
+    }
+    editMutationWallet.mutate(data);
+    resetEditOnClose();
+    toast({
+      title: i18next.t('modal.editWallet.editedWallet.success'),
+      status: 'success'
+    });
   };
 
   const deleteWalletOnSubmit = () => {
@@ -71,7 +140,13 @@ export const WalletView = () => {
     deleteWalletModal.onClose();
   };
 
-  const { textColor } = useCentralTheme();
+  const resetEditOnClose = () => {
+    setChosenWallet({});
+    editWalletModal.onClose();
+  };
+
+  const currentWallet =
+    isFetchedWallets && dataWallets.find((wallet) => wallet.id === walletId);
 
   let allTransactions = [];
 
@@ -101,13 +176,18 @@ export const WalletView = () => {
         w="100%"
         bg={bgColor}
       >
-        <IconButton
-          onClick={openWalletOnDelete}
-          ml="70%"
-          size="sm"
-          icon={<DeleteIcon />}
-        />
-
+        <Flex justify="space-around" w="100%">
+          <IconButton
+            onClick={() => openWalletOnEdit(currentWallet)}
+            size="sm"
+            icon={<EditIcon />}
+          />
+          <IconButton
+            onClick={openWalletOnDelete}
+            size="sm"
+            icon={<DeleteIcon />}
+          />
+        </Flex>
         <Flex justifyContent="center" mb={8} w="400px">
           {!!dataWallets && isFetchedWallets && (
             <WalletCard
@@ -156,6 +236,15 @@ export const WalletView = () => {
           onClose={deleteWalletModal.onClose}
           title={i18next.t('modal.deleteWallet.title')}
           text={i18next.t('modal.deleteWallet.text')}
+        />
+      )}
+
+      {!!Object.keys(chosenWallet).length && (
+        <EditWalletModal
+          isOpen={editWalletModal.isOpen}
+          onSubmit={updateWalletOnEdit}
+          onClose={resetEditOnClose}
+          walletData={chosenWallet}
         />
       )}
     </>
