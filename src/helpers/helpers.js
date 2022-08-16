@@ -15,3 +15,6 @@ export const getTransactionsList = (
       return { ...transaction, currency: wallet?.currency };
     });
 };
+
+export const areAnyWallets = (dataWallets) =>
+  dataWallets.length ? true : false;

@@ -5,7 +5,6 @@ import {
   Button,
   FormControl,
   FormErrorMessage,
-  FormHelperText,
   FormLabel,
   Input,
   Modal,
@@ -22,14 +21,17 @@ import {
 import i18next from 'i18next';
 
 import { getCurrencies } from '@/api/Currency';
+import { getWallets } from '@/api/Wallet';
 import { createWallet } from '@/api/Wallet';
+import { ConfirmationModal, NotificationModal } from '@/components';
+import { areAnyWallets } from '@/helpers/helpers';
 import { getCurrenciesOptions } from '@/helpers/selectHelpers';
 
-import { NotificationModal } from '../NotificationModal';
 import { SelectControlled } from '../SelectControlled';
 
 export const AddWalletModal = ({ isOpen, onClose }) => {
   const createWalletModal = useDisclosure();
+  const setDefaultModal = useDisclosure();
   const queryClient = useQueryClient();
 
   const {
@@ -42,8 +44,15 @@ export const AddWalletModal = ({ isOpen, onClose }) => {
     register,
     reset,
     handleSubmit,
+    getValues,
+    setValue,
     formState: { errors, currency }
   } = useForm();
+
+  const {
+    data: { data: dataWallets } = { data: [] },
+    isFetched: isFetchedWallets
+  } = useQuery(['wallets'], getWallets);
 
   const mutationCreateWallet = useMutation(
     (data) =>
@@ -67,77 +76,114 @@ export const AddWalletModal = ({ isOpen, onClose }) => {
 
   useEffect(() => reset(), [!isOpen]);
 
+  const onSwitchChange = () => {
+    if (!getValues('setDefault')) {
+      openSetDefaultModal();
+    } else {
+      setValue('setDefault', false);
+    }
+  };
+
+  const openSetDefaultModal = () => {
+    setDefaultModal.onOpen();
+  };
+
+  const setDefaultModalOnSubmit = () => {
+    setValue('setDefault', true);
+    setDefaultModal.onClose();
+  };
+
+  const setDefaultModalOnCancel = () => {
+    setValue('setDefault', false);
+    setDefaultModal.onClose();
+  };
+
   return (
     <>
-      {!!dataCurrencies && isFetchedCurrencies && (
-        <Modal closeOnOverlayClick={false} isOpen={isOpen} onClose={onClose}>
-          <ModalOverlay />
-          <ModalContent>
-            <ModalHeader>{i18next.t('modal.addWallet.title')}</ModalHeader>
-            <ModalCloseButton />
-            <ModalBody>
-              <FormControl isInvalid={errors.name} isRequired py="3">
-                <FormLabel htmlFor="name">
-                  {i18next.t('modal.addWallet.name')}
-                </FormLabel>
+      {!!dataCurrencies &&
+        !!dataWallets &&
+        isFetchedWallets &&
+        isFetchedCurrencies && (
+          <Modal closeOnOverlayClick={false} isOpen={isOpen} onClose={onClose}>
+            <ModalOverlay />
+            <ModalContent>
+              <ModalHeader>{i18next.t('modal.addWallet.title')}</ModalHeader>
+              <ModalCloseButton />
+              <ModalBody>
+                <FormControl isInvalid={errors.name} isRequired py="3">
+                  <FormLabel htmlFor="name">
+                    {i18next.t('modal.addWallet.name')}
+                  </FormLabel>
 
-                <Input
-                  {...register('name', {
-                    required: i18next.t(
-                      'modal.addWallet.validationErrorMessage.name'
-                    ),
-                    minLength: {
-                      value: 2,
-                      message: i18next.t(
-                        'modal.addWallet.validationErrorMessage.tooShort'
-                      )
-                    },
-                    maxLength: {
-                      value: 30,
-                      message: i18next.t(
-                        'modal.addWallet.validationErrorMessage.tooLong'
-                      )
-                    }
-                  })}
-                  type="text"
-                  placeholder={i18next.t('modal.addWallet.name.placeholder')}
+                  <Input
+                    {...register('name', {
+                      required: i18next.t(
+                        'modal.addWallet.validationErrorMessage.name'
+                      ),
+                      minLength: {
+                        value: 2,
+                        message: i18next.t(
+                          'modal.addWallet.validationErrorMessage.tooShort'
+                        )
+                      },
+                      maxLength: {
+                        value: 30,
+                        message: i18next.t(
+                          'modal.addWallet.validationErrorMessage.tooLong'
+                        )
+                      }
+                    })}
+                    type="text"
+                    placeholder={i18next.t('modal.addWallet.name.placeholder')}
+                  />
+                  <FormErrorMessage>
+                    <Text>{errors.name && errors.name.message}</Text>
+                  </FormErrorMessage>
+                </FormControl>
+
+                <SelectControlled
+                  nameOfSelect="currency"
+                  control={control}
+                  errorData={currency}
+                  listOfOptions={getCurrenciesOptions(dataCurrencies)}
+                  isRequiredData
+                  data={dataCurrencies}
                 />
-                <FormErrorMessage>
-                  <Text>{errors.name && errors.name.message}</Text>
-                </FormErrorMessage>
-              </FormControl>
 
-              <SelectControlled
-                nameOfSelect="currency"
-                control={control}
-                errorData={currency}
-                listOfOptions={getCurrenciesOptions(dataCurrencies)}
-                isRequiredData
-                data={dataCurrencies}
-              />
+                <FormControl py="3">
+                  <FormLabel htmlFor="setDefault">
+                    {i18next.t('modal.addWallet.setDefault')}
+                  </FormLabel>
+                  <Switch
+                    size="lg"
+                    onChange={onSwitchChange}
+                    isChecked={getValues('setDefault')}
+                    isDisabled={!areAnyWallets(dataWallets)}
+                    defaultChecked={!areAnyWallets(dataWallets)}
+                  />
+                </FormControl>
+                {
+                  <ConfirmationModal
+                    isOpen={setDefaultModal.isOpen}
+                    onSubmit={setDefaultModalOnSubmit}
+                    onClose={setDefaultModalOnCancel}
+                    title={i18next.t('modal.addWallet.setDefault')}
+                    text={i18next.t('modal.addWallet.setDefault.helperText')}
+                  />
+                }
+              </ModalBody>
 
-              <FormControl py="3">
-                <FormLabel htmlFor="setDefault">
-                  {i18next.t('modal.addWallet.setDefault')}
-                </FormLabel>
-                <Switch {...register('setDefault')} size="lg" />
-                <FormHelperText>
-                  {i18next.t('modal.addWallet.setDefault.helperText')}
-                </FormHelperText>
-              </FormControl>
-            </ModalBody>
-
-            <ModalFooter>
-              <Button mr={3} onClick={handleSubmit(createWalletOnSubmit)}>
-                {i18next.t('button.submit')}
-              </Button>
-              <Button variant="secondary" onClick={onClose}>
-                {i18next.t('button.cancel')}
-              </Button>
-            </ModalFooter>
-          </ModalContent>
-        </Modal>
-      )}
+              <ModalFooter>
+                <Button mr={3} onClick={handleSubmit(createWalletOnSubmit)}>
+                  {i18next.t('button.submit')}
+                </Button>
+                <Button variant="secondary" onClick={onClose}>
+                  {i18next.t('button.cancel')}
+                </Button>
+              </ModalFooter>
+            </ModalContent>
+          </Modal>
+        )}
       {!isOpen && (
         <NotificationModal
           isOpen={createWalletModal.isOpen}
