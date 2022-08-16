@@ -116,7 +116,7 @@ export const EditCategoryModal = ({
                             .filter(
                               (data) => data.categoryType === categoryType
                             )
-                            //.filter((data) => data.id !== categoryData.id)
+                            .filter((data) => data.id !== categoryData.id)
                             .map((data) => data.name)
                             .includes(name)) ||
                         i18next.t(
