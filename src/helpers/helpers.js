@@ -5,7 +5,7 @@ export const getTransactionsList = (
 ) => {
   return [...dataTransactionsA, ...dataTransactionsB]
     .sort(
-      (a, b) => new Date(a.dateOfTransaction) - new Date(b.dateOfTransaction)
+      (a, b) => new Date(b.dateOfTransaction) - new Date(a.dateOfTransaction)
     )
     .map((transaction) => {
       const wallet = dataWallets.find(
