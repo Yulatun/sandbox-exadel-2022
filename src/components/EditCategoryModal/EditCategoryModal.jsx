@@ -116,7 +116,7 @@ export const EditCategoryModal = ({
                             .filter(
                               (data) => data.categoryType === categoryType
                             )
-                            //.filter((data) => data.id !== categoryData.id)
+                            .filter((data) => data.id !== categoryData.id)
                             .map((data) => data.name)
                             .includes(name)) ||
                         i18next.t(
@@ -154,10 +154,9 @@ export const EditCategoryModal = ({
               </Flex>
             </FormControl>
           </ModalBody>
-
           <ModalFooter>
-            <Button mr={3} onClick={handleSubmit(onSubmit)}>
-              {i18next.t('modal.addCategory.editButton')}
+            <Button mr={3} disabled={!isDirty} onClick={handleSubmit(onSubmit)}>
+              {i18next.t('modal.addCategory.saveButton')}
             </Button>
             <Button variant="secondary" onClick={onCancel}>
               {i18next.t('modal.addCategory.cancelButton')}

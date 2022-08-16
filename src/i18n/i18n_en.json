@@ -167,6 +167,7 @@
   "modal.addCategory.name.placeholder": "Category name",
   "modal.addCategory.addButton": "Add",
   "modal.addCategory.editButton": "Edit",
+  "modal.addCategory.saveButton": "Save",
   "modal.addCategory.cancelButton": " Cancel",
   "modal.addCategory.header.incomeCategory": "Add income category",
   "modal.addCategory.header.expensesCategory": "Add expenses category",
