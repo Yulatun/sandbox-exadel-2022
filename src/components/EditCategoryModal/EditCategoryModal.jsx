@@ -154,10 +154,9 @@ export const EditCategoryModal = ({
               </Flex>
             </FormControl>
           </ModalBody>
-
           <ModalFooter>
-            <Button mr={3} onClick={handleSubmit(onSubmit)}>
-              {i18next.t('modal.addCategory.editButton')}
+            <Button mr={3} disabled={!isDirty} onClick={handleSubmit(onSubmit)}>
+              {i18next.t('modal.addCategory.saveButton')}
             </Button>
             <Button variant="secondary" onClick={onCancel}>
               {i18next.t('modal.addCategory.cancelButton')}
