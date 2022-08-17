@@ -3,7 +3,7 @@ import { useMutation, useQuery, useQueryClient } from 'react-query';
 import { Box, Flex, Grid, GridItem, useDisclosure } from '@chakra-ui/react';
 import i18next from 'i18next';
 
-import { editCategory, getCategories } from '@/api/Category';
+import { deleteCategory, editCategory, getCategories } from '@/api/Category';
 import {
   AccordionComponent,
   AccordionHeadings,
@@ -11,6 +11,7 @@ import {
   EditCategoryModal
 } from '@/components';
 import {} from '@/components';
+import { ConfirmationModal } from '@/components';
 
 export const Categories = () => {
   const [chosenCategoryData, setChosenCategoryData] = useState({});
@@ -18,6 +19,7 @@ export const Categories = () => {
   const expensesCategoriesModal = useDisclosure();
   const incomeCategoriesModal = useDisclosure();
   const editCategoryModal = useDisclosure();
+  const deleteCategoryModal = useDisclosure();
   const queryClient = useQueryClient();
 
   getCategories;
@@ -42,6 +44,26 @@ export const Categories = () => {
     );
   });
 
+  const deletingCategory = useMutation((data) => {
+    return (
+      deleteCategory(data).then(({ status, data }) => {
+        if (status === 200) {
+          alert(i18next.t('modal.deleteCategory.deleteMessage.success'));
+        } else if (status === 400) {
+          const { message } = data;
+          if (message) {
+            alert(message);
+          }
+        }
+      }),
+      {
+        onSuccess: () => {
+          queryClient.invalidateQueries(['categories']);
+        }
+      }
+    );
+  });
+
   const openOnEdit = (dataCategory) => {
     setChosenCategoryData(dataCategory);
     editCategoryModal.onOpen();
@@ -55,6 +77,17 @@ export const Categories = () => {
   const resetOnClose = () => {
     setChosenCategoryData({});
     editCategoryModal.onClose();
+  };
+
+  const openOnDelete = (dataCategory) => {
+    setChosenCategoryData(dataCategory);
+    deleteCategoryModal.onOpen();
+  };
+
+  const deleteOnSubmit = (data) => {
+    setChosenCategoryData({});
+    deleteCategoryModal.onClose();
+    deletingCategory.mutate(data);
   };
 
   return (
@@ -79,6 +112,7 @@ export const Categories = () => {
                     name={categoryData.name}
                     color={categoryData.color}
                     onEdit={() => openOnEdit(categoryData)}
+                    onDelete={() => openOnDelete(categoryData)}
                   />
                 ))}
           </Box>
@@ -102,6 +136,7 @@ export const Categories = () => {
                     name={categoryData.name}
                     color={categoryData.color}
                     onEdit={() => openOnEdit(categoryData)}
+                    onDelete={() => openOnDelete(categoryData)}
                   />
                 ))}
           </Box>
@@ -129,6 +164,21 @@ export const Categories = () => {
           onClose={incomeCategoriesModal.onClose}
           categoryType="Income"
         />
+        {!!Object.keys(chosenCategoryData).length && (
+          <ConfirmationModal
+            isOpen={deleteCategoryModal.isOpen}
+            onSubmit={() => {
+              deleteOnSubmit(chosenCategoryData);
+            }}
+            onClose={deleteCategoryModal.onClose}
+            title={i18next.t(
+              `modal.delete${chosenCategoryData.categoryType}.title`
+            )}
+            text={i18next.t(
+              `modal.delete${chosenCategoryData.categoryType}.text`
+            )}
+          />
+        )}
       </Flex>
     </>
   );

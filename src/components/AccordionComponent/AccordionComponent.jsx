@@ -75,6 +75,7 @@ export const AccordionComponent = (props) => {
             top={2}
             right={2}
             variant="danger"
+            onClick={props.onDelete}
           >
             <DeleteIcon />
           </Button>
