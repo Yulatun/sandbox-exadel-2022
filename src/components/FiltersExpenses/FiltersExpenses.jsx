@@ -195,12 +195,11 @@ export const FiltersExpenses = () => {
               value={i18next.t('expenses.filters.date.value')}
             />
             <InputRightElement
-              mt="2px"
+              mt="1px"
               mr="1px"
-              h="93%"
+              h="94%"
               w="54px"
               borderRightRadius="5px"
-              borderLeftWidth="1px"
               borderColor={inputSelectBorderColor}
               bg={inputSelectBg}
               cursor="pointer"

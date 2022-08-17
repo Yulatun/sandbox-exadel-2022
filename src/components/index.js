@@ -9,6 +9,7 @@ export { ConfirmationModal } from './ConfirmationModal';
 export { EditCategoryModal } from './EditCategoryModal';
 export { EditExpenseModal } from './EditExpenseModal';
 export { EditIncomeModal } from './EditIncomeModal';
+export { EditWalletModal } from './EditWalletModal';
 export { ErrorBoundary } from './ErrorBoundary';
 export { FiltersExpenses } from './FiltersExpenses';
 export { Footer } from './Footer';
