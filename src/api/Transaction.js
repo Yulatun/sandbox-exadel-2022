@@ -16,8 +16,19 @@ export const deleteIncome = async (dataId) => {
   return instance.delete(`/api/v1/Transaction/Income?incomeId=${dataId}`);
 };
 
-export const getExpenses = async ({ pageParam = 1 }) => {
-  return instance.get(`/api/v1/Transaction/Expense?PageNumber=${pageParam}`);
+export const getExpenses = async (
+  sortColumn = 'IsSortByDate',
+  IsSortDescending = false,
+  pageParam = 1
+) => {
+  const queryString = new URLSearchParams({
+    PageNumber: pageParam,
+    IsSortByDate: false,
+    IsSortByAmount: false,
+    IsSortDescending,
+    [sortColumn]: true
+  }).toString();
+  return instance.get(`/api/v1/Transaction/Expense?${queryString}`);
 };
 
 export const createExpense = async (data) => {

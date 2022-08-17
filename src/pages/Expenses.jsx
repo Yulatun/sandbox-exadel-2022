@@ -1,14 +1,17 @@
+import { useState } from 'react';
 import {
   useInfiniteQuery,
   useMutation,
   useQuery,
   useQueryClient
 } from 'react-query';
+import { ArrowUpDownIcon } from '@chakra-ui/icons';
 import {
   Box,
   Button,
   Flex,
   HStack,
+  IconButton,
   Text,
   useDisclosure
 } from '@chakra-ui/react';
@@ -29,6 +32,8 @@ import { getTransactionsList } from '@/helpers/helpers';
 import { useCentralTheme } from '@/theme';
 
 export const Expenses = () => {
+  const [sort, setSort] = useState('IsSortByDate');
+  const [isSortDescending, setIsSortDescending] = useState(false);
   const expenseModal = useDisclosure();
   const queryClient = useQueryClient();
   const createExpenseModal = useDisclosure();
@@ -39,14 +44,36 @@ export const Expenses = () => {
     isLoading,
     fetchNextPage,
     hasNextPage
-  } = useInfiniteQuery(['expensesP'], getExpenses, {
-    getNextPageParam: (lastPage) => {
-      return lastPage.data.pageInfo.pageNumber !==
-        lastPage.data.pageInfo.totalPages
-        ? lastPage.data.pageInfo.pageNumber + 1
-        : undefined;
+  } = useInfiniteQuery(
+    ['expensesP', sort, isSortDescending],
+    ({ pageParam }) => getExpenses(sort, isSortDescending, pageParam),
+    {
+      getNextPageParam: (lastPage) => {
+        return lastPage.data.pageInfo.pageNumber !==
+          lastPage.data.pageInfo.totalPages
+          ? lastPage.data.pageInfo.pageNumber + 1
+          : undefined;
+      }
     }
-  });
+  );
+
+  const onSetSortByAmount = () => {
+    if (sort === 'IsSortByAmount') {
+      setIsSortDescending(!isSortDescending);
+    } else {
+      setSort('IsSortByAmount');
+      setIsSortDescending(false);
+    }
+  };
+
+  const onSetSortDate = () => {
+    if (sort === 'IsSortByDate') {
+      setIsSortDescending(!isSortDescending);
+    } else {
+      setSort('IsSortByDate');
+      setIsSortDescending(false);
+    }
+  };
 
   const dataExpenses = expensesPage.pages.reduce(
     (result, page) => [...result, ...page.data.expenses],
@@ -125,7 +152,6 @@ export const Expenses = () => {
       <Box mb="50px" w="100%">
         <FiltersExpenses />
       </Box>
-
       <HStack spacing={4} mb="50px" w="100%">
         {['Food', 'Beauty', 'Utilities'].map((name) => (
           <FiltersTag key={name} text={name} />
@@ -135,6 +161,16 @@ export const Expenses = () => {
         <Button w="50%" mb={5} onClick={expenseModal.onOpen}>
           {i18next.t('button.addExpense')}
         </Button>
+      </Flex>
+      <Flex justify="flex-start" w="100%" h="30px">
+        <Flex align="center" ml="2%" onClick={() => onSetSortDate()}>
+          <IconButton icon={<ArrowUpDownIcon />} variant="unstyled" />
+          <Text> {i18next.t('pageExpenses.sort.byDate')}</Text>
+        </Flex>
+        <Flex align="center" ml="25%" onClick={() => onSetSortByAmount()}>
+          <IconButton icon={<ArrowUpDownIcon />} variant="unstyled" />
+          <Text> {i18next.t('pageExpenses.sort.Amount')}</Text>
+        </Flex>
       </Flex>
 
       {!!dataWallets &&
@@ -161,7 +197,6 @@ export const Expenses = () => {
         />
       )}
       {!isFetchedExpenses && <Preloader />}
-
       {!!dataUser &&
         !!dataWallets &&
         !!dataPayers &&

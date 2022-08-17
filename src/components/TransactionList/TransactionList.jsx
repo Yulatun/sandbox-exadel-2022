@@ -47,9 +47,6 @@ export const TransactionList = ({
 
   const { transactionTitleBgColor, textColor } = useCentralTheme();
 
-  const sortTransactionsByDate = (a, b) =>
-    new Date(b.dateOfTransaction) - new Date(a.dateOfTransaction);
-
   const editingIncome = useMutation(
     (data) =>
       editIncome({
@@ -214,7 +211,7 @@ export const TransactionList = ({
       </Flex>
 
       <VStack spacing={5} w="100%" maxH={maxH} overflowY="scroll">
-        {list.sort(sortTransactionsByDate).map((transaction) => (
+        {list.map((transaction) => (
           <TransactionItem
             key={transaction.id}
             transactionData={transaction}
