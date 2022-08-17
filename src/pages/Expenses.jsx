@@ -33,7 +33,7 @@ import { useCentralTheme } from '@/theme';
 
 export const Expenses = () => {
   const [sort, setSort] = useState('IsSortByDate');
-  const [isSortDescending, setIsSortDescending] = useState(false);
+  const [isSortDescending, setIsSortDescending] = useState(true);
   const expenseModal = useDisclosure();
   const queryClient = useQueryClient();
   const createExpenseModal = useDisclosure();
@@ -62,7 +62,7 @@ export const Expenses = () => {
       setIsSortDescending(!isSortDescending);
     } else {
       setSort('IsSortByAmount');
-      setIsSortDescending(false);
+      setIsSortDescending(true);
     }
   };
 
@@ -71,7 +71,7 @@ export const Expenses = () => {
       setIsSortDescending(!isSortDescending);
     } else {
       setSort('IsSortByDate');
-      setIsSortDescending(false);
+      setIsSortDescending(true);
     }
   };
 
