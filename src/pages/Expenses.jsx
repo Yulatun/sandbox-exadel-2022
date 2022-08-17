@@ -163,11 +163,21 @@ export const Expenses = () => {
         </Button>
       </Flex>
       <Flex justify="flex-start" w="100%" h="30px">
-        <Flex align="center" ml="2%" onClick={() => onSetSortDate()}>
+        <Flex
+          align="center"
+          ml="2%"
+          cursor="pointer"
+          onClick={() => onSetSortDate()}
+        >
           <IconButton icon={<ArrowUpDownIcon />} variant="unstyled" />
           <Text> {i18next.t('pageExpenses.sort.byDate')}</Text>
         </Flex>
-        <Flex align="center" ml="25%" onClick={() => onSetSortByAmount()}>
+        <Flex
+          align="center"
+          ml="23%"
+          cursor="pointer"
+          onClick={() => onSetSortByAmount()}
+        >
           <IconButton icon={<ArrowUpDownIcon />} variant="unstyled" />
           <Text> {i18next.t('pageExpenses.sort.Amount')}</Text>
         </Flex>

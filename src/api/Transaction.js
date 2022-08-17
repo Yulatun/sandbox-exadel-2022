@@ -43,7 +43,7 @@ export const getExpenses = async (
     IsSortDescending,
     [sortColumn]: true
   }).toString();
-  console.log(IsSortDescending);
+
   return instance.get(`/api/v1/Transaction/Expense?${queryString}`);
 };
 

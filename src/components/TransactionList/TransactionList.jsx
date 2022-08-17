@@ -2,9 +2,9 @@ import { useState } from 'react';
 import { useMutation, useQueryClient } from 'react-query';
 import {
   Box,
+  Button,
   Flex,
   Heading,
-  Link,
   useDisclosure,
   VStack
 } from '@chakra-ui/react';
@@ -222,10 +222,10 @@ export const TransactionList = ({
           />
         ))}
         {hasNextPage ? (
-          <Flex justify="flex-end" w="100%">
-            <Link onClick={onShowMore}>
+          <Flex justify="center" w="100%" fontSize="xl">
+            <Button onClick={onShowMore}>
               {i18next.t('add.moreTransactions.pagination')}
-            </Link>
+            </Button>
           </Flex>
         ) : null}
       </VStack>
