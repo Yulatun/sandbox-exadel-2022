@@ -1,3 +1,5 @@
+import { useForm } from 'react-hook-form';
+import { useQuery } from 'react-query';
 import { Link as RouterLink } from 'react-router-dom';
 import { AddIcon } from '@chakra-ui/icons';
 import {
@@ -6,25 +8,44 @@ import {
   Heading,
   IconButton,
   Link,
+  Skeleton,
   Text,
   useDisclosure,
   VStack
 } from '@chakra-ui/react';
 import i18next from 'i18next';
 
+import { getTotalBalance } from '@/api/User';
 import { PiggyBankIcon } from '@/assets';
 import {
   AddWalletModal,
-  Preloader,
+  SelectControlled,
   WalletCard,
   WalletCarousel
 } from '@/components';
+import {
+  getDefaultCurrencyData,
+  getWalletsCurrenciesData
+} from '@/helpers/selectHelpers';
 import { useCentralTheme } from '@/theme';
 
-export const WalletsList = ({ walletsData, isFetchedWallets }) => {
+export const WalletsList = ({ userData, walletsData }) => {
   const walletModal = useDisclosure();
 
   const { popupTextColor, textColor, sectionBgColor } = useCentralTheme();
+
+  const { control, watch } = useForm({
+    defaultValues: {
+      totalBalance: getDefaultCurrencyData(userData, walletsData)
+    }
+  });
+
+  const chosenCurrencyCode = watch('totalBalance')?.label;
+
+  const {
+    data: { data: dataTotalBalance } = { data: [] },
+    isFetched: isFetchedTotalBalance
+  } = useQuery(['totalBalance', chosenCurrencyCode], getTotalBalance);
 
   return (
     <>
@@ -37,10 +58,34 @@ export const WalletsList = ({ walletsData, isFetchedWallets }) => {
         borderRadius={35}
         shadow="lg"
       >
-        <Flex justifyContent="center" my="10px">
-          <Heading as="h4" size="md" fontWeight="bold">
+        <Flex alignItems="center" justifyContent="center" my="10px">
+          <Heading as="h4" mr={2} size="md" fontWeight="bold">
             {i18next.t('walletView.headOfBalanceMessage')}&#58;
           </Heading>
+          {(!!dataTotalBalance && isFetchedTotalBalance && (
+            <Text mr={2} fontSize="xl" fontWeight="bold">
+              {watch('totalBalance') &&
+                Number(dataTotalBalance.toFixed(2)).toLocaleString('de-DE')}
+            </Text>
+          )) || (
+            <Skeleton
+              mr={2}
+              width="90px"
+              height="30px"
+              borderRadius="5px"
+              startColor="orange.100"
+              endColor="orange.200"
+            />
+          )}
+          <Box mt="10px" maxW="100px" w="100%">
+            <SelectControlled
+              size="sm"
+              nameOfSelect="totalBalance"
+              control={control}
+              listOfOptions={getWalletsCurrenciesData(walletsData)}
+              data={walletsData}
+            />
+          </Box>
         </Flex>
 
         <Flex alignItems="center" justifyContent="space-between">
@@ -64,9 +109,7 @@ export const WalletsList = ({ walletsData, isFetchedWallets }) => {
             {i18next.t('modal.addWallet.title')}
           </Flex>
 
-          {!isFetchedWallets && <Preloader />}
           {!!walletsData &&
-            isFetchedWallets &&
             (walletsData.length > 3 ? (
               <WalletCarousel walletsData={walletsData} />
             ) : walletsData.length === 1 ? (

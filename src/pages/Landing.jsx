@@ -131,51 +131,50 @@ export const Landing = () => {
 
   return (
     <>
-      <Flex flexDir="column" alignItems="center" w="100%" p={4}>
-        <Flex my={8} direction="row" justify="center" align="center">
-          <Button mr={8} onClick={expenseModal.onOpen}>
-            {i18next.t('button.addExpense')}
-          </Button>
+      {(!!dataUser && isFetchedUser && (
+        <Flex flexDir="column" alignItems="center" w="100%" p={4}>
+          <Flex my={8} direction="row" justify="center" align="center">
+            <Button mr={8} onClick={expenseModal.onOpen}>
+              {i18next.t('button.addExpense')}
+            </Button>
 
-          <Button onClick={incomeModal.onOpen}>
-            {i18next.t('button.addIncome')}
-          </Button>
-        </Flex>
+            <Button onClick={incomeModal.onOpen}>
+              {i18next.t('button.addIncome')}
+            </Button>
+          </Flex>
 
-        <WalletsList
-          walletsData={dataWallets}
-          isFetchedWallets={isFetchedWallets}
-        />
+          {!!dataWallets && !!isFetchedWallets && (
+            <WalletsList userData={dataUser} walletsData={dataWallets} />
+          )}
 
-        <Text my={8} color={textColor} fontSize="xl">
-          {i18next.t('transaction.recentTransactions')}
-        </Text>
-
-        {!!dataWallets &&
-        !!dataCategories &&
-        !!dataPayers &&
-        isFetchedIncomes &&
-        isFetchedExpenses &&
-        isFetchedWallets &&
-        isFetchedCategories &&
-        isFetchedPayers &&
-        !recentTransactions.length ? (
-          <Text color={textColor} fontSize="xl">
-            {i18next.t('transaction.noData')}
+          <Text my={8} color={textColor} fontSize="xl">
+            {i18next.t('transaction.recentTransactions')}
           </Text>
-        ) : (
-          <TransactionList
-            list={recentTransactions}
-            maxH="380px"
-            isShortView
-            walletsData={dataWallets}
-            categoriesData={dataCategories}
-            payersData={dataPayers}
-          />
-        )}
 
-        {(!isFetchedIncomes || !isFetchedExpenses) && <Preloader />}
-      </Flex>
+          {(!!dataWallets &&
+          !!dataCategories &&
+          !!dataPayers &&
+          isFetchedIncomes &&
+          isFetchedExpenses &&
+          isFetchedWallets &&
+          isFetchedCategories &&
+          isFetchedPayers &&
+          !recentTransactions.length ? (
+            <Text color={textColor} fontSize="xl">
+              {i18next.t('transaction.noData')}
+            </Text>
+          ) : (
+            <TransactionList
+              list={recentTransactions}
+              maxH="380px"
+              isShortView
+              walletsData={dataWallets}
+              categoriesData={dataCategories}
+              payersData={dataPayers}
+            />
+          )) || <Preloader />}
+        </Flex>
+      )) || <Preloader />}
 
       {!expenseModal.isOpen && (
         <NotificationModal
