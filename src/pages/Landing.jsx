@@ -131,7 +131,7 @@ export const Landing = () => {
 
   return (
     <>
-      {(!!dataUser && isFetchedUser && (
+      {(!!dataUser && !!dataWallets && isFetchedUser && isFetchedWallets && (
         <Flex flexDir="column" alignItems="center" w="100%" p={4}>
           <Flex my={8} direction="row" justify="center" align="center">
             <Button mr={8} onClick={expenseModal.onOpen}>
@@ -143,20 +143,14 @@ export const Landing = () => {
             </Button>
           </Flex>
 
-          {!!dataWallets && !!isFetchedWallets && (
-            <WalletsList userData={dataUser} walletsData={dataWallets} />
-          )}
+          <WalletsList userData={dataUser} walletsData={dataWallets} />
 
           <Text my={8} color={textColor} fontSize="xl">
             {i18next.t('transaction.recentTransactions')}
           </Text>
 
-          {(!!dataWallets &&
-          !!dataCategories &&
+          {(!!dataCategories &&
           !!dataPayers &&
-          isFetchedIncomes &&
-          isFetchedExpenses &&
-          isFetchedWallets &&
           isFetchedCategories &&
           isFetchedPayers &&
           !recentTransactions.length ? (
