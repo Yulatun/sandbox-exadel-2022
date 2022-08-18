@@ -127,7 +127,6 @@ export const AddExpenseModal = ({
                           'modal.addExpense.validationErrorMessage.amount'
                         ),
                         validate: (value) => {
-                          console.log(balance);
                           return (
                             value < balance ||
                             i18next.t(
@@ -158,7 +157,7 @@ export const AddExpenseModal = ({
                 data={dataCategories}
                 modalOnOpen={categoryModal.onOpen}
               />
-              {/* {console.log(balance)} */}
+
               <SelectControlled
                 nameOfSelect="subcategory"
                 control={control}
