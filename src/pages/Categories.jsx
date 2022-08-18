@@ -1,6 +1,14 @@
 import { useState } from 'react';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
-import { Box, Flex, Grid, GridItem, useDisclosure } from '@chakra-ui/react';
+import {
+  Box,
+  Flex,
+  Grid,
+  GridItem,
+  Skeleton,
+  useDisclosure,
+  useToast
+} from '@chakra-ui/react';
 import i18next from 'i18next';
 
 import { deleteCategory, editCategory, getCategories } from '@/api/Category';
@@ -12,9 +20,12 @@ import {
 } from '@/components';
 import {} from '@/components';
 import { ConfirmationModal } from '@/components';
+import { useCentralTheme } from '@/theme';
 
 export const Categories = () => {
   const [chosenCategoryData, setChosenCategoryData] = useState({});
+  const toast = useToast();
+  const { bgColor, sectionBgColor } = useCentralTheme();
 
   const expensesCategoriesModal = useDisclosure();
   const incomeCategoriesModal = useDisclosure();
@@ -28,41 +39,59 @@ export const Categories = () => {
     getCategories
   );
 
-  const editingCategory = useMutation((data) => {
-    return (
-      editCategory(data)
-        .then(() =>
-          alert(i18next.t('modal.editCategory.editedMessage.success'))
-        )
-
-        .catch((error) => console.log(error)),
-      {
-        onSuccess: () => {
-          queryClient.invalidateQueries(['categories']);
-        }
+  const editingCategory = useMutation(
+    (data) => editCategory(data).catch((error) => console.log(error)),
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries(['categories']);
+        toast({
+          title: i18next.t('modal.editCategory.editedMessage.success'),
+          status: 'success',
+          duration: 3000,
+          isClosable: true,
+          position: 'top',
+          containerStyle: {
+            margin: '100px'
+          }
+        });
       }
-    );
-  });
+    }
+  );
 
-  const deletingCategory = useMutation((data) => {
-    return (
-      deleteCategory(data).then(({ status, data }) => {
+  const deletingCategory = useMutation(
+    (data) => deleteCategory(data).catch((error) => console.log(error)),
+    {
+      onSuccess: ({ status, data }) => {
         if (status === 200) {
-          alert(i18next.t('modal.deleteCategory.deleteMessage.success'));
+          queryClient.invalidateQueries(['categories']);
+          toast({
+            title: i18next.t('modal.deleteCategory.deleteMessage.success'),
+            status: 'success',
+            duration: 3000,
+            isClosable: true,
+            position: 'top',
+            containerStyle: {
+              margin: '100px'
+            }
+          });
         } else if (status === 400) {
           const { message } = data;
           if (message) {
-            alert(message);
+            toast({
+              title: message,
+              status: 'error',
+              duration: 3000,
+              isClosable: true,
+              position: 'top',
+              containerStyle: {
+                margin: '100px'
+              }
+            });
           }
         }
-      }),
-      {
-        onSuccess: () => {
-          queryClient.invalidateQueries(['categories']);
-        }
       }
-    );
-  });
+    }
+  );
 
   const openOnEdit = (dataCategory) => {
     setChosenCategoryData(dataCategory);
@@ -92,15 +121,15 @@ export const Categories = () => {
 
   return (
     <>
-      <Grid templateColumns="repeat(2, 1fr)" height="100vh" mt={8}>
+      <Grid templateColumns="repeat(2, 1fr)" mt={8}>
         <GridItem className="expenseCol">
           <AccordionHeadings
             headingOne={i18next.t('expenses.categoryHeading')}
             headingTwo={i18next.t('expenses.addCategoryHeading')}
             action={expensesCategoriesModal.onOpen}
           />
-          <Box maxH="580px" overflowY="scroll">
-            {!!dataCategories &&
+          <Box h="580px" overflowY="auto">
+            {(!!dataCategories &&
               !!dataCategories.data &&
               isFetchedCategories &&
               dataCategories.data
@@ -114,7 +143,15 @@ export const Categories = () => {
                     onEdit={() => openOnEdit(categoryData)}
                     onDelete={() => openOnDelete(categoryData)}
                   />
-                ))}
+                ))) || (
+              <Skeleton
+                height="56px"
+                mr="16px"
+                borderRadius="8px"
+                startColor={bgColor}
+                endColor={sectionBgColor}
+              />
+            )}
           </Box>
         </GridItem>
         <GridItem className="incomeCol">
@@ -123,8 +160,8 @@ export const Categories = () => {
             headingTwo={i18next.t('income.addCategoryHeading')}
             action={incomeCategoriesModal.onOpen}
           />
-          <Box maxH="580px" overflowY="scroll" mb={8}>
-            {!!dataCategories &&
+          <Box h="580px" overflowY="auto" mb={8}>
+            {(!!dataCategories &&
               !!dataCategories.data &&
               isFetchedCategories &&
               dataCategories.data
@@ -138,7 +175,15 @@ export const Categories = () => {
                     onEdit={() => openOnEdit(categoryData)}
                     onDelete={() => openOnDelete(categoryData)}
                   />
-                ))}
+                ))) || (
+              <Skeleton
+                height="56px"
+                ml="16px"
+                borderRadius="8px"
+                startColor={bgColor}
+                endColor={sectionBgColor}
+              />
+            )}
           </Box>
         </GridItem>
       </Grid>
