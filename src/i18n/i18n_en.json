@@ -214,7 +214,5 @@
   "admin.button": "Admin",
   "admin.welcomePage": "Welcome to Admin page!",
   "admin.disclaimer": "You can see me only if you have an Admin role ;)",
-  "add.moreTransactions.pagination": "Show more",
-  "pageExpenses.sort.byDate": "Sort by Date",
-  "pageExpenses.sort.Amount": "Sort by Amount"
+  "add.moreTransactions.pagination": "Show more"
 }
