@@ -12,6 +12,7 @@ import {
   Text,
   useDisclosure
 } from '@chakra-ui/react';
+import { format } from 'date-fns';
 import i18next from 'i18next';
 
 import { getNotifications, readNotification } from '@/api/Notification';
@@ -132,6 +133,9 @@ export const NotificationsMenu = () => {
                       <MenuItem
                         key={notification.id}
                         pos="relative"
+                        flexDirection="column"
+                        alignItems="flex-start"
+                        justifyContent="flex-start"
                         px="35px"
                         minH="60px"
                         borderBottom="1px solid #ccc"
@@ -158,11 +162,14 @@ export const NotificationsMenu = () => {
                             borderRadius="50px"
                           />
                         )}
-                        <span>
+                        <Text mb={1}>
                           {notification.description.length >= 120
                             ? `${notification.description.slice(0, 120)}...`
                             : notification.description}
-                        </span>
+                        </Text>
+                        <Box w="100%" textAlign="end" color="gray">
+                          {format(new Date(notification.date), 'dd.MM.yyyy')}
+                        </Box>
                       </MenuItem>
                     );
                   }

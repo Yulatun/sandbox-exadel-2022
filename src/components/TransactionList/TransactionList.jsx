@@ -2,9 +2,9 @@ import { useState } from 'react';
 import { useMutation, useQueryClient } from 'react-query';
 import {
   Box,
+  Button,
   Flex,
   Heading,
-  Link,
   useDisclosure,
   VStack
 } from '@chakra-ui/react';
@@ -46,9 +46,6 @@ export const TransactionList = ({
   const queryClient = useQueryClient();
 
   const { transactionTitleBgColor, textColor } = useCentralTheme();
-
-  const sortTransactionsByDate = (a, b) =>
-    new Date(b.dateOfTransaction) - new Date(a.dateOfTransaction);
 
   const editingIncome = useMutation(
     (data) =>
@@ -180,7 +177,7 @@ export const TransactionList = ({
             w="15%"
             textAlign="center"
           >
-            {i18next.t('transaction.title.data')}
+            {i18next.t('transaction.title.date')}
           </Heading>
 
           <Heading as="h2" size="sm" mr="10px" w="25%" textAlign="center">
@@ -214,7 +211,7 @@ export const TransactionList = ({
       </Flex>
 
       <VStack spacing={5} w="100%" maxH={maxH} overflowY="scroll">
-        {list.sort(sortTransactionsByDate).map((transaction) => (
+        {list.map((transaction) => (
           <TransactionItem
             key={transaction.id}
             transactionData={transaction}
@@ -225,10 +222,10 @@ export const TransactionList = ({
           />
         ))}
         {hasNextPage ? (
-          <Flex justify="flex-end" w="100%">
-            <Link onClick={onShowMore}>
+          <Flex justify="center" w="100%" fontSize="xl">
+            <Button onClick={onShowMore}>
               {i18next.t('add.moreTransactions.pagination')}
-            </Link>
+            </Button>
           </Flex>
         ) : null}
       </VStack>

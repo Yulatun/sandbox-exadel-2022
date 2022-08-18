@@ -9,12 +9,35 @@ export const getDefaultWalletData = (userData, dataWallets) => {
   };
 };
 
-export const getDefaultPayerData = (userData, dataPayers) => {
-  // Need to change logic after backend add 'defaultPayer'
+export const getDefaultCurrencyData = (userData, dataWallets) => {
+  const defaultWallet = (dataWallets || []).find(
+    (wallet) => wallet.id === userData?.defaultWallet
+  );
+
+  return {
+    value: defaultWallet?.currency?.id,
+    label: defaultWallet?.currency?.currencyCode
+  };
+};
+
+export const getDefaultPayerData = (dataPayers) => {
   return {
     value: dataPayers[0],
     label: dataPayers[0]
   };
+};
+
+export const getWalletsCurrenciesData = (dataWallets) => {
+  return (dataWallets || [])
+    .filter(
+      (wallet, index, allWallets) =>
+        index ===
+        allWallets.findIndex((t) => t.currency.id === wallet.currency.id)
+    )
+    .map((wallet) => ({
+      value: wallet?.currency?.id,
+      label: wallet?.currency?.currencyCode
+    }));
 };
 
 export const getWalletCurrencyData = (chosenWallet, dataWallets) => {

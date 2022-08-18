@@ -204,7 +204,7 @@
   "modal.addTransaction.addCategory": "+ Add new category",
   "modal.addTransaction.addSubcategoryQuestion": "Can not find the right subcategory?",
   "modal.addTransaction.addSubcategory": "+ Add new subcategory",
-  "transaction.title.data": "Data",
+  "transaction.title.date": "Date",
   "transaction.title.category": "Category",
   "transaction.title.amount": "Amount",
   "transaction.title.walletName": "Wallet name",
@@ -214,5 +214,7 @@
   "admin.button": "Admin",
   "admin.welcomePage": "Welcome to Admin page!",
   "admin.disclaimer": "You can see me only if you have an Admin role ;)",
-  "add.moreTransactions.pagination": "Show more"
+  "add.moreTransactions.pagination": "Show more",
+  "pageExpenses.sort.byDate": "Sort by Date",
+  "pageExpenses.sort.Amount": "Sort by Amount"
 }
