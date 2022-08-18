@@ -32,6 +32,7 @@ import {
   getDefaultWalletData,
   getPayersOptions,
   getSubcategoriesOptions,
+  getWalletBalanceData,
   getWalletCurrencyData,
   getWalletsOptions
 } from '@/helpers/selectHelpers';
@@ -92,6 +93,8 @@ export const AddExpenseModal = ({
     payerModal.onClose();
   };
 
+  const balance = getWalletBalanceData(watch('wallet'), walletsData);
+
   return (
     <>
       {!!dataCategories && isFetchedCategories && (
@@ -122,7 +125,16 @@ export const AddExpenseModal = ({
                       {...register('amount', {
                         required: i18next.t(
                           'modal.addExpense.validationErrorMessage.amount'
-                        )
+                        ),
+                        validate: (value) => {
+                          console.log(balance);
+                          return (
+                            value < balance ||
+                            i18next.t(
+                              'modal.addExpense.validationErrorMessage.notEnoughMoney'
+                            )
+                          );
+                        }
                       })}
                     />
                   </NumberInput>
@@ -146,7 +158,7 @@ export const AddExpenseModal = ({
                 data={dataCategories}
                 modalOnOpen={categoryModal.onOpen}
               />
-
+              {/* {console.log(balance)} */}
               <SelectControlled
                 nameOfSelect="subcategory"
                 control={control}

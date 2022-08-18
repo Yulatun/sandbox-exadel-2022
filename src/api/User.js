@@ -18,6 +18,6 @@ export const createPayer = async (dataName) => {
 
 export const getTotalBalance = async (params) => {
   return instance.get(
-    `/api/v1/User/GetTotalBalance?currencyCode=${params.queryKey[1]}`
+    `/api/v1/User/TotalBalance?currencyCode=${params.queryKey[1]}`
   );
 };

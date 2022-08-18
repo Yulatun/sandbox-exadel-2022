@@ -48,6 +48,14 @@ export const getWalletCurrencyData = (chosenWallet, dataWallets) => {
   return chosenWalletData?.currency;
 };
 
+export const getWalletBalanceData = (chosenWallet, dataWallets) => {
+  const chosenWalletData = (dataWallets || []).find(
+    (wallet) => wallet.id === chosenWallet?.value
+  );
+
+  return chosenWalletData?.balance;
+};
+
 export const getChosenWalletData = (chosenTransaction, dataWallets) => {
   const chosenWalletData = (dataWallets || []).find(
     (wallet) => wallet.id === chosenTransaction.walletId
