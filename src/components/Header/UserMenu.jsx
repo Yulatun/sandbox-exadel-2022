@@ -5,6 +5,7 @@ import {
   SettingsIcon
 } from '@chakra-ui/icons';
 import {
+  Avatar,
   Menu,
   MenuButton,
   MenuItem,
@@ -20,7 +21,11 @@ import { logout } from '@/helpers/authorization';
 import { useCentralTheme } from '@/theme';
 
 export const UserMenu = () => {
-  const { data: dataUser } = useQuery(['user'], getUser);
+  const { data: { data: dataUser } = { data: [] } } = useQuery(
+    ['user'],
+    getUser
+  );
+  const userName = dataUser.fullName;
 
   const deleteModal = useDisclosure();
   const logoutModal = useDisclosure();
@@ -57,7 +62,7 @@ export const UserMenu = () => {
           borderColor: textColor
         }}
       >
-        <SettingsIcon w="25px" h="25px" />
+        <Avatar name={userName} w="40px" h="40px" />
       </MenuButton>
       <MenuList bg={popupBgColor} color={popupTextColor} fontWeight="bold">
         <MenuItem
