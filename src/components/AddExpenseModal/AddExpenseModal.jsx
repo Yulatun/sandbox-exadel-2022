@@ -122,7 +122,14 @@ export const AddExpenseModal = ({
                       {...register('amount', {
                         required: i18next.t(
                           'modal.addExpense.validationErrorMessage.amount'
-                        )
+                        ),
+                        validate: {
+                          notNegative: (value) =>
+                            value >= 0 ||
+                            i18next.t(
+                              'modal.addExpense.validationErrorMessage.notNegativeAmount'
+                            )
+                        }
                       })}
                     />
                   </NumberInput>

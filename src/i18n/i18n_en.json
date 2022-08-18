@@ -216,5 +216,6 @@
   "admin.disclaimer": "You can see me only if you have an Admin role ;)",
   "add.moreTransactions.pagination": "Show more",
   "pageExpenses.sort.byDate": "Sort by Date",
-  "pageExpenses.sort.Amount": "Sort by Amount"
+  "pageExpenses.sort.Amount": "Sort by Amount",
+  "modal.addExpense.validationErrorMessage.notNegativeAmount": "please provide positive number, your amount will be converted to negative automatically"
 }
