@@ -73,7 +73,11 @@ export const Landing = () => {
       dataWallets,
       dataIncomes,
       dataExpenses
-    ).slice(0, 10);
+    )
+      .sort(
+        (a, b) => new Date(b.dateOfTransaction) - new Date(a.dateOfTransaction)
+      )
+      .slice(0, 10);
   }
 
   const mutationCreateExpense = useMutation(
