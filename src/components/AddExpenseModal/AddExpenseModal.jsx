@@ -93,8 +93,6 @@ export const AddExpenseModal = ({
     payerModal.onClose();
   };
 
-  const balance = getWalletBalanceData(watch('wallet'), walletsData);
-
   return (
     <>
       {!!dataCategories && isFetchedCategories && (
@@ -128,7 +126,11 @@ export const AddExpenseModal = ({
                         ),
                         validate: (value) => {
                           return (
-                            value < balance ||
+                            value <
+                              getWalletBalanceData(
+                                watch('wallet'),
+                                walletsData
+                              ) ||
                             i18next.t(
                               'modal.addExpense.validationErrorMessage.notEnoughMoney'
                             )
