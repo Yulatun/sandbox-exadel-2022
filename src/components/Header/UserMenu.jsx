@@ -10,6 +10,7 @@ import {
   MenuButton,
   MenuItem,
   MenuList,
+  SkeletonCircle,
   useDisclosure
 } from '@chakra-ui/react';
 import i18next from 'i18next';
@@ -21,10 +22,8 @@ import { logout } from '@/helpers/authorization';
 import { useCentralTheme } from '@/theme';
 
 export const UserMenu = () => {
-  const { data: { data: dataUser } = { data: [] } } = useQuery(
-    ['user'],
-    getUser
-  );
+  const { data: { data: dataUser } = { data: [] }, isFetched: isFetchedUser } =
+    useQuery(['user'], getUser);
   const userName = dataUser.fullName;
 
   const deleteModal = useDisclosure();
@@ -62,7 +61,16 @@ export const UserMenu = () => {
           borderColor: textColor
         }}
       >
-        <Avatar name={userName} w="40px" h="40px" />
+        {!!dataUser && isFetchedUser && (
+          <Avatar name={userName} w="40px" h="40px" />
+        )}
+        {!isFetchedUser && (
+          <SkeletonCircle
+            size="12"
+            startColor="orange.100"
+            endColor="orange.200"
+          />
+        )}
       </MenuButton>
       <MenuList bg={popupBgColor} color={popupTextColor} fontWeight="bold">
         <MenuItem
