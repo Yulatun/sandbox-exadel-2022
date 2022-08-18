@@ -204,7 +204,7 @@
   "modal.addTransaction.addCategory": "+ Add new category",
   "modal.addTransaction.addSubcategoryQuestion": "Can not find the right subcategory?",
   "modal.addTransaction.addSubcategory": "+ Add new subcategory",
-  "transaction.title.data": "Data",
+  "transaction.title.date": "Date",
   "transaction.title.category": "Category",
   "transaction.title.amount": "Amount",
   "transaction.title.walletName": "Wallet name",
@@ -219,5 +219,7 @@
   "modal.addSubCategory.formName": "Subcategory name",
   "modal.addSubCategory.header.expensesSubCategory": "Add expenses subcategory",
   "modal.deleteSubCategory.text": "Do you really want to cancel the creation of the subcategory? All your entered data will be lost",
-  "modal.addSubCategory.submitSuccessful.message": "You have created new subcategory successfully"
+  "modal.addSubCategory.submitSuccessful.message": "You have created new subcategory successfully",
+  "pageExpenses.sort.byDate": "Sort by Date",
+  "pageExpenses.sort.Amount": "Sort by Amount"
 }

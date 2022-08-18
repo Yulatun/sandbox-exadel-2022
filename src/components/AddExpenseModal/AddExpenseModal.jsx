@@ -70,7 +70,7 @@ export const AddExpenseModal = ({
   } = useForm({
     defaultValues: {
       wallet: getDefaultWalletData(userData, walletsData),
-      payer: getDefaultPayerData(userData, payersData),
+      payer: getDefaultPayerData(payersData),
       date: new Date().toISOString().split('T')[0]
     }
   });
@@ -78,7 +78,7 @@ export const AddExpenseModal = ({
   const resetForm = () => {
     reset({
       wallet: getDefaultWalletData(userData, walletsData),
-      payer: getDefaultPayerData(userData, payersData),
+      payer: getDefaultPayerData(payersData),
       date: new Date().toISOString().split('T')[0]
     });
   };

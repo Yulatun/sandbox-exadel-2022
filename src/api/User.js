@@ -15,3 +15,9 @@ export const getPayers = async () => {
 export const createPayer = async (dataName) => {
   return instance.post(`/api/v1/User/Payers?payerName=${dataName}`);
 };
+
+export const getTotalBalance = async (params) => {
+  return instance.get(
+    `/api/v1/User/TotalBalance?currencyCode=${params.queryKey[1]}`
+  );
+};
