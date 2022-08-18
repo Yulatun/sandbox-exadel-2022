@@ -4,6 +4,7 @@ import { Link as RouterLink } from 'react-router-dom';
 import { AddIcon } from '@chakra-ui/icons';
 import {
   Box,
+  Center,
   Flex,
   Heading,
   IconButton,
@@ -106,7 +107,9 @@ export const WalletsList = ({ userData, walletsData }) => {
               onClick={walletModal.onOpen}
               icon={<AddIcon />}
             />
-            {i18next.t('modal.addWallet.title')}
+            <Center textAlign="center">
+              {i18next.t('modal.addWallet.title')}
+            </Center>
           </Flex>
 
           {!!walletsData &&
