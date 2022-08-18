@@ -180,7 +180,7 @@ export const TransactionList = ({
             w="15%"
             textAlign="center"
           >
-            {i18next.t('transaction.title.data')}
+            {i18next.t('transaction.title.date')}
           </Heading>
 
           <Heading as="h2" size="sm" mr="10px" w="25%" textAlign="center">

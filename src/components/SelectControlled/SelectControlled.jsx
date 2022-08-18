@@ -13,6 +13,7 @@ import i18next from 'i18next';
 import { getSelectFieldsData } from '@/helpers/selectHelpers';
 
 export const SelectControlled = ({
+  size = 'md',
   nameOfSelect,
   control,
   errorData,
@@ -45,6 +46,7 @@ export const SelectControlled = ({
             </FormLabel>
             {(!!data && (
               <Select
+                size={size}
                 name={name}
                 value={value}
                 ref={ref}

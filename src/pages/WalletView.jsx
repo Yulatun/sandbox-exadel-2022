@@ -90,6 +90,7 @@ export const WalletView = () => {
     {
       onSuccess: () => {
         queryClient.invalidateQueries(['wallets']);
+        queryClient.invalidateQueries(['user']);
       }
     }
   );

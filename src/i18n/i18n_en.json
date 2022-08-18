@@ -204,7 +204,7 @@
   "modal.addTransaction.addCategory": "+ Add new category",
   "modal.addTransaction.addSubcategoryQuestion": "Can not find the right subcategory?",
   "modal.addTransaction.addSubcategory": "+ Add new subcategory",
-  "transaction.title.data": "Data",
+  "transaction.title.date": "Date",
   "transaction.title.category": "Category",
   "transaction.title.amount": "Amount",
   "transaction.title.walletName": "Wallet name",
