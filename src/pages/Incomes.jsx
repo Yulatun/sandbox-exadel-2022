@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import {
   useInfiniteQuery,
   useMutation,
@@ -16,7 +17,9 @@ import { getTransactionsList } from '@/helpers/helpers';
 import { useCentralTheme } from '@/theme';
 
 export const Incomes = () => {
-  const expenseModal = useDisclosure();
+  const [sort, setSort] = useState('IsSortByDate');
+  const [isSortDescending, setIsSortDescending] = useState(true);
+  const incomeModal = useDisclosure();
   const queryClient = useQueryClient();
   const createIncomeModal = useDisclosure();
   const {
@@ -25,14 +28,35 @@ export const Incomes = () => {
     isFetched: isFetchedIncomes,
     fetchNextPage,
     hasNextPage
-  } = useInfiniteQuery(['incomesPagination'], getIncomes, {
-    getNextPageParam: (lastPage) => {
-      return lastPage.data.pageInfo.pageNumber !==
-        lastPage.data.pageInfo.totalPages
-        ? lastPage.data.pageInfo.pageNumber + 1
-        : undefined;
+  } = useInfiniteQuery(
+    ['incomesP', sort, isSortDescending],
+    ({ pageParam }) => getIncomes(sort, isSortDescending, pageParam),
+    {
+      getNextPageParam: (lastPage) => {
+        return lastPage.data.pageInfo.pageNumber !==
+          lastPage.data.pageInfo.totalPages
+          ? lastPage.data.pageInfo.pageNumber + 1
+          : undefined;
+      }
     }
-  });
+  );
+  const onSetSortByAmount = () => {
+    if (sort === 'IsSortByAmount') {
+      setIsSortDescending(!isSortDescending);
+    } else {
+      setSort('IsSortByAmount');
+      setIsSortDescending(true);
+    }
+  };
+
+  const onSetSortDate = () => {
+    if (sort === 'IsSortByDate') {
+      setIsSortDescending(!isSortDescending);
+    } else {
+      setSort('IsSortByDate');
+      setIsSortDescending(true);
+    }
+  };
 
   const dataIncomes = incomesPages.pages.reduce(
     (result, page) => [...result, ...page.data.incomes],
@@ -53,7 +77,7 @@ export const Incomes = () => {
     useQuery(['user'], getUser);
 
   const { textColor } = useCentralTheme();
-  const mutationCreateExpense = useMutation(
+  const mutationCreateIncome = useMutation(
     (data) =>
       createIncome({
         walletId: data.wallet?.value,
@@ -73,8 +97,8 @@ export const Incomes = () => {
     }
   );
   const createExpenseOnSubmit = (data) => {
-    mutationCreateExpense.mutate(data);
-    expenseModal.onClose();
+    mutationCreateIncome.mutate(data);
+    incomeModal.onClose();
   };
 
   let allTransactions = [];
@@ -96,10 +120,11 @@ export const Incomes = () => {
       w="100%"
     >
       <Flex justify="flex-end" w="100%">
-        <Button w="50%" mb={5} onClick={expenseModal.onOpen}>
+        <Button w="50%" mb={5} onClick={incomeModal.onOpen}>
           {i18next.t('button.addIncome')}
         </Button>
       </Flex>
+
       {!!dataWallets &&
       !!dataCategories &&
       isFetchedIncomes &&
@@ -117,15 +142,17 @@ export const Incomes = () => {
           walletsData={dataWallets}
           categoriesData={dataCategories}
           maxH="570px"
+          onSetSortByAmount={onSetSortByAmount}
+          onSetSortDate={onSetSortDate}
         />
       )}
 
       {!isFetchedIncomes && <Preloader />}
       {!!dataUser && !!dataWallets && isFetchedUser && isFetchedWallets && (
         <AddIncomeModal
-          isOpen={expenseModal.isOpen}
+          isOpen={incomeModal.isOpen}
           onSubmit={createExpenseOnSubmit}
-          onClose={expenseModal.onClose}
+          onClose={incomeModal.onClose}
           userData={dataUser}
           walletsData={dataWallets}
         />
