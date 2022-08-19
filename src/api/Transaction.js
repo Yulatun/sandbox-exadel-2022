@@ -1,7 +1,21 @@
 import { instance } from './ApiProvider';
 
-export const getIncomes = async ({ pageParam = 1 }) => {
-  return instance.get(`/api/v1/Transaction/Income?PageNumber=${pageParam}`);
+export const getIncomes = async ({
+  pageParam = 1,
+  IsSortByDate = false,
+  IsSortByAmount = false,
+  sortColumn = 'IsSortByDate',
+  IsSortDescending = true
+}) => {
+  return instance.get('/api/v1/Transaction/Income', {
+    params: {
+      PageNumber: pageParam,
+      IsSortByDate: IsSortByDate,
+      IsSortByAmount: IsSortByAmount,
+      IsSortDescending: IsSortDescending,
+      [sortColumn]: false
+    }
+  });
 };
 
 export const createIncome = async (data) => {
@@ -16,20 +30,22 @@ export const deleteIncome = async (dataId) => {
   return instance.delete(`/api/v1/Transaction/Income?incomeId=${dataId}`);
 };
 
-export const getExpenses = async (
+export const getExpenses = async ({
+  pageParam = 1,
+  IsSortByDate = false,
+  IsSortByAmount = false,
   sortColumn = 'IsSortByDate',
-  IsSortDescending = true,
-  pageParam = 1
-) => {
-  const queryString = new URLSearchParams({
-    PageNumber: pageParam,
-    IsSortByDate: false,
-    IsSortByAmount: false,
-    IsSortDescending,
-    [sortColumn]: true
-  }).toString();
-
-  return instance.get(`/api/v1/Transaction/Expense?${queryString}`);
+  IsSortDescending = true
+}) => {
+  return instance.get('/api/v1/Transaction/Expense', {
+    params: {
+      PageNumber: pageParam,
+      IsSortByDate: IsSortByDate,
+      IsSortByAmount: IsSortByAmount,
+      IsSortDescending: IsSortDescending,
+      [sortColumn]: false
+    }
+  });
 };
 
 export const createExpense = async (data) => {

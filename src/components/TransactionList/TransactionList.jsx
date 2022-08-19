@@ -1,10 +1,12 @@
 import { useState } from 'react';
 import { useMutation, useQueryClient } from 'react-query';
+import { ArrowUpDownIcon } from '@chakra-ui/icons';
 import {
   Box,
   Button,
   Flex,
   Heading,
+  IconButton,
   useDisclosure,
   VStack
 } from '@chakra-ui/react';
@@ -23,7 +25,6 @@ import { EditExpenseModal } from '../EditExpenseModal';
 import { EditIncomeModal } from '../EditIncomeModal';
 import { NotificationModal } from '../NotificationModal';
 import { TransactionItem } from '../TransactionItem';
-
 export const TransactionList = ({
   list,
   maxH,
@@ -33,7 +34,8 @@ export const TransactionList = ({
   hasNextPage,
   walletsData,
   categoriesData,
-  payersData = null
+  payersData = null,
+  onSetSortDate
 }) => {
   const [chosenTransactionData, setChosenTransactionData] = useState({});
 
@@ -168,29 +170,62 @@ export const TransactionList = ({
         boxShadow="2xl"
         bg={transactionTitleBgColor}
       >
-        <Flex justifyContent="space-between" mr={6} w="100%">
-          <Heading
-            as="h2"
-            size="sm"
-            mr="10px"
-            minW="85px"
-            w="15%"
-            textAlign="center"
-          >
-            {i18next.t('transaction.title.date')}
-          </Heading>
+        <Flex
+          justifyContent="space-between"
+          mr={6}
+          w="100%"
+          alignItems="baseline"
+        >
+          {isShortView ? (
+            <>
+              <Heading
+                as="h2"
+                size="sm"
+                mr="10px"
+                minW="85px"
+                w="15%"
+                textAlign="center"
+              >
+                {i18next.t('transaction.title.date')}
+              </Heading>
 
-          <Heading as="h2" size="sm" mr="10px" w="25%" textAlign="center">
-            {i18next.t('transaction.title.category')}
-          </Heading>
+              <Heading as="h2" size="sm" mr="10px" w="25%" textAlign="center">
+                {i18next.t('transaction.title.category')}
+              </Heading>
 
-          <Heading as="h2" size="sm" mr="10px" w="20%" textAlign="center">
-            {i18next.t('transaction.title.amount')}
-          </Heading>
+              <Heading as="h2" size="sm" mr="10px" w="20%" textAlign="center">
+                {i18next.t('transaction.title.amount')}
+              </Heading>
 
-          <Heading as="h2" size="sm" mr="10px" w="15%" textAlign="center">
-            {i18next.t('transaction.title.walletName')}
-          </Heading>
+              <Heading as="h2" size="sm" mr="10px" w="15%" textAlign="center">
+                {i18next.t('transaction.title.walletName')}
+              </Heading>
+            </>
+          ) : (
+            <>
+              <Heading
+                as="h2"
+                size="sm"
+                mr="10px"
+                minW="85px"
+                w="15%"
+                textAlign="center"
+                onClick={() => onSetSortDate()}
+              >
+                <IconButton icon={<ArrowUpDownIcon />} variant="unstyled" />
+                {i18next.t('transaction.title.date')}
+              </Heading>
+              <Heading as="h2" size="sm" mr="10px" w="25%" textAlign="center">
+                {i18next.t('transaction.title.category')}
+              </Heading>
+              <Heading as="h2" size="sm" mr="10px" w="20%" textAlign="center">
+                {i18next.t('transaction.title.amount')}
+              </Heading>
+              <Heading as="h2" size="sm" mr="10px" w="15%" textAlign="center">
+                {i18next.t('transaction.title.walletName')}
+              </Heading>
+            </>
+          )}
 
           {!isShortView && (
             <>
