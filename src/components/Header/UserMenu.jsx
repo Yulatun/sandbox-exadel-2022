@@ -24,7 +24,6 @@ import { useCentralTheme } from '@/theme';
 export const UserMenu = () => {
   const { data: { data: dataUser } = { data: [] }, isFetched: isFetchedUser } =
     useQuery(['user'], getUser);
-  const userName = dataUser.fullName;
 
   const deleteModal = useDisclosure();
   const logoutModal = useDisclosure();
@@ -62,7 +61,7 @@ export const UserMenu = () => {
         }}
       >
         {!!dataUser && isFetchedUser && (
-          <Avatar name={userName} w="40px" h="40px" />
+          <Avatar name={dataUser.fullName} w="40px" h="40px" />
         )}
         {!isFetchedUser && (
           <SkeletonCircle
