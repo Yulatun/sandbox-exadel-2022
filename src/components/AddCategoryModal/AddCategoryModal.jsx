@@ -3,6 +3,7 @@ import { useForm } from 'react-hook-form';
 import { useQuery } from 'react-query';
 import {
   Button,
+  createStandaloneToast,
   Flex,
   FormControl,
   FormErrorMessage,
@@ -28,6 +29,8 @@ export const AddCategoryModal = ({ isOpen, onClose, categoryType }) => {
   const categoriesDeleteModal = useDisclosure();
   const [color, setColor] = useState('green.500');
 
+  const { toast } = createStandaloneToast();
+
   const {
     register,
     handleSubmit,
@@ -51,7 +54,10 @@ export const AddCategoryModal = ({ isOpen, onClose, categoryType }) => {
       color: color
     })
       .then(() =>
-        alert(i18next.t('modal.addCategory.submitSuccessful.message'))
+        toast({
+          title: i18next.t('modal.addCategory.submitSuccessful.message'),
+          status: 'success'
+        })
       )
       .catch((err) => console.log(err));
     reset();
