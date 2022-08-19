@@ -27,13 +27,13 @@ export const Navbar = () => {
         </BreadcrumbLink>
       </BreadcrumbItem>
       <BreadcrumbItem mr={{ base: 2, xl: 4 }}>
-        <BreadcrumbLink as={Link} to="/categories" textUnderlineOffset="4px">
-          {i18next.t('header.navigation.categories')}
+        <BreadcrumbLink as={Link} to="/expenses" textUnderlineOffset="4px">
+          {i18next.t('header.navigation.expenses')}
         </BreadcrumbLink>
       </BreadcrumbItem>
       <BreadcrumbItem mr={{ base: 2, xl: 4 }}>
-        <BreadcrumbLink as={Link} to="/expenses" textUnderlineOffset="4px">
-          {i18next.t('header.navigation.expenses')}
+        <BreadcrumbLink as={Link} to="/categories" textUnderlineOffset="4px">
+          {i18next.t('header.navigation.categories')}
         </BreadcrumbLink>
       </BreadcrumbItem>
     </Breadcrumb>

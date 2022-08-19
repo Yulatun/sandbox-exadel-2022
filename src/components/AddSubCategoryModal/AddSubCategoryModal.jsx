@@ -1,6 +1,5 @@
-import { useEffect, useState } from 'react';
-import { useForm } from 'react-hook-form';
-import { useQuery } from 'react-query';
+import { useEffect } from 'react';
+import { Controller, useForm } from 'react-hook-form';
 import {
   Button,
   createStandaloneToast,
@@ -22,40 +21,43 @@ import {
 import { ColorPicker } from 'chakra-color-picker';
 import i18next from 'i18next';
 
-import { createCategory, getCategories } from '@/api/Category';
-import { ConfirmationModal } from '@/components';
+import { createSubCategory } from '@/api/SubCategory';
 
-export const AddCategoryModal = ({ isOpen, onClose, categoryType }) => {
+import { ConfirmationModal } from '../ConfirmationModal';
+
+export const AddSubCategoryModal = ({ isOpen, onClose, categoryData }) => {
   const categoriesDeleteModal = useDisclosure();
-  const [color, setColor] = useState('green.500');
 
   const { toast } = createStandaloneToast();
 
   const {
     register,
     handleSubmit,
+    control,
     reset,
     formState: {
       isDirty,
       errors: { name }
     }
-  } = useForm({ defaultValues: { name: '' } });
-
-  const handleColorChange = (color) => {
-    setColor(color);
-  };
+  } = useForm({
+    defaultValues: {
+      name: '',
+      color: categoryData.color
+    }
+  });
 
   const onSubmit = (data) => {
-    createCategory({
+    createSubCategory({
+      categoryId: categoryData.id,
       name: data.name,
       limit: 0,
       limitPeriod: 'Daily',
-      categoryType: categoryType,
-      color: color
+      categoryType: categoryData.categoryType,
+      color: data.color
     })
       .then(() =>
         toast({
-          title: i18next.t('modal.addCategory.submitSuccessful.message'),
+          title: i18next.t('modal.addSubCategory.submitSuccessful.message'),
           status: 'success'
         })
       )
@@ -63,43 +65,35 @@ export const AddCategoryModal = ({ isOpen, onClose, categoryType }) => {
     reset();
     onClose();
   };
+
   const closeAllModals = () => {
     categoriesDeleteModal.onClose();
     onClose();
   };
-
-  const { data, isFetched } = useQuery(['categories'], getCategories);
 
   const onCancel = () => {
     isDirty ? categoriesDeleteModal.onOpen() : onClose();
   };
 
   const resetForm = () => {
-    reset({ name: '' });
+    reset({ name: '', color: categoryData.color });
   };
   useEffect(() => resetForm(), [!isOpen]);
 
   return (
     <>
-      <Modal
-        isOpen={isOpen}
-        onClose={onCancel}
-        bg="red"
-        closeOnOverlayClick={false}
-      >
+      <Modal isOpen={isOpen} onClose={onCancel} closeOnOverlayClick={false}>
         <ModalOverlay />
         <ModalContent>
           <ModalHeader>
-            {categoryType === 'Income'
-              ? i18next.t('modal.addCategory.header.incomeCategory')
-              : i18next.t('modal.addCategory.header.expensesCategory')}
+            {i18next.t('modal.addSubCategory.header.expensesSubCategory')}
           </ModalHeader>
           <ModalCloseButton />
           <ModalBody>
             <FormControl isRequired isInvalid={name}>
               <Flex>
                 <FormLabel htmlFor="name" w="40%">
-                  {i18next.t('modal.addCategory.formName')}
+                  {i18next.t('modal.addSubCategory.formName')}
                 </FormLabel>
                 <Flex flexDirection="column">
                   <Input
@@ -120,21 +114,15 @@ export const AddCategoryModal = ({ isOpen, onClose, categoryType }) => {
                         )
                       },
                       validate: (name) =>
-                        (isFetched &&
-                          !data.data
-                            .filter(
-                              (data) => data.categoryType === categoryType
-                            )
-                            .map((data) => data.name)
-                            .includes(name)) ||
+                        !categoryData.subCategories
+                          .map((data) => data.name.toLocaleUpperCase())
+                          .includes(name.toLocaleUpperCase()) ||
                         i18next.t(
                           'modal.addCategory.validationErrorMessage.nameExist'
                         )
                     })}
-                    placeholder={i18next.t(
-                      'modal.addCategory.name.placeholder'
-                    )}
-                  ></Input>
+                    placeholder={i18next.t('modal.addSubCategory.formName')}
+                  />
                   <FormErrorMessage>
                     <Text>{name && name.message}</Text>
                   </FormErrorMessage>
@@ -147,10 +135,17 @@ export const AddCategoryModal = ({ isOpen, onClose, categoryType }) => {
                 <FormLabel pt="1%" w="40%">
                   {i18next.t('modal.addCategory.colorPicker')}
                 </FormLabel>
-                <ColorPicker
-                  borderRadius="50px"
-                  onChange={handleColorChange}
-                  size="sm"
+                <Controller
+                  control={control}
+                  name="color"
+                  render={({ field }) => (
+                    <ColorPicker
+                      defaultColor={field.value}
+                      borderRadius="50px"
+                      size="sm"
+                      onChange={(color) => field.onChange(color)}
+                    />
+                  )}
                 />
               </Flex>
             </FormControl>
@@ -170,7 +165,7 @@ export const AddCategoryModal = ({ isOpen, onClose, categoryType }) => {
         isOpen={categoriesDeleteModal.isOpen}
         onClose={categoriesDeleteModal.onClose}
         onSubmit={closeAllModals}
-        text={i18next.t('modal.deleteCategory.text')}
+        text={i18next.t('modal.deleteSubCategory.text')}
       />
     </>
   );

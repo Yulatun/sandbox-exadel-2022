@@ -1,22 +1,18 @@
-import { Flex, Text } from '@chakra-ui/react';
+import { Center, Text } from '@chakra-ui/react';
 import i18next from 'i18next';
 
+import { useCentralTheme } from '@/theme';
+
 export const Footer = () => {
+  const { textColor } = useCentralTheme();
+
   const currentYear = new Date().getFullYear();
 
   return (
-    <Flex
-      as="footer"
-      justifyContent="center"
-      textAlign="center"
-      mt="20px"
-      w="100%"
-      minH="100px"
-      boxShadow="lg"
-    >
-      <Text color="#ccb" fontSize="xl">
-        {i18next.t('footer.message')} {currentYear}
+    <Center as="footer" p={16} minH={24}>
+      <Text as="span" color={textColor} fontSize="xl">
+        {i18next.t('footer.message')} &copy; {currentYear}
       </Text>
-    </Flex>
+    </Center>
   );
 };

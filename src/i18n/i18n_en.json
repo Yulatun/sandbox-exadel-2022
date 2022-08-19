@@ -142,6 +142,7 @@
   "modal.editCategory.header.incomeCategory": "Edit income category",
   "modal.editCategory.header.expensesCategory": "Edit expenses category",
   "modal.editCategory.editedMessage.success": "Your category data successfully updated",
+  "modal.deleteCategory.deleteMessage.success": "Your category data successfully deleted",
   "walletView.headOfBalanceMessage": "Total Balance",
   "walletView.nameOfDefaultBadge": "default",
   "wallet.createdMessage": "You create a new wallet successfully",
@@ -180,7 +181,7 @@
   "transaction.tooltip.note": "No note",
   "transaction.noData": "No data available",
   "modal.addCategory.validationErrorMessage.nameIsLong": "Your name is too long",
-  "modal.addCategory.submitSuccessful.message": "you have created new category",
+  "modal.addCategory.submitSuccessful.message": "You have created new category successfully",
   "delete.account.successful.message": "you deleted your account successful",
   "toast.error.badGateway": "Bad Gateway. Something wrong with a website's server communication. Wait a minute or two and try to reload the page.",
   "toast.error.default": "Error. Something went wrong, try again later.",
@@ -214,5 +215,12 @@
   "admin.button": "Admin",
   "admin.welcomePage": "Welcome to Admin page!",
   "admin.disclaimer": "You can see me only if you have an Admin role ;)",
-  "add.moreTransactions.pagination": "Show more"
+  "add.moreTransactions.pagination": "Show more",
+  "button.addSubCategory": "Add new subcategory",
+  "modal.addSubCategory.formName": "Subcategory name",
+  "modal.addSubCategory.header.expensesSubCategory": "Add expenses subcategory",
+  "modal.deleteSubCategory.text": "Do you really want to cancel the creation of the subcategory? All your entered data will be lost",
+  "modal.addSubCategory.submitSuccessful.message": "You have created new subcategory successfully",
+  "pageExpenses.sort.byDate": "Sort by Date",
+  "pageExpenses.sort.Amount": "Sort by Amount"
 }
