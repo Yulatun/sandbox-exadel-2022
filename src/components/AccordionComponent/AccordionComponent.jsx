@@ -18,7 +18,7 @@ import { SubCategoryList } from '../SubCategoryList';
 export const AccordionComponent = (props) => {
   const { popupBgColor } = useCentralTheme();
 
-  const subCategory = useDisclosure();
+  const { isOpen, onOpen, onClose } = useDisclosure();
 
   return (
     <>
@@ -88,15 +88,15 @@ export const AccordionComponent = (props) => {
             {props.categoryData.categoryType === 'Expense' && (
               <SubCategoryList
                 categoryData={props.categoryData}
-                onOpen={subCategory.onOpen}
+                onOpen={onOpen}
               />
             )}
           </AccordionPanel>
         </AccordionItem>
       </Accordion>
       <AddSubCategoryModal
-        isOpen={subCategory.isOpen}
-        onClose={subCategory.onClose}
+        isOpen={isOpen}
+        onClose={onClose}
         categoryData={props.categoryData}
       />
     </>

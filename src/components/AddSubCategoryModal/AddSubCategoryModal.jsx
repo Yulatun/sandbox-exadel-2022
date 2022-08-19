@@ -61,7 +61,6 @@ export const AddSubCategoryModal = ({ isOpen, onClose, categoryData }) => {
           status: 'success'
         })
       )
-
       .catch((err) => console.log(err));
     reset();
     onClose();
