@@ -6,14 +6,19 @@ import {
   AccordionItem,
   AccordionPanel,
   Button,
-  HStack,
-  Text
+  Text,
+  useDisclosure
 } from '@chakra-ui/react';
 
 import { useCentralTheme } from '@/theme';
 
+import { AddSubCategoryModal } from '../AddSubCategoryModal';
+import { SubCategoryList } from '../SubCategoryList';
+
 export const AccordionComponent = (props) => {
   const { popupBgColor } = useCentralTheme();
+
+  const { isOpen, onOpen, onClose } = useDisclosure();
 
   return (
     <>
@@ -75,17 +80,26 @@ export const AccordionComponent = (props) => {
             top={2}
             right={2}
             variant="danger"
+            onClick={props.onDelete}
           >
             <DeleteIcon />
           </Button>
 
           <AccordionPanel p={4}>
-            <HStack>
-              <Text px={2}>{props.name}</Text>
-            </HStack>
+            {props.categoryData.categoryType === 'Expense' && (
+              <SubCategoryList
+                categoryData={props.categoryData}
+                onOpen={onOpen}
+              />
+            )}
           </AccordionPanel>
         </AccordionItem>
       </Accordion>
+      <AddSubCategoryModal
+        isOpen={isOpen}
+        onClose={onClose}
+        categoryData={props.categoryData}
+      />
     </>
   );
 };

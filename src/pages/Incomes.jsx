@@ -35,7 +35,7 @@ export const Incomes = () => {
   });
 
   const dataIncomes = incomesPages.pages.reduce(
-    (result, page) => [...result, ...page.data.incomes],
+    (result, page) => [...result, ...page.data.data],
     []
   );
 

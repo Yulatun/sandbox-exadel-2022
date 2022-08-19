@@ -1,14 +1,12 @@
 import { useQuery } from 'react-query';
+import { DeleteIcon } from '@chakra-ui/icons';
 import {
-  DeleteIcon,
-  QuestionOutlineIcon,
-  SettingsIcon
-} from '@chakra-ui/icons';
-import {
+  Avatar,
   Menu,
   MenuButton,
   MenuItem,
   MenuList,
+  SkeletonCircle,
   useDisclosure
 } from '@chakra-ui/react';
 import i18next from 'i18next';
@@ -20,7 +18,8 @@ import { logout } from '@/helpers/authorization';
 import { useCentralTheme } from '@/theme';
 
 export const UserMenu = () => {
-  const { data: dataUser } = useQuery(['user'], getUser);
+  const { data: { data: dataUser } = { data: [] }, isFetched: isFetchedUser } =
+    useQuery(['user'], getUser);
 
   const deleteModal = useDisclosure();
   const logoutModal = useDisclosure();
@@ -57,25 +56,18 @@ export const UserMenu = () => {
           borderColor: textColor
         }}
       >
-        <SettingsIcon w="25px" h="25px" />
+        {!!dataUser && isFetchedUser && (
+          <Avatar name={dataUser.fullName} w="40px" h="40px" />
+        )}
+        {!isFetchedUser && (
+          <SkeletonCircle
+            size="12"
+            startColor="orange.100"
+            endColor="orange.200"
+          />
+        )}
       </MenuButton>
       <MenuList bg={popupBgColor} color={popupTextColor} fontWeight="bold">
-        <MenuItem
-          _hover={{
-            bg: hoverBgColor
-          }}
-          icon={<SettingsIcon w={5} h={5} color={popupTextColor} />}
-        >
-          {i18next.t('header.userMenu.settings')}
-        </MenuItem>
-        <MenuItem
-          _hover={{
-            bg: hoverBgColor
-          }}
-          icon={<QuestionOutlineIcon w={5} h={5} color={popupTextColor} />}
-        >
-          {i18next.t('header.userMenu.help')}
-        </MenuItem>
         <MenuItem
           _hover={{
             bg: hoverBgColor
