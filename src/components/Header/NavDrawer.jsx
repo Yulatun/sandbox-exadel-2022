@@ -111,21 +111,21 @@ export const NavDrawer = () => {
               <BreadcrumbItem my={2}>
                 <BreadcrumbLink
                   as={Link}
-                  to="/categories"
-                  textUnderlineOffset="4px"
-                  onClick={onClose}
-                >
-                  {i18next.t('header.navigation.categories')}
-                </BreadcrumbLink>
-              </BreadcrumbItem>
-              <BreadcrumbItem my={2}>
-                <BreadcrumbLink
-                  as={Link}
                   to="/expenses"
                   textUnderlineOffset="4px"
                   onClick={onClose}
                 >
                   {i18next.t('header.navigation.expenses')}
+                </BreadcrumbLink>
+              </BreadcrumbItem>
+              <BreadcrumbItem my={2}>
+                <BreadcrumbLink
+                  as={Link}
+                  to="/categories"
+                  textUnderlineOffset="4px"
+                  onClick={onClose}
+                >
+                  {i18next.t('header.navigation.categories')}
                 </BreadcrumbLink>
               </BreadcrumbItem>
             </Breadcrumb>

@@ -158,7 +158,6 @@ export const WalletsList = ({ userData, walletsData }) => {
               h={[16, 16, 16, 24]}
               color={textColor}
             />
-            <Text fontWeight="bold">0 &#36;</Text>
           </VStack>
         </Flex>
       </Box>
