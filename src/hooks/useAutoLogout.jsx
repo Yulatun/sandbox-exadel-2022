@@ -8,7 +8,7 @@ export const useAutoLogout = () => {
   useEffect(() => {
     const autoLogout = () => {
       if (document.visibilityState === 'hidden') {
-        const timeOutId = window.setTimeout(logout, 5 * 60 * 1000);
+        const timeOutId = window.setTimeout(logout, 60 * 60 * 1000);
         logoutTimerIdRef.current = timeOutId;
       } else {
         window.clearTimeout(logoutTimerIdRef.current);
