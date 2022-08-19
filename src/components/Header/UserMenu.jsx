@@ -1,9 +1,5 @@
 import { useQuery } from 'react-query';
-import {
-  DeleteIcon,
-  QuestionOutlineIcon,
-  SettingsIcon
-} from '@chakra-ui/icons';
+import { DeleteIcon } from '@chakra-ui/icons';
 import {
   Avatar,
   Menu,
@@ -72,22 +68,6 @@ export const UserMenu = () => {
         )}
       </MenuButton>
       <MenuList bg={popupBgColor} color={popupTextColor} fontWeight="bold">
-        <MenuItem
-          _hover={{
-            bg: hoverBgColor
-          }}
-          icon={<SettingsIcon w={5} h={5} color={popupTextColor} />}
-        >
-          {i18next.t('header.userMenu.settings')}
-        </MenuItem>
-        <MenuItem
-          _hover={{
-            bg: hoverBgColor
-          }}
-          icon={<QuestionOutlineIcon w={5} h={5} color={popupTextColor} />}
-        >
-          {i18next.t('header.userMenu.help')}
-        </MenuItem>
         <MenuItem
           _hover={{
             bg: hoverBgColor
