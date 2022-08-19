@@ -35,7 +35,6 @@ export const TransactionList = ({
   walletsData,
   categoriesData,
   payersData = null,
-  //onSetSortByAmount,
   onSetSortDate
 }) => {
   const [chosenTransactionData, setChosenTransactionData] = useState({});
@@ -219,15 +218,7 @@ export const TransactionList = ({
               <Heading as="h2" size="sm" mr="10px" w="25%" textAlign="center">
                 {i18next.t('transaction.title.category')}
               </Heading>
-              <Heading
-                as="h2"
-                size="sm"
-                mr="10px"
-                w="20%"
-                textAlign="center"
-                //onClick={() => onSetSortByAmount()}
-              >
-                {/*<IconButton icon={<ArrowUpDownIcon />} variant="unstyled" >*/}
+              <Heading as="h2" size="sm" mr="10px" w="20%" textAlign="center">
                 {i18next.t('transaction.title.amount')}
               </Heading>
               <Heading as="h2" size="sm" mr="10px" w="15%" textAlign="center">

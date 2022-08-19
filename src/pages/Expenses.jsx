@@ -44,7 +44,12 @@ export const Expenses = () => {
     hasNextPage
   } = useInfiniteQuery(
     ['expensesP', sort, isSortDescending],
-    ({ pageParam }) => getExpenses(sort, isSortDescending, pageParam),
+    ({ pageParam }) =>
+      getExpenses({
+        pageParam: pageParam,
+        IsSortByDate: sort === 'IsSortByDate',
+        IsSortDescending: isSortDescending
+      }),
     {
       getNextPageParam: (lastPage) => {
         return lastPage.data.pageInfo.pageNumber !==
