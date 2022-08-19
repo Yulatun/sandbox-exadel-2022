@@ -50,12 +50,12 @@ export const WalletView = () => {
   } = useQuery(['wallets'], getWallets);
 
   const {
-    data: { data: { incomes: dataIncomes } } = { data: { incomes: [] } },
+    data: { data: { data: dataIncomes } } = { data: { incomes: [] } },
     isFetched: isFetchedIncomes
   } = useQuery(['incomes'], getIncomes);
 
   const {
-    data: { data: { expenses: dataExpenses } } = { data: { expenses: [] } },
+    data: { data: { data: dataExpenses } } = { data: { expenses: [] } },
     isFetched: isFetchedExpenses
   } = useQuery(['expenses'], getExpenses);
 

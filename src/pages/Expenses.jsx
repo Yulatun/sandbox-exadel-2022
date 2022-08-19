@@ -76,7 +76,7 @@ export const Expenses = () => {
   };
 
   const dataExpenses = expensesPage.pages.reduce(
-    (result, page) => [...result, ...page.data.expenses],
+    (result, page) => [...result, ...page.data.data],
     []
   );
 
