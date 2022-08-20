@@ -259,6 +259,7 @@ export const TransactionList = ({
         <EditExpenseModal
           isOpen={editExpenseModal.isOpen}
           onClose={editTransactionModalCancel.onOpen}
+          onCloseWithNoChangeData={editExpenseModal.onClose}
           onSubmit={editOnSubmit}
           walletsData={walletsData}
           categoriesData={categoriesData}

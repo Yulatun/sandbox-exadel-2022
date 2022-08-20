@@ -48,7 +48,8 @@ export const EditExpenseModal = ({
   walletsData,
   categoriesData,
   payersData,
-  expenseData
+  expenseData,
+  onCloseWithNoChangeData
 }) => {
   const categoryModal = useDisclosure();
   const payerModal = useDisclosure();
@@ -85,8 +86,10 @@ export const EditExpenseModal = ({
   };
 
   const onCancel = () => {
-    isDirty ? onClose() : onSubmit();
+    isDirty ? onClose() : onCloseWithNoChangeData();
   };
+
+  //onClose={editTransactionModalCancel.onOpen}
 
   return (
     <>
