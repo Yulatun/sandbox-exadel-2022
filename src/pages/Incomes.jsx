@@ -146,7 +146,7 @@ export const Incomes = () => {
           hasNextPage={hasNextPage}
           walletsData={dataWallets}
           categoriesData={dataCategories}
-          maxH="570px"
+          maxH="lg"
           onSetSortByAmount={onSetSortByAmount}
           onSetSortDate={onSetSortDate}
         />
