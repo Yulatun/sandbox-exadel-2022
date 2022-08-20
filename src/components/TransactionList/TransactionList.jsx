@@ -3,6 +3,7 @@ import { useMutation, useQueryClient } from 'react-query';
 import {
   Box,
   Button,
+  createStandaloneToast,
   Flex,
   Heading,
   useDisclosure,
@@ -21,7 +22,6 @@ import { useCentralTheme } from '@/theme';
 import { ConfirmationModal } from '../ConfirmationModal';
 import { EditExpenseModal } from '../EditExpenseModal';
 import { EditIncomeModal } from '../EditIncomeModal';
-import { NotificationModal } from '../NotificationModal';
 import { TransactionItem } from '../TransactionItem';
 
 export const TransactionList = ({
@@ -46,6 +46,8 @@ export const TransactionList = ({
   const queryClient = useQueryClient();
 
   const { transactionTitleBgColor, textColor } = useCentralTheme();
+
+  const { toast } = createStandaloneToast();
 
   const editingIncome = useMutation(
     (data) =>
@@ -137,6 +139,10 @@ export const TransactionList = ({
 
     editExpenseModal.onClose();
     editingExpense.mutate(data);
+    toast({
+      title: i18next.t('modal.editExpense.editedMessage.success'),
+      status: 'success'
+    });
   };
 
   const deleteOnSubmit = () => {
@@ -250,16 +256,6 @@ export const TransactionList = ({
           categoriesData={categoriesData}
           payersData={payersData}
           expenseData={chosenTransactionData}
-        />
-      )}
-      {(!editIncomeModal.isOpen || !editExpenseModal.isOpen) && (
-        <NotificationModal
-          isOpen={editTransactionModalSuccess.isOpen}
-          onSubmit={editTransactionModalSuccess.onClose}
-          onClose={editTransactionModalSuccess.onClose}
-          text={i18next.t(
-            `modal.edit${chosenTransactionData.transactionType}.editedMessage.success`
-          )}
         />
       )}
       <ConfirmationModal
