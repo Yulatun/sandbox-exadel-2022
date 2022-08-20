@@ -137,7 +137,6 @@ export const TransactionList = ({
     if (chosenTransactionData.transactionType === 'Income') {
       editIncomeModal.onClose();
       editingIncome.mutate(data);
-      editingExpense.mutate(data);
       toast({
         title: i18next.t('modal.editExpense.editedMessage.success'),
         status: 'success'
@@ -249,6 +248,7 @@ export const TransactionList = ({
         <EditIncomeModal
           isOpen={editIncomeModal.isOpen}
           onClose={editTransactionModalCancel.onOpen}
+          onCloseWithNoChangeData={editIncomeModal.onClose}
           onSubmit={editOnSubmit}
           walletsData={walletsData}
           categoriesData={categoriesData}
