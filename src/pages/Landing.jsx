@@ -1,5 +1,10 @@
 import { useMutation, useQuery, useQueryClient } from 'react-query';
-import { Button, Flex, Text, useDisclosure } from '@chakra-ui/react';
+import {
+  Button,
+  createStandaloneToast,
+  Flex,
+  Text,
+  useDisclosure} from '@chakra-ui/react';
 import i18next from 'i18next';
 
 import { getCategories } from '@/api/Category';
@@ -14,7 +19,6 @@ import { getWallets } from '@/api/Wallet';
 import {
   AddExpenseModal,
   AddIncomeModal,
-  NotificationModal,
   Preloader,
   TransactionList,
   WalletsList
@@ -30,7 +34,7 @@ export const Landing = () => {
   const queryClient = useQueryClient();
 
   const { textColor } = useCentralTheme();
-
+  const { toast } = createStandaloneToast();
   const { data: { data: dataUser } = { data: [] }, isFetched: isFetchedUser } =
     useQuery(['user'], getUser);
 
@@ -99,6 +103,10 @@ export const Landing = () => {
         createExpenseModal.onOpen();
         queryClient.invalidateQueries(['wallets']);
         queryClient.invalidateQueries(['expenses']);
+        toast({
+          title: i18next.t('modal.addExpense.createdMessage'),
+          status: 'success'
+        });
       }
     }
   );
@@ -119,6 +127,10 @@ export const Landing = () => {
         createIncomeModal.onOpen();
         queryClient.invalidateQueries(['wallets']);
         queryClient.invalidateQueries(['incomes']);
+        toast({
+          title: i18next.t('modal.addIncome.createdMessage'),
+          status: 'success'
+        });
       }
     }
   );
@@ -161,6 +173,9 @@ export const Landing = () => {
             <Text color={textColor} fontSize="xl">
               {i18next.t('transaction.noData')}
             </Text>
+          ) : mutationCreateExpense.isLoading ||
+            mutationCreateIncome.isLoading ? (
+            <Preloader />
           ) : (
             <TransactionList
               list={recentTransactions}
@@ -174,22 +189,6 @@ export const Landing = () => {
         </Flex>
       )) || <Preloader />}
 
-      {!expenseModal.isOpen && (
-        <NotificationModal
-          isOpen={createExpenseModal.isOpen}
-          onSubmit={createExpenseModal.onClose}
-          onClose={createExpenseModal.onClose}
-          text={i18next.t('modal.addExpense.createdMessage')}
-        />
-      )}
-      {!incomeModal.isOpen && (
-        <NotificationModal
-          isOpen={createIncomeModal.isOpen}
-          onSubmit={createIncomeModal.onClose}
-          onClose={createIncomeModal.onClose}
-          text={i18next.t('modal.addIncome.createdMessage')}
-        />
-      )}
       {!!dataUser &&
         !!dataWallets &&
         !!dataPayers &&
