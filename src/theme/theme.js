@@ -42,7 +42,9 @@ export const teal900 = 'teal.900',
   whiteAlpha400 = 'whiteAlpha.400',
   gray100 = 'gray.100',
   whiteAlpha300 = 'whiteAlpha.300',
-  gray200 = 'gray.200';
+  gray200 = 'gray.200',
+  blackAlpha500 = 'blackAlpha.500',
+  inherit = 'inherit';
 
 export const useCentralTheme = () => {
   let bgColor = useColorModeValue(orange100, teal900);
@@ -62,6 +64,7 @@ export const useCentralTheme = () => {
   let notificationReadBgColor = useColorModeValue(orange50, teal900);
   let transactionTitleBgColor = useColorModeValue(orange200, teal700);
   let transactionBgColor = useColorModeValue(orange50, teal800);
+  let borderColor = useColorModeValue(blackAlpha500, inherit);
 
   return {
     bgColor,
@@ -80,7 +83,8 @@ export const useCentralTheme = () => {
     notificationUnreadBgColor,
     notificationReadBgColor,
     transactionTitleBgColor,
-    transactionBgColor
+    transactionBgColor,
+    borderColor
   };
 };
 

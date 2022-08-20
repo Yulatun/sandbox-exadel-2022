@@ -35,6 +35,7 @@ import {
   getWalletCurrencyData,
   getWalletsOptions
 } from '@/helpers/selectHelpers';
+import { useCentralTheme } from '@/theme';
 
 import { AddCategoryModal } from '../AddCategoryModal';
 import { SelectControlled } from '../SelectControlled';
@@ -47,6 +48,8 @@ export const AddExpenseModal = ({
   walletsData,
   payersData
 }) => {
+  const { borderColor } = useCentralTheme();
+
   const categoryModal = useDisclosure();
   const payerModal = useDisclosure();
 
@@ -173,7 +176,11 @@ export const AddExpenseModal = ({
 
               <FormControl>
                 <FormLabel>{i18next.t('modal.addExpense.note')}</FormLabel>
-                <Textarea rows={4} {...register('note')} />
+                <Textarea
+                  borderColor={borderColor}
+                  rows={4}
+                  {...register('note')}
+                />
               </FormControl>
             </ModalBody>
 
