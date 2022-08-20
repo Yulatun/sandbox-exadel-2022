@@ -25,7 +25,7 @@ import {
 import i18next from 'i18next';
 
 import { getCategories } from '@/api/Category';
-import { AddPayerModal } from '@/components';
+import { AddPayerModal, ConfirmationModal } from '@/components';
 import {
   getCategoriesOptions,
   getDefaultPayerData,
@@ -51,6 +51,7 @@ export const AddExpenseModal = ({
   const payerModal = useDisclosure();
 
   const queryClient = useQueryClient();
+  const expenseCancelModal = useDisclosure();
 
   const {
     data: { data: dataCategories } = { data: [] },
@@ -65,6 +66,7 @@ export const AddExpenseModal = ({
     setValue,
     watch,
     formState: {
+      isDirty,
       errors: { amount, category }
     }
   } = useForm({
@@ -92,6 +94,14 @@ export const AddExpenseModal = ({
     payerModal.onClose();
   };
 
+  const closeAllModals = () => {
+    expenseCancelModal.onClose();
+    onClose();
+  };
+
+  const onCancel = () => {
+    isDirty ? expenseCancelModal.onOpen() : onClose();
+  };
   return (
     <>
       {!!dataCategories && isFetchedCategories && (
@@ -188,7 +198,7 @@ export const AddExpenseModal = ({
               <Button mr="20px" onClick={handleSubmit(onSubmit)}>
                 {i18next.t('button.submit')}
               </Button>
-              <Button variant="secondary" onClick={onClose}>
+              <Button variant="secondary" onClick={onCancel}>
                 {i18next.t('button.cancel')}
               </Button>
             </ModalFooter>
@@ -205,6 +215,12 @@ export const AddExpenseModal = ({
         isOpen={payerModal.isOpen}
         onClose={payerModal.onClose}
         setNewPayer={setNewPayer}
+      />
+      <ConfirmationModal
+        isOpen={expenseCancelModal.isOpen}
+        onClose={expenseCancelModal.onClose}
+        onSubmit={closeAllModals}
+        text={i18next.t('modal.confirmationModal.cancelAddNewExpenses')}
       />
     </>
   );
