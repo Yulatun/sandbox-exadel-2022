@@ -68,7 +68,7 @@ export const Incomes = () => {
       onSuccess: () => {
         createIncomeModal.onOpen();
         queryClient.invalidateQueries(['wallets']);
-        queryClient.invalidateQueries(['incomeP']);
+        queryClient.invalidateQueries(['incomesPagination']);
       }
     }
   );

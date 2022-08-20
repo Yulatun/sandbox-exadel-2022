@@ -66,6 +66,7 @@ export const TransactionList = ({
         editTransactionModalSuccess.onOpen();
         queryClient.invalidateQueries(['wallets']);
         queryClient.invalidateQueries(['incomes']);
+        queryClient.invalidateQueries(['incomesPagination']);
       }
     }
   );
@@ -100,6 +101,7 @@ export const TransactionList = ({
       onSuccess: () => {
         queryClient.invalidateQueries(['wallets']);
         queryClient.invalidateQueries(['incomes']);
+        queryClient.invalidateQueries(['incomesPagination']);
       }
     }
   );
@@ -110,6 +112,7 @@ export const TransactionList = ({
       onSuccess: () => {
         queryClient.invalidateQueries(['wallets']);
         queryClient.invalidateQueries(['expenses']);
+        queryClient.invalidateQueries(['expensesP']);
       }
     }
   );
@@ -134,6 +137,11 @@ export const TransactionList = ({
     if (chosenTransactionData.transactionType === 'Income') {
       editIncomeModal.onClose();
       editingIncome.mutate(data);
+      editingExpense.mutate(data);
+      toast({
+        title: i18next.t('modal.editExpense.editedMessage.success'),
+        status: 'success'
+      });
       return;
     }
 
