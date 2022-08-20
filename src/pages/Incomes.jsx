@@ -29,7 +29,7 @@ export const Incomes = () => {
     fetchNextPage,
     hasNextPage
   } = useInfiniteQuery(
-    ['incomesP', sort, isSortDescending],
+    ['incomesPagination', sort, isSortDescending],
     ({ pageParam }) =>
       getIncomes({
         pageParam: pageParam,
