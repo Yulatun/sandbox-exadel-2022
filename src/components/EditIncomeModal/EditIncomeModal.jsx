@@ -66,6 +66,7 @@ export const EditIncomeModal = ({
   return (
     <>
       <Modal
+        scrollBehavior="inside"
         size="2xl"
         closeOnOverlayClick={false}
         isOpen={isOpen}
