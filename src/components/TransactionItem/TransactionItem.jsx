@@ -59,12 +59,13 @@ export const TransactionItem = ({
           <Flex
             alignItems="center"
             justifyContent="space-between"
-            py={4}
+            py={2}
             px={8}
             w="100%"
             bg={transactionBgColor}
             color={popupExpTextColor}
-            boxShadow="lg"
+            borderRadius={8}
+            boxShadow="md"
           >
             <Flex
               alignItems="center"
@@ -131,7 +132,11 @@ export const TransactionItem = ({
 
             <Flex justifyContent="flex-end" minW="90px" w="12%">
               <IconButton mr="10px" onClick={onEdit} icon={<EditIcon />} />
-              <IconButton onClick={onDelete} icon={<DeleteIcon />} />
+              <IconButton
+                onClick={onDelete}
+                icon={<DeleteIcon />}
+                variant="danger"
+              />
             </Flex>
           </Flex>
         )}

@@ -167,8 +167,9 @@ export const TransactionList = ({
         mb={6}
         py={4}
         px={8}
-        boxShadow="2xl"
+        boxShadow="md"
         bg={transactionTitleBgColor}
+        borderRadius={8}
       >
         <Flex
           justifyContent="space-between"
