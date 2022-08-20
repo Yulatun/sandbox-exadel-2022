@@ -87,6 +87,7 @@ export const TransactionList = ({
         editTransactionModalSuccess.onOpen();
         queryClient.invalidateQueries(['wallets']);
         queryClient.invalidateQueries(['expenses']);
+        queryClient.invalidateQueries(['expensesP']);
       }
     }
   );
