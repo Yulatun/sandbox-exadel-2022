@@ -224,5 +224,6 @@
   "pageExpenses.sort.byDate": "Sort by Date",
   "pageExpenses.sort.Amount": "Sort by Amount",
   "modal.addExpense.validationErrorMessage.notNegativeAmount": "please provide positive number, your amount will be converted to negative automatically",
-  "modal.confirmationModal.cancelAddNewExpenses": " Do you really want to cancel the adding of a new expense? All you entered data will be lost"
+  "modal.confirmationModal.cancelAddNewExpenses": " Do you really want to cancel the adding of a new expense? All you entered data will be lost",
+  "delete.transaction.successful.message": "Your transaction data successfully deleted"
 }

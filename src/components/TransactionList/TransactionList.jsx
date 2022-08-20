@@ -19,6 +19,7 @@ import {
   editExpense,
   editIncome
 } from '@/api/Transaction';
+import { Preloader } from '@/components';
 import { useCentralTheme } from '@/theme';
 
 import { ConfirmationModal } from '../ConfirmationModal';
@@ -69,6 +70,10 @@ export const TransactionList = ({
         queryClient.invalidateQueries(['wallets']);
         queryClient.invalidateQueries(['incomes']);
         queryClient.invalidateQueries(['incomesPagination']);
+        toast({
+          title: i18next.t('modal.editExpense.editedMessage.success'),
+          status: 'success'
+        });
       }
     }
   );
@@ -93,6 +98,10 @@ export const TransactionList = ({
         queryClient.invalidateQueries(['wallets']);
         queryClient.invalidateQueries(['expenses']);
         queryClient.invalidateQueries(['expensesP']);
+        toast({
+          title: i18next.t('modal.editExpense.editedMessage.success'),
+          status: 'success'
+        });
       }
     }
   );
@@ -104,6 +113,10 @@ export const TransactionList = ({
         queryClient.invalidateQueries(['wallets']);
         queryClient.invalidateQueries(['incomes']);
         queryClient.invalidateQueries(['incomesPagination']);
+        toast({
+          title: i18next.t('delete.transaction.successful.message'),
+          status: 'success'
+        });
       }
     }
   );
@@ -115,6 +128,10 @@ export const TransactionList = ({
         queryClient.invalidateQueries(['wallets']);
         queryClient.invalidateQueries(['expenses']);
         queryClient.invalidateQueries(['expensesP']);
+        toast({
+          title: i18next.t('delete.transaction.successful.message'),
+          status: 'success'
+        });
       }
     }
   );
@@ -139,19 +156,11 @@ export const TransactionList = ({
     if (chosenTransactionData.transactionType === 'Income') {
       editIncomeModal.onClose();
       editingIncome.mutate(data);
-      toast({
-        title: i18next.t('modal.editExpense.editedMessage.success'),
-        status: 'success'
-      });
       return;
     }
 
     editExpenseModal.onClose();
     editingExpense.mutate(data);
-    toast({
-      title: i18next.t('modal.editExpense.editedMessage.success'),
-      status: 'success'
-    });
   };
 
   const deleteOnSubmit = () => {
@@ -259,25 +268,32 @@ export const TransactionList = ({
         <Box minW="90px" w="12%" />
       </Flex>
 
-      <VStack spacing={5} w="100%" maxH={maxH} overflowY="scroll">
-        {list.map((transaction) => (
-          <TransactionItem
-            key={transaction.id}
-            transactionData={transaction}
-            onEdit={() => openModalOnEdit(transaction)}
-            onDelete={() => openModalOnDelete(transaction)}
-            isExpensesType={isExpensesType}
-            isShortView={isShortView}
-          />
-        ))}
-        {hasNextPage ? (
-          <Flex justify="center" w="100%" fontSize="xl">
-            <Button onClick={onShowMore}>
-              {i18next.t('add.moreTransactions.pagination')}
-            </Button>
-          </Flex>
-        ) : null}
-      </VStack>
+      {editingIncome.isLoading ||
+      editingExpense.isLoading ||
+      deletingIncome.isLoading ||
+      deletingExpense.isLoading ? (
+        <Preloader />
+      ) : (
+        <VStack spacing={5} w="100%" maxH={maxH} overflowY="scroll">
+          {list.map((transaction) => (
+            <TransactionItem
+              key={transaction.id}
+              transactionData={transaction}
+              onEdit={() => openModalOnEdit(transaction)}
+              onDelete={() => openModalOnDelete(transaction)}
+              isExpensesType={isExpensesType}
+              isShortView={isShortView}
+            />
+          ))}
+          {hasNextPage ? (
+            <Flex justify="center" w="100%" fontSize="xl">
+              <Button onClick={onShowMore}>
+                {i18next.t('add.moreTransactions.pagination')}
+              </Button>
+            </Flex>
+          ) : null}
+        </VStack>
+      )}
 
       {!!Object.keys(chosenTransactionData).length && (
         <EditIncomeModal
