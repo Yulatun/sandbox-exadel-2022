@@ -96,11 +96,11 @@ export const TransactionItem = ({
               </Text>
 
               <Box mr="10px" w="15%" textAlign="center">
-                <Tooltip w="100%" label={getWallet()?.name}>
-                  <Text cursor="pointer">
-                    {i18next.t('transaction.value.wallet')}{' '}
-                    {transactionData.currency?.currencyCode || ''}
-                  </Text>
+                <Tooltip
+                  w="100%"
+                  label={transactionData.currency?.currencyCode || ''}
+                >
+                  <Text cursor="pointer">{getWallet()?.name}</Text>
                 </Tooltip>
               </Box>
 
