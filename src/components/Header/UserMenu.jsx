@@ -2,6 +2,7 @@ import { useQuery } from 'react-query';
 import { DeleteIcon } from '@chakra-ui/icons';
 import {
   Avatar,
+  createStandaloneToast,
   Menu,
   MenuButton,
   MenuItem,
@@ -24,15 +25,19 @@ export const UserMenu = () => {
   const deleteModal = useDisclosure();
   const logoutModal = useDisclosure();
 
+  const { toast } = createStandaloneToast();
+
   const { hoverBgColor, popupBgColor, popupTextColor, textColor } =
     useCentralTheme();
 
   const onDelete = () => {
-    deleteUser(dataUser.id)
-      .then(() => alert(i18next.t('delete.account.successful.message')))
-      .catch((err) => console.log(err));
+    deleteUser(dataUser.id);
     deleteModal.onClose();
     logout();
+    toast({
+      title: i18next.t('delete.account.successful.message'),
+      status: 'success'
+    });
   };
 
   const onLogout = () => {
