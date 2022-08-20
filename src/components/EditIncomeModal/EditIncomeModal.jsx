@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import {
   Button,
@@ -51,6 +52,7 @@ export const EditIncomeModal = ({
     register,
     handleSubmit,
     watch,
+    reset,
     formState: {
       isDirty,
       errors: { amount, category }
@@ -68,6 +70,18 @@ export const EditIncomeModal = ({
   const onCancel = () => {
     isDirty ? onClose() : onCloseWithNoChangeData();
   };
+
+  const resetForm = () => {
+    reset({
+      wallet: getChosenWalletData(incomeData, walletsData),
+      amount: incomeData.value,
+      category: getChosenCategoryData(incomeData, categoriesData),
+      date: format(new Date(incomeData.dateOfTransaction), 'yyyy-MM-dd'),
+      note: incomeData.description
+    });
+  };
+
+  useEffect(() => resetForm(), [!isOpen]);
 
   return (
     <>

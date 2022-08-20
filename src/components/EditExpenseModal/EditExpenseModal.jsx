@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { useQueryClient } from 'react-query';
 import {
@@ -53,7 +54,6 @@ export const EditExpenseModal = ({
 }) => {
   const categoryModal = useDisclosure();
   const payerModal = useDisclosure();
-
   const queryClient = useQueryClient();
 
   const {
@@ -61,6 +61,7 @@ export const EditExpenseModal = ({
     register,
     handleSubmit,
     setValue,
+    reset,
     watch,
     formState: {
       isDirty,
@@ -78,6 +79,20 @@ export const EditExpenseModal = ({
     }
   });
 
+  const resetForm = () => {
+    reset({
+      wallet: getChosenWalletData(expenseData, walletsData),
+      amount: expenseData.value,
+      category: getChosenCategoryData(expenseData, categoriesData),
+      subcategory: getChosenSubcategoryData(expenseData, categoriesData),
+      payer: getChosenPayerData(expenseData, payersData),
+      date: format(new Date(expenseData.dateOfTransaction), 'yyyy-MM-dd'),
+      note: expenseData.description
+    });
+  };
+
+  useEffect(() => resetForm(), [!isOpen]);
+
   const setNewPayer = (newPayer) => {
     queryClient.invalidateQueries(['payers']).then(() => {
       setValue('payer', { value: newPayer.name, label: newPayer.name });
@@ -88,8 +103,6 @@ export const EditExpenseModal = ({
   const onCancel = () => {
     isDirty ? onClose() : onCloseWithNoChangeData();
   };
-
-  //onClose={editTransactionModalCancel.onOpen}
 
   return (
     <>
