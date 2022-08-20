@@ -62,6 +62,7 @@ export const EditExpenseModal = ({
     setValue,
     watch,
     formState: {
+      isDirty,
       errors: { amount, category }
     }
   } = useForm({
@@ -81,6 +82,10 @@ export const EditExpenseModal = ({
       setValue('payer', { value: newPayer.name, label: newPayer.name });
     });
     payerModal.onClose();
+  };
+
+  const onCancel = () => {
+    isDirty ? onClose() : onSubmit();
   };
 
   return (
@@ -172,7 +177,7 @@ export const EditExpenseModal = ({
             <Button mr="20px" onClick={handleSubmit(onSubmit)}>
               {i18next.t('button.submit')}
             </Button>
-            <Button variant="secondary" onClick={onClose}>
+            <Button variant="secondary" onClick={onCancel}>
               {i18next.t('button.cancel')}
             </Button>
           </ModalFooter>
