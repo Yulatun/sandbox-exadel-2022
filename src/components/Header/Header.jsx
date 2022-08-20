@@ -53,7 +53,6 @@ export const Header = (isOpen) => {
             flexBasis={{ base: '100%', md: 'auto' }}
             ml={{ base: '8px', xl: '10px' }}
             mr={{ lg: 0, xl: '10px' }}
-            justifyContent="center"
           >
             <UserName />
           </Box>
