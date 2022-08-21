@@ -222,5 +222,6 @@
   "modal.deleteSubCategory.text": "Do you really want to cancel the creation of the subcategory? All your entered data will be lost",
   "modal.addSubCategory.submitSuccessful.message": "You have created new subcategory successfully",
   "pageExpenses.sort.byDate": "Sort by Date",
-  "pageExpenses.sort.Amount": "Sort by Amount"
+  "pageExpenses.sort.Amount": "Sort by Amount",
+  "modal.addSubcategory.preventAlert": "Please choose category first"
 }

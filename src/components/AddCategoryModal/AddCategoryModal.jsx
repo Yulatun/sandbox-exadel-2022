@@ -3,6 +3,7 @@ import { useForm } from 'react-hook-form';
 import { useQuery } from 'react-query';
 import {
   Button,
+  createStandaloneToast,
   Flex,
   FormControl,
   FormErrorMessage,
@@ -24,9 +25,16 @@ import i18next from 'i18next';
 import { createCategory, getCategories } from '@/api/Category';
 import { ConfirmationModal } from '@/components';
 
-export const AddCategoryModal = ({ isOpen, onClose, categoryType }) => {
+export const AddCategoryModal = ({
+  isOpen,
+  onClose,
+  categoryType,
+  setNewCategory
+}) => {
   const categoriesDeleteModal = useDisclosure();
   const [color, setColor] = useState('green.500');
+
+  const { toast } = createStandaloneToast();
 
   const {
     register,
@@ -50,13 +58,18 @@ export const AddCategoryModal = ({ isOpen, onClose, categoryType }) => {
       categoryType: categoryType,
       color: color
     })
-      .then(() =>
-        alert(i18next.t('modal.addCategory.submitSuccessful.message'))
-      )
+      .then(() => {
+        reset();
+        onClose();
+        toast({
+          title: i18next.t('modal.addCategory.submitSuccessful.message'),
+          status: 'success'
+        });
+      })
       .catch((err) => console.log(err));
-    reset();
-    onClose();
+    setNewCategory(data);
   };
+
   const closeAllModals = () => {
     categoriesDeleteModal.onClose();
     onClose();

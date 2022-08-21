@@ -3,6 +3,7 @@ import { useForm } from 'react-hook-form';
 import { useQuery, useQueryClient } from 'react-query';
 import {
   Button,
+  createStandaloneToast,
   FormControl,
   FormErrorMessage,
   FormLabel,
@@ -25,7 +26,7 @@ import {
 import i18next from 'i18next';
 
 import { getCategories } from '@/api/Category';
-import { AddPayerModal } from '@/components';
+import { AddPayerModal, AddSubCategoryModal } from '@/components';
 import {
   getCategoriesOptions,
   getDefaultPayerData,
@@ -49,7 +50,9 @@ export const AddExpenseModal = ({
 }) => {
   const categoryModal = useDisclosure();
   const payerModal = useDisclosure();
+  const subcategoryModal = useDisclosure();
 
+  const { toast } = createStandaloneToast();
   const queryClient = useQueryClient();
 
   const {
@@ -90,6 +93,41 @@ export const AddExpenseModal = ({
       setValue('payer', { value: newPayer.name, label: newPayer.name });
     });
     payerModal.onClose();
+  };
+
+  const setNewCategory = (newCategory) => {
+    queryClient.invalidateQueries(['categories']).then(() => {
+      setValue('category', {
+        value: newCategory.name,
+        label: newCategory.name
+      });
+    });
+    categoryModal.onClose();
+  };
+
+  const setNewSubCategory = (newSubCategory) => {
+    queryClient.invalidateQueries(['subcategories']).then(() => {
+      setValue('subcategory', {
+        value: newSubCategory.name,
+        label: newSubCategory.name
+      });
+    });
+    subcategoryModal.onClose();
+  };
+
+  const selectedCategory = dataCategories.find(
+    (category) => category.id === watch('category')?.value
+  );
+
+  const openSubcategoryModal = () => {
+    watch('category')
+      ? subcategoryModal.onOpen()
+      : toast({
+          title: i18next.t('modal.addSubcategory.preventAlert'),
+          duration: 3000,
+          isClosable: true,
+          position: 'top'
+        });
   };
 
   return (
@@ -156,6 +194,7 @@ export const AddExpenseModal = ({
                 }
                 isDisabled={!watch('category') && true}
                 data={dataCategories}
+                modalOnOpen={openSubcategoryModal}
               />
 
               <SelectControlled
@@ -193,11 +232,18 @@ export const AddExpenseModal = ({
         isOpen={categoryModal.isOpen}
         onClose={categoryModal.onClose}
         categoryType={'Expense'}
+        setNewCategory={setNewCategory}
       />
       <AddPayerModal
         isOpen={payerModal.isOpen}
         onClose={payerModal.onClose}
         setNewPayer={setNewPayer}
+      />
+      <AddSubCategoryModal
+        isOpen={subcategoryModal.isOpen}
+        onClose={subcategoryModal.onClose}
+        categoryData={selectedCategory}
+        setNewSubCategory={setNewSubCategory}
       />
     </>
   );

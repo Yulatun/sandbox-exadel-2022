@@ -25,7 +25,12 @@ import { createSubCategory } from '@/api/SubCategory';
 
 import { ConfirmationModal } from '../ConfirmationModal';
 
-export const AddSubCategoryModal = ({ isOpen, onClose, categoryData }) => {
+export const AddSubCategoryModal = ({
+  isOpen,
+  onClose,
+  categoryData,
+  setNewSubCategory
+}) => {
   const categoriesDeleteModal = useDisclosure();
 
   const { toast } = createStandaloneToast();
@@ -42,7 +47,7 @@ export const AddSubCategoryModal = ({ isOpen, onClose, categoryData }) => {
   } = useForm({
     defaultValues: {
       name: '',
-      color: categoryData.color
+      color: categoryData?.color
     }
   });
 
@@ -55,15 +60,16 @@ export const AddSubCategoryModal = ({ isOpen, onClose, categoryData }) => {
       categoryType: categoryData.categoryType,
       color: data.color
     })
-      .then(() =>
+      .then(() => {
+        resetForm();
+        onClose();
         toast({
           title: i18next.t('modal.addSubCategory.submitSuccessful.message'),
           status: 'success'
-        })
-      )
+        });
+      })
       .catch((err) => console.log(err));
-    reset();
-    onClose();
+    setNewSubCategory(data);
   };
 
   const closeAllModals = () => {
@@ -76,7 +82,7 @@ export const AddSubCategoryModal = ({ isOpen, onClose, categoryData }) => {
   };
 
   const resetForm = () => {
-    reset({ name: '', color: categoryData.color });
+    reset({ name: '', color: categoryData?.color });
   };
   useEffect(() => resetForm(), [!isOpen]);
 
