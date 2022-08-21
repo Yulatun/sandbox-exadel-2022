@@ -104,7 +104,12 @@ export const AddWalletModal = ({ isOpen, onClose }) => {
         !!dataWallets &&
         isFetchedWallets &&
         isFetchedCurrencies && (
-          <Modal closeOnOverlayClick={false} isOpen={isOpen} onClose={onClose}>
+          <Modal
+            scrollBehavior="inside"
+            closeOnOverlayClick={false}
+            isOpen={isOpen}
+            onClose={onClose}
+          >
             <ModalOverlay />
             <ModalContent>
               <ModalHeader>{i18next.t('modal.addWallet.title')}</ModalHeader>

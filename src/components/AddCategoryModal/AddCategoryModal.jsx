@@ -82,6 +82,7 @@ export const AddCategoryModal = ({ isOpen, onClose, categoryType }) => {
   return (
     <>
       <Modal
+        scrollBehavior="inside"
         isOpen={isOpen}
         onClose={onCancel}
         bg="red"

@@ -4,12 +4,14 @@ import { ArrowUpDownIcon } from '@chakra-ui/icons';
 import {
   Box,
   Button,
+  createStandaloneToast,
   Flex,
   Heading,
   IconButton,
   useDisclosure,
   VStack
 } from '@chakra-ui/react';
+import { useAutoAnimate } from '@formkit/auto-animate/react';
 import i18next from 'i18next';
 
 import {
@@ -18,12 +20,12 @@ import {
   editExpense,
   editIncome
 } from '@/api/Transaction';
+import { Preloader } from '@/components';
 import { useCentralTheme } from '@/theme';
 
 import { ConfirmationModal } from '../ConfirmationModal';
 import { EditExpenseModal } from '../EditExpenseModal';
 import { EditIncomeModal } from '../EditIncomeModal';
-import { NotificationModal } from '../NotificationModal';
 import { TransactionItem } from '../TransactionItem';
 export const TransactionList = ({
   list,
@@ -49,6 +51,9 @@ export const TransactionList = ({
 
   const { transactionTitleBgColor, textColor } = useCentralTheme();
 
+  const { toast } = createStandaloneToast();
+  const [parent] = useAutoAnimate();
+
   const editingIncome = useMutation(
     (data) =>
       editIncome({
@@ -66,6 +71,11 @@ export const TransactionList = ({
         editTransactionModalSuccess.onOpen();
         queryClient.invalidateQueries(['wallets']);
         queryClient.invalidateQueries(['incomes']);
+        queryClient.invalidateQueries(['incomesPagination']);
+        toast({
+          title: i18next.t('modal.editExpense.editedMessage.success'),
+          status: 'success'
+        });
       }
     }
   );
@@ -89,6 +99,11 @@ export const TransactionList = ({
         editTransactionModalSuccess.onOpen();
         queryClient.invalidateQueries(['wallets']);
         queryClient.invalidateQueries(['expenses']);
+        queryClient.invalidateQueries(['expensesP']);
+        toast({
+          title: i18next.t('modal.editExpense.editedMessage.success'),
+          status: 'success'
+        });
       }
     }
   );
@@ -99,6 +114,11 @@ export const TransactionList = ({
       onSuccess: () => {
         queryClient.invalidateQueries(['wallets']);
         queryClient.invalidateQueries(['incomes']);
+        queryClient.invalidateQueries(['incomesPagination']);
+        toast({
+          title: i18next.t('delete.transaction.successful.message'),
+          status: 'success'
+        });
       }
     }
   );
@@ -109,6 +129,11 @@ export const TransactionList = ({
       onSuccess: () => {
         queryClient.invalidateQueries(['wallets']);
         queryClient.invalidateQueries(['expenses']);
+        queryClient.invalidateQueries(['expensesP']);
+        toast({
+          title: i18next.t('delete.transaction.successful.message'),
+          status: 'success'
+        });
       }
     }
   );
@@ -245,31 +270,41 @@ export const TransactionList = ({
 
         <Box minW="90px" w="12%" />
       </Flex>
-
-      <VStack spacing={5} w="100%" maxH={maxH} overflowY="scroll">
-        {list.map((transaction) => (
-          <TransactionItem
-            key={transaction.id}
-            transactionData={transaction}
-            onEdit={() => openModalOnEdit(transaction)}
-            onDelete={() => openModalOnDelete(transaction)}
-            isExpensesType={isExpensesType}
-            isShortView={isShortView}
-          />
-        ))}
-        {hasNextPage ? (
-          <Flex justify="center" w="100%" fontSize="xl">
-            <Button onClick={onShowMore}>
-              {i18next.t('add.moreTransactions.pagination')}
-            </Button>
-          </Flex>
-        ) : null}
-      </VStack>
+      {editingIncome.isLoading || editingExpense.isLoading ? (
+        <Preloader />
+      ) : (
+        <VStack
+          spacing={5}
+          w="100%"
+          maxH={maxH}
+          overflowY="scroll"
+          ref={parent}
+        >
+          {list.map((transaction) => (
+            <TransactionItem
+              key={transaction.id}
+              transactionData={transaction}
+              onEdit={() => openModalOnEdit(transaction)}
+              onDelete={() => openModalOnDelete(transaction)}
+              isExpensesType={isExpensesType}
+              isShortView={isShortView}
+            />
+          ))}
+          {hasNextPage ? (
+            <Flex justify="center" w="100%" fontSize="xl">
+              <Button onClick={onShowMore}>
+                {i18next.t('add.moreTransactions.pagination')}
+              </Button>
+            </Flex>
+          ) : null}
+        </VStack>
+      )}
 
       {!!Object.keys(chosenTransactionData).length && (
         <EditIncomeModal
           isOpen={editIncomeModal.isOpen}
           onClose={editTransactionModalCancel.onOpen}
+          onCloseWithNoChangeData={editIncomeModal.onClose}
           onSubmit={editOnSubmit}
           walletsData={walletsData}
           categoriesData={categoriesData}
@@ -280,21 +315,12 @@ export const TransactionList = ({
         <EditExpenseModal
           isOpen={editExpenseModal.isOpen}
           onClose={editTransactionModalCancel.onOpen}
+          onCloseWithNoChangeData={editExpenseModal.onClose}
           onSubmit={editOnSubmit}
           walletsData={walletsData}
           categoriesData={categoriesData}
           payersData={payersData}
           expenseData={chosenTransactionData}
-        />
-      )}
-      {(!editIncomeModal.isOpen || !editExpenseModal.isOpen) && (
-        <NotificationModal
-          isOpen={editTransactionModalSuccess.isOpen}
-          onSubmit={editTransactionModalSuccess.onClose}
-          onClose={editTransactionModalSuccess.onClose}
-          text={i18next.t(
-            `modal.edit${chosenTransactionData.transactionType}.editedMessage.success`
-          )}
         />
       )}
       <ConfirmationModal

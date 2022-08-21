@@ -86,6 +86,7 @@ export const AddIncomeModal = ({
     <>
       {!!dataCategories && isFetchedCategories && (
         <Modal
+          scrollBehavior="inside"
           size="2xl"
           closeOnOverlayClick={false}
           isOpen={isOpen}

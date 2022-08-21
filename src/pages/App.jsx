@@ -12,6 +12,7 @@ import { Fallback } from './Fallback';
 import { Incomes } from './Incomes';
 import { Landing } from './Landing';
 import { Login } from './Login';
+import { Report } from './Report';
 import { WalletView } from './WalletView';
 
 export const queryClient = new QueryClient();
@@ -41,9 +42,10 @@ export const App = () => {
             <Route path="/" element={<Landing />} />
             <Route path="/admin" element={<Admin />} />
             <Route path="/incomes" element={<Incomes />} />
-            <Route path="/categories" element={<Categories />} />
-
             <Route path="/expenses" element={<Expenses />} />
+            <Route path="/categories" element={<Categories />} />
+            <Route path="/report" element={<Report />} />
+
             <Route path="/wallet/:id" element={<WalletView />} />
           </Route>
         </Routes>

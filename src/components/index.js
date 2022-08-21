@@ -13,6 +13,7 @@ export { EditIncomeModal } from './EditIncomeModal';
 export { EditWalletModal } from './EditWalletModal';
 export { ErrorBoundary } from './ErrorBoundary';
 export { FiltersExpenses } from './FiltersExpenses';
+export { FiltersReport } from './FiltersReport';
 export { Footer } from './Footer';
 export { Header } from './Header';
 export { LoginForm } from './LoginForm';
