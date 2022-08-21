@@ -99,6 +99,10 @@ export const WalletView = () => {
     onSuccess: () => {
       queryClient.invalidateQueries(['wallets']);
       navigate('/', { replace: true });
+      toast({
+        title: i18next.t('wallet.deletedMessage'),
+        status: 'success'
+      });
     }
   });
 

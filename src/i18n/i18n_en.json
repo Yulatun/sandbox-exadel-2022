@@ -182,7 +182,7 @@
   "transaction.noData": "No data available",
   "modal.addCategory.validationErrorMessage.nameIsLong": "Your name is too long",
   "modal.addCategory.submitSuccessful.message": "You have created new category successfully",
-  "delete.account.successful.message": "you deleted your account successful",
+  "delete.account.successful.message": "you deleted your account successfully",
   "toast.error.badGateway": "Bad Gateway. Something wrong with a website's server communication. Wait a minute or two and try to reload the page.",
   "toast.error.default": "Error. Something went wrong, try again later.",
   "toast.error.forbidden": "Forbidden. You don't have permission to access this page.",
@@ -222,5 +222,6 @@
   "modal.deleteSubCategory.text": "Do you really want to cancel the creation of the subcategory? All your entered data will be lost",
   "modal.addSubCategory.submitSuccessful.message": "You have created new subcategory successfully",
   "pageExpenses.sort.byDate": "Sort by Date",
-  "pageExpenses.sort.Amount": "Sort by Amount"
+  "pageExpenses.sort.Amount": "Sort by Amount",
+  "wallet.deletedMessage": "you deleted the wallet successfully"
 }
