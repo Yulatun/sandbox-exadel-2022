@@ -28,9 +28,6 @@ export const Admin = () => {
           <Heading as="h1" color={textColor} size="xl">
             {i18n.t('admin.welcomePage')}
           </Heading>
-          <Heading as="h2" color={textColor} size="md" m={4}>
-            {i18n.t('admin.disclaimer')}
-          </Heading>
         </Center>
       )}
     </>
