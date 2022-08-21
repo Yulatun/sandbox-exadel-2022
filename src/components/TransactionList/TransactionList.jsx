@@ -74,7 +74,13 @@ export const TransactionList = ({
         queryClient.invalidateQueries(['incomesPagination']);
         toast({
           title: i18next.t('modal.editExpense.editedMessage.success'),
-          status: 'success'
+          status: 'success',
+          duration: 3000,
+          isClosable: true,
+          position: 'top',
+          containerStyle: {
+            margin: '100px'
+          }
         });
       }
     }
@@ -102,7 +108,13 @@ export const TransactionList = ({
         queryClient.invalidateQueries(['expensesP']);
         toast({
           title: i18next.t('modal.editExpense.editedMessage.success'),
-          status: 'success'
+          status: 'success',
+          duration: 3000,
+          isClosable: true,
+          position: 'top',
+          containerStyle: {
+            margin: '100px'
+          }
         });
       }
     }
@@ -117,7 +129,13 @@ export const TransactionList = ({
         queryClient.invalidateQueries(['incomesPagination']);
         toast({
           title: i18next.t('delete.transaction.successful.message'),
-          status: 'success'
+          status: 'success',
+          duration: 3000,
+          isClosable: true,
+          position: 'top',
+          containerStyle: {
+            margin: '100px'
+          }
         });
       }
     }
@@ -132,7 +150,13 @@ export const TransactionList = ({
         queryClient.invalidateQueries(['expensesP']);
         toast({
           title: i18next.t('delete.transaction.successful.message'),
-          status: 'success'
+          status: 'success',
+          duration: 3000,
+          isClosable: true,
+          position: 'top',
+          containerStyle: {
+            margin: '100px'
+          }
         });
       }
     }
