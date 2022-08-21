@@ -68,7 +68,13 @@ export const AddWalletModal = ({ isOpen, onClose }) => {
         queryClient.invalidateQueries(['wallets']);
         toast({
           title: i18next.t('wallet.createdMessage'),
-          status: 'success'
+          status: 'success',
+          duration: 3000,
+          isClosable: true,
+          position: 'top',
+          containerStyle: {
+            margin: '100px'
+          }
         });
       }
     }

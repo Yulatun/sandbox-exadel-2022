@@ -56,7 +56,13 @@ export const AddCategoryModal = ({ isOpen, onClose, categoryType }) => {
       .then(() =>
         toast({
           title: i18next.t('modal.addCategory.submitSuccessful.message'),
-          status: 'success'
+          status: 'success',
+          duration: 3000,
+          isClosable: true,
+          position: 'top',
+          containerStyle: {
+            margin: '100px'
+          }
         })
       )
       .catch((err) => console.log(err));

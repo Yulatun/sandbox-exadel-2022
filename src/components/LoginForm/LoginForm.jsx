@@ -42,7 +42,7 @@ export const LoginForm = () => {
       navigate('/', { replace: true });
     },
     onError() {
-      toast({ title: i18n.t('toast.error.notAuthorized') });
+      toast({ title: i18n.t('toast.error.notAuthorized'), position: 'top' });
     }
   });
   const {
