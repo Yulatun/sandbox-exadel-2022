@@ -172,6 +172,7 @@ export const WalletView = () => {
   };
 
   const deleteWalletOnSubmit = () => {
+    deleteWalletModal.onClose();
     if (dataUser && isFetchedUser && dataUser.defaultWallet === walletId) {
       toast({
         title: i18next.t('modal.deleteWalletDefault.text'),
@@ -185,7 +186,6 @@ export const WalletView = () => {
       });
       return;
     }
-    deleteWalletModal.onClose();
     mutationWallet.mutate();
   };
 
