@@ -62,6 +62,9 @@ export const useCentralTheme = () => {
   let notificationReadBgColor = useColorModeValue(orange50, teal900);
   let transactionTitleBgColor = useColorModeValue(orange200, teal700);
   let transactionBgColor = useColorModeValue(orange50, teal800);
+  let reportTableBorders = useColorModeValue('blackAlpha', 'whiteAlpha');
+  let reportTableHeadingBgColor = useColorModeValue(orange300, teal700);
+  let reportTableCategoryBgColor = useColorModeValue(orange200, teal800);
 
   return {
     bgColor,
@@ -80,7 +83,10 @@ export const useCentralTheme = () => {
     notificationUnreadBgColor,
     notificationReadBgColor,
     transactionTitleBgColor,
-    transactionBgColor
+    transactionBgColor,
+    reportTableBorders,
+    reportTableHeadingBgColor,
+    reportTableCategoryBgColor
   };
 };
 

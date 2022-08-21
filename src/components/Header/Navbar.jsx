@@ -36,6 +36,11 @@ export const Navbar = () => {
           {i18next.t('header.navigation.categories')}
         </BreadcrumbLink>
       </BreadcrumbItem>
+      <BreadcrumbItem mr={{ base: 2, xl: 4 }}>
+        <BreadcrumbLink as={Link} to="/report" textUnderlineOffset="4px">
+          {i18next.t('header.navigation.report')}
+        </BreadcrumbLink>
+      </BreadcrumbItem>
     </Breadcrumb>
   );
 };
