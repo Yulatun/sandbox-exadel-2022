@@ -3,6 +3,7 @@ import { useForm } from 'react-hook-form';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
 import {
   Button,
+  createStandaloneToast,
   FormControl,
   FormErrorMessage,
   FormLabel,
@@ -23,7 +24,7 @@ import i18next from 'i18next';
 import { getCurrencies } from '@/api/Currency';
 import { getWallets } from '@/api/Wallet';
 import { createWallet } from '@/api/Wallet';
-import { ConfirmationModal, NotificationModal } from '@/components';
+import { ConfirmationModal } from '@/components';
 import { areAnyWallets } from '@/helpers/helpers';
 import { getCurrenciesOptions } from '@/helpers/selectHelpers';
 
@@ -33,7 +34,7 @@ export const AddWalletModal = ({ isOpen, onClose }) => {
   const createWalletModal = useDisclosure();
   const setDefaultModal = useDisclosure();
   const queryClient = useQueryClient();
-
+  const { toast } = createStandaloneToast();
   const {
     data: { data: dataCurrencies } = { data: [] },
     isFetched: isFetchedCurrencies
@@ -65,6 +66,10 @@ export const AddWalletModal = ({ isOpen, onClose }) => {
       onSuccess: () => {
         createWalletModal.onOpen();
         queryClient.invalidateQueries(['wallets']);
+        toast({
+          title: i18next.t('wallet.createdMessage'),
+          status: 'success'
+        });
       }
     }
   );
@@ -184,14 +189,6 @@ export const AddWalletModal = ({ isOpen, onClose }) => {
             </ModalContent>
           </Modal>
         )}
-      {!isOpen && (
-        <NotificationModal
-          isOpen={createWalletModal.isOpen}
-          onSubmit={createWalletModal.onClose}
-          onClose={createWalletModal.onClose}
-          text={i18next.t('wallet.createdMessage')}
-        />
-      )}
     </>
   );
 };
