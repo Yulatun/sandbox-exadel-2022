@@ -11,6 +11,7 @@ import {
   useDisclosure,
   VStack
 } from '@chakra-ui/react';
+import { useAutoAnimate } from '@formkit/auto-animate/react';
 import i18next from 'i18next';
 
 import {
@@ -51,6 +52,7 @@ export const TransactionList = ({
   const { transactionTitleBgColor, textColor } = useCentralTheme();
 
   const { toast } = createStandaloneToast();
+  const [parent] = useAutoAnimate();
 
   const editingIncome = useMutation(
     (data) =>
@@ -267,14 +269,16 @@ export const TransactionList = ({
 
         <Box minW="90px" w="12%" />
       </Flex>
-
-      {editingIncome.isLoading ||
-      editingExpense.isLoading ||
-      deletingIncome.isLoading ||
-      deletingExpense.isLoading ? (
+      {editingIncome.isLoading || editingExpense.isLoading ? (
         <Preloader />
       ) : (
-        <VStack spacing={5} w="100%" maxH={maxH} overflowY="scroll">
+        <VStack
+          spacing={5}
+          w="100%"
+          maxH={maxH}
+          overflowY="scroll"
+          ref={parent}
+        >
           {list.map((transaction) => (
             <TransactionItem
               key={transaction.id}

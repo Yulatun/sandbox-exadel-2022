@@ -4,7 +4,8 @@ import {
   createStandaloneToast,
   Flex,
   Text,
-  useDisclosure} from '@chakra-ui/react';
+  useDisclosure
+} from '@chakra-ui/react';
 import i18next from 'i18next';
 
 import { getCategories } from '@/api/Category';
@@ -147,7 +148,7 @@ export const Landing = () => {
 
   return (
     <>
-      {(!!dataUser && !!dataWallets && isFetchedUser && isFetchedWallets && (
+      {!!dataUser && !!dataWallets && isFetchedUser && isFetchedWallets && (
         <Flex flexDir="column" alignItems="center" w="100%" p={4}>
           <Flex my={8} direction="row" justify="center" align="center">
             <Button mr={8} onClick={expenseModal.onOpen}>
@@ -173,9 +174,6 @@ export const Landing = () => {
             <Text color={textColor} fontSize="xl">
               {i18next.t('transaction.noData')}
             </Text>
-          ) : mutationCreateExpense.isLoading ||
-            mutationCreateIncome.isLoading ? (
-            <Preloader />
           ) : (
             <TransactionList
               list={recentTransactions}
@@ -187,7 +185,7 @@ export const Landing = () => {
             />
           )) || <Preloader />}
         </Flex>
-      )) || <Preloader />}
+      )}
 
       {!!dataUser &&
         !!dataWallets &&
