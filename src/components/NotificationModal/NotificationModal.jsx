@@ -14,6 +14,7 @@ import i18next from 'i18next';
 export const NotificationModal = ({ isOpen, onClose, onSubmit, text }) => {
   return (
     <Modal
+      scrollBehavior="inside"
       closeOnOverlayClick={false}
       isOpen={isOpen}
       onClose={onClose}

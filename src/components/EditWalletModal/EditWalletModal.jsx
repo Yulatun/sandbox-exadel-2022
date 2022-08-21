@@ -52,7 +52,12 @@ export const EditWalletModal = ({ isOpen, onSubmit, onClose, walletData }) => {
   const onSubmitting = isDirty ? onSubmit : onClose;
 
   return (
-    <Modal closeOnOverlayClick={false} isOpen={isOpen} onClose={onClose}>
+    <Modal
+      scrollBehavior="inside"
+      closeOnOverlayClick={false}
+      isOpen={isOpen}
+      onClose={onClose}
+    >
       <ModalOverlay />
       <ModalContent>
         <ModalHeader>{i18next.t('modal.editWallet.title')}</ModalHeader>

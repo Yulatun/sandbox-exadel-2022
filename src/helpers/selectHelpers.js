@@ -108,8 +108,49 @@ export const getWalletsOptions = (dataWallets) => {
   }));
 };
 
+export const getAllWalletsSortedOptions = (userData) => {
+  const sortedActiveWallets = ([...userData.wallets] || [])
+    .filter((wallet) => wallet.isActive)
+    .sort((a, b) => {
+      if (b.id === userData.defaultWallet) return 1;
+
+      if (
+        a.id === userData.defaultWallet ||
+        a.name.toLowerCase() < b.name.toLowerCase()
+      ) {
+        return -1;
+      }
+
+      return 1;
+    })
+    .map((wallet) => ({
+      value: wallet.id,
+      label: wallet.name
+    }));
+
+  const sortedInactiveWallets = ([...userData.wallets] || [])
+    .filter((wallet) => !wallet.isActive)
+    .sort((a, b) => {
+      if (a.name.toLowerCase() < b.name.toLowerCase()) {
+        return -1;
+      }
+
+      return 1;
+    })
+    .map((wallet) => ({
+      value: wallet.id,
+      label: wallet.name
+    }));
+
+  return [...sortedActiveWallets, ...sortedInactiveWallets];
+};
+
 export const getCategoriesOptions = (dataCategories, typeOfTransaction) => {
-  return (dataCategories || [])
+  return ([...dataCategories] || [])
+    .sort((a, b) => {
+      if (a.name.toLowerCase() < b.name.toLowerCase()) return -1;
+      return 1;
+    })
     .filter((category) => category.categoryType === typeOfTransaction)
     .map((category) => ({
       value: category.id,
@@ -118,7 +159,11 @@ export const getCategoriesOptions = (dataCategories, typeOfTransaction) => {
 };
 
 export const getSubcategoriesOptions = (dataCategories, chosenCategory) => {
-  return (dataCategories || [])
+  return ([...dataCategories] || [])
+    .sort((a, b) => {
+      if (a.name.toLowerCase() < b.name.toLowerCase()) return -1;
+      return 1;
+    })
     .find((category) => category.id === chosenCategory?.value)
     ?.subCategories?.map((subcategory) => ({
       value: subcategory.id,
@@ -127,10 +172,18 @@ export const getSubcategoriesOptions = (dataCategories, chosenCategory) => {
 };
 
 export const getPayersOptions = (dataPayers) => {
-  return (dataPayers || []).map((payer) => ({
-    value: payer,
-    label: payer
-  }));
+  return ([...dataPayers] || [])
+    .sort((a, b) => {
+      if (b === dataPayers[0]) return 1;
+
+      if (a === dataPayers[0] || a.toLowerCase() < b.toLowerCase()) return -1;
+
+      return 1;
+    })
+    .map((payer) => ({
+      value: payer,
+      label: payer
+    }));
 };
 
 export const getSelectFieldsData = (nameOfSelect) => {
@@ -141,9 +194,17 @@ export const getSelectFieldsData = (nameOfSelect) => {
   let addNewData = null;
 
   switch (nameOfSelect) {
+    case 'dateReport':
+      label = i18next.t('report.filters.date.label');
+      break;
+
     case 'wallet':
       label = i18next.t('modal.addIncome.wallet');
       placeholderData = i18next.t('modal.addIncome.wallet.placeholder');
+      break;
+
+    case 'walletReport':
+      label = i18next.t('report.filters.wallet.label');
       break;
 
     case 'currency':
@@ -160,6 +221,14 @@ export const getSelectFieldsData = (nameOfSelect) => {
       addNewData = i18next.t('modal.addTransaction.addCategory');
       break;
 
+    case 'categoryIncomeReport':
+      label = i18next.t('report.filters.categoryIncome.label');
+      break;
+
+    case 'categoryExpenseReport':
+      label = i18next.t('report.filters.categoryExpense.label');
+      break;
+
     case 'subcategory':
       label = i18next.t('modal.addExpense.subcategory');
       placeholderData = i18next.t('modal.addExpense.subcategory.placeholder');
@@ -174,6 +243,10 @@ export const getSelectFieldsData = (nameOfSelect) => {
       placeholderData = i18next.t('modal.addExpense.payer.placeholder');
       newDataQuestion = i18next.t('modal.addExpense.addPayerQuestion');
       addNewData = i18next.t('modal.addExpense.addPayer');
+      break;
+
+    case 'payerReport':
+      label = i18next.t('report.filters.payer.label');
       break;
 
     case 'isRecurring':

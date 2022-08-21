@@ -40,7 +40,7 @@ export const AddPayerModal = ({ isOpen, onClose, setNewPayer }) => {
   const { data, isFetched } = useQuery(['payers'], getPayers);
 
   return (
-    <Modal isOpen={isOpen} onClose={onClose}>
+    <Modal scrollBehavior="inside" isOpen={isOpen} onClose={onClose}>
       <ModalOverlay />
       <ModalContent>
         <ModalHeader>{i18next.t('modal.addPayer.header')}</ModalHeader>

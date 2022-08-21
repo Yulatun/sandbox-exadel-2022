@@ -89,6 +89,7 @@ export const AddCategoryModal = ({
   return (
     <>
       <Modal
+        scrollBehavior="inside"
         isOpen={isOpen}
         onClose={onCancel}
         bg="red"

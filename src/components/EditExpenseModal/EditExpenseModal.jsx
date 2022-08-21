@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { useQueryClient } from 'react-query';
 import {
@@ -48,11 +49,11 @@ export const EditExpenseModal = ({
   walletsData,
   categoriesData,
   payersData,
-  expenseData
+  expenseData,
+  onCloseWithNoChangeData
 }) => {
   const categoryModal = useDisclosure();
   const payerModal = useDisclosure();
-
   const queryClient = useQueryClient();
 
   const {
@@ -60,8 +61,10 @@ export const EditExpenseModal = ({
     register,
     handleSubmit,
     setValue,
+    reset,
     watch,
     formState: {
+      isDirty,
       errors: { amount, category }
     }
   } = useForm({
@@ -76,6 +79,20 @@ export const EditExpenseModal = ({
     }
   });
 
+  const resetForm = () => {
+    reset({
+      wallet: getChosenWalletData(expenseData, walletsData),
+      amount: expenseData.value,
+      category: getChosenCategoryData(expenseData, categoriesData),
+      subcategory: getChosenSubcategoryData(expenseData, categoriesData),
+      payer: getChosenPayerData(expenseData, payersData),
+      date: format(new Date(expenseData.dateOfTransaction), 'yyyy-MM-dd'),
+      note: expenseData.description
+    });
+  };
+
+  useEffect(() => resetForm(), [!isOpen]);
+
   const setNewPayer = (newPayer) => {
     queryClient.invalidateQueries(['payers']).then(() => {
       setValue('payer', { value: newPayer.name, label: newPayer.name });
@@ -83,9 +100,14 @@ export const EditExpenseModal = ({
     payerModal.onClose();
   };
 
+  const onCancel = () => {
+    isDirty ? onClose() : onCloseWithNoChangeData();
+  };
+
   return (
     <>
       <Modal
+        scrollBehavior="inside"
         size="2xl"
         closeOnOverlayClick={false}
         isOpen={isOpen}
@@ -172,7 +194,7 @@ export const EditExpenseModal = ({
             <Button mr="20px" onClick={handleSubmit(onSubmit)}>
               {i18next.t('button.submit')}
             </Button>
-            <Button variant="secondary" onClick={onClose}>
+            <Button variant="secondary" onClick={onCancel}>
               {i18next.t('button.cancel')}
             </Button>
           </ModalFooter>

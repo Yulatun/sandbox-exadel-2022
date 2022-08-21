@@ -23,6 +23,7 @@ export const ConfirmationModal = ({
 }) => {
   return (
     <Modal
+      scrollBehavior="inside"
       closeOnOverlayClick={false}
       isOpen={isOpen}
       onClose={onClose}

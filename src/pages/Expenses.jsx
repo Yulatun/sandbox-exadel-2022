@@ -5,13 +5,11 @@ import {
   useQuery,
   useQueryClient
 } from 'react-query';
-import { ArrowUpDownIcon } from '@chakra-ui/icons';
 import {
   Box,
   Button,
   Flex,
   HStack,
-  IconButton,
   Text,
   useDisclosure
 } from '@chakra-ui/react';
@@ -46,7 +44,12 @@ export const Expenses = () => {
     hasNextPage
   } = useInfiniteQuery(
     ['expensesP', sort, isSortDescending],
-    ({ pageParam }) => getExpenses(sort, isSortDescending, pageParam),
+    ({ pageParam }) =>
+      getExpenses({
+        pageParam: pageParam,
+        IsSortByDate: sort === 'IsSortByDate',
+        IsSortDescending: isSortDescending
+      }),
     {
       getNextPageParam: (lastPage) => {
         return lastPage.data.pageInfo.pageNumber !==
@@ -162,26 +165,6 @@ export const Expenses = () => {
           {i18next.t('button.addExpense')}
         </Button>
       </Flex>
-      <Flex justify="flex-start" w="100%" h="30px">
-        <Flex
-          align="center"
-          ml="2%"
-          cursor="pointer"
-          onClick={() => onSetSortDate()}
-        >
-          <IconButton icon={<ArrowUpDownIcon />} variant="unstyled" />
-          <Text> {i18next.t('pageExpenses.sort.byDate')}</Text>
-        </Flex>
-        <Flex
-          align="center"
-          ml="23%"
-          cursor="pointer"
-          onClick={() => onSetSortByAmount()}
-        >
-          <IconButton icon={<ArrowUpDownIcon />} variant="unstyled" />
-          <Text> {i18next.t('pageExpenses.sort.Amount')}</Text>
-        </Flex>
-      </Flex>
 
       {!!dataWallets &&
       !!dataCategories &&
@@ -204,6 +187,8 @@ export const Expenses = () => {
           payersData={dataPayers}
           onShowMore={fetchNextPage}
           hasNextPage={hasNextPage}
+          onSetSortByAmount={onSetSortByAmount}
+          onSetSortDate={onSetSortDate}
         />
       )}
       {!isFetchedExpenses && <Preloader />}
