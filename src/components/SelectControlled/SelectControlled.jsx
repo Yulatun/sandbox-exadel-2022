@@ -13,6 +13,7 @@ import i18next from 'i18next';
 import { getSelectFieldsData } from '@/helpers/selectHelpers';
 
 export const SelectControlled = ({
+  zIndex = false,
   size = 'md',
   nameOfSelect,
   control,
@@ -21,8 +22,37 @@ export const SelectControlled = ({
   isRequiredData = false,
   isDisabled = false,
   data = {},
-  modalOnOpen
+  modalOnOpen,
+  isMulti = false,
+  closeMenuOnSelect = true,
+  setIsSelectOnFocus = () => {},
+  checkAllOptions = () => {}
 }) => {
+  const setStateOnFocus = () => {
+    switch (nameOfSelect) {
+      case 'categoryIncomeReport':
+        setIsSelectOnFocus((prevState) => ({
+          ...prevState,
+          income: !prevState.income
+        }));
+        break;
+
+      case 'categoryExpenseReport':
+        setIsSelectOnFocus((prevState) => ({
+          ...prevState,
+          expense: !prevState.expense
+        }));
+        break;
+
+      case 'payerReport':
+        setIsSelectOnFocus((prevState) => ({
+          ...prevState,
+          payer: !prevState.payer
+        }));
+        break;
+    }
+  };
+
   return (
     <>
       <Controller
@@ -37,9 +67,12 @@ export const SelectControlled = ({
         }
         render={({ field: { onChange, onBlur, value, name, ref } }) => (
           <FormControl
+            pos="relative"
+            zIndex={zIndex}
             mb="20px"
             isInvalid={errorData}
             isRequired={isRequiredData}
+            onFocus={setStateOnFocus}
           >
             <FormLabel htmlFor={nameOfSelect}>
               {getSelectFieldsData(nameOfSelect).label}
@@ -50,14 +83,27 @@ export const SelectControlled = ({
                 name={name}
                 value={value}
                 ref={ref}
-                onChange={onChange}
-                onBlur={onBlur}
+                onChange={(event) => {
+                  onChange(event);
+                  checkAllOptions(event);
+                }}
+                onBlur={() => {
+                  setStateOnFocus();
+                  onBlur();
+                }}
                 options={listOfOptions}
                 isSearchable={true}
                 isDisabled={isDisabled}
                 selectedOptionStyle="check"
                 hideSelectedOptions={false}
                 placeholder={getSelectFieldsData(nameOfSelect).placeholderData}
+                isMulti={isMulti}
+                closeMenuOnSelect={closeMenuOnSelect}
+                components={{
+                  ClearIndicator: () => null,
+                  IndicatorSeparator: () => null,
+                  MultiValueContainer: () => null
+                }}
               />
             )) || (
               <Skeleton
