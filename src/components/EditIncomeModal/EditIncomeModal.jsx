@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import {
   Button,
@@ -38,6 +39,7 @@ import { SelectControlled } from '../SelectControlled';
 export const EditIncomeModal = ({
   isOpen,
   onClose,
+  onCloseWithNoChangeData,
   onSubmit,
   walletsData,
   categoriesData,
@@ -50,7 +52,9 @@ export const EditIncomeModal = ({
     register,
     handleSubmit,
     watch,
+    reset,
     formState: {
+      isDirty,
       errors: { amount, category }
     }
   } = useForm({
@@ -62,6 +66,22 @@ export const EditIncomeModal = ({
       note: incomeData.description
     }
   });
+
+  const onCancel = () => {
+    isDirty ? onClose() : onCloseWithNoChangeData();
+  };
+
+  const resetForm = () => {
+    reset({
+      wallet: getChosenWalletData(incomeData, walletsData),
+      amount: incomeData.value,
+      category: getChosenCategoryData(incomeData, categoriesData),
+      date: format(new Date(incomeData.dateOfTransaction), 'yyyy-MM-dd'),
+      note: incomeData.description
+    });
+  };
+
+  useEffect(() => resetForm(), [!isOpen]);
 
   return (
     <>
@@ -134,7 +154,7 @@ export const EditIncomeModal = ({
             <Button mr="20px" onClick={handleSubmit(onSubmit)}>
               {i18next.t('button.submit')}
             </Button>
-            <Button variant="secondary" onClick={onClose}>
+            <Button variant="secondary" onClick={onCancel}>
               {i18next.t('button.cancel')}
             </Button>
           </ModalFooter>

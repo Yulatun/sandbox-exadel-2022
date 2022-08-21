@@ -213,8 +213,7 @@
   "transaction.title.note": "Note",
   "transaction.value.wallet": "Wallet",
   "admin.button": "Admin",
-  "admin.welcomePage": "Welcome to Admin page!",
-  "admin.disclaimer": "You can see me only if you have an Admin role ;)",
+  "admin.welcomePage": "Welcome to Administrator panel",
   "add.moreTransactions.pagination": "Show more",
   "button.addSubCategory": "Add new subcategory",
   "modal.addSubCategory.formName": "Subcategory name",
@@ -223,5 +222,8 @@
   "modal.addSubCategory.submitSuccessful.message": "You have created new subcategory successfully",
   "pageExpenses.sort.byDate": "Sort by Date",
   "pageExpenses.sort.Amount": "Sort by Amount",
-  "wallet.deletedMessage": "You deleted the wallet successfully"
+  "wallet.deletedMessage": "You deleted the wallet successfully",
+  "modal.addExpense.validationErrorMessage.notNegativeAmount": "please provide positive number, your amount will be converted to negative automatically",
+  "modal.confirmationModal.cancelAddNewExpenses": " Do you really want to cancel the adding of a new expense? All you entered data will be lost",
+  "delete.transaction.successful.message": "Your transaction data successfully deleted"
 }
