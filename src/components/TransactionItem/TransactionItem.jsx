@@ -41,7 +41,6 @@ export const TransactionItem = ({
         (subcategory) => subcategory.id === transactionData.subCategoryId
       )?.name;
     }
-
     return '';
   };
 
@@ -110,21 +109,24 @@ export const TransactionItem = ({
                       {transactionData.payer}
                     </Box>
                   )}
-
-                  <Box minW="40px" w="5%" textAlign="center">
-                    <Tooltip
-                      w="100%"
-                      label={
-                        transactionData.description.length
-                          ? transactionData.description
-                          : i18next.t('transaction.tooltip.note')
-                      }
-                    >
-                      <Text cursor="pointer">
-                        <NoteIcon color={popupExpTextColor} />
-                      </Text>
-                    </Tooltip>
-                  </Box>
+                  {transactionData.description !== '' ? (
+                    <Box minW="40px" w="5%" textAlign="center">
+                      <Tooltip
+                        w="100%"
+                        label={
+                          transactionData.description.length
+                            ? transactionData.description
+                            : i18next.t('transaction.tooltip.note')
+                        }
+                      >
+                        <Text cursor="pointer">
+                          <NoteIcon color={popupExpTextColor} />
+                        </Text>
+                      </Tooltip>
+                    </Box>
+                  ) : (
+                    <Box minW="40px" w="5%" textAlign="center"></Box>
+                  )}
                 </>
               )}
             </Flex>

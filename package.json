@@ -18,6 +18,7 @@
     "@chakra-ui/react": "^2.2.4",
     "@emotion/react": "^11.9.3",
     "@emotion/styled": "^11.9.3",
+    "@formkit/auto-animate": "^1.0.0-beta.1",
     "@hookform/resolvers": "^2.9.6",
     "@uselessdev/datepicker": "^2.5.1",
     "axios": "^0.27.2",
@@ -52,6 +53,11 @@
     "lint-staged": "^13.0.3",
     "prettier": "2.7.1",
     "vite": "^2.9.9"
+  },
+  "overrides": {
+    "@formkit/auto-animate": {
+      "react": "^18.0.0"
+    }
   },
   "lint-staged": {
     "*.{js,jsx}": "npm run lint",
