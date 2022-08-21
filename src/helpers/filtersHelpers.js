@@ -11,27 +11,27 @@ export const isAllSelectedChosen = (data) => {
 
 export const getTypeOfOptions = ({ data, categoriesData, payersData }) => {
   if (data) {
-    const isCategoryIncomeType = !!getCategoriesOptions(
-      categoriesData,
-      'Income'
-    )?.find((category) => category.value === data[0]?.value);
-    const isCategoryExpenseType = !!getCategoriesOptions(
-      categoriesData,
-      'Expense'
-    )?.find((category) => category.value === data[0]?.value);
-    const isPayerType = !!getPayersOptions(payersData)?.find(
-      (payer) => payer.value === data[0]?.value
-    );
+    if (
+      getCategoriesOptions(categoriesData, 'Income')?.find(
+        (category) => category.value === data[0]?.value
+      )
+    ) {
+      return 'categoryIncomeReport';
+    }
 
-    switch (true) {
-      case isCategoryIncomeType:
-        return 'categoryIncomeReport';
-
-      case isCategoryExpenseType:
-        return 'categoryExpenseReport';
-
-      case isPayerType:
-        return 'payerReport';
+    if (
+      getCategoriesOptions(categoriesData, 'Expense')?.find(
+        (category) => category.value === data[0]?.value
+      )
+    ) {
+      return 'categoryExpenseReport';
+    }
+    if (
+      getPayersOptions(payersData)?.find(
+        (payer) => payer.value === data[0]?.value
+      )
+    ) {
+      return 'payerReport';
     }
   }
 };

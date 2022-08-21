@@ -8,7 +8,6 @@ import {
   subDays,
   toDate
 } from 'date-fns';
-import i18next from 'i18next';
 
 export const today = new Date();
 let previousMondayDate = null;
@@ -90,34 +89,6 @@ export const isCustomizedRange = (startDate, endDate, chosenDates) => {
   }
 
   return false;
-};
-
-export const getInputValueName = (value) => {
-  switch (value) {
-    case 'today':
-      return i18next.t('report.filters.date.value.today');
-
-    case 'yesterday':
-      return i18next.t('report.filters.date.value.yesterday');
-
-    case 'thisWeek':
-      return i18next.t('report.filters.date.value.thisWeek');
-
-    case 'lastWeek':
-      return i18next.t('report.filters.date.value.lastWeek');
-
-    case 'thisMonth':
-      return i18next.t('report.filters.date.value.thisMonth');
-
-    case 'lastMonth':
-      return i18next.t('report.filters.date.value.lastMonth');
-
-    case 'customized':
-      return i18next.t('report.filters.date.value.customized');
-
-    default:
-      return '';
-  }
 };
 
 export const getInputFormattedValue = (data) => {

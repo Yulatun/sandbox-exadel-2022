@@ -35,11 +35,7 @@ import { FiltersTag } from '../FiltersTag';
 import { SelectControlled } from '../SelectControlled';
 
 import { CalendarPicker } from './CalendarPicker';
-import {
-  getInputFormattedValue,
-  getInputValueName,
-  today as todayDate
-} from './utils';
+import { getInputFormattedValue, today as todayDate } from './utils';
 
 export const FiltersReport = ({
   userData,
@@ -399,11 +395,7 @@ export const FiltersReport = ({
       case 'categoryIncomeReport':
       case 'categoryExpenseReport':
       case 'payerReport':
-        if (
-          (valueChecked === payersData[0] &&
-            watch('payerReport').length <= 1) ||
-          (typeChecked === 'payerReport' && valueChecked !== payersData[0])
-        ) {
+        if (typeChecked === 'payerReport' && watch('payerReport').length <= 1) {
           setValue('payerReport', [
             { value: payersData[0], label: payersData[0] }
           ]);
@@ -474,7 +466,9 @@ export const FiltersReport = ({
                 textAlign="left"
                 type="text"
                 readOnly
-                value={getInputValueName(selectedDateFilter?.value)}
+                value={i18next.t(
+                  `report.filters.date.value.${selectedDateFilter?.value}`
+                )}
               />
               <InputRightElement
                 mt="1px"
