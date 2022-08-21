@@ -106,6 +106,7 @@ export const AddExpenseModal = ({
     <>
       {!!dataCategories && isFetchedCategories && (
         <Modal
+          scrollBehavior="inside"
           size="2xl"
           closeOnOverlayClick={false}
           isOpen={isOpen}
