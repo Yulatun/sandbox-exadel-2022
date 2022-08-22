@@ -5,14 +5,8 @@ import {
   useQuery,
   useQueryClient
 } from 'react-query';
-import {
-  Box,
-  Button,
-  Flex,
-  HStack,
-  Text,
-  useDisclosure
-} from '@chakra-ui/react';
+import { Box, Button, Flex, Text, useDisclosure } from '@chakra-ui/react';
+import { format } from 'date-fns';
 import i18next from 'i18next';
 
 import { getCategories } from '@/api/Category';
@@ -25,12 +19,18 @@ import {
   Preloader,
   TransactionList
 } from '@/components';
-import { FiltersTag } from '@/components/FiltersTag';
 import { getTransactionsList } from '@/helpers/helpers';
 import { useCentralTheme } from '@/theme';
 
 export const Expenses = () => {
   const [sort, setSort] = useState('IsSortByDate');
+  const [filters, setFilters] = useState({
+    dateFilter: {},
+    categoryFilter: [],
+    walletFilter: [],
+    payerFilter: []
+  });
+
   const [isSortDescending, setIsSortDescending] = useState(true);
   const expenseModal = useDisclosure();
   const queryClient = useQueryClient();
@@ -43,12 +43,25 @@ export const Expenses = () => {
     fetchNextPage,
     hasNextPage
   } = useInfiniteQuery(
-    ['expensesP', sort, isSortDescending],
+    ['expensesP', sort, isSortDescending, filters],
     ({ pageParam }) =>
       getExpenses({
         pageParam: pageParam,
         IsSortByDate: sort === 'IsSortByDate',
-        IsSortDescending: isSortDescending
+        IsSortDescending: isSortDescending,
+        DateFrom:
+          'start' in filters.dateFilter
+            ? `${format(filters.dateFilter.start, 'yyyy-MM-dd')}T00:00:00.000Z`
+            : '',
+        DateTo:
+          'end' in filters.dateFilter
+            ? `${format(filters.dateFilter.end, 'yyyy-MM-dd')}T23:59:59.999Z`
+            : '',
+        CategoriesFilter: filters.categoryFilter.map(
+          (category) => category.value
+        ),
+        WalletsFilter: filters.walletFilter.map((wallet) => wallet.value),
+        PayersFilter: filters.payerFilter.map((payer) => payer.value)
       }),
     {
       getNextPageParam: (lastPage) => {
@@ -143,6 +156,7 @@ export const Expenses = () => {
   if (isLoading) {
     return <Preloader />;
   }
+
   return (
     <Flex
       flexDir="column"
@@ -153,13 +167,13 @@ export const Expenses = () => {
       w="100%"
     >
       <Box mb="50px" w="100%">
-        <FiltersExpenses />
+        <FiltersExpenses
+          dataWallets={dataWallets}
+          dataCategories={dataCategories}
+          dataPayers={dataPayers}
+          onChange={setFilters}
+        />
       </Box>
-      <HStack spacing={4} mb="50px" w="100%">
-        {['Food', 'Beauty', 'Utilities'].map((name) => (
-          <FiltersTag key={name} text={name} />
-        ))}
-      </HStack>
       <Flex justify="flex-end" w="100%">
         <Button w="50%" mb={5} onClick={expenseModal.onOpen}>
           {i18next.t('button.addExpense')}

@@ -6,6 +6,7 @@ import {
   Flex,
   FormControl,
   Heading,
+  HStack,
   IconButton,
   Input,
   InputGroup,
@@ -16,9 +17,16 @@ import i18next from 'i18next';
 
 import { useCentralTheme } from '@/theme';
 
+import { FiltersTag } from '../FiltersTag';
+
 import { CalendarPicker } from './CalendarPicker';
 
-export const FiltersExpenses = () => {
+export const FiltersExpenses = ({
+  dataWallets,
+  dataCategories,
+  dataPayers,
+  onChange
+}) => {
   const [chosenDates, setChosenDates] = useState({});
 
   const [dateButtonSelected, setDateButtonSelected] = useState({
@@ -61,6 +69,23 @@ export const FiltersExpenses = () => {
       window.removeEventListener('click', handleClickOutside);
     };
   }, []);
+
+  useEffect(() => {
+    console.log('-------------------');
+    console.log('BAAAAAAM!');
+    console.log('-------------------');
+    onChange({
+      dateFilter: chosenDates,
+      categoryFilter: selectedCategoryFilters,
+      walletFilter: selectedWalletFilters,
+      payerFilter: selectedPayerFilters
+    });
+  }, [
+    chosenDates,
+    setSelectedCategoryFilters,
+    selectedWalletFilters,
+    selectedPayerFilters
+  ]);
 
   useEffect(() => {
     if (
@@ -171,6 +196,17 @@ export const FiltersExpenses = () => {
     setSelectedPayerFilters([]);
   };
 
+  const unselectCategory = (categoryId) => {
+    const categories = [...selectedCategoryFilters];
+    const index = categories.findIndex(
+      (category) => category.value === categoryId
+    );
+    if (index !== -1) {
+      categories.splice(index, 1);
+    }
+    setSelectedCategoryFilters(categories);
+  };
+
   return (
     <Flex flexDir="column" w="100%">
       <Heading mb="15px" as="h3" size="lg" color={textColor}>
@@ -189,10 +225,16 @@ export const FiltersExpenses = () => {
         >
           <InputGroup onClick={() => setIsDateSelectOpen(!isDateSelectOpen)}>
             <Input
+              // --------------------------------
+              maxW="300px"
               textAlign="left"
-              color={inputValueColor}
+              color={!selectedDateFilter.value ? inputValueColor : textColor}
               type="button"
-              value={i18next.t('expenses.filters.date.value')}
+              value={
+                !selectedDateFilter.value
+                  ? i18next.t('expenses.filters.date.value')
+                  : selectedDateFilter.value
+              }
             />
             <InputRightElement
               mt="1px"
@@ -247,13 +289,10 @@ export const FiltersExpenses = () => {
           <FormControl>
             <Select
               value={selectedCategoryFilters}
-              options={[
-                { label: 'Category 1', value: 'category-1' },
-                { label: 'Category 2', value: 'category-2' },
-                { label: 'Category 3', value: 'category-3' },
-                { label: 'Category 4', value: 'category-4' },
-                { label: 'Category 5', value: 'category-5' }
-              ]}
+              options={dataCategories.map((category) => ({
+                label: category.name,
+                value: category.id
+              }))}
               onChange={(event) =>
                 handleSelects(
                   event,
@@ -293,11 +332,10 @@ export const FiltersExpenses = () => {
           <FormControl>
             <Select
               value={selectedWalletFilters}
-              options={[
-                { label: 'Wallet 1', value: 'wallet-1' },
-                { label: 'Wallet 2', value: 'wallet-2' },
-                { label: 'Wallet 3', value: 'wallet-3' }
-              ]}
+              options={dataWallets.map((wallet) => ({
+                label: wallet.name,
+                value: wallet.id
+              }))}
               onChange={(event) =>
                 handleSelects(
                   event,
@@ -337,11 +375,10 @@ export const FiltersExpenses = () => {
           <FormControl>
             <Select
               value={selectedPayerFilters}
-              options={[
-                { label: 'Payer 1', value: 'payer-1' },
-                { label: 'Payer 2', value: 'payer-2' },
-                { label: 'Payer 3', value: 'payer-3' }
-              ]}
+              options={dataPayers.map((payer) => ({
+                label: payer,
+                value: payer
+              }))}
               onChange={(event) =>
                 handleSelects(
                   event,
@@ -387,6 +424,16 @@ export const FiltersExpenses = () => {
           </Button>
         )}
       </Flex>
+      <HStack spacing={4} mb="50px" w="100%">
+        {selectedCategoryFilters.map((filter) => (
+          <FiltersTag
+            key={filter.value}
+            tagId={filter.value}
+            text={filter.label}
+            onDelete={unselectCategory}
+          />
+        ))}
+      </HStack>
     </Flex>
   );
 };

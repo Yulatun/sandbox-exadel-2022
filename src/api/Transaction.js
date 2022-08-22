@@ -35,7 +35,12 @@ export const getExpenses = async ({
   IsSortByDate = false,
   IsSortByAmount = false,
   sortColumn = 'IsSortByDate',
-  IsSortDescending = true
+  IsSortDescending = true,
+  DateFrom = '',
+  DateTo = '',
+  CategoriesFilter = [],
+  WalletsFilter = [],
+  PayersFilter = []
 }) => {
   return instance.get('/api/v1/Transaction/Expense', {
     params: {
@@ -43,7 +48,12 @@ export const getExpenses = async ({
       IsSortByDate: IsSortByDate,
       IsSortByAmount: IsSortByAmount,
       IsSortDescending: IsSortDescending,
-      [sortColumn]: false
+      [sortColumn]: false,
+      DateFrom: DateFrom,
+      DateTo: DateTo,
+      CategoriesFilter: CategoriesFilter,
+      WalletsFilter: WalletsFilter,
+      PayersFilter: PayersFilter
     }
   });
 };
