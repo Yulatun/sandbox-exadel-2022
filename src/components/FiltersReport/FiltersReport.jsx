@@ -485,7 +485,7 @@ export const FiltersReport = ({
             </InputGroup>
           </FormControl>
           {!!isDateSelectOpen && (
-            <Box pos="absolute" top="80px" zIndex="2">
+            <Box pos="absolute" top="80px" zIndex="9">
               <CalendarPicker
                 clearAllDateButtonsSelected={clearAllDateButtonsSelected}
                 chosenDates={chosenDates}
