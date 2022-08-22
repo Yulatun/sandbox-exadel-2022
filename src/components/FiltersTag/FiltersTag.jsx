@@ -13,7 +13,7 @@ export const FiltersTag = ({
   const { textColor } = useCentralTheme();
 
   return (
-    <Tag size="lg" mr={3} mb={3} variant="solid" bgColor={bgColor || textColor}>
+    <Tag size="lg" variant="solid" bgColor={bgColor || textColor}>
       <TagLabel>{text}</TagLabel>
       {isOnClose && (
         <TagCloseButton id={type} value={value} onClick={onClose} />
