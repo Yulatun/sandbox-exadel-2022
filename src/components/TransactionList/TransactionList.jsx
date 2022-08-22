@@ -36,7 +36,7 @@ export const TransactionList = ({
   hasNextPage,
   walletsData,
   categoriesData,
-  payersData = null,
+  payersData = [],
   onSetSortDate
 }) => {
   const [chosenTransactionData, setChosenTransactionData] = useState({});
@@ -72,9 +72,17 @@ export const TransactionList = ({
         queryClient.invalidateQueries(['wallets']);
         queryClient.invalidateQueries(['incomes']);
         queryClient.invalidateQueries(['incomesPagination']);
+        queryClient.invalidateQueries(['totalBalance']);
+
         toast({
           title: i18next.t('modal.editExpense.editedMessage.success'),
-          status: 'success'
+          status: 'success',
+          duration: 3000,
+          isClosable: true,
+          position: 'top',
+          containerStyle: {
+            margin: '100px'
+          }
         });
       }
     }
@@ -100,9 +108,17 @@ export const TransactionList = ({
         queryClient.invalidateQueries(['wallets']);
         queryClient.invalidateQueries(['expenses']);
         queryClient.invalidateQueries(['expensesP']);
+        queryClient.invalidateQueries(['totalBalance']);
+
         toast({
           title: i18next.t('modal.editExpense.editedMessage.success'),
-          status: 'success'
+          status: 'success',
+          duration: 3000,
+          isClosable: true,
+          position: 'top',
+          containerStyle: {
+            margin: '100px'
+          }
         });
       }
     }
@@ -115,9 +131,17 @@ export const TransactionList = ({
         queryClient.invalidateQueries(['wallets']);
         queryClient.invalidateQueries(['incomes']);
         queryClient.invalidateQueries(['incomesPagination']);
+        queryClient.invalidateQueries(['totalBalance']);
+
         toast({
           title: i18next.t('delete.transaction.successful.message'),
-          status: 'success'
+          status: 'success',
+          duration: 3000,
+          isClosable: true,
+          position: 'top',
+          containerStyle: {
+            margin: '100px'
+          }
         });
       }
     }
@@ -130,9 +154,17 @@ export const TransactionList = ({
         queryClient.invalidateQueries(['wallets']);
         queryClient.invalidateQueries(['expenses']);
         queryClient.invalidateQueries(['expensesP']);
+        queryClient.invalidateQueries(['totalBalance']);
+
         toast({
           title: i18next.t('delete.transaction.successful.message'),
-          status: 'success'
+          status: 'success',
+          duration: 3000,
+          isClosable: true,
+          position: 'top',
+          containerStyle: {
+            margin: '100px'
+          }
         });
       }
     }
@@ -192,8 +224,9 @@ export const TransactionList = ({
         mb={6}
         py={4}
         px={8}
-        boxShadow="2xl"
+        boxShadow="md"
         bg={transactionTitleBgColor}
+        borderRadius={8}
       >
         <Flex
           justifyContent="space-between"

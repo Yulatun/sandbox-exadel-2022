@@ -60,33 +60,44 @@ export const WalletsList = ({ userData, walletsData }) => {
         shadow="lg"
       >
         <Flex alignItems="center" justifyContent="center" my="10px">
-          <Heading as="h4" mr={2} size="md" fontWeight="bold">
+          <Heading as="h4" my={6} mr={2} size="md" fontWeight="bold">
             {i18next.t('walletView.headOfBalanceMessage')}&#58;
           </Heading>
-          {(!!dataTotalBalance && isFetchedTotalBalance && (
-            <Text mr={2} fontSize="xl" fontWeight="bold">
-              {watch('totalBalance') &&
-                Number(dataTotalBalance.toFixed(2)).toLocaleString('de-DE')}
-            </Text>
+
+          {(!!walletsData.length && (
+            <>
+              {(isFetchedTotalBalance && (
+                <Text mr={2} fontSize="xl" fontWeight="bold">
+                  {watch('totalBalance') &&
+                    Number(dataTotalBalance.toFixed(2)).toLocaleString('de-DE')}
+                </Text>
+              )) || (
+                <Skeleton
+                  mr={2}
+                  width="90px"
+                  height="30px"
+                  borderRadius="5px"
+                  startColor="orange.100"
+                  endColor="orange.200"
+                />
+              )}
+              {!!dataTotalBalance && (
+                <Box mt="10px" maxW="100px" w="100%">
+                  <SelectControlled
+                    size="sm"
+                    nameOfSelect="totalBalance"
+                    control={control}
+                    listOfOptions={getWalletsCurrenciesData(walletsData)}
+                    data={walletsData}
+                  />
+                </Box>
+              )}
+            </>
           )) || (
-            <Skeleton
-              mr={2}
-              width="90px"
-              height="30px"
-              borderRadius="5px"
-              startColor="orange.100"
-              endColor="orange.200"
-            />
+            <Text fontSize="xl" fontWeight="bold">
+              {i18next.t('walletView.emptyBalance')}
+            </Text>
           )}
-          <Box mt="10px" maxW="100px" w="100%">
-            <SelectControlled
-              size="sm"
-              nameOfSelect="totalBalance"
-              control={control}
-              listOfOptions={getWalletsCurrenciesData(walletsData)}
-              data={walletsData}
-            />
-          </Box>
         </Flex>
 
         <Flex alignItems="center" justifyContent="space-between">

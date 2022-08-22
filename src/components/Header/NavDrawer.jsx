@@ -128,6 +128,16 @@ export const NavDrawer = () => {
                   {i18next.t('header.navigation.categories')}
                 </BreadcrumbLink>
               </BreadcrumbItem>
+              <BreadcrumbItem my={2}>
+                <BreadcrumbLink
+                  as={Link}
+                  to="/statistics"
+                  textUnderlineOffset="4px"
+                  onClick={onClose}
+                >
+                  {i18next.t('header.navigation.statistics')}
+                </BreadcrumbLink>
+              </BreadcrumbItem>
             </Breadcrumb>
           </DrawerBody>
         </DrawerContent>

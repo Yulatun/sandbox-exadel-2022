@@ -27,7 +27,7 @@ import {
 } from '@/helpers/selectHelpers';
 import { useCentralTheme } from '@/theme';
 
-export const Report = () => {
+export const Statistics = () => {
   const [dataReportOnSubmit, setDataReportOnSubmit] = useState({});
 
   const [selectedDateFilter, setSelectedDateFilter] = useState({
@@ -179,7 +179,7 @@ export const Report = () => {
                       </Thead>
 
                       <Tbody>
-                        {!!dataReport.expenseReports.length && (
+                        {!!dataReport.totalExpense && (
                           <Tr bgColor={reportTableCategoryBgColor}>
                             <Th>
                               {i18next.t(
@@ -205,7 +205,7 @@ export const Report = () => {
                               </Tr>
                             ))}
 
-                        {!!dataReport.incomeReports.length && (
+                        {!!dataReport.totalIncome && (
                           <Tr bgColor={reportTableCategoryBgColor}>
                             <Th>
                               {i18next.t(

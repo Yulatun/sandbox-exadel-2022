@@ -125,7 +125,12 @@ export const Incomes = () => {
       w="100%"
     >
       <Flex justify="flex-end" w="100%">
-        <Button w="50%" mb={5} onClick={incomeModal.onOpen}>
+        <Button
+          w="50%"
+          mb={5}
+          isDisabled={dataWallets.length ? false : true}
+          onClick={incomeModal.onOpen}
+        >
           {i18next.t('button.addIncome')}
         </Button>
       </Flex>
@@ -146,7 +151,7 @@ export const Incomes = () => {
           hasNextPage={hasNextPage}
           walletsData={dataWallets}
           categoriesData={dataCategories}
-          maxH="570px"
+          maxH="lg"
           onSetSortByAmount={onSetSortByAmount}
           onSetSortDate={onSetSortDate}
         />

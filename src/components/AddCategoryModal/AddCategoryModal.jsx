@@ -32,7 +32,8 @@ export const AddCategoryModal = ({
   setNewCategory
 }) => {
   const categoriesDeleteModal = useDisclosure();
-  const [color, setColor] = useState('green.500');
+  const [colorIncome, setColorIncome] = useState('green.500');
+  const [colorExpense, setColorExpense] = useState('red.500');
 
   const { toast } = createStandaloneToast();
 
@@ -47,8 +48,10 @@ export const AddCategoryModal = ({
   } = useForm({ defaultValues: { name: '' } });
 
   const handleColorChange = (color) => {
-    setColor(color);
+    categoryType === 'Income' ? setColorIncome(color) : setColorExpense(color);
   };
+
+  const defaultColor = categoryType === 'Income' ? colorIncome : colorExpense;
 
   const onSubmit = (data) => {
     createCategory({
@@ -56,14 +59,20 @@ export const AddCategoryModal = ({
       limit: 0,
       limitPeriod: 'Daily',
       categoryType: categoryType,
-      color: color
+      color: defaultColor
     })
       .then(() => {
-        reset();
         onClose();
+        reset();
         toast({
           title: i18next.t('modal.addCategory.submitSuccessful.message'),
-          status: 'success'
+          status: 'success',
+          duration: 3000,
+          isClosable: true,
+          position: 'top',
+          containerStyle: {
+            margin: '100px'
+          }
         });
       })
       .catch((err) => console.log(err));
@@ -89,7 +98,6 @@ export const AddCategoryModal = ({
   return (
     <>
       <Modal
-        scrollBehavior="inside"
         isOpen={isOpen}
         onClose={onCancel}
         bg="red"
@@ -159,6 +167,9 @@ export const AddCategoryModal = ({
                   borderRadius="50px"
                   onChange={handleColorChange}
                   size="sm"
+                  defaultColor={
+                    categoryType === 'Income' ? colorIncome : colorExpense
+                  }
                 />
               </Flex>
             </FormControl>

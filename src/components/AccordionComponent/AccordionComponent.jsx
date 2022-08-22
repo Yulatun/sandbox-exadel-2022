@@ -5,6 +5,7 @@ import {
   AccordionIcon,
   AccordionItem,
   AccordionPanel,
+  Box,
   Button,
   Text,
   useDisclosure
@@ -51,16 +52,17 @@ export const AccordionComponent = (props) => {
               {props.name}
             </Text>
           </AccordionButton>
-          <Button
-            size={{ base: 'xs', lg: 'sm' }}
+          <Box
             className="colorPallette"
             bg={props.color}
             borderRadius="50%"
+            w={{ base: 6, lg: 8 }}
+            h={{ base: 6, lg: 8 }}
             position="absolute"
             top={{ base: 3, md: 4, lg: 3 }}
             left={10}
             ml={{ base: 0, lg: 4, xl: 6 }}
-          ></Button>
+          />
 
           <Button
             position="absolute"
