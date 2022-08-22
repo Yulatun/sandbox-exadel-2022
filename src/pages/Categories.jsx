@@ -128,7 +128,7 @@ export const Categories = () => {
             headingTwo={i18next.t('expenses.addCategoryHeading')}
             action={expensesCategoriesModal.onOpen}
           />
-          <Box h="580px" overflowY="auto">
+          <Box h="lg" overflowY="auto">
             {(!!dataCategories &&
               !!dataCategories.data &&
               isFetchedCategories &&
@@ -160,7 +160,7 @@ export const Categories = () => {
             headingTwo={i18next.t('income.addCategoryHeading')}
             action={incomeCategoriesModal.onOpen}
           />
-          <Box h="580px" overflowY="auto" mb={8}>
+          <Box h="lg" overflowY="auto" mb={8}>
             {(!!dataCategories &&
               !!dataCategories.data &&
               isFetchedCategories &&

@@ -58,12 +58,13 @@ export const TransactionItem = ({
           <Flex
             alignItems="center"
             justifyContent="space-between"
-            py={4}
+            py={2}
             px={8}
             w="100%"
             bg={transactionBgColor}
             color={popupExpTextColor}
-            boxShadow="lg"
+            borderRadius={8}
+            boxShadow="md"
           >
             <Flex
               alignItems="center"
@@ -94,11 +95,11 @@ export const TransactionItem = ({
               </Text>
 
               <Box mr="10px" w="15%" textAlign="center">
-                <Tooltip w="100%" label={getWallet()?.name}>
-                  <Text cursor="pointer">
-                    {i18next.t('transaction.value.wallet')}{' '}
-                    {transactionData.currency?.currencyCode || ''}
-                  </Text>
+                <Tooltip
+                  w="100%"
+                  label={transactionData.currency?.currencyCode || ''}
+                >
+                  <Text cursor="pointer">{getWallet()?.name}</Text>
                 </Tooltip>
               </Box>
 
@@ -133,7 +134,11 @@ export const TransactionItem = ({
 
             <Flex justifyContent="flex-end" minW="90px" w="12%">
               <IconButton mr="10px" onClick={onEdit} icon={<EditIcon />} />
-              <IconButton onClick={onDelete} icon={<DeleteIcon />} />
+              <IconButton
+                onClick={onDelete}
+                icon={<DeleteIcon />}
+                variant="danger"
+              />
             </Flex>
           </Flex>
         )}
