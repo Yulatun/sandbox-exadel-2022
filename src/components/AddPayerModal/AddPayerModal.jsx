@@ -2,6 +2,7 @@ import { useForm } from 'react-hook-form';
 import { useQuery } from 'react-query';
 import {
   Button,
+  createStandaloneToast,
   FormControl,
   FormErrorMessage,
   FormLabel,
@@ -20,6 +21,8 @@ import i18next from 'i18next';
 import { createPayer, getPayers } from '@/api/User';
 
 export const AddPayerModal = ({ isOpen, onClose, setNewPayer }) => {
+  const { toast } = createStandaloneToast();
+
   const {
     register,
     handleSubmit,
@@ -30,10 +33,23 @@ export const AddPayerModal = ({ isOpen, onClose, setNewPayer }) => {
   } = useForm({});
 
   const onSubmit = (data) => {
-    createPayer(data.name).then(() => {
-      onClose(data);
-      reset();
-    });
+    createPayer(data.name)
+      .then(() => {
+        onClose(data);
+        reset();
+      })
+      .catch((err) =>
+        toast({
+          title: err.message,
+          status: 'error',
+          duration: 3000,
+          isClosable: true,
+          position: 'top',
+          containerStyle: {
+            margin: '100px'
+          }
+        })
+      );
     setNewPayer(data);
   };
 

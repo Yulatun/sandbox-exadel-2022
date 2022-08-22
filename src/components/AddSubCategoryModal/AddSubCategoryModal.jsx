@@ -74,7 +74,18 @@ export const AddSubCategoryModal = ({
           }
         });
       })
-      .catch((err) => console.log(err));
+      .catch((err) =>
+        toast({
+          title: err.message,
+          status: 'error',
+          duration: 3000,
+          isClosable: true,
+          position: 'top',
+          containerStyle: {
+            margin: '100px'
+          }
+        })
+      );
     setNewSubCategory(data);
   };
 
