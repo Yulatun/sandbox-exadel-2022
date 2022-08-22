@@ -161,7 +161,12 @@ export const Expenses = () => {
         ))}
       </HStack>
       <Flex justify="flex-end" w="100%">
-        <Button w="50%" mb={5} onClick={expenseModal.onOpen}>
+        <Button
+          w="50%"
+          mb={5}
+          isDisabled={dataWallets.length ? false : true}
+          onClick={expenseModal.onOpen}
+        >
           {i18next.t('button.addExpense')}
         </Button>
       </Flex>
