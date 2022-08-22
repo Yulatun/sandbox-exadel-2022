@@ -6,7 +6,7 @@ import {
   AccordionItem,
   AccordionPanel,
   Box,
-  Button,
+  IconButton,
   Text,
   useDisclosure
 } from '@chakra-ui/react';
@@ -25,33 +25,42 @@ export const AccordionComponent = (props) => {
     <>
       <Accordion allowToggle="true" margin={4} width="auto">
         <AccordionItem
+          position="relative"
           border="1px transparent"
           borderRadius={8}
           bg={popupBgColor}
-          position="relative"
           boxShadow="sm"
         >
           <AccordionButton
             py={{ base: '8px', md: '12px' }}
-            pl={{ base: '8px', lg: '16px' }}
-            pr={{ base: '8px', lg: '16px' }}
+            px={{ base: '8px', lg: '16px' }}
           >
-            <AccordionIcon
-              height={{ base: 8, md: 8 }}
-              width={{ base: 8, md: 8 }}
-            />
+            {(props.categoryData.categoryType === 'Expense' && (
+              <AccordionIcon w={8} h={8} />
+            )) || <Box w={8} h={8} />}
+
             <Text
               as="h2"
-              width="180px"
-              pl={{ base: 8, lg: 12, xl: 16 }}
-              overflow={{ base: 'hidden', lg: 'visible' }}
-              textOverflow="ellipsis"
-              whiteSpace="nowrap"
+              w={{
+                base: '400px',
+                sm: '180px',
+                lg: '300px',
+                xl: '400px'
+              }}
+              pl={
+                props.categoryData.categoryType === 'Expense'
+                  ? { base: 8, lg: 12, xl: 16 }
+                  : { base: 3, lg: 7, xl: 12 }
+              }
               textAlign="left"
+              textOverflow="ellipsis"
+              overflow="hidden"
+              whiteSpace="nowrap"
             >
               {props.name}
             </Text>
           </AccordionButton>
+
           <Box
             className="colorPallette"
             bg={props.color}
@@ -60,43 +69,42 @@ export const AccordionComponent = (props) => {
             h={{ base: 6, lg: 8 }}
             position="absolute"
             top={{ base: 3, md: 4, lg: 3 }}
-            left={10}
+            left={props.categoryData.categoryType === 'Expense' ? 10 : 5}
             ml={{ base: 0, lg: 4, xl: 6 }}
           />
 
-          <Button
+          <IconButton
             position="absolute"
-            size={{ base: 'sm', md: 'md' }}
-            w={{ base: 8, md: 10 }}
             top={2}
-            right={{ base: 14, md: 14 }}
-            onClick={props.onEdit}
-          >
-            <EditIcon />
-          </Button>
-
-          <Button
-            position="absolute"
+            right={14}
             size={{ base: 'sm', md: 'md' }}
             w={{ base: 8, md: 10 }}
+            onClick={props.onEdit}
+            icon={<EditIcon />}
+          />
+
+          <IconButton
+            position="absolute"
             top={2}
             right={2}
-            variant="danger"
+            size={{ base: 'sm', md: 'md' }}
+            w={{ base: 8, md: 10 }}
             onClick={props.onDelete}
-          >
-            <DeleteIcon />
-          </Button>
+            variant="danger"
+            icon={<DeleteIcon />}
+          />
 
-          <AccordionPanel p={4}>
-            {props.categoryData.categoryType === 'Expense' && (
+          {props.categoryData.categoryType === 'Expense' && (
+            <AccordionPanel p={4}>
               <SubCategoryList
                 categoryData={props.categoryData}
                 onOpen={onOpen}
               />
-            )}
-          </AccordionPanel>
+            </AccordionPanel>
+          )}
         </AccordionItem>
       </Accordion>
+
       <AddSubCategoryModal
         isOpen={isOpen}
         onClose={onClose}
