@@ -27,7 +27,7 @@ import {
 } from '@/helpers/selectHelpers';
 import { useCentralTheme } from '@/theme';
 
-export const Report = () => {
+export const Statistics = () => {
   const [dataReportOnSubmit, setDataReportOnSubmit] = useState({});
 
   const [selectedDateFilter, setSelectedDateFilter] = useState({
