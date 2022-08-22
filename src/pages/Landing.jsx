@@ -104,6 +104,8 @@ export const Landing = () => {
         createExpenseModal.onOpen();
         queryClient.invalidateQueries(['wallets']);
         queryClient.invalidateQueries(['expenses']);
+        queryClient.invalidateQueries(['totalBalance']);
+
         toast({
           title: i18next.t('modal.addExpense.createdMessage'),
           status: 'success',
@@ -134,6 +136,8 @@ export const Landing = () => {
         createIncomeModal.onOpen();
         queryClient.invalidateQueries(['wallets']);
         queryClient.invalidateQueries(['incomes']);
+        queryClient.invalidateQueries(['totalBalance']);
+
         toast({
           title: i18next.t('modal.addIncome.createdMessage'),
           status: 'success',

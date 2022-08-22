@@ -675,9 +675,10 @@ export const FiltersReport = ({
         <Flex justifyContent="center" w="100%">
           <Button
             isDisabled={
-              !!watch('categoryIncomeReport')?.length ||
-              (!!watch('categoryExpenseReport')?.length &&
-                !!watch('payerReport')?.length)
+              !!watch('walletReport').label &&
+              (!!watch('categoryIncomeReport')?.length ||
+                !!watch('categoryExpenseReport')?.length) &&
+              !!watch('payerReport')?.length
                 ? false
                 : true
             }
@@ -714,23 +715,24 @@ export const FiltersReport = ({
           maxH="150px"
           overflowY="scroll"
         >
-          {(!!watch('walletReport') &&
-            watch('walletReport').value === userData.defaultWallet && (
+          {!!watch('walletReport').label &&
+            ((!!watch('walletReport') &&
+              watch('walletReport').value === userData.defaultWallet && (
+                <FiltersTag
+                  type="walletReport"
+                  value={watch('walletReport').value}
+                  text={watch('walletReport').label}
+                  isOnClose={false}
+                  onClose={removeTagOnClose}
+                />
+              )) || (
               <FiltersTag
                 type="walletReport"
                 value={watch('walletReport').value}
                 text={watch('walletReport').label}
-                isOnClose={false}
                 onClose={removeTagOnClose}
               />
-            )) || (
-            <FiltersTag
-              type="walletReport"
-              value={watch('walletReport').value}
-              text={watch('walletReport').label}
-              onClose={removeTagOnClose}
-            />
-          )}
+            ))}
 
           {(!!selectedDateFilter &&
             !!Object.values(selectedDateFilter.dates).length &&
