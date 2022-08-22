@@ -21,6 +21,7 @@ import { getPayers, getUser } from '@/api/User';
 import { getAllWallets } from '@/api/Wallet';
 import { FiltersReport, Preloader } from '@/components';
 import { today as todayDate } from '@/components/FiltersReport/utils';
+import { getChosenWalletFullData } from '@/helpers/helpers';
 import {
   getCategoriesOptions,
   getPayersOptions
@@ -29,6 +30,7 @@ import { useCentralTheme } from '@/theme';
 
 export const Statistics = () => {
   const [dataReportOnSubmit, setDataReportOnSubmit] = useState({});
+  const [dataChosenWalletId, setDataChosenWalletId] = useState({});
 
   const [selectedDateFilter, setSelectedDateFilter] = useState({
     value: 'today',
@@ -97,6 +99,8 @@ export const Statistics = () => {
   };
 
   const createReportOnSubmit = (data) => {
+    setDataChosenWalletId(data.walletReport?.value);
+
     setDataReportOnSubmit({
       WalletId: data.walletReport?.value,
       DateFrom: `${format(
@@ -148,6 +152,7 @@ export const Statistics = () => {
               )}
 
             {(!!dataReport &&
+              !!dataWallets &&
               isFetchedReport &&
               (dataReport.totalIncome || dataReport.totalExpense) && (
                 <Flex w="80%">
@@ -199,7 +204,12 @@ export const Statistics = () => {
                                 <Th>{category.categoryName}</Th>
                                 <Th></Th>
                                 <Th textAlign="center">
-                                  {category.transactionSum}
+                                  {`${category.transactionSum} ${
+                                    getChosenWalletFullData(
+                                      dataChosenWalletId,
+                                      dataWallets
+                                    )?.currency.symbol
+                                  }`}
                                 </Th>
                                 <Th textAlign="center">{category.payer}</Th>
                               </Tr>
@@ -224,7 +234,12 @@ export const Statistics = () => {
                               <Tr key={i}>
                                 <Th>{category.categoryName}</Th>
                                 <Th textAlign="center">
-                                  {category.transactionSum}
+                                  {`${category.transactionSum} ${
+                                    getChosenWalletFullData(
+                                      dataChosenWalletId,
+                                      dataWallets
+                                    )?.currency.symbol
+                                  }`}
                                 </Th>
                                 <Th></Th>
                                 <Th></Th>
@@ -237,12 +252,22 @@ export const Statistics = () => {
                           <Th>{i18next.t('report.table.heading.total')}</Th>
                           <Th textAlign="center">
                             {dataReport.totalIncome
-                              ? dataReport.totalIncome
+                              ? `${dataReport.totalIncome} ${
+                                  getChosenWalletFullData(
+                                    dataChosenWalletId,
+                                    dataWallets
+                                  )?.currency.symbol
+                                }`
                               : ''}
                           </Th>
                           <Th textAlign="center">
                             {dataReport.totalExpense
-                              ? dataReport.totalExpense
+                              ? `${dataReport.totalExpense} ${
+                                  getChosenWalletFullData(
+                                    dataChosenWalletId,
+                                    dataWallets
+                                  )?.currency.symbol
+                                }`
                               : ''}
                           </Th>
                           <Th></Th>
