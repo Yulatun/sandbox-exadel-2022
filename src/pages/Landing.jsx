@@ -163,11 +163,18 @@ export const Landing = () => {
       {!!dataUser && !!dataWallets && isFetchedUser && isFetchedWallets && (
         <Flex flexDir="column" alignItems="center" w="100%" p={4}>
           <Flex my={8} direction="row" justify="center" align="center">
-            <Button mr={8} onClick={expenseModal.onOpen}>
+            <Button
+              mr={8}
+              isDisabled={dataWallets.length ? false : true}
+              onClick={expenseModal.onOpen}
+            >
               {i18next.t('button.addExpense')}
             </Button>
 
-            <Button onClick={incomeModal.onOpen}>
+            <Button
+              isDisabled={dataWallets.length ? false : true}
+              onClick={incomeModal.onOpen}
+            >
               {i18next.t('button.addIncome')}
             </Button>
           </Flex>

@@ -145,6 +145,7 @@
   "modal.editCategory.editedMessage.success": "Your category data was successfully updated",
   "modal.deleteCategory.deleteMessage.success": "Your category data was successfully deleted",
   "walletView.headOfBalanceMessage": "Total Balance",
+  "walletView.emptyBalance": "0",
   "walletView.nameOfDefaultBadge": "default",
   "wallet.createdMessage": "You create a new wallet successfully",
   "expenses.filters.heading": "Filter by",
