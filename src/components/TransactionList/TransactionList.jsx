@@ -36,7 +36,7 @@ export const TransactionList = ({
   hasNextPage,
   walletsData,
   categoriesData,
-  payersData = null,
+  payersData = [],
   onSetSortDate
 }) => {
   const [chosenTransactionData, setChosenTransactionData] = useState({});
