@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { useQuery } from 'react-query';
+import { useMutation, useQuery, useQueryClient } from 'react-query';
 import {
   Button,
   createStandaloneToast,
@@ -27,6 +27,8 @@ import { ConfirmationModal } from '@/components';
 
 export const AddCategoryModal = ({ isOpen, onClose, categoryType }) => {
   const categoriesDeleteModal = useDisclosure();
+  const queryClient = useQueryClient();
+
   const [colorIncome, setColorIncome] = useState('green.500');
   const [colorExpense, setColorExpense] = useState('red.500');
 
@@ -48,15 +50,18 @@ export const AddCategoryModal = ({ isOpen, onClose, categoryType }) => {
 
   const defaultColor = categoryType === 'Income' ? colorIncome : colorExpense;
 
-  const onSubmit = (data) => {
-    createCategory({
-      name: data.name,
-      limit: 0,
-      limitPeriod: 'Daily',
-      categoryType: categoryType,
-      color: defaultColor
-    })
-      .then(() =>
+  const mutationCreateCategory = useMutation(
+    (data) =>
+      createCategory({
+        name: data.name,
+        limit: 0,
+        limitPeriod: 'Daily',
+        categoryType: categoryType,
+        color: defaultColor
+      }).catch((err) => console.log(err)),
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries(['categories']);
         toast({
           title: i18next.t('modal.addCategory.submitSuccessful.message'),
           status: 'success',
@@ -66,13 +71,17 @@ export const AddCategoryModal = ({ isOpen, onClose, categoryType }) => {
           containerStyle: {
             margin: '100px'
           }
-        })
-      )
-      .catch((err) => console.log(err));
+        });
+      }
+    }
+  );
 
-    reset();
+  const createCategoryOnSubmit = (data) => {
+    mutationCreateCategory.mutate(data);
     onClose();
+    reset();
   };
+
   const closeAllModals = () => {
     categoriesDeleteModal.onClose();
     onClose();
@@ -87,6 +96,7 @@ export const AddCategoryModal = ({ isOpen, onClose, categoryType }) => {
   const resetForm = () => {
     reset({ name: '' });
   };
+
   useEffect(() => resetForm(), [!isOpen]);
 
   return (
@@ -170,7 +180,7 @@ export const AddCategoryModal = ({ isOpen, onClose, categoryType }) => {
           </ModalBody>
 
           <ModalFooter>
-            <Button mr={3} onClick={handleSubmit(onSubmit)}>
+            <Button mr={3} onClick={handleSubmit(createCategoryOnSubmit)}>
               {i18next.t('modal.addCategory.addButton')}
             </Button>
             <Button onClick={onCancel} variant="secondary">
