@@ -22,6 +22,7 @@ const catchErrors = (request) => {
         title: i18n.t('toast.error.unauthorized'),
         status: 'error',
         duration: 9000,
+        position: 'top',
         isClosable: true
       });
       break;
@@ -30,6 +31,7 @@ const catchErrors = (request) => {
         title: i18n.t('toast.error.forbidden'),
         status: 'error',
         duration: 9000,
+        position: 'top',
         isClosable: true
       });
       break;
@@ -38,6 +40,7 @@ const catchErrors = (request) => {
         title: i18n.t('toast.error.notFound'),
         status: 'error',
         duration: 9000,
+        position: 'top',
         isClosable: true
       });
       break;
@@ -46,6 +49,7 @@ const catchErrors = (request) => {
         title: i18n.t('toast.error.internalServerError'),
         status: 'error',
         duration: 9000,
+        position: 'top',
         isClosable: true
       });
       break;
@@ -54,6 +58,7 @@ const catchErrors = (request) => {
         title: i18n.t('toast.error.badGateway'),
         status: 'error',
         duration: 9000,
+        position: 'top',
         isClosable: true
       });
       break;

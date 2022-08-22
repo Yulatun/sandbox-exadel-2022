@@ -106,7 +106,13 @@ export const Landing = () => {
         queryClient.invalidateQueries(['expenses']);
         toast({
           title: i18next.t('modal.addExpense.createdMessage'),
-          status: 'success'
+          status: 'success',
+          duration: 3000,
+          isClosable: true,
+          position: 'top',
+          containerStyle: {
+            margin: '100px'
+          }
         });
       }
     }
@@ -130,7 +136,13 @@ export const Landing = () => {
         queryClient.invalidateQueries(['incomes']);
         toast({
           title: i18next.t('modal.addIncome.createdMessage'),
-          status: 'success'
+          status: 'success',
+          duration: 3000,
+          isClosable: true,
+          position: 'top',
+          containerStyle: {
+            margin: '100px'
+          }
         });
       }
     }

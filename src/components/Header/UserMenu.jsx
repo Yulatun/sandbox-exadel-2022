@@ -36,7 +36,13 @@ export const UserMenu = () => {
     logout();
     toast({
       title: i18next.t('delete.account.successful.message'),
-      status: 'success'
+      status: 'success',
+      duration: 3000,
+      isClosable: true,
+      position: 'top',
+      containerStyle: {
+        margin: '100px'
+      }
     });
   };
 

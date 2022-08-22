@@ -19,7 +19,6 @@ import { deleteWallet, editWallet, getWallets } from '@/api/Wallet';
 import {
   ConfirmationModal,
   EditWalletModal,
-  NotificationModal,
   Preloader,
   TransactionList,
   WalletCard
@@ -86,7 +85,9 @@ export const WalletView = () => {
         name: data.name,
         currencyId: setCurrentId(data.currency),
         dateOfChange: new Date().toJSON()
-      }).catch((error) => toast({ title: error.message, status: 'error' })),
+      }).catch((error) =>
+        toast({ title: error.message, status: 'error', position: 'top' })
+      ),
     {
       onSuccess: () => {
         queryClient.invalidateQueries(['wallets']);
@@ -99,6 +100,16 @@ export const WalletView = () => {
     onSuccess: () => {
       queryClient.invalidateQueries(['wallets']);
       navigate('/', { replace: true });
+      toast({
+        title: i18next.t('wallet.deletedMessage'),
+        status: 'success',
+        duration: 3000,
+        isClosable: true,
+        position: 'top',
+        containerStyle: {
+          margin: '100px'
+        }
+      });
     }
   });
 
@@ -116,15 +127,33 @@ export const WalletView = () => {
       chosenWallet.currency.currencyCode !== data.currency &&
       allTransactions.length
     ) {
-      toast({ title: i18next.t('modal.editWallet.editedCurrency.cancel') });
+      toast({
+        title: i18next.t('modal.editWallet.editedCurrency.cancel'),
+        status: 'error',
+        duration: 3000,
+        isClosable: true,
+        position: 'top',
+        containerStyle: {
+          margin: '100px'
+        }
+      });
       return;
     }
+
     if (dataUser.defaultWallet === walletId && !data.setDefault) {
       toast({
         title: i18next.t(
           'modal.editWallet.editedMessage.nonDefaultWallet.cancel'
-        )
+        ),
+        status: 'error',
+        duration: 3000,
+        isClosable: true,
+        position: 'top',
+        containerStyle: {
+          margin: '100px'
+        }
       });
+
       resetEditOnClose();
       return;
     }
@@ -132,13 +161,32 @@ export const WalletView = () => {
     resetEditOnClose();
     toast({
       title: i18next.t('modal.editWallet.editedWallet.success'),
-      status: 'success'
+      status: 'success',
+      duration: 3000,
+      isClosable: true,
+      position: 'top',
+      containerStyle: {
+        margin: '100px'
+      }
     });
   };
 
   const deleteWalletOnSubmit = () => {
-    mutationWallet.mutate();
     deleteWalletModal.onClose();
+    if (dataUser && isFetchedUser && dataUser.defaultWallet === walletId) {
+      toast({
+        title: i18next.t('modal.deleteWalletDefault.text'),
+        status: 'error',
+        duration: 3000,
+        isClosable: true,
+        position: 'top',
+        containerStyle: {
+          margin: '100px'
+        }
+      });
+      return;
+    }
+    mutationWallet.mutate();
   };
 
   const resetEditOnClose = () => {
@@ -223,22 +271,13 @@ export const WalletView = () => {
         {(!isFetchedIncomes || !isFetchedExpenses) && <Preloader />}
       </Flex>
 
-      {!!dataUser && isFetchedUser && dataUser.defaultWallet === walletId ? (
-        <NotificationModal
-          isOpen={deleteWalletModal.isOpen}
-          onSubmit={deleteWalletModal.onClose}
-          onClose={deleteWalletModal.onClose}
-          text={i18next.t('modal.deleteWalletDefault.text')}
-        />
-      ) : (
-        <ConfirmationModal
-          isOpen={deleteWalletModal.isOpen}
-          onSubmit={deleteWalletOnSubmit}
-          onClose={deleteWalletModal.onClose}
-          title={i18next.t('modal.deleteWallet.title')}
-          text={i18next.t('modal.deleteWallet.text')}
-        />
-      )}
+      <ConfirmationModal
+        isOpen={deleteWalletModal.isOpen}
+        onSubmit={deleteWalletOnSubmit}
+        onClose={deleteWalletModal.onClose}
+        title={i18next.t('modal.deleteWallet.title')}
+        text={i18next.t('modal.deleteWallet.text')}
+      />
 
       {!!Object.keys(chosenWallet).length && (
         <EditWalletModal
