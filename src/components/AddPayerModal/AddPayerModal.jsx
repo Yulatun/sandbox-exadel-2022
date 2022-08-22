@@ -31,8 +31,8 @@ export const AddPayerModal = ({ isOpen, onClose, setNewPayer }) => {
 
   const onSubmit = (data) => {
     createPayer(data.name).then(() => {
-      reset();
       onClose(data);
+      reset();
     });
     setNewPayer(data);
   };

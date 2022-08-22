@@ -61,8 +61,8 @@ export const AddSubCategoryModal = ({
       color: data.color
     })
       .then(() => {
-        resetForm();
         onClose();
+        resetForm();
         toast({
           title: i18next.t('modal.addSubCategory.submitSuccessful.message'),
           status: 'success',
@@ -131,7 +131,7 @@ export const AddSubCategoryModal = ({
                         )
                       },
                       validate: (name) =>
-                        !categoryData.subCategories
+                        !categoryData?.subCategories
                           .map((data) => data.name.toLocaleUpperCase())
                           .includes(name.toLocaleUpperCase()) ||
                         i18next.t(

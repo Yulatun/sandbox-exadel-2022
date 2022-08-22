@@ -63,7 +63,7 @@ export const AddCategoryModal = ({
     })
       .then(() => {
         onClose();
-        reset();
+        resetForm();
         toast({
           title: i18next.t('modal.addCategory.submitSuccessful.message'),
           status: 'success',
