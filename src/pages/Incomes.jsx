@@ -41,14 +41,12 @@ export const Incomes = () => {
         pageParam: pageParam,
         IsSortByDate: sort === 'IsSortByDate',
         IsSortDescending: isSortDescending,
-        DateFrom:
-          'start' in filters.dateFilter
-            ? `${format(filters.dateFilter.start, 'yyyy-MM-dd')}T00:00:00.000Z`
-            : '',
-        DateTo:
-          'end' in filters.dateFilter
-            ? `${format(filters.dateFilter.end, 'yyyy-MM-dd')}T23:59:59.999Z`
-            : '',
+        DateFrom: filters.dateFilter.start
+          ? `${format(filters.dateFilter.start, 'yyyy-MM-dd')}T00:00:00.000Z`
+          : '',
+        DateTo: filters.dateFilter.end
+          ? `${format(filters.dateFilter.end, 'yyyy-MM-dd')}T23:59:59.999Z`
+          : '',
         CategoriesFilter: filters.categoryFilter.map(
           (category) => category.value
         ),

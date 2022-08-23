@@ -255,5 +255,12 @@
   "report.table.heading.incomeCategories": "Income categories",
   "report.table.heading.total": "Total",
   "report.noData": "No matching data",
-  "modal.confirmModal.clearFilters": "Do you really want to clears all chosen options in the filters?"
+  "modal.confirmModal.clearFilters": "Do you really want to clears all chosen options in the filters?",
+  "expenses.filters.date.value.today": "Today",
+  "expenses.filters.date.value.yesterday": "Yesterday",
+  "expenses.filters.date.value.thisWeek": "This week",
+  "expenses.filters.date.value.lastWeek": "Last week",
+  "expenses.filters.date.value.thisMonth": "This month",
+  "expenses.filters.date.value.lastMonth": "Last month",
+  "expenses.filters.date.value.customized": "Customized"
 }

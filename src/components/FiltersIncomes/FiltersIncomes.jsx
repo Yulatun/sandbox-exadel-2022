@@ -27,7 +27,10 @@ import { getInputFormattedValue } from '../FiltersExpenses/utils';
 import { FiltersTag } from '../FiltersTag';
 
 export const FiltersIncomes = ({ dataWallets, dataCategories, onChange }) => {
-  const [chosenDates, setChosenDates] = useState({});
+  const [chosenDates, setChosenDates] = useState({
+    start: null,
+    end: null
+  });
 
   const [dateButtonSelected, setDateButtonSelected] = useState({
     today: false,
@@ -80,7 +83,7 @@ export const FiltersIncomes = ({ dataWallets, dataCategories, onChange }) => {
       categoryFilter: selectedCategoryFilters,
       walletFilter: selectedWalletFilters
     });
-  }, [chosenDates, selectedCategoryFilters, selectedWalletFilters]);
+  }, [chosenDates.end, selectedCategoryFilters, selectedWalletFilters]);
 
   useEffect(() => {
     if (
@@ -192,32 +195,45 @@ export const FiltersIncomes = ({ dataWallets, dataCategories, onChange }) => {
   };
 
   const removeTagOnClose = (event) => {
+    const typeChecked = event.currentTarget.getAttribute('id');
     const valueChecked = event.currentTarget.getAttribute('value');
-    const categories = [...selectedCategoryFilters];
-    const categoryIndex = categories.findIndex(
-      (category) => category.value === valueChecked
-    );
-    if (categoryIndex !== -1) {
-      categories.splice(categoryIndex, 1);
-    }
-    setSelectedCategoryFilters(categories);
+    let selectedData = [];
+    let selectedIndex = '';
 
-    const wallets = [...selectedWalletFilters];
-    const walletIndex = wallets.findIndex(
-      (wallet) => wallet.value === valueChecked
-    );
-    if (walletIndex !== -1) {
-      wallets.splice(walletIndex, 1);
-    }
-    setSelectedWalletFilters(wallets);
+    switch (typeChecked) {
+      case 'dateFilter':
+        setSelectedDateFilter({
+          value: '',
+          dates: {
+            start: null,
+            end: null
+          }
+        });
+        break;
 
-    setSelectedDateFilter({
-      value: '',
-      dates: {
-        start: null,
-        end: null
-      }
-    });
+      case 'categoriesFilter':
+        selectedData = [...selectedCategoryFilters];
+
+        selectedIndex = selectedData.findIndex(
+          (category) => category.value === valueChecked
+        );
+        if (selectedIndex !== -1) {
+          selectedData.splice(selectedIndex, 1);
+        }
+        setSelectedCategoryFilters(selectedData);
+        break;
+
+      case 'walletsFilter':
+        selectedData = [...selectedWalletFilters];
+        selectedIndex = selectedData.findIndex(
+          (wallet) => wallet.value === valueChecked
+        );
+        if (selectedIndex !== -1) {
+          selectedData.splice(selectedIndex, 1);
+        }
+        setSelectedWalletFilters(selectedData);
+        break;
+    }
   };
 
   return (
@@ -233,7 +249,8 @@ export const FiltersIncomes = ({ dataWallets, dataCategories, onChange }) => {
           mr="25px"
           mb="16px"
           pr="34px"
-          minW="200px"
+          maxW="250px"
+          w="100%"
           ref={calendarRef}
         >
           <InputGroup
@@ -241,16 +258,18 @@ export const FiltersIncomes = ({ dataWallets, dataCategories, onChange }) => {
             color={popupTextColor}
           >
             <Input
-              maxW="300px"
               textAlign="left"
               color={
                 !selectedDateFilter.value ? inputValueColor : popupTextColor
               }
-              type="button"
+              type="text"
+              readOnly
               value={
                 !selectedDateFilter.value
                   ? i18next.t('expenses.filters.date.value')
-                  : selectedDateFilter.value
+                  : i18next.t(
+                      `expenses.filters.date.value.${selectedDateFilter?.value}`
+                    )
               }
             />
             <InputRightElement
@@ -301,7 +320,8 @@ export const FiltersIncomes = ({ dataWallets, dataCategories, onChange }) => {
           mr="25px"
           mb="16px"
           pr="34px"
-          minW="280px"
+          maxW="250px"
+          w="100%"
         >
           <FormControl color={popupTextColor}>
             <Select
@@ -341,7 +361,8 @@ export const FiltersIncomes = ({ dataWallets, dataCategories, onChange }) => {
           mr="25px"
           mb="16px"
           pr="34px"
-          minW="200px"
+          maxW="250px"
+          w="100%"
         >
           <FormControl color={popupTextColor}>
             <Select
@@ -390,6 +411,7 @@ export const FiltersIncomes = ({ dataWallets, dataCategories, onChange }) => {
           !!Object.values(selectedDateFilter.dates).length &&
           selectedDateFilter.value && (
             <FiltersTag
+              type="dateFilter"
               value={selectedDateFilter.value}
               text={getInputFormattedValue(selectedDateFilter)}
               onClose={removeTagOnClose}
@@ -399,6 +421,7 @@ export const FiltersIncomes = ({ dataWallets, dataCategories, onChange }) => {
         {selectedCategoryFilters.map((filter) => (
           <FiltersTag
             key={filter.value}
+            type="categoriesFilter"
             value={filter.value}
             text={filter.label}
             onClose={removeTagOnClose}
@@ -408,6 +431,7 @@ export const FiltersIncomes = ({ dataWallets, dataCategories, onChange }) => {
         {selectedWalletFilters.map((filter) => (
           <FiltersTag
             key={filter.value}
+            type="walletsFilter"
             value={filter.value}
             text={filter.label}
             onClose={removeTagOnClose}

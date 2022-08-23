@@ -13,25 +13,35 @@ export const getIncomes = async ({
 }) => {
   let paramsString = '';
 
+  if (DateFrom) {
+    paramsString += `?DateFrom=${DateFrom}`;
+  }
+  if (DateTo) {
+    paramsString += DateTo ? `&DateTo=${DateTo}` : 'reset';
+  }
+  if (paramsString.includes('reset')) {
+    paramsString = '';
+  }
   if (CategoriesFilter.length) {
-    paramsString += `${
-      CategoriesFilter.length ? '?' : ''
-    }CategoriesFilter=${CategoriesFilter.join('&CategoriesFilter=')}`;
+    paramsString += DateFrom
+      ? `&CategoriesFilter=${CategoriesFilter.join('&CategoriesFilter=')}`
+      : `${
+          CategoriesFilter.length ? '?' : ''
+        }CategoriesFilter=${CategoriesFilter.join('&CategoriesFilter=')}`;
   }
   if (WalletsFilter.length) {
     paramsString += `${
       CategoriesFilter.length ? '&' : '?'
     }WalletsFilter=${WalletsFilter.join('&WalletsFilter=')}`;
   }
+
   return instance.get(`/api/v1/Transaction/Income${paramsString}`, {
     params: {
       PageNumber: pageParam,
       IsSortByDate: IsSortByDate,
       IsSortByAmount: IsSortByAmount,
       IsSortDescending: IsSortDescending,
-      [sortColumn]: false,
-      DateFrom: DateFrom,
-      DateTo: DateTo
+      [sortColumn]: false
     }
   });
 };

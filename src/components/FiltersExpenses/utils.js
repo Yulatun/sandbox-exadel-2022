@@ -90,6 +90,7 @@ export const isCustomizedRange = (startDate, endDate, chosenDates) => {
 
   return false;
 };
+
 export const getInputFormattedValue = (data) => {
   switch (data.value) {
     case 'today':
