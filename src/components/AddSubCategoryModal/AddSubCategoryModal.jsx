@@ -1,5 +1,6 @@
 import { useEffect } from 'react';
 import { Controller, useForm } from 'react-hook-form';
+import { useMutation, useQueryClient } from 'react-query';
 import {
   Button,
   createStandaloneToast,
@@ -25,14 +26,9 @@ import { createSubCategory } from '@/api/SubCategory';
 
 import { ConfirmationModal } from '../ConfirmationModal';
 
-export const AddSubCategoryModal = ({
-  isOpen,
-  onClose,
-  categoryData,
-  setNewSubCategory
-}) => {
+export const AddSubCategoryModal = ({ isOpen, onClose, categoryData }) => {
   const categoriesDeleteModal = useDisclosure();
-
+  const queryClient = useQueryClient();
   const { toast } = createStandaloneToast();
 
   const {
@@ -51,30 +47,16 @@ export const AddSubCategoryModal = ({
     }
   });
 
-  const onSubmit = (data) => {
-    createSubCategory({
-      categoryId: categoryData.id,
-      name: data.name,
-      limit: 0,
-      limitPeriod: 'Daily',
-      categoryType: categoryData.categoryType,
-      color: data.color
-    })
-      .then(() => {
-        onClose();
-        resetForm();
-        toast({
-          title: i18next.t('modal.addSubCategory.submitSuccessful.message'),
-          status: 'success',
-          duration: 3000,
-          isClosable: true,
-          position: 'top',
-          containerStyle: {
-            margin: '100px'
-          }
-        });
-      })
-      .catch((err) =>
+  const mutationCreateSubCategory = useMutation(
+    (data) =>
+      createSubCategory({
+        categoryId: categoryData.id,
+        name: data.name,
+        limit: 0,
+        limitPeriod: 'Daily',
+        categoryType: categoryData.categoryType,
+        color: data.color
+      }).catch((err) =>
         toast({
           title: err.message,
           status: 'error',
@@ -85,8 +67,28 @@ export const AddSubCategoryModal = ({
             margin: '100px'
           }
         })
-      );
-    setNewSubCategory(data);
+      ),
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries(['categories']);
+        toast({
+          title: i18next.t('modal.addSubCategory.submitSuccessful.message'),
+          status: 'success',
+          duration: 3000,
+          isClosable: true,
+          position: 'top',
+          containerStyle: {
+            margin: '100px'
+          }
+        });
+      }
+    }
+  );
+
+  const onSubmit = (data) => {
+    mutationCreateSubCategory.mutate(data);
+    onClose();
+    resetForm();
   };
 
   const closeAllModals = () => {

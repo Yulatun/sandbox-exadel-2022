@@ -49,6 +49,7 @@ export const Incomes = () => {
       getIncomes({
         pageParam: pageParam,
         IsSortByDate: sort === 'IsSortByDate',
+        IsSortByAmount: sort === 'IsSortByAmount',
         IsSortDescending: isSortDescending,
         DateFrom: filters.dateFilter.start
           ? `${format(filters.dateFilter.start, 'yyyy-MM-dd')}T00:00:00.000Z`
@@ -206,6 +207,7 @@ export const Incomes = () => {
           hasNextPage={hasNextPage}
           onSetSortByAmount={onSetSortByAmount}
           onSetSortDate={onSetSortDate}
+          filters={filters}
         />
       )}
 
