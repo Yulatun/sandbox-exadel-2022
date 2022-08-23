@@ -35,15 +35,40 @@ export const getExpenses = async ({
   IsSortByDate = false,
   IsSortByAmount = false,
   sortColumn = 'IsSortByDate',
-  IsSortDescending = true
+  IsSortDescending = true,
+  DateFrom = '',
+  DateTo = '',
+  CategoriesFilter = [],
+  WalletsFilter = [],
+  PayersFilter = []
 }) => {
-  return instance.get('/api/v1/Transaction/Expense', {
+  let paramsString = '';
+
+  if (CategoriesFilter.length) {
+    paramsString += `${
+      CategoriesFilter.length ? '?' : ''
+    }CategoriesFilter=${CategoriesFilter.join('&CategoriesFilter=')}`;
+  }
+  if (WalletsFilter.length) {
+    paramsString += `${
+      CategoriesFilter.length ? '&' : '?'
+    }WalletsFilter=${WalletsFilter.join('&WalletsFilter=')}`;
+  }
+  if (PayersFilter.length) {
+    paramsString += `${
+      CategoriesFilter.length ? '&' : WalletsFilter.length ? '&' : '?'
+    }PayersFilter=${PayersFilter.join('&PayersFilter=')}`;
+  }
+
+  return instance.get(`/api/v1/Transaction/Expense${paramsString}`, {
     params: {
       PageNumber: pageParam,
       IsSortByDate: IsSortByDate,
       IsSortByAmount: IsSortByAmount,
       IsSortDescending: IsSortDescending,
-      [sortColumn]: false
+      [sortColumn]: false,
+      DateFrom: DateFrom,
+      DateTo: DateTo
     }
   });
 };

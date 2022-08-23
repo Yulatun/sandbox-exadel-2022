@@ -9,16 +9,31 @@ import {
   IconButton,
   Input,
   InputGroup,
-  InputRightElement
+  InputRightElement,
+  useDisclosure
 } from '@chakra-ui/react';
 import { Select } from 'chakra-react-select';
 import i18next from 'i18next';
 
+import { ConfirmationModal } from '@/components';
+import {
+  getCategoriesOptions,
+  getPayersOptions,
+  getWalletsOptions
+} from '@/helpers/selectHelpers';
 import { useCentralTheme } from '@/theme';
 
-import { CalendarPicker } from './CalendarPicker';
+import { FiltersTag } from '../FiltersTag';
 
-export const FiltersExpenses = () => {
+import { CalendarPicker } from './CalendarPicker';
+import { getInputFormattedValue } from './utils';
+
+export const FiltersExpenses = ({
+  dataWallets,
+  dataCategories,
+  dataPayers,
+  onChange
+}) => {
   const [chosenDates, setChosenDates] = useState({});
 
   const [dateButtonSelected, setDateButtonSelected] = useState({
@@ -44,9 +59,14 @@ export const FiltersExpenses = () => {
   const [selectedPayerFilters, setSelectedPayerFilters] = useState([]);
 
   const calendarRef = useRef(null);
-
-  const { textColor, inputValueColor, inputSelectBg, inputSelectBorderColor } =
-    useCentralTheme();
+  const clearFilters = useDisclosure();
+  const {
+    textColor,
+    inputValueColor,
+    inputSelectBg,
+    inputSelectBorderColor,
+    popupTextColor
+  } = useCentralTheme();
 
   const handleClickOutside = (event) => {
     if (calendarRef.current && !calendarRef.current.contains(event.target)) {
@@ -61,6 +81,20 @@ export const FiltersExpenses = () => {
       window.removeEventListener('click', handleClickOutside);
     };
   }, []);
+
+  useEffect(() => {
+    onChange({
+      dateFilter: chosenDates,
+      categoryFilter: selectedCategoryFilters,
+      walletFilter: selectedWalletFilters,
+      payerFilter: selectedPayerFilters
+    });
+  }, [
+    chosenDates,
+    selectedCategoryFilters,
+    selectedWalletFilters,
+    selectedPayerFilters
+  ]);
 
   useEffect(() => {
     if (
@@ -169,11 +203,52 @@ export const FiltersExpenses = () => {
     setSelectedCategoryFilters([]);
     setSelectedWalletFilters([]);
     setSelectedPayerFilters([]);
+    clearFilters.onClose();
+  };
+
+  const removeTagOnClose = (event) => {
+    const valueChecked = event.currentTarget.getAttribute('value');
+    console.log(valueChecked);
+
+    const categories = [...selectedCategoryFilters];
+    const categoryIndex = categories.findIndex(
+      (category) => category.value === valueChecked
+    );
+    if (categoryIndex !== -1) {
+      categories.splice(categoryIndex, 1);
+    }
+    setSelectedCategoryFilters(categories);
+
+    const wallets = [...selectedWalletFilters];
+    const walletIndex = wallets.findIndex(
+      (wallet) => wallet.value === valueChecked
+    );
+    if (walletIndex !== -1) {
+      wallets.splice(walletIndex, 1);
+    }
+    setSelectedWalletFilters(wallets);
+
+    const payers = [...selectedPayerFilters];
+    const payerIndex = payers.findIndex(
+      (payer) => payer.value === valueChecked
+    );
+    if (payerIndex !== -1) {
+      payers.splice(payerIndex, 1);
+    }
+    setSelectedPayerFilters(payers);
+
+    setSelectedDateFilter({
+      value: '',
+      dates: {
+        start: null,
+        end: null
+      }
+    });
   };
 
   return (
     <Flex flexDir="column" w="100%">
-      <Heading mb="15px" as="h3" size="lg" color={textColor}>
+      <Heading mb="36px" as="h3" size="lg" color={textColor}>
         {i18next.t('expenses.filters.heading')}
       </Heading>
 
@@ -187,12 +262,22 @@ export const FiltersExpenses = () => {
           minW="200px"
           ref={calendarRef}
         >
-          <InputGroup onClick={() => setIsDateSelectOpen(!isDateSelectOpen)}>
+          <InputGroup
+            onClick={() => setIsDateSelectOpen(!isDateSelectOpen)}
+            color={popupTextColor}
+          >
             <Input
+              maxW="300px"
               textAlign="left"
-              color={inputValueColor}
+              color={
+                !selectedDateFilter.value ? inputValueColor : popupTextColor
+              }
               type="button"
-              value={i18next.t('expenses.filters.date.value')}
+              value={
+                !selectedDateFilter.value
+                  ? i18next.t('expenses.filters.date.value')
+                  : selectedDateFilter.value
+              }
             />
             <InputRightElement
               mt="1px"
@@ -244,16 +329,10 @@ export const FiltersExpenses = () => {
           pr="34px"
           minW="200px"
         >
-          <FormControl>
+          <FormControl color={popupTextColor}>
             <Select
               value={selectedCategoryFilters}
-              options={[
-                { label: 'Category 1', value: 'category-1' },
-                { label: 'Category 2', value: 'category-2' },
-                { label: 'Category 3', value: 'category-3' },
-                { label: 'Category 4', value: 'category-4' },
-                { label: 'Category 5', value: 'category-5' }
-              ]}
+              options={getCategoriesOptions(dataCategories, 'Expense')}
               onChange={(event) =>
                 handleSelects(
                   event,
@@ -290,14 +369,10 @@ export const FiltersExpenses = () => {
           pr="34px"
           minW="200px"
         >
-          <FormControl>
+          <FormControl color={popupTextColor}>
             <Select
               value={selectedWalletFilters}
-              options={[
-                { label: 'Wallet 1', value: 'wallet-1' },
-                { label: 'Wallet 2', value: 'wallet-2' },
-                { label: 'Wallet 3', value: 'wallet-3' }
-              ]}
+              options={getWalletsOptions(dataWallets)}
               onChange={(event) =>
                 handleSelects(
                   event,
@@ -329,19 +404,15 @@ export const FiltersExpenses = () => {
         <Flex
           pos="relative"
           alignItems="center"
-          mr="35px"
+          mr="25px"
           mb="16px"
           pr="34px"
           minW="200px"
         >
-          <FormControl>
+          <FormControl color={popupTextColor}>
             <Select
               value={selectedPayerFilters}
-              options={[
-                { label: 'Payer 1', value: 'payer-1' },
-                { label: 'Payer 2', value: 'payer-2' },
-                { label: 'Payer 3', value: 'payer-3' }
-              ]}
+              options={getPayersOptions(dataPayers)}
               onChange={(event) =>
                 handleSelects(
                   event,
@@ -376,17 +447,56 @@ export const FiltersExpenses = () => {
           !!selectedCategoryFilters.length ||
           !!selectedWalletFilters.length ||
           !!selectedPayerFilters.length) && (
-          <Button
-            onClick={() => {
-              if (confirm('Are you sure?')) {
-                clearAllSelects();
-              }
-            }}
-          >
+          <Button onClick={clearFilters.onOpen} variant="danger" minW="166px">
             {i18next.t('expenses.filters.btn.clearAllFilters')}
           </Button>
         )}
       </Flex>
+      <Flex flexWrap="wrap" mt="24px" mb="42px" w="100%" maxH="150px">
+        {!!selectedDateFilter &&
+          !!Object.values(selectedDateFilter.dates).length &&
+          selectedDateFilter.value && (
+            <FiltersTag
+              value={selectedDateFilter.value}
+              text={getInputFormattedValue(selectedDateFilter)}
+              onClose={() => clearChosenSelect(setSelectedDateFilter, true)}
+              bgColor="green.400"
+            />
+          )}
+        {selectedCategoryFilters.map((filter) => (
+          <FiltersTag
+            key={filter.value}
+            value={filter.value}
+            text={filter.label}
+            onClose={removeTagOnClose}
+            bgColor="red.400"
+          />
+        ))}
+        {selectedWalletFilters.map((filter) => (
+          <FiltersTag
+            key={filter.value}
+            value={filter.value}
+            text={filter.label}
+            onClose={removeTagOnClose}
+            bgColor="blue.400"
+          />
+        ))}
+        {selectedPayerFilters.map((filter) => (
+          <FiltersTag
+            key={filter.value}
+            value={filter.value}
+            text={filter.label}
+            onClose={removeTagOnClose}
+            bgColor="orange.400"
+          />
+        ))}
+      </Flex>
+      <ConfirmationModal
+        isOpen={clearFilters.isOpen}
+        onClose={clearFilters.onClose}
+        onSubmit={clearAllSelects}
+        text={i18next.t('modal.confirmModal.clearFilters')}
+      />
     </Flex>
   );
 };

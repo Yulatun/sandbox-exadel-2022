@@ -253,5 +253,6 @@
   "report.table.heading.expenseCategories": "Expense categories",
   "report.table.heading.incomeCategories": "Income categories",
   "report.table.heading.total": "Total",
-  "report.noData": "No matching data"
+  "report.noData": "No matching data",
+  "modal.confirmModal.clearFilters": "Do you really want to clears all chosen options in the filters?"
 }
