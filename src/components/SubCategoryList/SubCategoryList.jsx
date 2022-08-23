@@ -1,9 +1,9 @@
-import { DeleteIcon, EditIcon } from '@chakra-ui/icons';
+import { DeleteIcon } from '@chakra-ui/icons';
 import { Button, Flex, IconButton, Text, VStack } from '@chakra-ui/react';
 
 import { i18n } from '@/i18n';
 
-export const SubCategoryList = ({ categoryData, onOpen }) => {
+export const SubCategoryList = ({ categoryData, onOpen, onDelete }) => {
   return (
     <VStack align="start">
       {categoryData.subCategories.map((subCategory) => (
@@ -17,9 +17,13 @@ export const SubCategoryList = ({ categoryData, onOpen }) => {
           <Text ml="3" flex="0 1 87%">
             {subCategory.name}
           </Text>
-          <Flex flex="1 0 13%" justify="space-between">
-            <IconButton size="sm" icon={<EditIcon />} />
-            <IconButton size="sm" variant="danger" icon={<DeleteIcon />} />
+          <Flex justify="space-between">
+            <IconButton
+              size="sm"
+              variant="danger"
+              icon={<DeleteIcon />}
+              onClick={() => onDelete(subCategory.id)}
+            />
           </Flex>
         </Flex>
       ))}
