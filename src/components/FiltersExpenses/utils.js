@@ -106,7 +106,7 @@ export const getInputFormattedValue = (data) => {
         'dd.MM.yyyy'
       )}`;
 
-    case 'date-customized':
+    case 'customized':
       if (data.dates.start === data.dates.end) {
         return format(new Date(data.dates.start), 'dd.MM.yyyy');
       }
