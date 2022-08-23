@@ -34,7 +34,7 @@ export const AccordionComponent = (props) => {
       ),
     {
       onSuccess: () => {
-        queryClient.invalidateQueries(['subcategories']);
+        queryClient.invalidateQueries(['categories']);
         toast({
           title: i18next.t('modal.deleteCategory.deleteMessage.success'),
           status: 'success',
