@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { useQuery } from 'react-query';
+import { useMutation, useQuery, useQueryClient } from 'react-query';
 import {
   Button,
   createStandaloneToast,
@@ -25,9 +25,17 @@ import i18next from 'i18next';
 import { createCategory, getCategories } from '@/api/Category';
 import { ConfirmationModal } from '@/components';
 
-export const AddCategoryModal = ({ isOpen, onClose, categoryType }) => {
+export const AddCategoryModal = ({
+  isOpen,
+  onClose,
+  categoryType,
+  setNewCategory
+}) => {
   const categoriesDeleteModal = useDisclosure();
-  const [color, setColor] = useState('green.500');
+  const queryClient = useQueryClient();
+
+  const [colorIncome, setColorIncome] = useState('green.500');
+  const [colorExpense, setColorExpense] = useState('red.500');
 
   const { toast } = createStandaloneToast();
 
@@ -42,18 +50,36 @@ export const AddCategoryModal = ({ isOpen, onClose, categoryType }) => {
   } = useForm({ defaultValues: { name: '' } });
 
   const handleColorChange = (color) => {
-    setColor(color);
+    categoryType === 'Income' ? setColorIncome(color) : setColorExpense(color);
   };
 
-  const onSubmit = (data) => {
-    createCategory({
-      name: data.name,
-      limit: 0,
-      limitPeriod: 'Daily',
-      categoryType: categoryType,
-      color: color
-    })
-      .then(() =>
+  const defaultColor = categoryType === 'Income' ? colorIncome : colorExpense;
+
+  const mutationCreateCategory = useMutation(
+    (data) =>
+      createCategory({
+        name: data.name,
+        limit: 0,
+        limitPeriod: 'Daily',
+        categoryType: categoryType,
+        color: defaultColor
+      })
+        .then(() => setNewCategory(data))
+        .catch((err) =>
+          toast({
+            title: err.message,
+            status: 'error',
+            duration: 3000,
+            isClosable: true,
+            position: 'top',
+            containerStyle: {
+              margin: '100px'
+            }
+          })
+        ),
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries(['categories']);
         toast({
           title: i18next.t('modal.addCategory.submitSuccessful.message'),
           status: 'success',
@@ -63,12 +89,17 @@ export const AddCategoryModal = ({ isOpen, onClose, categoryType }) => {
           containerStyle: {
             margin: '100px'
           }
-        })
-      )
-      .catch((err) => console.log(err));
-    reset();
+        });
+      }
+    }
+  );
+
+  const createCategoryOnSubmit = (data) => {
+    mutationCreateCategory.mutate(data);
     onClose();
+    reset();
   };
+
   const closeAllModals = () => {
     categoriesDeleteModal.onClose();
     onClose();
@@ -83,12 +114,12 @@ export const AddCategoryModal = ({ isOpen, onClose, categoryType }) => {
   const resetForm = () => {
     reset({ name: '' });
   };
+
   useEffect(() => resetForm(), [!isOpen]);
 
   return (
     <>
       <Modal
-        scrollBehavior="inside"
         isOpen={isOpen}
         onClose={onCancel}
         bg="red"
@@ -158,13 +189,16 @@ export const AddCategoryModal = ({ isOpen, onClose, categoryType }) => {
                   borderRadius="50px"
                   onChange={handleColorChange}
                   size="sm"
+                  defaultColor={
+                    categoryType === 'Income' ? colorIncome : colorExpense
+                  }
                 />
               </Flex>
             </FormControl>
           </ModalBody>
 
           <ModalFooter>
-            <Button mr={3} onClick={handleSubmit(onSubmit)}>
+            <Button mr={3} onClick={handleSubmit(createCategoryOnSubmit)}>
               {i18next.t('modal.addCategory.addButton')}
             </Button>
             <Button onClick={onCancel} variant="secondary">

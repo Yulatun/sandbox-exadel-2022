@@ -131,11 +131,11 @@ export const NavDrawer = () => {
               <BreadcrumbItem my={2}>
                 <BreadcrumbLink
                   as={Link}
-                  to="/report"
+                  to="/statistics"
                   textUnderlineOffset="4px"
                   onClick={onClose}
                 >
-                  {i18next.t('header.navigation.report')}
+                  {i18next.t('header.navigation.statistics')}
                 </BreadcrumbLink>
               </BreadcrumbItem>
             </Breadcrumb>

@@ -5,9 +5,37 @@ export const getIncomes = async ({
   IsSortByDate = false,
   IsSortByAmount = false,
   sortColumn = 'IsSortByDate',
-  IsSortDescending = true
+  IsSortDescending = true,
+  DateFrom = '',
+  DateTo = '',
+  CategoriesFilter = [],
+  WalletsFilter = []
 }) => {
-  return instance.get('/api/v1/Transaction/Income', {
+  let paramsString = '';
+
+  if (DateFrom) {
+    paramsString += `?DateFrom=${DateFrom}`;
+  }
+  if (DateTo) {
+    paramsString += DateTo ? `&DateTo=${DateTo}` : 'reset';
+  }
+  if (paramsString.includes('reset')) {
+    paramsString = '';
+  }
+  if (CategoriesFilter.length) {
+    paramsString += DateFrom
+      ? `&CategoriesFilter=${CategoriesFilter.join('&CategoriesFilter=')}`
+      : `${
+          CategoriesFilter.length ? '?' : ''
+        }CategoriesFilter=${CategoriesFilter.join('&CategoriesFilter=')}`;
+  }
+  if (WalletsFilter.length) {
+    paramsString += `${
+      CategoriesFilter.length ? '&' : '?'
+    }WalletsFilter=${WalletsFilter.join('&WalletsFilter=')}`;
+  }
+
+  return instance.get(`/api/v1/Transaction/Income${paramsString}`, {
     params: {
       PageNumber: pageParam,
       IsSortByDate: IsSortByDate,

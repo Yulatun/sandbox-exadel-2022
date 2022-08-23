@@ -85,8 +85,17 @@ export const WalletView = () => {
         name: data.name,
         currencyId: setCurrentId(data.currency),
         dateOfChange: new Date().toJSON()
-      }).catch((error) =>
-        toast({ title: error.message, status: 'error', position: 'top' })
+      }).catch((err) =>
+        toast({
+          title: err.message,
+          status: 'error',
+          duration: 3000,
+          isClosable: true,
+          position: 'top',
+          containerStyle: {
+            margin: '100px'
+          }
+        })
       ),
     {
       onSuccess: () => {

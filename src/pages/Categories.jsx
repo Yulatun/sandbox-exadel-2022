@@ -40,7 +40,19 @@ export const Categories = () => {
   );
 
   const editingCategory = useMutation(
-    (data) => editCategory(data).catch((error) => console.log(error)),
+    (data) =>
+      editCategory(data).catch((err) =>
+        toast({
+          title: err.message,
+          status: 'error',
+          duration: 3000,
+          isClosable: true,
+          position: 'top',
+          containerStyle: {
+            margin: '100px'
+          }
+        })
+      ),
     {
       onSuccess: () => {
         queryClient.invalidateQueries(['categories']);
@@ -59,7 +71,19 @@ export const Categories = () => {
   );
 
   const deletingCategory = useMutation(
-    (data) => deleteCategory(data).catch((error) => console.log(error)),
+    (data) =>
+      deleteCategory(data).catch((err) =>
+        toast({
+          title: err.message,
+          status: 'error',
+          duration: 3000,
+          isClosable: true,
+          position: 'top',
+          containerStyle: {
+            margin: '100px'
+          }
+        })
+      ),
     {
       onSuccess: ({ status, data }) => {
         if (status === 200) {
@@ -128,12 +152,18 @@ export const Categories = () => {
             headingTwo={i18next.t('expenses.addCategoryHeading')}
             action={expensesCategoriesModal.onOpen}
           />
+
           <Box h="lg" overflowY="auto">
             {(!!dataCategories &&
               !!dataCategories.data &&
               isFetchedCategories &&
               dataCategories.data
                 .filter((category) => category.categoryType === 'Expense')
+                .sort((a, b) => {
+                  if (a.name.toLowerCase() < b.name.toLowerCase()) return -1;
+
+                  return 1;
+                })
                 .map((categoryData) => (
                   <AccordionComponent
                     key={categoryData.id}
@@ -154,18 +184,25 @@ export const Categories = () => {
             )}
           </Box>
         </GridItem>
+
         <GridItem className="incomeCol">
           <AccordionHeadings
             headingOne={i18next.t('income.categoryHeading')}
             headingTwo={i18next.t('income.addCategoryHeading')}
             action={incomeCategoriesModal.onOpen}
           />
-          <Box h="lg" overflowY="auto" mb={8}>
+
+          <Box h="lg" overflowY="auto">
             {(!!dataCategories &&
               !!dataCategories.data &&
               isFetchedCategories &&
               dataCategories.data
                 .filter((category) => category.categoryType === 'Income')
+                .sort((a, b) => {
+                  if (a.name.toLowerCase() < b.name.toLowerCase()) return -1;
+
+                  return 1;
+                })
                 .map((categoryData) => (
                   <AccordionComponent
                     key={categoryData.id}
@@ -187,6 +224,7 @@ export const Categories = () => {
           </Box>
         </GridItem>
       </Grid>
+
       <Flex>
         {!!Object.keys(chosenCategoryData).length && (
           <EditCategoryModal

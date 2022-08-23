@@ -37,8 +37,8 @@ export const Navbar = () => {
         </BreadcrumbLink>
       </BreadcrumbItem>
       <BreadcrumbItem mr={{ base: 2, xl: 4 }}>
-        <BreadcrumbLink as={Link} to="/report" textUnderlineOffset="4px">
-          {i18next.t('header.navigation.report')}
+        <BreadcrumbLink as={Link} to="/statistics" textUnderlineOffset="4px">
+          {i18next.t('header.navigation.statistics')}
         </BreadcrumbLink>
       </BreadcrumbItem>
     </Breadcrumb>

@@ -65,13 +65,26 @@ export const TransactionList = ({
         ),
         value: Number(data.amount),
         description: data.note
-      }),
+      }).catch((err) =>
+        toast({
+          title: err.message,
+          status: 'error',
+          duration: 3000,
+          isClosable: true,
+          position: 'top',
+          containerStyle: {
+            margin: '100px'
+          }
+        })
+      ),
     {
       onSuccess: () => {
         editTransactionModalSuccess.onOpen();
         queryClient.invalidateQueries(['wallets']);
         queryClient.invalidateQueries(['incomes']);
         queryClient.invalidateQueries(['incomesPagination']);
+        queryClient.invalidateQueries(['totalBalance']);
+
         toast({
           title: i18next.t('modal.editExpense.editedMessage.success'),
           status: 'success',
@@ -106,6 +119,8 @@ export const TransactionList = ({
         queryClient.invalidateQueries(['wallets']);
         queryClient.invalidateQueries(['expenses']);
         queryClient.invalidateQueries(['expensesP']);
+        queryClient.invalidateQueries(['totalBalance']);
+
         toast({
           title: i18next.t('modal.editExpense.editedMessage.success'),
           status: 'success',
@@ -127,6 +142,8 @@ export const TransactionList = ({
         queryClient.invalidateQueries(['wallets']);
         queryClient.invalidateQueries(['incomes']);
         queryClient.invalidateQueries(['incomesPagination']);
+        queryClient.invalidateQueries(['totalBalance']);
+
         toast({
           title: i18next.t('delete.transaction.successful.message'),
           status: 'success',
@@ -148,6 +165,8 @@ export const TransactionList = ({
         queryClient.invalidateQueries(['wallets']);
         queryClient.invalidateQueries(['expenses']);
         queryClient.invalidateQueries(['expensesP']);
+        queryClient.invalidateQueries(['totalBalance']);
+
         toast({
           title: i18next.t('delete.transaction.successful.message'),
           status: 'success',

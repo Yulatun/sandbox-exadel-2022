@@ -5,7 +5,15 @@ import {
   useQuery,
   useQueryClient
 } from 'react-query';
-import { Box, Button, Flex, Text, useDisclosure } from '@chakra-ui/react';
+import {
+  Box,
+  Button,
+  createStandaloneToast,
+  Flex,
+  HStack,
+  Text,
+  useDisclosure
+} from '@chakra-ui/react';
 import { format } from 'date-fns';
 import i18next from 'i18next';
 
@@ -34,6 +42,8 @@ export const Expenses = () => {
   const expenseModal = useDisclosure();
   const queryClient = useQueryClient();
   const createExpenseModal = useDisclosure();
+
+  const { toast } = createStandaloneToast();
 
   const {
     data: expensesPage = { pages: [] },
@@ -123,7 +133,18 @@ export const Expenses = () => {
         ),
         value: Number(data.amount),
         description: data.note
-      }),
+      }).catch((err) =>
+        toast({
+          title: err.message,
+          status: 'error',
+          duration: 3000,
+          isClosable: true,
+          position: 'top',
+          containerStyle: {
+            margin: '100px'
+          }
+        })
+      ),
     {
       onSuccess: () => {
         createExpenseModal.onOpen();
@@ -166,7 +187,12 @@ export const Expenses = () => {
         />
       </Box>
       <Flex justify="flex-end" w="100%">
-        <Button w="50%" mb={5} onClick={expenseModal.onOpen}>
+        <Button
+          w="50%"
+          mb={5}
+          isDisabled={dataWallets.length ? false : true}
+          onClick={expenseModal.onOpen}
+        >
           {i18next.t('button.addExpense')}
         </Button>
       </Flex>
