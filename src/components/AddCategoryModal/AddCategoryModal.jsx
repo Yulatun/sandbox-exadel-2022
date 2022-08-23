@@ -25,12 +25,7 @@ import i18next from 'i18next';
 import { createCategory, getCategories } from '@/api/Category';
 import { ConfirmationModal } from '@/components';
 
-export const AddCategoryModal = ({
-  isOpen,
-  onClose,
-  categoryType,
-  setNewCategory
-}) => {
+export const AddCategoryModal = ({ isOpen, onClose, categoryType }) => {
   const categoriesDeleteModal = useDisclosure();
   const queryClient = useQueryClient();
 
@@ -63,20 +58,18 @@ export const AddCategoryModal = ({
         limitPeriod: 'Daily',
         categoryType: categoryType,
         color: defaultColor
-      })
-        .then(() => setNewCategory(data))
-        .catch((err) =>
-          toast({
-            title: err.message,
-            status: 'error',
-            duration: 3000,
-            isClosable: true,
-            position: 'top',
-            containerStyle: {
-              margin: '100px'
-            }
-          })
-        ),
+      }).catch((err) =>
+        toast({
+          title: err.message,
+          status: 'error',
+          duration: 3000,
+          isClosable: true,
+          position: 'top',
+          containerStyle: {
+            margin: '100px'
+          }
+        })
+      ),
     {
       onSuccess: () => {
         queryClient.invalidateQueries(['categories']);
