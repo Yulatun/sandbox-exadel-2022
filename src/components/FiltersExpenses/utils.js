@@ -90,6 +90,7 @@ export const isCustomizedRange = (startDate, endDate, chosenDates) => {
 
   return false;
 };
+
 export const getInputFormattedValue = (data) => {
   switch (data.value) {
     case 'today':
@@ -105,7 +106,7 @@ export const getInputFormattedValue = (data) => {
         'dd.MM.yyyy'
       )}`;
 
-    case 'customized':
+    case 'date-customized':
       if (data.dates.start === data.dates.end) {
         return format(new Date(data.dates.start), 'dd.MM.yyyy');
       }

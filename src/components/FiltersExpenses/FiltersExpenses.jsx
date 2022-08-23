@@ -207,43 +207,56 @@ export const FiltersExpenses = ({
   };
 
   const removeTagOnClose = (event) => {
+    const typeChecked = event.currentTarget.getAttribute('id');
     const valueChecked = event.currentTarget.getAttribute('value');
-    console.log(valueChecked);
+    let selectedData = [];
+    let selectedIndex = '';
 
-    const categories = [...selectedCategoryFilters];
-    const categoryIndex = categories.findIndex(
-      (category) => category.value === valueChecked
-    );
-    if (categoryIndex !== -1) {
-      categories.splice(categoryIndex, 1);
+    switch (typeChecked) {
+      case 'dateFilter':
+        setSelectedDateFilter({
+          value: '',
+          dates: {
+            start: null,
+            end: null
+          }
+        });
+        break;
+
+      case 'categoriesFilter':
+        selectedData = [...selectedCategoryFilters];
+
+        selectedIndex = selectedData.findIndex(
+          (category) => category.value === valueChecked
+        );
+        if (selectedIndex !== -1) {
+          selectedData.splice(selectedIndex, 1);
+        }
+        setSelectedCategoryFilters(selectedData);
+        break;
+
+      case 'walletsFilter':
+        selectedData = [...selectedWalletFilters];
+        selectedIndex = selectedData.findIndex(
+          (wallet) => wallet.value === valueChecked
+        );
+        if (selectedIndex !== -1) {
+          selectedData.splice(selectedIndex, 1);
+        }
+        setSelectedWalletFilters(selectedData);
+        break;
+
+      case 'payersFilter':
+        selectedData = [...selectedPayerFilters];
+        selectedIndex = selectedData.findIndex(
+          (payer) => payer.value === valueChecked
+        );
+        if (selectedIndex !== -1) {
+          selectedData.splice(selectedIndex, 1);
+        }
+        setSelectedPayerFilters(selectedData);
+        break;
     }
-    setSelectedCategoryFilters(categories);
-
-    const wallets = [...selectedWalletFilters];
-    const walletIndex = wallets.findIndex(
-      (wallet) => wallet.value === valueChecked
-    );
-    if (walletIndex !== -1) {
-      wallets.splice(walletIndex, 1);
-    }
-    setSelectedWalletFilters(wallets);
-
-    const payers = [...selectedPayerFilters];
-    const payerIndex = payers.findIndex(
-      (payer) => payer.value === valueChecked
-    );
-    if (payerIndex !== -1) {
-      payers.splice(payerIndex, 1);
-    }
-    setSelectedPayerFilters(payers);
-
-    setSelectedDateFilter({
-      value: '',
-      dates: {
-        start: null,
-        end: null
-      }
-    });
   };
 
   return (
@@ -259,7 +272,7 @@ export const FiltersExpenses = ({
           mr="25px"
           mb="16px"
           pr="34px"
-          minW="200px"
+          maxW="200px"
           ref={calendarRef}
         >
           <InputGroup
@@ -267,16 +280,18 @@ export const FiltersExpenses = ({
             color={popupTextColor}
           >
             <Input
-              maxW="300px"
               textAlign="left"
               color={
                 !selectedDateFilter.value ? inputValueColor : popupTextColor
               }
-              type="button"
+              type="text"
+              readOnly
               value={
                 !selectedDateFilter.value
                   ? i18next.t('expenses.filters.date.value')
-                  : selectedDateFilter.value
+                  : i18next.t(
+                      `expenses.filters.date.value.${selectedDateFilter?.value}`
+                    )
               }
             />
             <InputRightElement
@@ -452,20 +467,29 @@ export const FiltersExpenses = ({
           </Button>
         )}
       </Flex>
-      <Flex flexWrap="wrap" mt="24px" mb="42px" w="100%" maxH="150px">
+      <Flex
+        flexWrap="wrap"
+        mt="24px"
+        mb="42px"
+        w="100%"
+        maxH="150px"
+        overflowY="scroll"
+      >
         {!!selectedDateFilter &&
           !!Object.values(selectedDateFilter.dates).length &&
           selectedDateFilter.value && (
             <FiltersTag
               value={selectedDateFilter.value}
+              type="dateFilter"
               text={getInputFormattedValue(selectedDateFilter)}
-              onClose={() => clearChosenSelect(setSelectedDateFilter, true)}
+              onClose={removeTagOnClose}
               bgColor="green.400"
             />
           )}
         {selectedCategoryFilters.map((filter) => (
           <FiltersTag
             key={filter.value}
+            type="categoriesFilter"
             value={filter.value}
             text={filter.label}
             onClose={removeTagOnClose}
@@ -475,6 +499,7 @@ export const FiltersExpenses = ({
         {selectedWalletFilters.map((filter) => (
           <FiltersTag
             key={filter.value}
+            type="walletsFilter"
             value={filter.value}
             text={filter.label}
             onClose={removeTagOnClose}
@@ -484,6 +509,7 @@ export const FiltersExpenses = ({
         {selectedPayerFilters.map((filter) => (
           <FiltersTag
             key={filter.value}
+            type="payersFilter"
             value={filter.value}
             text={filter.label}
             onClose={removeTagOnClose}
