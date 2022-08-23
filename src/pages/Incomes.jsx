@@ -5,36 +5,52 @@ import {
   useQuery,
   useQueryClient
 } from 'react-query';
-import { Button, Flex, Text, useDisclosure } from '@chakra-ui/react';
+import { Box, Button, Flex, Text, useDisclosure } from '@chakra-ui/react';
+import { format } from 'date-fns';
 import i18next from 'i18next';
 
 import { getCategories } from '@/api/Category';
 import { createIncome, getIncomes } from '@/api/Transaction';
 import { getUser } from '@/api/User';
 import { getWallets } from '@/api/Wallet';
-import { AddIncomeModal, Preloader, TransactionList } from '@/components';
+import { AddIncomeModal, FiltersIncomes, TransactionList } from '@/components';
 import { getTransactionsList } from '@/helpers/helpers';
 import { useCentralTheme } from '@/theme';
 
 export const Incomes = () => {
   const [sort, setSort] = useState('IsSortByDate');
   const [isSortDescending, setIsSortDescending] = useState(true);
+  const [filters, setFilters] = useState({
+    dateFilter: {},
+    categoryFilter: [],
+    walletFilter: []
+  });
   const incomeModal = useDisclosure();
   const queryClient = useQueryClient();
   const createIncomeModal = useDisclosure();
+
   const {
     data: incomesPages = { pages: [] },
-    isLoading,
     isFetched: isFetchedIncomes,
     fetchNextPage,
     hasNextPage
   } = useInfiniteQuery(
-    ['incomesPagination', sort, isSortDescending],
+    ['incomesPagination', sort, isSortDescending, filters],
     ({ pageParam }) =>
       getIncomes({
         pageParam: pageParam,
         IsSortByDate: sort === 'IsSortByDate',
-        IsSortDescending: isSortDescending
+        IsSortDescending: isSortDescending,
+        DateFrom: filters.dateFilter.start
+          ? `${format(filters.dateFilter.start, 'yyyy-MM-dd')}T00:00:00.000Z`
+          : '',
+        DateTo: filters.dateFilter.end
+          ? `${format(filters.dateFilter.end, 'yyyy-MM-dd')}T23:59:59.999Z`
+          : '',
+        CategoriesFilter: filters.categoryFilter.map(
+          (category) => category.value
+        ),
+        WalletsFilter: filters.walletFilter.map((wallet) => wallet.value)
       }),
     {
       getNextPageParam: (lastPage) => {
@@ -112,9 +128,6 @@ export const Incomes = () => {
     allTransactions = getTransactionsList(dataWallets, dataIncomes);
   }
 
-  if (isLoading) {
-    return <Preloader />;
-  }
   return (
     <Flex
       flexDir="column"
@@ -124,6 +137,13 @@ export const Incomes = () => {
       px={4}
       w="100%"
     >
+      <Box mb="42px" w="100%">
+        <FiltersIncomes
+          dataWallets={dataWallets}
+          dataCategories={dataCategories}
+          onChange={setFilters}
+        />
+      </Box>
       <Flex justify="flex-end" w="100%">
         <Button
           w="50%"
@@ -146,18 +166,18 @@ export const Incomes = () => {
         </Text>
       ) : (
         <TransactionList
+          maxH="320px"
+          isIncomesType
           list={allTransactions}
-          onShowMore={fetchNextPage}
-          hasNextPage={hasNextPage}
           walletsData={dataWallets}
           categoriesData={dataCategories}
-          maxH="lg"
+          onShowMore={fetchNextPage}
+          hasNextPage={hasNextPage}
           onSetSortByAmount={onSetSortByAmount}
           onSetSortDate={onSetSortDate}
         />
       )}
 
-      {!isFetchedIncomes && <Preloader />}
       {!!dataUser && !!dataWallets && isFetchedUser && isFetchedWallets && (
         <AddIncomeModal
           isOpen={incomeModal.isOpen}

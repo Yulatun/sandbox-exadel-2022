@@ -305,13 +305,7 @@ export const TransactionList = ({
       {editingIncome.isLoading || editingExpense.isLoading ? (
         <Preloader />
       ) : (
-        <VStack
-          spacing={5}
-          w="100%"
-          maxH={maxH}
-          overflowY="scroll"
-          ref={parent}
-        >
+        <VStack spacing={5} w="100%" h={maxH} overflowY="auto" ref={parent}>
           {list.map((transaction) => (
             <TransactionItem
               key={transaction.id}
