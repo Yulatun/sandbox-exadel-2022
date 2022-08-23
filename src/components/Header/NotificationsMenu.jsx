@@ -70,9 +70,10 @@ export const NotificationsMenu = () => {
         <>
           <MenuButton
             pos="relative"
-            mr={['14px', '14px', '14px', '0px']}
-            w="50px"
-            h="50px"
+            ml={{ sm: 'auto', md: 'none', lg: 'none' }}
+            mr={2}
+            minW={12}
+            minH={12}
             border="2px"
             borderColor="transparent"
             borderRadius="50%"
@@ -85,21 +86,20 @@ export const NotificationsMenu = () => {
               borderColor: textColor
             }}
           >
-            <BellIcon w="30px" h="30px" />
+            <BellIcon w={8} h={8} />
             {!!dataNotifications.filter((notification) => !notification.isRead)
               .length && (
               <Flex
                 pos="absolute"
-                top="5px"
-                right="4px"
+                top={1}
+                right={1}
                 zIndex="1"
                 alignItems="center"
                 justifyContent="center"
-                px={1}
-                minW="18px"
-                h="18px"
+                minW={5}
+                minH={5}
                 borderRadius="50%"
-                fontSize="14px"
+                fontSize={12}
                 fontWeight="bold"
                 color="white"
                 bgColor="red"
@@ -116,7 +116,7 @@ export const NotificationsMenu = () => {
           </MenuButton>
 
           <MenuList
-            maxWidth="450px"
+            maxW="450px"
             maxH="250px"
             overflowY="scroll"
             bg={popupBgColor}
@@ -184,7 +184,7 @@ export const NotificationsMenu = () => {
       )}
       {!isFetchedNotifications && (
         <SkeletonCircle
-          size="12"
+          size={12}
           startColor="orange.100"
           endColor="orange.200"
         />

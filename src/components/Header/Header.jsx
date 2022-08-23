@@ -23,7 +23,7 @@ export const Header = (isOpen) => {
       <Flex
         as="header"
         justify="center"
-        minH="100px"
+        minH={24}
         bg={bgColor}
         boxShadow="headerShadow"
         color={textColor}
@@ -32,28 +32,19 @@ export const Header = (isOpen) => {
           align="center"
           justify="space-between"
           maxW="container.xl"
-          w="100%"
-          p="15px 30px"
+          w="full"
+          px={8}
+          py={4}
         >
           <Logo />
+
           <ColorModeToggle />
 
-          <Box
-            display={{ base: isOpen ? 'none' : 'block', lg: 'block' }}
-            flexBasis={{ base: '100%', md: 'auto' }}
-            ml={{ base: '8px', xl: '48px' }}
-            mr={{ base: '8px', xl: '48px' }}
-          >
-            <Navbar />
-          </Box>
+          <Navbar />
 
           <NotificationsMenu />
-          <Box
-            display={{ base: isOpen ? 'none' : 'block', lg: 'block' }}
-            flexBasis={{ base: '100%', md: 'auto' }}
-            ml={{ base: '8px', xl: '10px' }}
-            mr={{ lg: 0, xl: '10px' }}
-          >
+
+          <Box display={{ base: isOpen ? 'none' : 'block', lg: 'block' }}>
             <UserName />
           </Box>
 

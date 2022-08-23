@@ -111,7 +111,7 @@ export const theme = extendTheme(CalendarDefaultTheme, {
   },
   shadows: {
     outline: '0 0 2px 4px rgba(246, 173, 85, 0.6);',
-    headerShadow: '0px 5px 3px -5px'
+    headerShadow: '0px 1px 2px -1px'
   },
   components: {
     Button,

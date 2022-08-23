@@ -52,10 +52,10 @@ export const UserMenu = () => {
   };
 
   return (
-    <Menu>
+    <Menu placement="bottom-end">
       <MenuButton
-        w="50px"
-        h="50px"
+        minW={12}
+        minH={12}
         border="2px"
         borderColor="transparent"
         borderRadius="50%"
@@ -68,11 +68,11 @@ export const UserMenu = () => {
         }}
       >
         {!!dataUser && isFetchedUser && (
-          <Avatar name={dataUser.fullName} w="40px" h="40px" />
+          <Avatar name={dataUser.fullName} w={10} h={10} />
         )}
         {!isFetchedUser && (
           <SkeletonCircle
-            size="12"
+            size={12}
             startColor="orange.100"
             endColor="orange.200"
           />
