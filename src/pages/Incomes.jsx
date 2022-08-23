@@ -134,6 +134,17 @@ export const Incomes = () => {
         createIncomeModal.onOpen();
         queryClient.invalidateQueries(['wallets']);
         queryClient.invalidateQueries(['incomesPagination']);
+
+        toast({
+          title: i18next.t('modal.addIncome.createdMessage'),
+          status: 'success',
+          duration: 3000,
+          isClosable: true,
+          position: 'top',
+          containerStyle: {
+            margin: '100px'
+          }
+        });
       }
     }
   );
@@ -186,9 +197,9 @@ export const Incomes = () => {
         </Text>
       ) : (
         <TransactionList
-          maxH="320px"
-          isIncomesType
           list={allTransactions}
+          maxH="580px"
+          isIncomesType
           walletsData={dataWallets}
           categoriesData={dataCategories}
           onShowMore={fetchNextPage}
