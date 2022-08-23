@@ -14,3 +14,7 @@ export const getTransactionsList = (
 
 export const areAnyWallets = (dataWallets) =>
   dataWallets.length ? true : false;
+
+export const getChosenWalletFullData = (chosenWalletId, dataWallets) => {
+  return dataWallets.find((wallet) => wallet.id === chosenWalletId);
+};
