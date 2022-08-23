@@ -10,7 +10,6 @@ import {
   Button,
   createStandaloneToast,
   Flex,
-  HStack,
   Text,
   useDisclosure
 } from '@chakra-ui/react';
