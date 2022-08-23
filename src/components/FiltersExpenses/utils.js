@@ -9,7 +9,7 @@ import {
   toDate
 } from 'date-fns';
 
-const today = new Date();
+export const today = new Date();
 let previousMondayDate = null;
 
 if (isMonday(today)) {
@@ -89,4 +89,32 @@ export const isCustomizedRange = (startDate, endDate, chosenDates) => {
   }
 
   return false;
+};
+export const getInputFormattedValue = (data) => {
+  switch (data.value) {
+    case 'today':
+    case 'yesterday':
+      return format(new Date(data.dates.start), 'dd.MM.yyyy');
+
+    case 'thisWeek':
+    case 'lastWeek':
+    case 'thisMonth':
+    case 'lastMonth':
+      return `${format(new Date(data.dates.start), 'dd.MM.yyyy')}-${format(
+        new Date(data.dates.end),
+        'dd.MM.yyyy'
+      )}`;
+
+    case 'customized':
+      if (data.dates.start === data.dates.end) {
+        return format(new Date(data.dates.start), 'dd.MM.yyyy');
+      }
+      return `${format(new Date(data.dates.start), 'dd.MM.yyyy')}-${format(
+        new Date(data.dates.end),
+        'dd.MM.yyyy'
+      )}`;
+
+    default:
+      return '';
+  }
 };
