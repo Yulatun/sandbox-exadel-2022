@@ -1,3 +1,4 @@
+import { useMutation, useQueryClient } from 'react-query';
 import { DeleteIcon, EditIcon } from '@chakra-ui/icons';
 import {
   Accordion,
@@ -8,18 +9,52 @@ import {
   Box,
   IconButton,
   Text,
-  useDisclosure
+  useDisclosure,
+  useToast
 } from '@chakra-ui/react';
+import i18next from 'i18next';
 
+import { deleteSubCategory } from '@/api/SubCategory';
 import { useCentralTheme } from '@/theme';
 
 import { AddSubCategoryModal } from '../AddSubCategoryModal';
 import { SubCategoryList } from '../SubCategoryList';
 
 export const AccordionComponent = (props) => {
+  const toast = useToast();
+  const queryClient = useQueryClient();
   const { popupBgColor } = useCentralTheme();
 
   const { isOpen, onOpen, onClose } = useDisclosure();
+
+  const deletingSubCategory = useMutation(
+    (data) =>
+      deleteSubCategory(data.categoryId, data.subCategoryId).catch((error) =>
+        console.log(error)
+      ),
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries(['categories']);
+        toast({
+          title: i18next.t('modal.deleteCategory.deleteMessage.success'),
+          status: 'success',
+          duration: 3000,
+          isClosable: true,
+          position: 'top',
+          containerStyle: {
+            margin: '100px'
+          }
+        });
+      }
+    }
+  );
+
+  const deleteOnSubmit = (subCategoryId) => {
+    deletingSubCategory.mutate({
+      categoryId: props.categoryData.id,
+      subCategoryId
+    });
+  };
 
   return (
     <>
@@ -99,6 +134,7 @@ export const AccordionComponent = (props) => {
               <SubCategoryList
                 categoryData={props.categoryData}
                 onOpen={onOpen}
+                onDelete={deleteOnSubmit}
               />
             </AccordionPanel>
           )}

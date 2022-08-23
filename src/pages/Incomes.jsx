@@ -5,7 +5,14 @@ import {
   useQuery,
   useQueryClient
 } from 'react-query';
-import { Box, Button, Flex, Text, useDisclosure } from '@chakra-ui/react';
+import {
+  Box,
+  Button,
+  createStandaloneToast,
+  Flex,
+  Text,
+  useDisclosure
+} from '@chakra-ui/react';
 import { format } from 'date-fns';
 import i18next from 'i18next';
 
@@ -29,6 +36,8 @@ export const Incomes = () => {
   const queryClient = useQueryClient();
   const createIncomeModal = useDisclosure();
 
+  const { toast } = createStandaloneToast();
+
   const {
     data: incomesPages = { pages: [] },
     isFetched: isFetchedIncomes,
@@ -40,6 +49,7 @@ export const Incomes = () => {
       getIncomes({
         pageParam: pageParam,
         IsSortByDate: sort === 'IsSortByDate',
+        IsSortByAmount: sort === 'IsSortByAmount',
         IsSortDescending: isSortDescending,
         DateFrom: filters.dateFilter.start
           ? `${format(filters.dateFilter.start, 'yyyy-MM-dd')}T00:00:00.000Z`
@@ -108,7 +118,18 @@ export const Incomes = () => {
         ),
         value: Number(data.amount),
         description: data.note
-      }),
+      }).catch((err) =>
+        toast({
+          title: err.message,
+          status: 'error',
+          duration: 3000,
+          isClosable: true,
+          position: 'top',
+          containerStyle: {
+            margin: '100px'
+          }
+        })
+      ),
     {
       onSuccess: () => {
         createIncomeModal.onOpen();
@@ -175,6 +196,7 @@ export const Incomes = () => {
           hasNextPage={hasNextPage}
           onSetSortByAmount={onSetSortByAmount}
           onSetSortDate={onSetSortDate}
+          filters={filters}
         />
       )}
 

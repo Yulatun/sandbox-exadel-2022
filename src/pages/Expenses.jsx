@@ -8,11 +8,12 @@ import {
 import {
   Box,
   Button,
+  createStandaloneToast,
   Flex,
-  HStack,
   Text,
   useDisclosure
 } from '@chakra-ui/react';
+import { format } from 'date-fns';
 import i18next from 'i18next';
 
 import { getCategories } from '@/api/Category';
@@ -22,44 +23,61 @@ import { getWallets } from '@/api/Wallet';
 import {
   AddExpenseModal,
   FiltersExpenses,
-  Preloader,
   TransactionList
 } from '@/components';
-import { FiltersTag } from '@/components/FiltersTag';
 import { getTransactionsList } from '@/helpers/helpers';
 import { useCentralTheme } from '@/theme';
 
 export const Expenses = () => {
   const [sort, setSort] = useState('IsSortByDate');
+  const [filters, setFilters] = useState({
+    dateFilter: {},
+    categoryFilter: [],
+    walletFilter: [],
+    payerFilter: []
+  });
+
   const [isSortDescending, setIsSortDescending] = useState(true);
   const expenseModal = useDisclosure();
   const queryClient = useQueryClient();
   const createExpenseModal = useDisclosure();
 
+  const { toast } = createStandaloneToast();
+
   const {
     data: expensesPage = { pages: [] },
     isFetched: isFetchedExpenses,
-    isLoading,
     fetchNextPage,
     hasNextPage
   } = useInfiniteQuery(
-    ['expensesP', sort, isSortDescending],
+    ['expensesP', sort, isSortDescending, filters],
     ({ pageParam }) =>
       getExpenses({
         pageParam: pageParam,
         IsSortByDate: sort === 'IsSortByDate',
-        IsSortDescending: isSortDescending
+        IsSortByAmount: sort === 'IsSortByAmount',
+        IsSortDescending: isSortDescending,
+        DateFrom: filters.dateFilter.start
+          ? `${format(filters.dateFilter.start, 'yyyy-MM-dd')}T00:00:00.000Z`
+          : '',
+        DateTo: filters.dateFilter.end
+          ? `${format(filters.dateFilter.end, 'yyyy-MM-dd')}T23:59:59.999Z`
+          : '',
+        CategoriesFilter: filters.categoryFilter.map(
+          (category) => category.value
+        ),
+        WalletsFilter: filters.walletFilter.map((wallet) => wallet.value),
+        PayersFilter: filters.payerFilter.map((payer) => payer.value)
       }),
     {
       getNextPageParam: (lastPage) => {
-        return lastPage.data.pageInfo.pageNumber !==
-          lastPage.data.pageInfo.totalPages
+        return lastPage.data.pageInfo?.pageNumber !==
+          lastPage.data.pageInfo?.totalPages
           ? lastPage.data.pageInfo.pageNumber + 1
           : undefined;
       }
     }
   );
-
   const onSetSortByAmount = () => {
     if (sort === 'IsSortByAmount') {
       setIsSortDescending(!isSortDescending);
@@ -115,7 +133,18 @@ export const Expenses = () => {
         ),
         value: Number(data.amount),
         description: data.note
-      }),
+      }).catch((err) =>
+        toast({
+          title: err.message,
+          status: 'error',
+          duration: 3000,
+          isClosable: true,
+          position: 'top',
+          containerStyle: {
+            margin: '100px'
+          }
+        })
+      ),
     {
       onSuccess: () => {
         createExpenseModal.onOpen();
@@ -140,9 +169,6 @@ export const Expenses = () => {
     allTransactions = getTransactionsList(dataWallets, dataExpenses);
   }
 
-  if (isLoading) {
-    return <Preloader />;
-  }
   return (
     <Flex
       flexDir="column"
@@ -152,14 +178,14 @@ export const Expenses = () => {
       px={4}
       w="100%"
     >
-      <Box mb="50px" w="100%">
-        <FiltersExpenses />
+      <Box mb="42px" w="100%">
+        <FiltersExpenses
+          dataWallets={dataWallets}
+          dataCategories={dataCategories}
+          dataPayers={dataPayers}
+          onChange={setFilters}
+        />
       </Box>
-      <HStack spacing={4} mb="50px" w="100%">
-        {['Food', 'Beauty', 'Utilities'].map((name) => (
-          <FiltersTag key={name} text={name} />
-        ))}
-      </HStack>
       <Flex justify="flex-end" w="100%">
         <Button
           w="50%"
@@ -170,7 +196,6 @@ export const Expenses = () => {
           {i18next.t('button.addExpense')}
         </Button>
       </Flex>
-
       {!!dataWallets &&
       !!dataCategories &&
       !!dataPayers &&
@@ -185,7 +210,7 @@ export const Expenses = () => {
       ) : (
         <TransactionList
           list={allTransactions}
-          maxH="570px"
+          maxH="580px"
           isExpensesType
           walletsData={dataWallets}
           categoriesData={dataCategories}
@@ -194,9 +219,9 @@ export const Expenses = () => {
           hasNextPage={hasNextPage}
           onSetSortByAmount={onSetSortByAmount}
           onSetSortDate={onSetSortDate}
+          filters={filters}
         />
       )}
-      {!isFetchedExpenses && <Preloader />}
       {!!dataUser &&
         !!dataWallets &&
         !!dataPayers &&

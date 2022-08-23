@@ -1,5 +1,6 @@
 import { useEffect } from 'react';
 import { Controller, useForm } from 'react-hook-form';
+import { useMutation, useQueryClient } from 'react-query';
 import {
   Button,
   createStandaloneToast,
@@ -27,7 +28,7 @@ import { ConfirmationModal } from '../ConfirmationModal';
 
 export const AddSubCategoryModal = ({ isOpen, onClose, categoryData }) => {
   const categoriesDeleteModal = useDisclosure();
-
+  const queryClient = useQueryClient();
   const { toast } = createStandaloneToast();
 
   const {
@@ -42,20 +43,34 @@ export const AddSubCategoryModal = ({ isOpen, onClose, categoryData }) => {
   } = useForm({
     defaultValues: {
       name: '',
-      color: categoryData.color
+      color: categoryData?.color
     }
   });
 
-  const onSubmit = (data) => {
-    createSubCategory({
-      categoryId: categoryData.id,
-      name: data.name,
-      limit: 0,
-      limitPeriod: 'Daily',
-      categoryType: categoryData.categoryType,
-      color: data.color
-    })
-      .then(() =>
+  const mutationCreateSubCategory = useMutation(
+    (data) =>
+      createSubCategory({
+        categoryId: categoryData.id,
+        name: data.name,
+        limit: 0,
+        limitPeriod: 'Daily',
+        categoryType: categoryData.categoryType,
+        color: data.color
+      }).catch((err) =>
+        toast({
+          title: err.message,
+          status: 'error',
+          duration: 3000,
+          isClosable: true,
+          position: 'top',
+          containerStyle: {
+            margin: '100px'
+          }
+        })
+      ),
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries(['categories']);
         toast({
           title: i18next.t('modal.addSubCategory.submitSuccessful.message'),
           status: 'success',
@@ -65,11 +80,15 @@ export const AddSubCategoryModal = ({ isOpen, onClose, categoryData }) => {
           containerStyle: {
             margin: '100px'
           }
-        })
-      )
-      .catch((err) => console.log(err));
-    reset();
+        });
+      }
+    }
+  );
+
+  const onSubmit = (data) => {
+    mutationCreateSubCategory.mutate(data);
     onClose();
+    resetForm();
   };
 
   const closeAllModals = () => {
@@ -82,18 +101,13 @@ export const AddSubCategoryModal = ({ isOpen, onClose, categoryData }) => {
   };
 
   const resetForm = () => {
-    reset({ name: '', color: categoryData.color });
+    reset({ name: '', color: categoryData?.color });
   };
   useEffect(() => resetForm(), [!isOpen]);
 
   return (
     <>
-      <Modal
-        scrollBehavior="inside"
-        isOpen={isOpen}
-        onClose={onCancel}
-        closeOnOverlayClick={false}
-      >
+      <Modal isOpen={isOpen} onClose={onCancel} closeOnOverlayClick={false}>
         <ModalOverlay />
         <ModalContent>
           <ModalHeader>
@@ -125,7 +139,7 @@ export const AddSubCategoryModal = ({ isOpen, onClose, categoryData }) => {
                         )
                       },
                       validate: (name) =>
-                        !categoryData.subCategories
+                        !categoryData?.subCategories
                           .map((data) => data.name.toLocaleUpperCase())
                           .includes(name.toLocaleUpperCase()) ||
                         i18next.t(

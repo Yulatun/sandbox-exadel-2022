@@ -75,7 +75,6 @@ export const LoginForm = () => {
         size="200px"
         justify="center"
         flexDirection="column"
-        borderWidth="1px"
         background={containerBgColor}
       >
         <LogoWalletIcon width="45" height="45" color={textColor} />
