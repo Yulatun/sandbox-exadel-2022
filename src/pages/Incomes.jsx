@@ -5,7 +5,14 @@ import {
   useQuery,
   useQueryClient
 } from 'react-query';
-import { Box, Button, Flex, Text, useDisclosure } from '@chakra-ui/react';
+import {
+  Box,
+  Button,
+  createStandaloneToast,
+  Flex,
+  Text,
+  useDisclosure
+} from '@chakra-ui/react';
 import { format } from 'date-fns';
 import i18next from 'i18next';
 
@@ -28,6 +35,8 @@ export const Incomes = () => {
   const incomeModal = useDisclosure();
   const queryClient = useQueryClient();
   const createIncomeModal = useDisclosure();
+
+  const { toast } = createStandaloneToast();
 
   const {
     data: incomesPages = { pages: [] },
@@ -108,7 +117,18 @@ export const Incomes = () => {
         ),
         value: Number(data.amount),
         description: data.note
-      }),
+      }).catch((err) =>
+        toast({
+          title: err.message,
+          status: 'error',
+          duration: 3000,
+          isClosable: true,
+          position: 'top',
+          containerStyle: {
+            margin: '100px'
+          }
+        })
+      ),
     {
       onSuccess: () => {
         createIncomeModal.onOpen();

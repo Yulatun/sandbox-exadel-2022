@@ -61,7 +61,18 @@ export const AddWalletModal = ({ isOpen, onClose }) => {
         name: data.name,
         currencyId: data.currency?.value,
         setDefault: data.setDefault
-      }),
+      }).catch((err) =>
+        toast({
+          title: err.message,
+          status: 'error',
+          duration: 3000,
+          isClosable: true,
+          position: 'top',
+          containerStyle: {
+            margin: '100px'
+          }
+        })
+      ),
     {
       onSuccess: () => {
         createWalletModal.onOpen();

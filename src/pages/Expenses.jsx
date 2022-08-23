@@ -8,6 +8,7 @@ import {
 import {
   Box,
   Button,
+  createStandaloneToast,
   Flex,
   HStack,
   Text,
@@ -35,6 +36,8 @@ export const Expenses = () => {
   const expenseModal = useDisclosure();
   const queryClient = useQueryClient();
   const createExpenseModal = useDisclosure();
+
+  const { toast } = createStandaloneToast();
 
   const {
     data: expensesPage = { pages: [] },
@@ -115,7 +118,18 @@ export const Expenses = () => {
         ),
         value: Number(data.amount),
         description: data.note
-      }),
+      }).catch((err) =>
+        toast({
+          title: err.message,
+          status: 'error',
+          duration: 3000,
+          isClosable: true,
+          position: 'top',
+          containerStyle: {
+            margin: '100px'
+          }
+        })
+      ),
     {
       onSuccess: () => {
         createExpenseModal.onOpen();

@@ -40,7 +40,19 @@ export const Categories = () => {
   );
 
   const editingCategory = useMutation(
-    (data) => editCategory(data).catch((error) => console.log(error)),
+    (data) =>
+      editCategory(data).catch((err) =>
+        toast({
+          title: err.message,
+          status: 'error',
+          duration: 3000,
+          isClosable: true,
+          position: 'top',
+          containerStyle: {
+            margin: '100px'
+          }
+        })
+      ),
     {
       onSuccess: () => {
         queryClient.invalidateQueries(['categories']);
@@ -59,7 +71,19 @@ export const Categories = () => {
   );
 
   const deletingCategory = useMutation(
-    (data) => deleteCategory(data).catch((error) => console.log(error)),
+    (data) =>
+      deleteCategory(data).catch((err) =>
+        toast({
+          title: err.message,
+          status: 'error',
+          duration: 3000,
+          isClosable: true,
+          position: 'top',
+          containerStyle: {
+            margin: '100px'
+          }
+        })
+      ),
     {
       onSuccess: ({ status, data }) => {
         if (status === 200) {

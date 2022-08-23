@@ -25,7 +25,12 @@ import { createSubCategory } from '@/api/SubCategory';
 
 import { ConfirmationModal } from '../ConfirmationModal';
 
-export const AddSubCategoryModal = ({ isOpen, onClose, categoryData }) => {
+export const AddSubCategoryModal = ({
+  isOpen,
+  onClose,
+  categoryData,
+  setNewSubCategory
+}) => {
   const categoriesDeleteModal = useDisclosure();
 
   const { toast } = createStandaloneToast();
@@ -42,7 +47,7 @@ export const AddSubCategoryModal = ({ isOpen, onClose, categoryData }) => {
   } = useForm({
     defaultValues: {
       name: '',
-      color: categoryData.color
+      color: categoryData?.color
     }
   });
 
@@ -55,7 +60,9 @@ export const AddSubCategoryModal = ({ isOpen, onClose, categoryData }) => {
       categoryType: categoryData.categoryType,
       color: data.color
     })
-      .then(() =>
+      .then(() => {
+        onClose();
+        resetForm();
         toast({
           title: i18next.t('modal.addSubCategory.submitSuccessful.message'),
           status: 'success',
@@ -65,11 +72,21 @@ export const AddSubCategoryModal = ({ isOpen, onClose, categoryData }) => {
           containerStyle: {
             margin: '100px'
           }
+        });
+      })
+      .catch((err) =>
+        toast({
+          title: err.message,
+          status: 'error',
+          duration: 3000,
+          isClosable: true,
+          position: 'top',
+          containerStyle: {
+            margin: '100px'
+          }
         })
-      )
-      .catch((err) => console.log(err));
-    reset();
-    onClose();
+      );
+    setNewSubCategory(data);
   };
 
   const closeAllModals = () => {
@@ -82,7 +99,7 @@ export const AddSubCategoryModal = ({ isOpen, onClose, categoryData }) => {
   };
 
   const resetForm = () => {
-    reset({ name: '', color: categoryData.color });
+    reset({ name: '', color: categoryData?.color });
   };
   useEffect(() => resetForm(), [!isOpen]);
 
@@ -120,7 +137,7 @@ export const AddSubCategoryModal = ({ isOpen, onClose, categoryData }) => {
                         )
                       },
                       validate: (name) =>
-                        !categoryData.subCategories
+                        !categoryData?.subCategories
                           .map((data) => data.name.toLocaleUpperCase())
                           .includes(name.toLocaleUpperCase()) ||
                         i18next.t(
