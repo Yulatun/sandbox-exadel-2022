@@ -58,7 +58,7 @@ export const CalendarPicker = ({
 
     if (isCustomizedRange(startDate, endDate, chosenDates) && !chosenRange) {
       setSelectedDateFilter({
-        value: 'date-customized',
+        value: 'customized',
         dates: chosenDates
       });
       clearAllDateButtonsSelected();
