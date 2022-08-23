@@ -114,7 +114,7 @@ export const EditExpenseModal = ({
         size="2xl"
         closeOnOverlayClick={false}
         isOpen={isOpen}
-        onClose={onClose}
+        onClose={onCancel}
       >
         <ModalOverlay />
         <ModalContent>
