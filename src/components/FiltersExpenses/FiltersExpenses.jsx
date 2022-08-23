@@ -9,16 +9,31 @@ import {
   IconButton,
   Input,
   InputGroup,
-  InputRightElement
+  InputRightElement,
+  useDisclosure
 } from '@chakra-ui/react';
 import { Select } from 'chakra-react-select';
 import i18next from 'i18next';
 
+import { ConfirmationModal } from '@/components';
+import {
+  getCategoriesOptions,
+  getPayersOptions,
+  getWalletsOptions
+} from '@/helpers/selectHelpers';
 import { useCentralTheme } from '@/theme';
 
-import { CalendarPicker } from './CalendarPicker';
+import { FiltersTag } from '../FiltersTag';
 
-export const FiltersExpenses = () => {
+import { CalendarPicker } from './CalendarPicker';
+import { getInputFormattedValue } from './utils';
+
+export const FiltersExpenses = ({
+  dataWallets,
+  dataCategories,
+  dataPayers,
+  onChange
+}) => {
   const [chosenDates, setChosenDates] = useState({});
 
   const [dateButtonSelected, setDateButtonSelected] = useState({
@@ -44,9 +59,14 @@ export const FiltersExpenses = () => {
   const [selectedPayerFilters, setSelectedPayerFilters] = useState([]);
 
   const calendarRef = useRef(null);
-
-  const { textColor, inputValueColor, inputSelectBg, inputSelectBorderColor } =
-    useCentralTheme();
+  const clearFilters = useDisclosure();
+  const {
+    textColor,
+    inputValueColor,
+    inputSelectBg,
+    inputSelectBorderColor,
+    popupTextColor
+  } = useCentralTheme();
 
   const handleClickOutside = (event) => {
     if (calendarRef.current && !calendarRef.current.contains(event.target)) {
@@ -63,9 +83,23 @@ export const FiltersExpenses = () => {
   }, []);
 
   useEffect(() => {
+    onChange({
+      dateFilter: chosenDates,
+      categoryFilter: selectedCategoryFilters,
+      walletFilter: selectedWalletFilters,
+      payerFilter: selectedPayerFilters
+    });
+  }, [
+    chosenDates,
+    selectedCategoryFilters,
+    selectedWalletFilters,
+    selectedPayerFilters
+  ]);
+
+  useEffect(() => {
     if (
       !isDateSelectOpen &&
-      selectedDateFilter.value === 'date-customized' &&
+      selectedDateFilter.value === 'customized' &&
       !!Object.values(selectedDateFilter.dates).length &&
       selectedDateFilter.dates.start &&
       !selectedDateFilter.dates.end
@@ -83,7 +117,7 @@ export const FiltersExpenses = () => {
       }));
     } else if (
       !isDateSelectOpen &&
-      selectedDateFilter.value === 'date-customized' &&
+      selectedDateFilter.value === 'customized' &&
       !!Object.values(selectedDateFilter.dates).length &&
       !selectedDateFilter.dates.start
     ) {
@@ -98,7 +132,7 @@ export const FiltersExpenses = () => {
       setDateButtonSelected({ ...dateButtonSelected, customized: false });
     } else if (
       !isDateSelectOpen &&
-      selectedDateFilter.value !== 'date-customized' &&
+      selectedDateFilter.value !== 'customized' &&
       !!Object.values(selectedDateFilter.dates).length &&
       chosenDates.start &&
       !chosenDates.end
@@ -169,11 +203,65 @@ export const FiltersExpenses = () => {
     setSelectedCategoryFilters([]);
     setSelectedWalletFilters([]);
     setSelectedPayerFilters([]);
+    clearFilters.onClose();
+  };
+
+  const removeTagOnClose = (event) => {
+    const typeChecked = event.currentTarget.getAttribute('id');
+    const valueChecked = event.currentTarget.getAttribute('value');
+    let selectedData = [];
+    let selectedIndex = '';
+
+    switch (typeChecked) {
+      case 'dateFilter':
+        setSelectedDateFilter({
+          value: '',
+          dates: {
+            start: null,
+            end: null
+          }
+        });
+        break;
+
+      case 'categoriesFilter':
+        selectedData = [...selectedCategoryFilters];
+
+        selectedIndex = selectedData.findIndex(
+          (category) => category.value === valueChecked
+        );
+        if (selectedIndex !== -1) {
+          selectedData.splice(selectedIndex, 1);
+        }
+        setSelectedCategoryFilters(selectedData);
+        break;
+
+      case 'walletsFilter':
+        selectedData = [...selectedWalletFilters];
+        selectedIndex = selectedData.findIndex(
+          (wallet) => wallet.value === valueChecked
+        );
+        if (selectedIndex !== -1) {
+          selectedData.splice(selectedIndex, 1);
+        }
+        setSelectedWalletFilters(selectedData);
+        break;
+
+      case 'payersFilter':
+        selectedData = [...selectedPayerFilters];
+        selectedIndex = selectedData.findIndex(
+          (payer) => payer.value === valueChecked
+        );
+        if (selectedIndex !== -1) {
+          selectedData.splice(selectedIndex, 1);
+        }
+        setSelectedPayerFilters(selectedData);
+        break;
+    }
   };
 
   return (
     <Flex flexDir="column" w="100%">
-      <Heading mb="15px" as="h3" size="lg" color={textColor}>
+      <Heading mb="36px" as="h3" size="lg" color={textColor}>
         {i18next.t('expenses.filters.heading')}
       </Heading>
 
@@ -184,15 +272,28 @@ export const FiltersExpenses = () => {
           mr="25px"
           mb="16px"
           pr="34px"
-          minW="200px"
+          maxW="200px"
+          w="100%"
           ref={calendarRef}
         >
-          <InputGroup onClick={() => setIsDateSelectOpen(!isDateSelectOpen)}>
+          <InputGroup
+            onClick={() => setIsDateSelectOpen(!isDateSelectOpen)}
+            color={popupTextColor}
+          >
             <Input
               textAlign="left"
-              color={inputValueColor}
-              type="button"
-              value={i18next.t('expenses.filters.date.value')}
+              color={
+                !selectedDateFilter.value ? inputValueColor : popupTextColor
+              }
+              type="text"
+              readOnly
+              value={
+                !selectedDateFilter.value
+                  ? i18next.t('expenses.filters.date.value')
+                  : i18next.t(
+                      `expenses.filters.date.value.${selectedDateFilter?.value}`
+                    )
+              }
             />
             <InputRightElement
               mt="1px"
@@ -242,18 +343,13 @@ export const FiltersExpenses = () => {
           mr="25px"
           mb="16px"
           pr="34px"
-          minW="200px"
+          maxW="200px"
+          w="100%"
         >
-          <FormControl>
+          <FormControl color={popupTextColor}>
             <Select
               value={selectedCategoryFilters}
-              options={[
-                { label: 'Category 1', value: 'category-1' },
-                { label: 'Category 2', value: 'category-2' },
-                { label: 'Category 3', value: 'category-3' },
-                { label: 'Category 4', value: 'category-4' },
-                { label: 'Category 5', value: 'category-5' }
-              ]}
+              options={getCategoriesOptions(dataCategories, 'Expense')}
               onChange={(event) =>
                 handleSelects(
                   event,
@@ -288,16 +384,13 @@ export const FiltersExpenses = () => {
           mr="25px"
           mb="16px"
           pr="34px"
-          minW="200px"
+          maxW="200px"
+          w="100%"
         >
-          <FormControl>
+          <FormControl color={popupTextColor}>
             <Select
               value={selectedWalletFilters}
-              options={[
-                { label: 'Wallet 1', value: 'wallet-1' },
-                { label: 'Wallet 2', value: 'wallet-2' },
-                { label: 'Wallet 3', value: 'wallet-3' }
-              ]}
+              options={getWalletsOptions(dataWallets)}
               onChange={(event) =>
                 handleSelects(
                   event,
@@ -329,19 +422,16 @@ export const FiltersExpenses = () => {
         <Flex
           pos="relative"
           alignItems="center"
-          mr="35px"
+          mr="25px"
           mb="16px"
           pr="34px"
-          minW="200px"
+          maxW="200px"
+          w="100%"
         >
-          <FormControl>
+          <FormControl color={popupTextColor}>
             <Select
               value={selectedPayerFilters}
-              options={[
-                { label: 'Payer 1', value: 'payer-1' },
-                { label: 'Payer 2', value: 'payer-2' },
-                { label: 'Payer 3', value: 'payer-3' }
-              ]}
+              options={getPayersOptions(dataPayers)}
               onChange={(event) =>
                 handleSelects(
                   event,
@@ -376,17 +466,68 @@ export const FiltersExpenses = () => {
           !!selectedCategoryFilters.length ||
           !!selectedWalletFilters.length ||
           !!selectedPayerFilters.length) && (
-          <Button
-            onClick={() => {
-              if (confirm('Are you sure?')) {
-                clearAllSelects();
-              }
-            }}
-          >
+          <Button onClick={clearFilters.onOpen} variant="danger" minW="166px">
             {i18next.t('expenses.filters.btn.clearAllFilters')}
           </Button>
         )}
       </Flex>
+      <Flex
+        flexWrap="wrap"
+        mt="24px"
+        mb="42px"
+        w="100%"
+        maxH="150px"
+        overflowY="auto"
+        h="100%"
+      >
+        {!!selectedDateFilter &&
+          !!Object.values(selectedDateFilter.dates).length &&
+          selectedDateFilter.value && (
+            <FiltersTag
+              value={selectedDateFilter.value}
+              type="dateFilter"
+              text={getInputFormattedValue(selectedDateFilter)}
+              onClose={removeTagOnClose}
+              bgColor="green.500"
+            />
+          )}
+        {selectedCategoryFilters.map((filter) => (
+          <FiltersTag
+            key={filter.value}
+            type="categoriesFilter"
+            value={filter.value}
+            text={filter.label}
+            onClose={removeTagOnClose}
+            bgColor="red.400"
+          />
+        ))}
+        {selectedWalletFilters.map((filter) => (
+          <FiltersTag
+            key={filter.value}
+            type="walletsFilter"
+            value={filter.value}
+            text={filter.label}
+            onClose={removeTagOnClose}
+            bgColor="blue.400"
+          />
+        ))}
+        {selectedPayerFilters.map((filter) => (
+          <FiltersTag
+            key={filter.value}
+            type="payersFilter"
+            value={filter.value}
+            text={filter.label}
+            onClose={removeTagOnClose}
+            bgColor="orange.400"
+          />
+        ))}
+      </Flex>
+      <ConfirmationModal
+        isOpen={clearFilters.isOpen}
+        onClose={clearFilters.onClose}
+        onSubmit={clearAllSelects}
+        text={i18next.t('modal.confirmModal.clearFilters')}
+      />
     </Flex>
   );
 };
