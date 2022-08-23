@@ -1,4 +1,4 @@
-import React from 'react';
+import { useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { CloseIcon, HamburgerIcon } from '@chakra-ui/icons';
 import {
@@ -23,7 +23,7 @@ import { UserName } from './UserName';
 
 export const NavDrawer = () => {
   const { isOpen, onClose, onToggle } = useDisclosure();
-  const btnRef = React.useRef();
+  const btnRef = useRef();
   const { bgColor, popupBgColor, textColor } = useCentralTheme();
 
   return (

@@ -1,6 +1,5 @@
-import React from 'react';
 import { Link } from 'react-router-dom';
-import { Box, Flex, Heading } from '@chakra-ui/react';
+import { Flex, Heading } from '@chakra-ui/react';
 import i18next from 'i18next';
 
 import { LogoWalletIcon } from '@/assets';
@@ -10,7 +9,7 @@ export const Logo = () => {
   const { textColor } = useCentralTheme();
 
   return (
-    <Box>
+    <>
       <Flex as={Link} to="/" w="auto" align="center" justify="flex-start">
         <LogoWalletIcon width={10} height={10} color={textColor} />
 
@@ -18,6 +17,6 @@ export const Logo = () => {
           {i18next.t('login.appName')}
         </Heading>
       </Flex>
-    </Box>
+    </>
   );
 };
