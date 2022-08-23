@@ -43,11 +43,21 @@ export const getExpenses = async ({
   PayersFilter = []
 }) => {
   let paramsString = '';
-
+  if (DateFrom) {
+    paramsString += `?DateFrom=${DateFrom}`;
+  }
+  if (DateTo) {
+    paramsString += DateTo ? `&DateTo=${DateTo}` : 'reset';
+  }
+  if (paramsString.includes('reset')) {
+    paramsString = '';
+  }
   if (CategoriesFilter.length) {
-    paramsString += `${
-      CategoriesFilter.length ? '?' : ''
-    }CategoriesFilter=${CategoriesFilter.join('&CategoriesFilter=')}`;
+    paramsString += DateFrom
+      ? `&CategoriesFilter=${CategoriesFilter.join('&CategoriesFilter=')}`
+      : `${
+          CategoriesFilter.length ? '?' : ''
+        }CategoriesFilter=${CategoriesFilter.join('&CategoriesFilter=')}`;
   }
   if (WalletsFilter.length) {
     paramsString += `${
@@ -66,9 +76,7 @@ export const getExpenses = async ({
       IsSortByDate: IsSortByDate,
       IsSortByAmount: IsSortByAmount,
       IsSortDescending: IsSortDescending,
-      [sortColumn]: false,
-      DateFrom: DateFrom,
-      DateTo: DateTo
+      [sortColumn]: false
     }
   });
 };

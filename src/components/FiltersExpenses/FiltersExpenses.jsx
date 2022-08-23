@@ -99,7 +99,7 @@ export const FiltersExpenses = ({
   useEffect(() => {
     if (
       !isDateSelectOpen &&
-      selectedDateFilter.value === 'date-customized' &&
+      selectedDateFilter.value === 'customized' &&
       !!Object.values(selectedDateFilter.dates).length &&
       selectedDateFilter.dates.start &&
       !selectedDateFilter.dates.end
@@ -117,7 +117,7 @@ export const FiltersExpenses = ({
       }));
     } else if (
       !isDateSelectOpen &&
-      selectedDateFilter.value === 'date-customized' &&
+      selectedDateFilter.value === 'customized' &&
       !!Object.values(selectedDateFilter.dates).length &&
       !selectedDateFilter.dates.start
     ) {
@@ -132,7 +132,7 @@ export const FiltersExpenses = ({
       setDateButtonSelected({ ...dateButtonSelected, customized: false });
     } else if (
       !isDateSelectOpen &&
-      selectedDateFilter.value !== 'date-customized' &&
+      selectedDateFilter.value !== 'customized' &&
       !!Object.values(selectedDateFilter.dates).length &&
       chosenDates.start &&
       !chosenDates.end
@@ -273,6 +273,7 @@ export const FiltersExpenses = ({
           mb="16px"
           pr="34px"
           maxW="200px"
+          w="100%"
           ref={calendarRef}
         >
           <InputGroup
@@ -342,7 +343,8 @@ export const FiltersExpenses = ({
           mr="25px"
           mb="16px"
           pr="34px"
-          minW="200px"
+          maxW="200px"
+          w="100%"
         >
           <FormControl color={popupTextColor}>
             <Select
@@ -382,7 +384,8 @@ export const FiltersExpenses = ({
           mr="25px"
           mb="16px"
           pr="34px"
-          minW="200px"
+          maxW="200px"
+          w="100%"
         >
           <FormControl color={popupTextColor}>
             <Select
@@ -422,7 +425,8 @@ export const FiltersExpenses = ({
           mr="25px"
           mb="16px"
           pr="34px"
-          minW="200px"
+          maxW="200px"
+          w="100%"
         >
           <FormControl color={popupTextColor}>
             <Select
@@ -473,7 +477,8 @@ export const FiltersExpenses = ({
         mb="42px"
         w="100%"
         maxH="150px"
-        overflowY="scroll"
+        overflowY="auto"
+        h="100%"
       >
         {!!selectedDateFilter &&
           !!Object.values(selectedDateFilter.dates).length &&
@@ -483,7 +488,7 @@ export const FiltersExpenses = ({
               type="dateFilter"
               text={getInputFormattedValue(selectedDateFilter)}
               onClose={removeTagOnClose}
-              bgColor="green.400"
+              bgColor="green.500"
             />
           )}
         {selectedCategoryFilters.map((filter) => (
