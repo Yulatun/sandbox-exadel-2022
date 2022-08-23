@@ -88,12 +88,7 @@ export const AddSubCategoryModal = ({ isOpen, onClose, categoryData }) => {
 
   return (
     <>
-      <Modal
-        scrollBehavior="inside"
-        isOpen={isOpen}
-        onClose={onCancel}
-        closeOnOverlayClick={false}
-      >
+      <Modal isOpen={isOpen} onClose={onCancel} closeOnOverlayClick={false}>
         <ModalOverlay />
         <ModalContent>
           <ModalHeader>
