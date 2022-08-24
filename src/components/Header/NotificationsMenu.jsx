@@ -120,7 +120,7 @@ export const NotificationsMenu = () => {
             zIndex="10"
             maxW="450px"
             maxH="250px"
-            overflowY="scroll"
+            overflowY="auto"
             bg={popupBgColor}
             color={popupTextColor}
             fontWeight="bold"

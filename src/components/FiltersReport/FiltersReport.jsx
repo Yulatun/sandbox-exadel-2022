@@ -716,7 +716,7 @@ export const FiltersReport = ({
           mb="50px"
           w="100%"
           maxH="150px"
-          overflowY="scroll"
+          overflowY="auto"
         >
           {!!watch('walletReport').label &&
             ((!!watch('walletReport') &&
