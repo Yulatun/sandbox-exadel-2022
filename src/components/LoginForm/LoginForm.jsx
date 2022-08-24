@@ -84,10 +84,11 @@ export const LoginForm = () => {
       </Circle>
 
       <Stack
-        width="500px"
-        p="4"
+        width="lg"
+        px={8}
+        py={6}
         boxShadow="xl"
-        borderRadius="4px"
+        borderRadius={35}
         background={containerBgColor}
       >
         <form onSubmit={handleSubmit(onSubmit)}>
