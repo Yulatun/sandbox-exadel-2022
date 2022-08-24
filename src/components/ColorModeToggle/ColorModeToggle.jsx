@@ -7,14 +7,14 @@ import { useCentralTheme } from '@/theme';
 const ColorModeToggle = () => {
   const { colorMode, toggleColorMode } = useColorMode();
   const { textColor } = useCentralTheme();
+
   return (
     <IconButton
-      mr="16px"
-      w="50px"
-      h="50px"
-      border="2px"
+      mr={{ base: 'auto', lg: 'none' }}
+      minW={12}
+      minH={12}
+      border="2px transparent"
       borderRadius="50%"
-      borderColor="transparent"
       color={textColor}
       _hover={{
         border: '2px',
@@ -25,9 +25,9 @@ const ColorModeToggle = () => {
       aria-label={i18next.t(`header.btn.theme.${colorMode}`)}
       icon={
         colorMode === 'light' ? (
-          <MoonIcon w="25px" h="25px" />
+          <MoonIcon w={6} h={6} />
         ) : (
-          <SunIcon w="30px" h="30px" />
+          <SunIcon w={7} h={7} />
         )
       }
       onClick={toggleColorMode}

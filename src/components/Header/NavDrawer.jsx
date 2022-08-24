@@ -1,4 +1,4 @@
-import React from 'react';
+import { useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { CloseIcon, HamburgerIcon } from '@chakra-ui/icons';
 import {
@@ -23,22 +23,21 @@ import { UserName } from './UserName';
 
 export const NavDrawer = () => {
   const { isOpen, onClose, onToggle } = useDisclosure();
-  const btnRef = React.useRef();
+  const btnRef = useRef();
   const { bgColor, popupBgColor, textColor } = useCentralTheme();
 
   return (
     <>
-      <Flex flexGrow={{ sm: '2', md: '2', lg: '0', xl: '0' }}>
+      <Flex display={{ base: 'initial', lg: 'none' }}>
         <IconButton
-          marginLeft="auto"
-          borderWidth="2px"
-          borderStyle="solid"
+          ml={4}
+          border="2px solid"
           borderColor={textColor}
           bgColor={bgColor}
           color={textColor}
           ref={btnRef}
           size="sm"
-          icon={isOpen ? <CloseIcon /> : <HamburgerIcon fontSize="20px" />}
+          icon={isOpen ? <CloseIcon /> : <HamburgerIcon fontSize={20} />}
           aria-label={i18next.t('header.drawer.open')}
           display={{ base: 'block', lg: 'none' }}
           onClick={onToggle}
@@ -58,24 +57,12 @@ export const NavDrawer = () => {
       >
         <DrawerOverlay />
         <DrawerContent display={'flex'} direction={{ md: 'column' }}>
-          <DrawerCloseButton
-            size="22px"
-            top={10}
-            right={10}
-            color={textColor}
-          />
-          <DrawerHeader
-            pt="30px"
-            minH="100px"
-            pl={6}
-            bg={bgColor}
-            onClick={onClose}
-          >
+          <DrawerCloseButton size="xl" top={10} right={10} color={textColor} />
+          <DrawerHeader minH={24} pt={6} pl={4} bg={bgColor} onClick={onClose}>
             <UserName />
           </DrawerHeader>
           <DrawerBody bg={popupBgColor}>
             <Breadcrumb
-              spacing="16px"
               separator=""
               fontSize="xl"
               color={textColor}
@@ -92,7 +79,7 @@ export const NavDrawer = () => {
                 <BreadcrumbLink
                   as={Link}
                   to="/"
-                  textUnderlineOffset="4px"
+                  textUnderlineOffset={4}
                   onClick={onClose}
                 >
                   {i18next.t('header.navigation.home')}
@@ -102,7 +89,7 @@ export const NavDrawer = () => {
                 <BreadcrumbLink
                   as={Link}
                   to="/incomes"
-                  textUnderlineOffset="4px"
+                  textUnderlineOffset={2}
                   onClick={onClose}
                 >
                   {i18next.t('header.navigation.incomes')}
@@ -112,7 +99,7 @@ export const NavDrawer = () => {
                 <BreadcrumbLink
                   as={Link}
                   to="/expenses"
-                  textUnderlineOffset="4px"
+                  textUnderlineOffset={2}
                   onClick={onClose}
                 >
                   {i18next.t('header.navigation.expenses')}
@@ -122,7 +109,7 @@ export const NavDrawer = () => {
                 <BreadcrumbLink
                   as={Link}
                   to="/categories"
-                  textUnderlineOffset="4px"
+                  textUnderlineOffset={2}
                   onClick={onClose}
                 >
                   {i18next.t('header.navigation.categories')}
@@ -132,7 +119,7 @@ export const NavDrawer = () => {
                 <BreadcrumbLink
                   as={Link}
                   to="/statistics"
-                  textUnderlineOffset="4px"
+                  textUnderlineOffset={2}
                   onClick={onClose}
                 >
                   {i18next.t('header.navigation.statistics')}
