@@ -25,7 +25,12 @@ import i18next from 'i18next';
 import { createCategory, getCategories } from '@/api/Category';
 import { ConfirmationModal } from '@/components';
 
-export const AddCategoryModal = ({ isOpen, onClose, categoryType }) => {
+export const AddCategoryModal = ({
+  isOpen,
+  onClose,
+  categoryType,
+  setNewCategory
+}) => {
   const categoriesDeleteModal = useDisclosure();
   const queryClient = useQueryClient();
 
@@ -89,6 +94,8 @@ export const AddCategoryModal = ({ isOpen, onClose, categoryType }) => {
 
   const createCategoryOnSubmit = (data) => {
     mutationCreateCategory.mutate(data);
+    setNewCategory && setNewCategory(data);
+
     onClose();
     reset();
   };

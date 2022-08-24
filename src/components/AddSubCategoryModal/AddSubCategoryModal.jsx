@@ -26,7 +26,12 @@ import { createSubCategory } from '@/api/SubCategory';
 
 import { ConfirmationModal } from '../ConfirmationModal';
 
-export const AddSubCategoryModal = ({ isOpen, onClose, categoryData }) => {
+export const AddSubCategoryModal = ({
+  isOpen,
+  onClose,
+  categoryData,
+  setNewSubCategory
+}) => {
   const categoriesDeleteModal = useDisclosure();
   const queryClient = useQueryClient();
   const { toast } = createStandaloneToast();
@@ -89,6 +94,7 @@ export const AddSubCategoryModal = ({ isOpen, onClose, categoryData }) => {
     mutationCreateSubCategory.mutate(data);
     onClose();
     resetForm();
+    setNewSubCategory && setNewSubCategory(data);
   };
 
   const closeAllModals = () => {
