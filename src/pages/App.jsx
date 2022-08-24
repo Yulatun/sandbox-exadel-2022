@@ -45,7 +45,6 @@ export const App = () => {
             <Route path="/expenses" element={<Expenses />} />
             <Route path="/categories" element={<Categories />} />
             <Route path="/statistics" element={<Statistics />} />
-
             <Route path="/wallet/:id" element={<WalletView />} />
           </Route>
         </Routes>

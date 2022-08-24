@@ -247,11 +247,11 @@ export const WalletView = () => {
           />
         </Flex>
         <Flex justifyContent="center" mb={8} w="400px">
-          {!!dataWallets && isFetchedWallets && (
+          {(!!dataWallets && isFetchedWallets && (
             <WalletCard
               walletData={dataWallets.find((wallet) => wallet.id === walletId)}
             />
-          )}
+          )) || <Preloader />}
         </Flex>
 
         {!!dataWallets &&
@@ -276,8 +276,6 @@ export const WalletView = () => {
             payersData={dataPayers}
           />
         )}
-
-        {(!isFetchedIncomes || !isFetchedExpenses) && <Preloader />}
       </Flex>
 
       <ConfirmationModal

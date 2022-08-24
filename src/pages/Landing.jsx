@@ -54,10 +54,10 @@ export const Landing = () => {
     isFetched: isFetchedWallets
   } = useQuery(['wallets'], getWallets);
 
-  const {
-    data: { data: dataCategories } = { data: [] },
-    isFetched: isFetchedCategories
-  } = useQuery(['categories'], getCategories);
+  const { data: { data: dataCategories } = { data: [] } } = useQuery(
+    ['categories'],
+    getCategories
+  );
 
   const {
     data: { data: dataPayers } = { data: [] },
@@ -186,7 +186,7 @@ export const Landing = () => {
 
   return (
     <>
-      {!!dataUser && !!dataWallets && isFetchedUser && isFetchedWallets && (
+      {
         <Flex flexDir="column" alignItems="center" w="100%" p={4}>
           <Flex my={8} direction="row" justify="center" align="center">
             <Button
@@ -204,17 +204,18 @@ export const Landing = () => {
               {i18next.t('button.addIncome')}
             </Button>
           </Flex>
-
-          <WalletsList userData={dataUser} walletsData={dataWallets} />
+          {isFetchedUser && isFetchedWallets ? (
+            <WalletsList userData={dataUser} walletsData={dataWallets} />
+          ) : (
+            <Preloader />
+          )}
 
           <Text my={8} color={textColor} fontSize="xl">
             {i18next.t('transaction.recentTransactions')}
           </Text>
 
-          {(!!dataCategories &&
-          !!dataPayers &&
-          isFetchedCategories &&
-          isFetchedPayers &&
+          {isFetchedIncomes &&
+          isFetchedExpenses &&
           !recentTransactions.length ? (
             <Text color={textColor} fontSize="xl">
               {i18next.t('transaction.noData')}
@@ -228,9 +229,9 @@ export const Landing = () => {
               categoriesData={dataCategories}
               payersData={dataPayers}
             />
-          )) || <Preloader />}
+          )}
         </Flex>
-      )}
+      }
 
       {!!dataUser &&
         !!dataWallets &&
