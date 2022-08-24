@@ -68,6 +68,7 @@ export const FiltersReport = ({
     payer: false
   });
   const [isSelectOnFocus, setIsSelectOnFocus] = useState({
+    wallet: false,
     income: false,
     expense: false,
     payer: false
@@ -425,12 +426,14 @@ export const FiltersReport = ({
           minW="200px"
         >
           <SelectControlled
+            zIndex={isSelectOnFocus.wallet ? 9 : 5}
             nameOfSelect="walletReport"
             control={control}
             listOfOptions={getAllWalletsSortedOptions(userData)}
             isRequiredData
             data={walletsData}
             closeMenuOnSelect={false}
+            setIsSelectOnFocus={setIsSelectOnFocus}
           />
           {!!watch('walletReport') &&
             watch('walletReport')?.value !== userData.defaultWallet && (
@@ -522,7 +525,7 @@ export const FiltersReport = ({
           minW="245px"
         >
           <SelectControlled
-            zIndex={5}
+            zIndex={isSelectOnFocus.income ? 9 : 5}
             nameOfSelect="categoryIncomeReport"
             control={control}
             listOfOptions={[
@@ -572,7 +575,7 @@ export const FiltersReport = ({
           minW="245px"
         >
           <SelectControlled
-            zIndex={5}
+            zIndex={isSelectOnFocus.expense ? 9 : 5}
             nameOfSelect="categoryExpenseReport"
             control={control}
             listOfOptions={[
@@ -622,7 +625,7 @@ export const FiltersReport = ({
           minW="200px"
         >
           <SelectControlled
-            zIndex={5}
+            zIndex={isSelectOnFocus.payer ? 9 : 5}
             nameOfSelect="payerReport"
             control={control}
             listOfOptions={[

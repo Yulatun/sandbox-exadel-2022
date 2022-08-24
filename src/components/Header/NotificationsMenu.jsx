@@ -116,6 +116,8 @@ export const NotificationsMenu = () => {
           </MenuButton>
 
           <MenuList
+            pos="relative"
+            zIndex="10"
             maxW="450px"
             maxH="250px"
             overflowY="scroll"
@@ -154,7 +156,7 @@ export const NotificationsMenu = () => {
                         {!notification.isRead && (
                           <Box
                             pos="absolute"
-                            top="auto"
+                            top="15px"
                             left="10px"
                             w="10px"
                             h="10px"
