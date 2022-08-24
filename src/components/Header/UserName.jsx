@@ -15,9 +15,15 @@ export const UserName = () => {
   const { textColor } = useCentralTheme();
 
   return (
-    <Flex direction="column" align={{ base: 'flex-start', xl: 'flex-end' }}>
+    <Flex direction="column" pl={2} pr={4}>
       {!!dataUser && !!dataUser.data && isFetchedUser && (
-        <Text color={textColor} fontWeight="bold" fontSize="xl">
+        <Text
+          color={textColor}
+          fontWeight="bold"
+          fontSize={{ base: 'xl', lg: 'lg', xl: 'xl' }}
+          align={{ base: 'initial', lg: 'center' }}
+          maxW={{ base: 40, md: 56 }}
+        >
           {dataUser.data.fullName}
         </Text>
       )}
@@ -25,7 +31,16 @@ export const UserName = () => {
       !!dataUser.data &&
       !!dataUser.data.isAdmin &&
       isFetchedUser ? (
-        <Button as={Link} to="/admin" fontWeight="bold" size="xs" mr="auto">
+        <Button
+          as={Link}
+          to="/admin"
+          fontWeight="bold"
+          size="xs"
+          mx={{ base: 'none', lg: 'auto' }}
+          mr={{ base: 'auto', lg: 'none' }}
+          mt={{ base: 1, lg: 'none' }}
+          lineHeight={1}
+        >
           {i18n.t('admin.button')}
         </Button>
       ) : null}

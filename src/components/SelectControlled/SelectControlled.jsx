@@ -30,6 +30,13 @@ export const SelectControlled = ({
 }) => {
   const setStateOnFocus = () => {
     switch (nameOfSelect) {
+      case 'walletReport':
+        setIsSelectOnFocus((prevState) => ({
+          ...prevState,
+          wallet: !prevState.wallet
+        }));
+        break;
+
       case 'categoryIncomeReport':
         setIsSelectOnFocus((prevState) => ({
           ...prevState,
