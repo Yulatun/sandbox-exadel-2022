@@ -255,10 +255,10 @@ export const Categories = () => {
             }}
             onClose={deleteCategoryModal.onClose}
             title={i18next.t(
-              `modal.delete${chosenCategoryData.categoryType}.title`
+              `modal.delete${chosenCategoryData.categoryType}Category.title`
             )}
             text={i18next.t(
-              `modal.delete${chosenCategoryData.categoryType}.text`
+              `modal.delete${chosenCategoryData.categoryType}Category.text`
             )}
           />
         )}
