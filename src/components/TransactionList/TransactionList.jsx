@@ -322,7 +322,10 @@ export const TransactionList = ({
 
         <Box minW="90px" w="12%" />
       </Flex>
-      {editingIncome.isLoading || editingExpense.isLoading ? (
+      {editingIncome.isLoading ||
+      editingExpense.isLoading ||
+      deletingIncome.isLoading ||
+      deletingExpense.isLoading ? (
         <Preloader />
       ) : (
         <VStack spacing={5} w="100%" h={maxH} overflowY="auto" ref={parent}>

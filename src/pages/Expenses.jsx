@@ -23,7 +23,6 @@ import { getWallets } from '@/api/Wallet';
 import {
   AddExpenseModal,
   FiltersExpenses,
-  Preloader,
   TransactionList
 } from '@/components';
 import { getTransactionsList } from '@/helpers/helpers';
@@ -49,7 +48,6 @@ export const Expenses = () => {
     data: expensesPage = { pages: [] },
     isFetched: isFetchedExpenses,
     fetchNextPage,
-    isLoading,
     hasNextPage
   } = useInfiniteQuery(
     ['expensesP', sort, isSortDescending, filters],
@@ -182,9 +180,6 @@ export const Expenses = () => {
     allTransactions = getTransactionsList(dataWallets, dataExpenses);
   }
 
-  if (isLoading) {
-    return <Preloader />;
-  }
   return (
     <Flex
       flexDir="column"

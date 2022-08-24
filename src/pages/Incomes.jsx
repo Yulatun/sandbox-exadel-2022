@@ -20,12 +20,7 @@ import { getCategories } from '@/api/Category';
 import { createIncome, getIncomes } from '@/api/Transaction';
 import { getUser } from '@/api/User';
 import { getWallets } from '@/api/Wallet';
-import {
-  AddIncomeModal,
-  FiltersIncomes,
-  Preloader,
-  TransactionList
-} from '@/components';
+import { AddIncomeModal, FiltersIncomes, TransactionList } from '@/components';
 import { getTransactionsList } from '@/helpers/helpers';
 import { useCentralTheme } from '@/theme';
 
@@ -47,7 +42,6 @@ export const Incomes = () => {
     data: incomesPages = { pages: [] },
     isFetched: isFetchedIncomes,
     fetchNextPage,
-    isLoading,
     hasNextPage
   } = useInfiniteQuery(
     ['incomesPagination', sort, isSortDescending, filters],
@@ -166,9 +160,6 @@ export const Incomes = () => {
     allTransactions = getTransactionsList(dataWallets, dataIncomes);
   }
 
-  if (isLoading) {
-    return <Preloader />;
-  }
   return (
     <Flex
       flexDir="column"

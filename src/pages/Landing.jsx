@@ -186,7 +186,7 @@ export const Landing = () => {
 
   return (
     <>
-      {!!dataUser && !!dataWallets && isFetchedUser && isFetchedWallets && (
+      {!!dataUser && isFetchedUser && (
         <Flex flexDir="column" alignItems="center" w="100%" p={4}>
           <Flex my={8} direction="row" justify="center" align="center">
             <Button
@@ -204,14 +204,17 @@ export const Landing = () => {
               {i18next.t('button.addIncome')}
             </Button>
           </Flex>
-
-          <WalletsList userData={dataUser} walletsData={dataWallets} />
+          {isFetchedWallets ? (
+            <WalletsList userData={dataUser} walletsData={dataWallets} />
+          ) : (
+            <Preloader />
+          )}
 
           <Text my={8} color={textColor} fontSize="xl">
             {i18next.t('transaction.recentTransactions')}
           </Text>
 
-          {(!!dataCategories &&
+          {!!dataCategories &&
           !!dataPayers &&
           isFetchedCategories &&
           isFetchedPayers &&
@@ -228,7 +231,7 @@ export const Landing = () => {
               categoriesData={dataCategories}
               payersData={dataPayers}
             />
-          )) || <Preloader />}
+          )}
         </Flex>
       )}
 
