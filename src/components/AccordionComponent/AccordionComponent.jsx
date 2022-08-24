@@ -28,23 +28,33 @@ export const AccordionComponent = (props) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   const deletingSubCategory = useMutation(
-    (data) =>
-      deleteSubCategory(data.categoryId, data.subCategoryId).catch((error) =>
-        console.log(error)
-      ),
+    (data) => deleteSubCategory(data.categoryId, data.subCategoryId),
     {
-      onSuccess: () => {
-        queryClient.invalidateQueries(['categories']);
-        toast({
-          title: i18next.t('modal.deleteSubcategory.deleteMessage.success'),
-          status: 'success',
-          duration: 3000,
-          isClosable: true,
-          position: 'top',
-          containerStyle: {
-            margin: '100px'
-          }
-        });
+      onSuccess: ({ status, data }) => {
+        if (status === 200) {
+          queryClient.invalidateQueries(['categories']);
+          toast({
+            title: i18next.t('modal.deleteSubcategory.deleteMessage.success'),
+            status: 'success',
+            duration: 3000,
+            isClosable: true,
+            position: 'top',
+            containerStyle: {
+              margin: '100px'
+            }
+          });
+        } else {
+          toast({
+            title: data?.message || i18next.t('toast.error.default'),
+            status: 'error',
+            duration: 3000,
+            isClosable: true,
+            position: 'top',
+            containerStyle: {
+              margin: '100px'
+            }
+          });
+        }
       }
     }
   );
