@@ -47,7 +47,10 @@ export const AddWalletModal = ({ isOpen, onClose }) => {
     handleSubmit,
     getValues,
     setValue,
-    formState: { errors, currency }
+    watch,
+    formState: {
+      errors: { name, currency }
+    }
   } = useForm();
 
   const {
@@ -132,7 +135,7 @@ export const AddWalletModal = ({ isOpen, onClose }) => {
               <ModalHeader>{i18next.t('modal.addWallet.title')}</ModalHeader>
               <ModalCloseButton />
               <ModalBody>
-                <FormControl isInvalid={errors.name} isRequired py="3">
+                <FormControl isInvalid={name} isRequired py="3">
                   <FormLabel htmlFor="name">
                     {i18next.t('modal.addWallet.name')}
                   </FormLabel>
@@ -159,7 +162,7 @@ export const AddWalletModal = ({ isOpen, onClose }) => {
                     placeholder={i18next.t('modal.addWallet.name.placeholder')}
                   />
                   <FormErrorMessage>
-                    <Text>{errors.name && errors.name.message}</Text>
+                    <Text>{name && name.message}</Text>
                   </FormErrorMessage>
                 </FormControl>
 
@@ -170,6 +173,8 @@ export const AddWalletModal = ({ isOpen, onClose }) => {
                   listOfOptions={getCurrenciesOptions(dataCurrencies)}
                   isRequiredData
                   data={dataCurrencies}
+                  validateWalletData={dataWallets}
+                  validateWalletName={watch('name')}
                 />
 
                 <FormControl py="3">

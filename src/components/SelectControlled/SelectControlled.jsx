@@ -9,6 +9,7 @@ import {
 } from '@chakra-ui/react';
 import { Select } from 'chakra-react-select';
 import i18next from 'i18next';
+import { findIndex } from 'lodash';
 
 import { getSelectFieldsData } from '@/helpers/selectHelpers';
 
@@ -25,6 +26,8 @@ export const SelectControlled = ({
   modalOnOpen,
   isMulti = false,
   closeMenuOnSelect = true,
+  validateWalletData = [],
+  validateWalletName = '',
   setIsSelectOnFocus = () => {},
   checkAllOptions = () => {}
 }) => {
@@ -65,13 +68,17 @@ export const SelectControlled = ({
       <Controller
         control={control}
         name={nameOfSelect}
-        rules={
-          isRequiredData
-            ? {
-                required: getSelectFieldsData(nameOfSelect).required
-              }
-            : {}
-        }
+        rules={{
+          required:
+            isRequiredData && getSelectFieldsData(nameOfSelect).required,
+          validate: (currency) =>
+            findIndex(validateWalletData, {
+              name: validateWalletName,
+              currency: { id: currency.value }
+            }) < 0
+              ? true
+              : i18next.t('modal.addCategory.validationErrorMessage.nameExist')
+        }}
         render={({ field: { onChange, onBlur, value, name, ref } }) => (
           <FormControl
             pos="relative"
