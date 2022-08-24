@@ -159,7 +159,7 @@ export const Statistics = () => {
                   <TableContainer
                     w="100%"
                     maxH="570px"
-                    overflowY="scroll"
+                    overflowY="auto"
                     borderRadius={8}
                     boxShadow="md"
                   >
