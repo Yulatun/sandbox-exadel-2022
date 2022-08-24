@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { Carousel } from 'react-responsive-carousel';
 import { Link as RouterLink } from 'react-router-dom';
 import { ChevronLeftIcon, ChevronRightIcon } from '@chakra-ui/icons';
@@ -23,6 +24,8 @@ export const WalletCarousel = ({ walletsData }) => {
 
   const { popupTextColor } = useCentralTheme();
 
+  const [currentSlide, setSlide] = useState(0);
+
   return (
     <Box w="70%">
       <Carousel
@@ -30,6 +33,7 @@ export const WalletCarousel = ({ walletsData }) => {
         showStatus={false}
         centerMode
         centerSlidePercentage={percentage}
+        selectedItem={currentSlide}
         showIndicators={false}
         renderArrowPrev={(onClickHandler, hasPrev, label) =>
           hasPrev && (
@@ -37,7 +41,11 @@ export const WalletCarousel = ({ walletsData }) => {
               size="sm"
               isRound
               type="button"
-              onClick={onClickHandler}
+              onClick={() =>
+                setSlide(
+                  (currentSlide - 2 + walletsData.length) % walletsData.length
+                )
+              }
               title={label}
               style={{
                 position: 'absolute',
@@ -57,7 +65,7 @@ export const WalletCarousel = ({ walletsData }) => {
               isRound
               size="sm"
               type="button"
-              onClick={onClickHandler}
+              onClick={() => setSlide((currentSlide + 2) % walletsData.length)}
               title={label}
               style={{
                 position: 'absolute',
