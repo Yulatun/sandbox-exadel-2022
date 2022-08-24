@@ -68,6 +68,7 @@ export const useCentralTheme = () => {
   let reportTableBorders = useColorModeValue('blackAlpha', 'whiteAlpha');
   let reportTableHeadingBgColor = useColorModeValue(orange300, teal700);
   let reportTableCategoryBgColor = useColorModeValue(orange200, teal800);
+  let dateColor = useColorModeValue('gray', orange50);
 
   return {
     bgColor,
@@ -90,7 +91,8 @@ export const useCentralTheme = () => {
     borderColor,
     reportTableBorders,
     reportTableHeadingBgColor,
-    reportTableCategoryBgColor
+    reportTableCategoryBgColor,
+    dateColor
   };
 };
 

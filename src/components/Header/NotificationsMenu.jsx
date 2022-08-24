@@ -3,6 +3,7 @@ import { useMutation, useQuery, useQueryClient } from 'react-query';
 import { BellIcon } from '@chakra-ui/icons';
 import {
   Box,
+  createStandaloneToast,
   Flex,
   Menu,
   MenuButton,
@@ -24,6 +25,7 @@ export const NotificationsMenu = () => {
   const [chosenNotificationData, setChosenNotificationData] = useState({});
 
   const queryClient = useQueryClient();
+  const { toast } = createStandaloneToast();
 
   const readNotificationModal = useDisclosure();
 
@@ -33,7 +35,19 @@ export const NotificationsMenu = () => {
   } = useQuery(['notifications'], getNotifications);
 
   const editingNotification = useMutation(
-    (data) => readNotification(data.id).catch((error) => console.log(error)),
+    (data) =>
+      readNotification(data.id).catch((err) =>
+        toast({
+          title: err.message,
+          status: 'error',
+          duration: 3000,
+          isClosable: true,
+          position: 'top',
+          containerStyle: {
+            margin: '100px'
+          }
+        })
+      ),
     {
       onSuccess: () => {
         queryClient.invalidateQueries(['notifications']);
@@ -47,7 +61,8 @@ export const NotificationsMenu = () => {
     popupTextColor,
     textColor,
     notificationUnreadBgColor,
-    notificationReadBgColor
+    notificationReadBgColor,
+    dateColor
   } = useCentralTheme();
 
   const openOrReadOnClick = (notification) => {
@@ -65,7 +80,7 @@ export const NotificationsMenu = () => {
   };
 
   return (
-    <Menu closeOnSelect={false}>
+    <Menu closeOnSelect={false} autoSelect={false} placement="bottom">
       {!!dataNotifications && isFetchedNotifications && (
         <>
           <MenuButton
@@ -86,11 +101,12 @@ export const NotificationsMenu = () => {
               borderColor: textColor
             }}
           >
-            <BellIcon w={8} h={8} />
+            <BellIcon w={8} h={8} mr={0.5} />
             {!!dataNotifications.filter((notification) => !notification.isRead)
               .length && (
               <Flex
                 pos="absolute"
+                mr={0.5}
                 top={1}
                 right={1}
                 zIndex="1"
@@ -118,12 +134,14 @@ export const NotificationsMenu = () => {
           <MenuList
             pos="relative"
             zIndex="10"
-            maxW="450px"
-            maxH="250px"
+            minW={{ sm: '250px', lg: '350px' }}
+            maxH="280px"
             overflowY="auto"
             bg={popupBgColor}
             color={popupTextColor}
             fontWeight="bold"
+            p={0}
+            mt={1}
           >
             {dataNotifications.length ? (
               dataNotifications
@@ -138,7 +156,7 @@ export const NotificationsMenu = () => {
                         flexDirection="column"
                         alignItems="flex-start"
                         justifyContent="flex-start"
-                        px="35px"
+                        px="25px"
                         minH="60px"
                         borderBottom="1px solid #ccc"
                         bgColor={
@@ -156,20 +174,29 @@ export const NotificationsMenu = () => {
                         {!notification.isRead && (
                           <Box
                             pos="absolute"
-                            top="15px"
-                            left="10px"
+                            top="7px"
+                            left="7px"
                             w="10px"
                             h="10px"
                             bgColor="red"
                             borderRadius="50px"
                           />
                         )}
-                        <Text mb={1}>
+                        <Text
+                          fontSize={{ sm: '15px', lg: '17px' }}
+                          textTransform="capitalize"
+                          mb={2}
+                        >
                           {notification.description.length >= 120
                             ? `${notification.description.slice(0, 120)}...`
                             : notification.description}
                         </Text>
-                        <Box w="100%" textAlign="end" color="gray">
+                        <Box
+                          w="100%"
+                          fontSize={{ sm: '12px', lg: '15px' }}
+                          textAlign="end"
+                          color={dateColor}
+                        >
                           {format(new Date(notification.date), 'dd.MM.yyyy')}
                         </Box>
                       </MenuItem>
