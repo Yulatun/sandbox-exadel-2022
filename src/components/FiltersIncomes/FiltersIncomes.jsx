@@ -209,6 +209,11 @@ export const FiltersIncomes = ({ dataWallets, dataCategories, onChange }) => {
             end: null
           }
         });
+        setChosenDates({
+          start: null,
+          end: null
+        });
+
         break;
 
       case 'categoriesFilter':
@@ -237,214 +242,224 @@ export const FiltersIncomes = ({ dataWallets, dataCategories, onChange }) => {
   };
 
   return (
-    <Flex flexDir="column" w="100%">
-      <Heading mb="36px" as="h3" size="lg" color={textColor}>
-        {i18next.t('expenses.filters.heading')}
-      </Heading>
+    <>
+      <Flex flexDir="column" w="100%">
+        <Heading mb="36px" as="h3" size="lg" color={textColor}>
+          {i18next.t('expenses.filters.heading')}
+        </Heading>
 
-      <Flex flexWrap="wrap" w="100%">
-        <Flex
-          pos="relative"
-          alignItems="center"
-          mr="25px"
-          mb="16px"
-          pr="34px"
-          maxW="250px"
-          w="100%"
-          ref={calendarRef}
-        >
-          <InputGroup
-            onClick={() => setIsDateSelectOpen(!isDateSelectOpen)}
-            color={popupTextColor}
+        <Flex flexWrap="wrap" w="100%">
+          <Flex
+            pos="relative"
+            alignItems="center"
+            mr="25px"
+            mb="16px"
+            pr="34px"
+            maxW="250px"
+            w="100%"
+            ref={calendarRef}
           >
-            <Input
-              textAlign="left"
-              color={
-                !selectedDateFilter.value ? inputValueColor : popupTextColor
-              }
-              type="text"
-              readOnly
-              value={
-                !selectedDateFilter.value
-                  ? i18next.t('expenses.filters.date.value')
-                  : i18next.t(
-                      `expenses.filters.date.value.${selectedDateFilter?.value}`
-                    )
-              }
-            />
-            <InputRightElement
-              mt="1px"
-              mr="1px"
-              h="94%"
-              w="54px"
-              borderRightRadius="5px"
-              borderColor={inputSelectBorderColor}
-              bg={inputSelectBg}
-              cursor="pointer"
+            <InputGroup
+              onClick={() => setIsDateSelectOpen(!isDateSelectOpen)}
+              color={popupTextColor}
             >
-              <ChevronDownIcon w="20px" h="20px" />
-            </InputRightElement>
-          </InputGroup>
-          {!!isDateSelectOpen && (
-            <Box pos="absolute" top="50px" zIndex="2">
-              <CalendarPicker
-                clearAllDateButtonsSelected={clearAllDateButtonsSelected}
-                chosenDates={chosenDates}
-                setChosenDates={setChosenDates}
-                dateButtonSelected={dateButtonSelected}
-                setDateButtonSelected={setDateButtonSelected}
-                selectedDateFilter={selectedDateFilter}
-                setSelectedDateFilter={setSelectedDateFilter}
+              <Input
+                textAlign="left"
+                color={
+                  !selectedDateFilter.value ? inputValueColor : popupTextColor
+                }
+                type="text"
+                readOnly
+                value={
+                  !selectedDateFilter.value
+                    ? i18next.t('expenses.filters.date.value')
+                    : i18next.t(
+                        `expenses.filters.date.value.${selectedDateFilter?.value}`
+                      )
+                }
               />
-            </Box>
-          )}
+              <InputRightElement
+                mt="1px"
+                mr="1px"
+                h="94%"
+                w="54px"
+                borderRightRadius="5px"
+                borderColor={inputSelectBorderColor}
+                bg={inputSelectBg}
+                cursor="pointer"
+              >
+                <ChevronDownIcon w="20px" h="20px" />
+              </InputRightElement>
+            </InputGroup>
+            {!!isDateSelectOpen && (
+              <Box pos="absolute" top="50px" zIndex="2">
+                <CalendarPicker
+                  clearAllDateButtonsSelected={clearAllDateButtonsSelected}
+                  chosenDates={chosenDates}
+                  setChosenDates={setChosenDates}
+                  dateButtonSelected={dateButtonSelected}
+                  setDateButtonSelected={setDateButtonSelected}
+                  selectedDateFilter={selectedDateFilter}
+                  setSelectedDateFilter={setSelectedDateFilter}
+                />
+              </Box>
+            )}
+            {(selectedDateFilter.value.includes('date') ||
+              (!!Object.values(selectedDateFilter.dates).length &&
+                selectedDateFilter.dates.end !== null)) && (
+              <IconButton
+                pos="absolute"
+                right="0"
+                size="xs"
+                borderRadius="50%"
+                variant="secondary"
+                aria-label={i18next.t('expenses.filters.btn.removeFilter')}
+                icon={<CloseIcon />}
+                onClick={() => clearChosenSelect(setSelectedDateFilter, true)}
+              />
+            )}
+          </Flex>
+
+          <Flex
+            pos="relative"
+            alignItems="center"
+            mr="25px"
+            mb="16px"
+            pr="34px"
+            maxW="250px"
+            w="100%"
+          >
+            <FormControl color={popupTextColor}>
+              <Select
+                value={selectedCategoryFilters}
+                options={getCategoriesOptions(dataCategories, 'Income')}
+                onChange={(event) =>
+                  handleSelects(
+                    event,
+                    selectedCategoryFilters,
+                    setSelectedCategoryFilters
+                  )
+                }
+                isSearchable={true}
+                closeMenuOnSelect={false}
+                selectedOptionStyle="check"
+                hideSelectedOptions={false}
+                placeholder={i18next.t('expenses.filters.category.placeholder')}
+              />
+            </FormControl>
+            {!!selectedCategoryFilters.length && (
+              <IconButton
+                pos="absolute"
+                right="0"
+                size="xs"
+                borderRadius="50%"
+                variant="secondary"
+                aria-label={i18next.t('expenses.filters.btn.removeFilter')}
+                icon={<CloseIcon />}
+                onClick={() => clearChosenSelect(setSelectedCategoryFilters)}
+              />
+            )}
+          </Flex>
+
+          <Flex
+            pos="relative"
+            alignItems="center"
+            mr="25px"
+            mb="16px"
+            pr="34px"
+            maxW="250px"
+            w="100%"
+          >
+            <FormControl color={popupTextColor}>
+              <Select
+                value={selectedWalletFilters}
+                options={getWalletsOptions(dataWallets)}
+                onChange={(event) =>
+                  handleSelects(
+                    event,
+                    selectedWalletFilters,
+                    setSelectedWalletFilters
+                  )
+                }
+                isSearchable={true}
+                closeMenuOnSelect={false}
+                selectedOptionStyle="check"
+                hideSelectedOptions={false}
+                placeholder={i18next.t('expenses.filters.wallet.placeholder')}
+              />
+            </FormControl>
+            {!!selectedWalletFilters.length && (
+              <IconButton
+                pos="absolute"
+                right="0"
+                size="xs"
+                borderRadius="50%"
+                variant="secondary"
+                aria-label={i18next.t('expenses.filters.btn.removeFilter')}
+                icon={<CloseIcon />}
+                onClick={() => clearChosenSelect(setSelectedWalletFilters)}
+              />
+            )}
+          </Flex>
+
           {(selectedDateFilter.value.includes('date') ||
             (!!Object.values(selectedDateFilter.dates).length &&
-              selectedDateFilter.dates.end !== null)) && (
-            <IconButton
-              pos="absolute"
-              right="0"
-              size="xs"
-              borderRadius="50%"
-              variant="secondary"
-              aria-label={i18next.t('expenses.filters.btn.removeFilter')}
-              icon={<CloseIcon />}
-              onClick={() => clearChosenSelect(setSelectedDateFilter, true)}
-            />
+              selectedDateFilter.dates.end !== null) ||
+            !!selectedCategoryFilters.length ||
+            !!selectedWalletFilters.length) && (
+            <Button onClick={clearFilters.onOpen} variant="danger" minW="166px">
+              {i18next.t('expenses.filters.btn.clearAllFilters')}
+            </Button>
           )}
         </Flex>
 
         <Flex
-          pos="relative"
-          alignItems="center"
-          mr="25px"
-          mb="16px"
-          pr="34px"
-          maxW="250px"
+          flexWrap="wrap"
+          mt="24px"
+          mb="42px"
           w="100%"
+          maxH="150px"
+          overflowY="auto"
         >
-          <FormControl color={popupTextColor}>
-            <Select
-              value={selectedCategoryFilters}
-              options={getCategoriesOptions(dataCategories, 'Income')}
-              onChange={(event) =>
-                handleSelects(
-                  event,
-                  selectedCategoryFilters,
-                  setSelectedCategoryFilters
-                )
-              }
-              isSearchable={true}
-              closeMenuOnSelect={false}
-              selectedOptionStyle="check"
-              hideSelectedOptions={false}
-              placeholder={i18next.t('expenses.filters.category.placeholder')}
-            />
-          </FormControl>
-          {!!selectedCategoryFilters.length && (
-            <IconButton
-              pos="absolute"
-              right="0"
-              size="xs"
-              borderRadius="50%"
-              variant="secondary"
-              aria-label={i18next.t('expenses.filters.btn.removeFilter')}
-              icon={<CloseIcon />}
-              onClick={() => clearChosenSelect(setSelectedCategoryFilters)}
-            />
-          )}
-        </Flex>
-
-        <Flex
-          pos="relative"
-          alignItems="center"
-          mr="25px"
-          mb="16px"
-          pr="34px"
-          maxW="250px"
-          w="100%"
-        >
-          <FormControl color={popupTextColor}>
-            <Select
-              value={selectedWalletFilters}
-              options={getWalletsOptions(dataWallets)}
-              onChange={(event) =>
-                handleSelects(
-                  event,
-                  selectedWalletFilters,
-                  setSelectedWalletFilters
-                )
-              }
-              isSearchable={true}
-              closeMenuOnSelect={false}
-              selectedOptionStyle="check"
-              hideSelectedOptions={false}
-              placeholder={i18next.t('expenses.filters.wallet.placeholder')}
-            />
-          </FormControl>
-          {!!selectedWalletFilters.length && (
-            <IconButton
-              pos="absolute"
-              right="0"
-              size="xs"
-              borderRadius="50%"
-              variant="secondary"
-              aria-label={i18next.t('expenses.filters.btn.removeFilter')}
-              icon={<CloseIcon />}
-              onClick={() => clearChosenSelect(setSelectedWalletFilters)}
-            />
-          )}
-        </Flex>
-
-        {(selectedDateFilter.value.includes('date') ||
-          (!!Object.values(selectedDateFilter.dates).length &&
-            selectedDateFilter.dates.end !== null) ||
-          !!selectedCategoryFilters.length ||
-          !!selectedWalletFilters.length) && (
-          <Button onClick={clearFilters.onOpen} variant="danger" minW="166px">
-            {i18next.t('expenses.filters.btn.clearAllFilters')}
-          </Button>
-        )}
-      </Flex>
-      <Flex flexWrap="wrap" mt="24px" mb="42px" w="100%" maxH="150px">
-        {!!selectedDateFilter &&
-          !!Object.values(selectedDateFilter.dates).length &&
-          selectedDateFilter.value && (
+          {!!selectedDateFilter &&
+            !!Object.values(selectedDateFilter.dates).length &&
+            selectedDateFilter.value && (
+              <FiltersTag
+                type="dateFilter"
+                value={selectedDateFilter.value}
+                text={getInputFormattedValue(selectedDateFilter)}
+                onClose={removeTagOnClose}
+              />
+            )}
+          {selectedCategoryFilters.map((filter) => (
             <FiltersTag
-              type="dateFilter"
-              value={selectedDateFilter.value}
-              text={getInputFormattedValue(selectedDateFilter)}
+              key={filter.value}
+              type="categoriesFilter"
+              value={filter.value}
+              text={filter.label}
               onClose={removeTagOnClose}
-              bgColor="green.400"
+              bgColor="blue.500"
             />
-          )}
-        {selectedCategoryFilters.map((filter) => (
-          <FiltersTag
-            key={filter.value}
-            type="categoriesFilter"
-            value={filter.value}
-            text={filter.label}
-            onClose={removeTagOnClose}
-            bgColor="red.400"
-          />
-        ))}
-        {selectedWalletFilters.map((filter) => (
-          <FiltersTag
-            key={filter.value}
-            type="walletsFilter"
-            value={filter.value}
-            text={filter.label}
-            onClose={removeTagOnClose}
-            bgColor="blue.400"
-          />
-        ))}
+          ))}
+          {selectedWalletFilters.map((filter) => (
+            <FiltersTag
+              key={filter.value}
+              type="walletsFilter"
+              value={filter.value}
+              text={filter.label}
+              onClose={removeTagOnClose}
+              bgColor="green.500"
+            />
+          ))}
+        </Flex>
       </Flex>
+
       <ConfirmationModal
         isOpen={clearFilters.isOpen}
         onClose={clearFilters.onClose}
         onSubmit={clearAllSelects}
         text={i18next.t('modal.confirmModal.clearFilters')}
       />
-    </Flex>
+    </>
   );
 };

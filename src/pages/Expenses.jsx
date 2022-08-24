@@ -150,6 +150,17 @@ export const Expenses = () => {
         createExpenseModal.onOpen();
         queryClient.invalidateQueries(['wallets']);
         queryClient.invalidateQueries(['expensesP']);
+
+        toast({
+          title: i18next.t('modal.addExpense.createdMessage'),
+          status: 'success',
+          duration: 3000,
+          isClosable: true,
+          position: 'top',
+          containerStyle: {
+            margin: '100px'
+          }
+        });
       }
     }
   );

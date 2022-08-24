@@ -281,7 +281,7 @@ export const TransactionList = ({
                 minW="85px"
                 w="15%"
                 textAlign="center"
-                onClick={() => onSetSortDate()}
+                onClick={onSetSortDate}
               >
                 <IconButton icon={<ArrowUpDownIcon />} variant="unstyled" />
                 {i18next.t('transaction.title.date')}
@@ -290,11 +290,11 @@ export const TransactionList = ({
                 {i18next.t('transaction.title.category')}
               </Heading>
               <Heading as="h2" size="sm" mr="10px" w="20%" textAlign="center">
-                {!!filters.walletFilter.length && (
+                {filters.walletFilter.length === 1 && (
                   <IconButton
                     icon={<ArrowUpDownIcon />}
                     variant="unstyled"
-                    onClick={() => onSetSortByAmount()}
+                    onClick={onSetSortByAmount}
                   />
                 )}
                 {i18next.t('transaction.title.amount')}

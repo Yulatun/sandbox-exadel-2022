@@ -16,12 +16,15 @@ export const getIncomes = async ({
   if (DateFrom) {
     paramsString += `?DateFrom=${DateFrom}`;
   }
+
   if (DateTo) {
     paramsString += DateTo ? `&DateTo=${DateTo}` : 'reset';
   }
+
   if (paramsString.includes('reset')) {
     paramsString = '';
   }
+
   if (CategoriesFilter.length) {
     paramsString += DateFrom
       ? `&CategoriesFilter=${CategoriesFilter.join('&CategoriesFilter=')}`
@@ -29,9 +32,10 @@ export const getIncomes = async ({
           CategoriesFilter.length ? '?' : ''
         }CategoriesFilter=${CategoriesFilter.join('&CategoriesFilter=')}`;
   }
+
   if (WalletsFilter.length) {
     paramsString += `${
-      CategoriesFilter.length ? '&' : '?'
+      CategoriesFilter.length || DateFrom ? '&' : '?'
     }WalletsFilter=${WalletsFilter.join('&WalletsFilter=')}`;
   }
 
@@ -71,15 +75,19 @@ export const getExpenses = async ({
   PayersFilter = []
 }) => {
   let paramsString = '';
+
   if (DateFrom) {
     paramsString += `?DateFrom=${DateFrom}`;
   }
+
   if (DateTo) {
     paramsString += DateTo ? `&DateTo=${DateTo}` : 'reset';
   }
+
   if (paramsString.includes('reset')) {
     paramsString = '';
   }
+
   if (CategoriesFilter.length) {
     paramsString += DateFrom
       ? `&CategoriesFilter=${CategoriesFilter.join('&CategoriesFilter=')}`
@@ -87,14 +95,15 @@ export const getExpenses = async ({
           CategoriesFilter.length ? '?' : ''
         }CategoriesFilter=${CategoriesFilter.join('&CategoriesFilter=')}`;
   }
+
   if (WalletsFilter.length) {
     paramsString += `${
-      CategoriesFilter.length ? '&' : '?'
+      CategoriesFilter.length || DateFrom ? '&' : '?'
     }WalletsFilter=${WalletsFilter.join('&WalletsFilter=')}`;
   }
   if (PayersFilter.length) {
     paramsString += `${
-      CategoriesFilter.length ? '&' : WalletsFilter.length ? '&' : '?'
+      CategoriesFilter.length || WalletsFilter.length || DateFrom ? '&' : '?'
     }PayersFilter=${PayersFilter.join('&PayersFilter=')}`;
   }
 
