@@ -325,7 +325,8 @@ export const TransactionList = ({
       {editingIncome.isLoading ||
       editingExpense.isLoading ||
       deletingIncome.isLoading ||
-      deletingExpense.isLoading ? (
+      deletingExpense.isLoading ||
+      !list.length ? (
         <Preloader />
       ) : (
         <VStack spacing={5} w="100%" h={maxH} overflowY="auto" ref={parent}>

@@ -276,8 +276,6 @@ export const WalletView = () => {
             payersData={dataPayers}
           />
         )}
-
-        {(!isFetchedIncomes || !isFetchedExpenses) && <Preloader />}
       </Flex>
 
       <ConfirmationModal
