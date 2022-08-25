@@ -74,7 +74,7 @@ export const SelectControlled = ({
           validate: (currency) =>
             findIndex(validateWalletData, {
               name: validateWalletName,
-              currency: { id: currency.value }
+              currency: { id: currency?.value }
             }) < 0
               ? true
               : i18next.t('modal.addCategory.validationErrorMessage.nameExist')
