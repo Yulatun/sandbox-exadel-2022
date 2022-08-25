@@ -175,8 +175,8 @@ export const NotificationsMenu = () => {
                         {!notification.isRead && (
                           <Box
                             pos="absolute"
-                            top="7px"
-                            left="7px"
+                            top="15px"
+                            left="10px"
                             w="10px"
                             h="10px"
                             bgColor="red"
