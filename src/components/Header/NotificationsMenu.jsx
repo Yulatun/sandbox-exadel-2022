@@ -135,6 +135,7 @@ export const NotificationsMenu = () => {
             pos="relative"
             zIndex="10"
             minW={{ sm: '250px', lg: '350px' }}
+            maxW="350px"
             maxH="280px"
             overflowY="auto"
             bg={popupBgColor}
